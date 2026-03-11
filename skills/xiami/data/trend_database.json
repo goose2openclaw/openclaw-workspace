@@ -1,0 +1,179 @@
+{
+  "crypto_trends": {
+    "momentum": {
+      "name": "动量趋势",
+      "description": "价格持续朝一个方向移动",
+      "indicators": ["RSI", "MACD", "MACross"],
+      "timeframes": {
+        "1m": {"duration": "5-30分钟", "profit_target": "1-3%"},
+        "5m": {"duration": "1-4小时", "profit_target": "3-8%"},
+        "1h": {"duration": "1-3天", "profit_target": "8-15%"},
+        "4h": {"duration": "3-7天", "profit_target": "15-30%"},
+        "1d": {"duration": "1-4周", "profit_target": "30%+"}
+      },
+      "entry_conditions": [
+        "RSI突破50且持续上升",
+        "MACD金叉且 histogram上升",
+        "价格站上20日均线"
+      ],
+      "exit_conditions": [
+        "RSI超过70/30",
+        "MACD死叉",
+        "价格跌破20日均线",
+        "达到盈利目标"
+      ]
+    },
+    "breakout": {
+      "name": "突破趋势",
+      "description": "价格突破关键阻力位",
+      "indicators": ["Volume", "Bollinger", "Support/Resistance"],
+      "entry_conditions": [
+        "成交量放大2倍以上",
+        "突破20日高点",
+        "突破收敛三角形"
+      ],
+      "exit_conditions": [
+        "跌破突破点",
+        "形成双顶",
+        "成交量萎缩"
+      ]
+    },
+    "reversal": {
+      "name": "反转趋势",
+      "description": "价格从极端位置回归",
+      "indicators": ["RSI", "Stochastic", "Divergence"],
+      "entry_conditions": [
+        "RSI<30超卖反弹",
+        "RSI与价格底背离",
+        "价格在支撑位反弹"
+      ],
+      "exit_conditions": [
+        "RSI回到50上方",
+        "跌破支撑位",
+        "达到盈利目标"
+      ]
+    },
+    "volatility": {
+      "name": "波动率趋势",
+      "description": "高波动率的趋势行情",
+      "indicators": ["ATR", "Bollinger Width", "Volume"],
+      "entry_conditions": [
+        "ATR突破历史均值",
+        "波动率急剧放大",
+        "成交量激增"
+      ],
+      "exit_conditions": [
+        "波动率回归正常",
+        "达到盈利目标",
+        "时间到期"
+      ]
+    }
+  },
+  "stock_trends": {
+    "earnings_momentum": {
+      "name": "财报动量",
+      "description": "财报超预期驱动的趋势",
+      "indicators": ["EPS", "Revenue", "Guidance"],
+      "entry_conditions": [
+        "财报超预期",
+        "上调盈利预期",
+        "分析师集体上调评级"
+      ],
+      "timeframes": {
+        "1d": {"duration": "1-5天", "profit_target": "5-15%"},
+        "1w": {"duration": "1-4周", "profit_target": "15-40%"}
+      }
+    },
+    "sector_rotation": {
+      "name": "板块轮动",
+      "description": "资金在板块间流动",
+      "indicators": ["Sector Performance", "Flow", "Relative Strength"],
+      "timeframes": {
+        "1w": {"duration": "2-8周", "profit_target": "10-25%"},
+        "1m": {"duration": "1-3月", "profit_target": "25-50%"}
+      }
+    },
+    "technical_breakout": {
+      "name": "技术突破",
+      "description": "技术面关键位置突破",
+      "indicators": ["Trendline", "Pattern", "Volume"],
+      "timeframes": {
+        "4h": {"duration": "1-2周", "profit_target": "8-20%"},
+        "1d": {"duration": "1-3月", "profit_target": "20-50%"}
+      }
+    }
+  },
+  "futures_trends": {
+    "contango_backwardation": {
+      "name": "期现价差",
+      "description": "期货与现货的价差机会",
+      "indicators": ["Basis", "Funding Rate", "Open Interest"],
+      "entry_conditions": [
+        "期现价差超过2%",
+        "资金费率有利",
+        "持仓量上升"
+      ],
+      "timeframes": {
+        "1h": {"duration": "4-24小时", "profit_target": "1-3%"},
+        "4h": {"duration": "1-7天", "profit_target": "3-8%"}
+      }
+    },
+    "interest_rate_trend": {
+      "name": "利率趋势",
+      "description": "利率变动驱动的趋势",
+      "indicators": ["Fed Rate", "Yield Curve", "DXY"],
+      "timeframes": {
+        "1d": {"duration": "1-4周", "profit_target": "5-15%"},
+        "1w": {"duration": "1-6月", "profit_target": "15-40%"}
+      }
+    }
+  },
+  "market_sentiment": {
+    "fomo": {
+      "name": "FOMO情绪",
+      "description": "害怕错过导致的追高",
+      "indicators": ["Social Volume", "Google Trends", "Fear/Greed Index"],
+      "threshold": {
+        "fear": 25,
+        "greed": 75
+      },
+      "action": "谨慎追高,考虑卖出"
+    },
+    " capitulation": {
+      "name": "恐慌抛售",
+      "description": "极端恐慌导致的超卖",
+      "indicators": ["Volume Spike", "Put/Call Ratio", "Social Sentiment"],
+      "threshold": {
+        "put_call": 1.5,
+        "volume_spike": 3.0
+      },
+      "action": "考虑买入"
+    }
+  },
+  "patterns": {
+    "bull_flag": {
+      "name": "牛市旗形",
+      "direction": "上涨",
+      "reliability": "高",
+      "timeframe": "4h-1d"
+    },
+    "bear_flag": {
+      "name": "熊市旗形",
+      "direction": "下跌",
+      "reliability": "高",
+      "timeframe": "4h-1d"
+    },
+    "head_shoulders": {
+      "name": "头肩顶/底",
+      "direction": "反转",
+      "reliability": "高",
+      "timeframe": "1d-1w"
+    },
+    "double_top_bottom": {
+      "name": "双顶/双底",
+      "direction": "反转",
+      "reliability": "中",
+      "timeframe": "1d-1w"
+    }
+  }
+}
