@@ -1,8 +1,20 @@
 {
   "crypto_trends": {
-    "momentum": {"name": "动量趋势", "indicators": ["RSI", "MACD"], "timeframes": {"1m": {"observe": true, "execute": false}, "5m": {"execute": true, "min_confidence": 3}, "15m": {"execute": true, "min_confidence": 4}}},
-    "breakout": {"name": "突破趋势", "indicators": ["Volume"], "timeframes": {"5m": {"execute": true, "min_confidence": 3}, "15m": {"execute": true, "min_confidence": 5}}},
-    "reversal": {"name": "反转趋势", "indicators": ["RSI", "Divergence"], "timeframes": {"5m": {"execute": true, "min_confidence": 5}, "15m": {"execute": true, "min_confidence": 6}}},
+    "momentum": {"name": "动量趋势", "indicators": ["RSI", "MACD", "EMA", "BB"], "timeframes": {
+      "1m": {"observe": true, "execute": true, "min_confidence": 2},
+      "3m": {"observe": true, "execute": true, "min_confidence": 2},
+      "5m": {"execute": true, "min_confidence": 3}, 
+      "15m": {"execute": true, "min_confidence": 4}}},
+    "breakout": {"name": "突破趋势", "indicators": ["Volume", "BB", "Price_Change"], "timeframes": {
+      "1m": {"execute": true, "min_confidence": 2},
+      "3m": {"execute": true, "min_confidence": 3},
+      "5m": {"execute": true, "min_confidence": 3}, 
+      "15m": {"execute": true, "min_confidence": 5}}},
+    "reversal": {"name": "反转趋势", "indicators": ["RSI", "Divergence", "BB"], "timeframes": {
+      "1m": {"execute": true, "min_confidence": 3},
+      "3m": {"execute": true, "min_confidence": 4},
+      "5m": {"execute": true, "min_confidence": 5}, 
+      "15m": {"execute": true, "min_confidence": 6}}},
     "whale_accumulation": {"name": "巨鲸积累", "timeframes": {"15m": {"execute": true, "min_confidence": 4}, "1h": {"execute": true, "min_confidence": 5}}},
     "defi_tvl": {"name": "DeFi锁仓量", "timeframes": {"4h": {"execute": true, "min_confidence": 4}, "1d": {"execute": true, "min_confidence": 5}}},
     "stablecoin_flow": {"name": "稳定币流向", "timeframes": {"1h": {"execute": true, "min_confidence": 4}, "4h": {"execute": true, "min_confidence": 5}}},
