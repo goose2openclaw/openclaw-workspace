@@ -3,7 +3,8 @@
     "momentum": {
       "name": "动量趋势",
       "description": "价格持续朝一个方向移动",
-      "indicators": ["RSI", "MACD", "MACross"],
+      "indicators": ["RSI", "MACD", "MA Cross"],
+      "reliability": "高",
       "timeframes": {
         "1m": {"duration": "5-30分钟", "profit_target": "1-3%"},
         "5m": {"duration": "1-4小时", "profit_target": "3-8%"},
@@ -11,62 +12,212 @@
         "4h": {"duration": "3-7天", "profit_target": "15-30%"},
         "1d": {"duration": "1-4周", "profit_target": "30%+"}
       },
-      "entry_conditions": [
-        "RSI突破50且持续上升",
-        "MACD金叉且 histogram上升",
-        "价格站上20日均线"
-      ],
-      "exit_conditions": [
-        "RSI超过70/30",
-        "MACD死叉",
-        "价格跌破20日均线",
-        "达到盈利目标"
-      ]
+      "entry_conditions": ["RSI突破50且持续上升", "MACD金叉且 histogram上升", "价格站上20日均线"],
+      "exit_conditions": ["RSI超过70/30", "MACD死叉", "价格跌破20日均线", "达到盈利目标"]
     },
     "breakout": {
       "name": "突破趋势",
       "description": "价格突破关键阻力位",
       "indicators": ["Volume", "Bollinger", "Support/Resistance"],
-      "entry_conditions": [
-        "成交量放大2倍以上",
-        "突破20日高点",
-        "突破收敛三角形"
-      ],
-      "exit_conditions": [
-        "跌破突破点",
-        "形成双顶",
-        "成交量萎缩"
-      ]
+      "reliability": "高",
+      "timeframes": {
+        "15m": {"duration": "2-8小时", "profit_target": "5-15%"},
+        "1h": {"duration": "1-3天", "profit_target": "10-25%"},
+        "4h": {"duration": "3-10天", "profit_target": "20-40%"}
+      },
+      "entry_conditions": ["成交量放大2倍以上", "突破20日高点", "突破收敛三角形"],
+      "exit_conditions": ["跌破突破点", "形成双顶", "成交量萎缩"]
     },
     "reversal": {
       "name": "反转趋势",
       "description": "价格从极端位置回归",
       "indicators": ["RSI", "Stochastic", "Divergence"],
-      "entry_conditions": [
-        "RSI<30超卖反弹",
-        "RSI与价格底背离",
-        "价格在支撑位反弹"
-      ],
-      "exit_conditions": [
-        "RSI回到50上方",
-        "跌破支撑位",
-        "达到盈利目标"
-      ]
+      "reliability": "中",
+      "timeframes": {
+        "5m": {"duration": "30分钟-2小时", "profit_target": "2-5%"},
+        "15m": {"duration": "2-6小时", "profit_target": "4-10%"},
+        "1h": {"duration": "6小时-2天", "profit_target": "8-15%"}
+      },
+      "entry_conditions": ["RSI<30超卖反弹", "RSI与价格底背离", "价格在支撑位反弹"],
+      "exit_conditions": ["RSI回到50上方", "跌破支撑位", "达到盈利目标"]
     },
     "volatility": {
       "name": "波动率趋势",
       "description": "高波动率的趋势行情",
       "indicators": ["ATR", "Bollinger Width", "Volume"],
-      "entry_conditions": [
-        "ATR突破历史均值",
-        "波动率急剧放大",
-        "成交量激增"
-      ],
-      "exit_conditions": [
-        "波动率回归正常",
-        "达到盈利目标",
-        "时间到期"
-      ]
+      "reliability": "中",
+      "timeframes": {
+        "1m": {"duration": "10-60分钟", "profit_target": "2-6%"},
+        "5m": {"duration": "1-4小时", "profit_target": "5-12%"},
+        "15m": {"duration": "2-8小时", "profit_target": "8-20%"}
+      },
+      "entry_conditions": ["ATR突破历史均值", "波动率急剧放大", "成交量激增"],
+      "exit_conditions": ["波动率回归正常", "达到盈利目标", "时间到期"]
+    },
+    "gap_fill": {
+      "name": "缺口回补",
+      "description": "价格跳空后的回补机会",
+      "indicators": ["Gap", "Volume", "Support/Resistance"],
+      "reliability": "高",
+      "timeframes": {
+        "1m": {"duration": "5-30分钟", "profit_target": "1-3%"},
+        "5m": {"duration": "30分钟-2小时", "profit_target": "2-5%"}
+      },
+      "entry_conditions": ["出现向上跳空缺口", "回踩缺口不破", "成交量配合"],
+      "exit_conditions": ["回补缺口", "达到盈利目标", "跌破缺口底部"]
+    },
+    "liquidation_wave": {
+      "name": "清算浪潮",
+      "description": "大规模清算引发的趋势",
+      "indicators": ["Long/Short Ratio", "Funding Rate", "Open Interest"],
+      "reliability": "中",
+      "timeframes": {
+        "5m": {"duration": "1-4小时", "profit_target": "5-15%"},
+        "15m": {"duration": "2-8小时", "profit_target": "10-25%"}
+      },
+      "entry_conditions": ["资金费率极端", "多空比失衡", "持仓量激增"],
+      "exit_conditions": ["资金费率回归", "达到盈利目标", "趋势反转"]
+    },
+    "whale_accumulation": {
+      "name": "巨鲸积累",
+      "description": "大户悄悄吸筹",
+      "indicators": ["Volume Profile", "On-Balance Volume", "Whale Alerts"],
+      "reliability": "高",
+      "timeframes": {
+        "1h": {"duration": "1-5天", "profit_target": "10-30%"},
+        "4h": {"duration": "3-14天", "profit_target": "20-50%"},
+        "1d": {"duration": "1-4周", "profit_target": "40-100%"}
+      },
+      "entry_conditions": ["成交量异常放大", "价格在区间内波动", "OBV持续上升"],
+      "exit_conditions": ["巨鲸开始抛售", "达到盈利目标", "跌破支撑"]
+    },
+    "news_driven": {
+      "name": "新闻驱动",
+      "description": "重大新闻引发的趋势",
+      "indicators": ["News Sentiment", "Social Volume", "Google Trends"],
+      "reliability": "高",
+      "timeframes": {
+        "1m": {"duration": "10分钟-2小时", "profit_target": "3-10%"},
+        "5m": {"duration": "1-6小时", "profit_target": "8-20%"},
+        "15m": {"duration": "2-12小时", "profit_target": "15-30%"}
+      },
+      "entry_conditions": ["重大利好/利空", "社交媒体热议", "Google趋势飙升"],
+      "exit_conditions": ["新闻热度消退", "达到盈利目标", "趋势反转"]
+    },
+    " ETF_flow": {
+      "name": "ETF资金流",
+      "description": "ETF净流入/流出驱动的趋势",
+      "indicators": ["ETF Inflow/Outflow", "Spot Price", "Premium/Discount"],
+      "reliability": "高",
+      "timeframes": {
+        "15m": {"duration": "2-8小时", "profit_target": "3-8%"},
+        "1h": {"duration": "8小时-2天", "profit_target": "5-15%"},
+        "4h": {"duration": "1-5天", "profit_target": "10-25%"}
+      },
+      "entry_conditions": ["ETF持续净流入", "现货价格跟涨", "溢价率上升"],
+      "exit_conditions": ["资金流逆转", "达到盈利目标", "溢价率回归"]
+    },
+    "futures_basis": {
+      "name": "期货基差",
+      "description": "期货与现货的价差机会",
+      "indicators": ["Basis", "Funding Rate", "Open Interest"],
+      "reliability": "中",
+      "timeframes": {
+        "1h": {"duration": "4-24小时", "profit_target": "1-3%"},
+        "4h": {"duration": "1-7天", "profit_target": "3-8%"},
+        "1d": {"duration": "1-2周", "profit_target": "5-12%"}
+      },
+      "entry_conditions": ["期现价差超过2%", "资金费率有利", "持仓量上升"],
+      "exit_conditions": ["价差收敛", "资金费率回归", "达到盈利目标"]
+    },
+    "seasonality": {
+      "name": "季节性规律",
+      "description": "基于时间季节性的规律",
+      "indicators": ["Calendar", "Historical Pattern", "Day of Week"],
+      "reliability": "中",
+      "timeframes": {
+        "1d": {"duration": "1-7天", "profit_target": "3-10%"},
+        "1w": {"duration": "1-4周", "profit_target": "10-30%"}
+      },
+      "entry_conditions": ["历史同期上涨概率高", "季节性因素启动", "技术面配合"],
+      "exit_conditions": ["季节性窗口关闭", "达到盈利目标", "技术面反转"]
+    },
+    "correlation_break": {
+      "name": "关联断裂",
+      "description": "与其他资产关联性打破时的机会",
+      "indicators": ["Correlation", "Beta", "Relative Strength"],
+      "reliability": "中",
+      "timeframes": {
+        "15m": {"duration": "2-8小时", "profit_target": "3-8%"},
+        "1h": {"duration": "1-3天", "profit_target": "5-15%"},
+        "4h": {"duration": "3-10天", "profit_target": "10-25%"}
+      },
+      "entry_conditions": ["与BTC关联断裂", "独立走势启动", "成交量放大"],
+      "exit_conditions": ["关联恢复", "达到盈利目标", "趋势反转"]
+    },
+    "accumulation_distribution": {
+      "name": "积累分配",
+      "description": "主力资金的积累与分配阶段",
+      "indicators": ["A/D Line", "Money Flow Index", "Volume"],
+      "reliability": "高",
+      "timeframes": {
+        "1h": {"duration": "3-10天", "profit_target": "15-35%"},
+        "4h": {"duration": "1-3周", "profit_target": "25-50%"},
+        "1d": {"duration": "1-2月", "profit_target": "50-100%"}
+      },
+      "entry_conditions": ["A/D线上升", "价格在区间震荡", "成交量平稳"],
+      "exit_conditions": ["A/D线下降", "价格突破区间", "达到盈利目标"]
+    },
+    "order_block": {
+      "name": "订单区块",
+      "description": "机构订单形成的支撑/阻力",
+      "indicators": ["Order Flow", "Delta", "Iceberg Orders"],
+      "reliability": "高",
+      "timeframes": {
+        "1m": {"duration": "10-60分钟", "profit_target": "2-5%"},
+        "5m": {"duration": "1-4小时", "profit_target": "4-10%"},
+        "15m": {"duration": "2-8小时", "profit_target": "8-15%"}
+      },
+      "entry_conditions": ["订单区块支撑形成", "价格回测区块", "订单流显示买入"],
+      "exit_conditions": ["跌破订单区块", "达到盈利目标", "订单流显示卖出"]
+    },
+    "liquidity_sweep": {
+      "name": "流动性扫扫",
+      "description": "价格扫取流动性池后反转",
+      "indicators": ["Liquidity Pools", "Stop Hunt", "Stop Loss Clusters"],
+      "reliability": "中",
+      "timeframes": {
+        "1m": {"duration": "5-30分钟", "profit_target": "1-4%"},
+        "5m": {"duration": "30分钟-2小时", "profit_target": "3-8%"}
+      },
+      "entry_conditions": ["流动性池聚集", "价格扫取流动性", "反转信号"],
+      "exit_conditions": ["再次扫取流动性", "达到盈利目标", "趋势确认"]
+    },
+    "market_structure": {
+      "name": "市场结构",
+      "description": "高点/低点的突破与反转",
+      "indicators": ["Swing High/Low", "Structure Break", "Fair Value Gap"],
+      "reliability": "高",
+      "timeframes": {
+        "1m": {"duration": "10-60分钟", "profit_target": "2-6%"},
+        "5m": {"duration": "1-4小时", "profit_target": "5-12%"},
+        "15m": {"duration": "2-8小时", "profit_target": "8-20%"}
+      },
+      "entry_conditions": ["低点抬升", "突破前高", "FVG形成"],
+      "exit_conditions": ["高点降低", "结构反转", "达到盈利目标"]
+    },
+    "divergence_pro": {
+      "name": "背离增强版",
+      "description": "多指标背离确认的反转",
+      "indicators": ["RSI", "MACD", "Stochastic", "A/D"],
+      "reliability": "高",
+      "timeframes": {
+        "5m": {"duration": "1-4小时", "profit_target": "4-10%"},
+        "15m": {"duration": "3-10小时", "profit_target": "8-18%"},
+        "1h": {"duration": "6小时-2天", "profit_target": "12-25%"}
+      },
+      "entry_conditions": ["RSI底背离", "MACD底背离", "A/D线底背离"],
+      "exit_conditions": ["背离消失", "达到盈利目标", "跌破前低"]
     }
   },
   "stock_trends": {
@@ -74,11 +225,7 @@
       "name": "财报动量",
       "description": "财报超预期驱动的趋势",
       "indicators": ["EPS", "Revenue", "Guidance"],
-      "entry_conditions": [
-        "财报超预期",
-        "上调盈利预期",
-        "分析师集体上调评级"
-      ],
+      "reliability": "高",
       "timeframes": {
         "1d": {"duration": "1-5天", "profit_target": "5-15%"},
         "1w": {"duration": "1-4周", "profit_target": "15-40%"}
@@ -88,6 +235,7 @@
       "name": "板块轮动",
       "description": "资金在板块间流动",
       "indicators": ["Sector Performance", "Flow", "Relative Strength"],
+      "reliability": "中",
       "timeframes": {
         "1w": {"duration": "2-8周", "profit_target": "10-25%"},
         "1m": {"duration": "1-3月", "profit_target": "25-50%"}
@@ -97,6 +245,7 @@
       "name": "技术突破",
       "description": "技术面关键位置突破",
       "indicators": ["Trendline", "Pattern", "Volume"],
+      "reliability": "高",
       "timeframes": {
         "4h": {"duration": "1-2周", "profit_target": "8-20%"},
         "1d": {"duration": "1-3月", "profit_target": "20-50%"}
@@ -108,11 +257,7 @@
       "name": "期现价差",
       "description": "期货与现货的价差机会",
       "indicators": ["Basis", "Funding Rate", "Open Interest"],
-      "entry_conditions": [
-        "期现价差超过2%",
-        "资金费率有利",
-        "持仓量上升"
-      ],
+      "reliability": "中",
       "timeframes": {
         "1h": {"duration": "4-24小时", "profit_target": "1-3%"},
         "4h": {"duration": "1-7天", "profit_target": "3-8%"}
@@ -122,6 +267,7 @@
       "name": "利率趋势",
       "description": "利率变动驱动的趋势",
       "indicators": ["Fed Rate", "Yield Curve", "DXY"],
+      "reliability": "高",
       "timeframes": {
         "1d": {"duration": "1-4周", "profit_target": "5-15%"},
         "1w": {"duration": "1-6月", "profit_target": "15-40%"}
@@ -133,21 +279,27 @@
       "name": "FOMO情绪",
       "description": "害怕错过导致的追高",
       "indicators": ["Social Volume", "Google Trends", "Fear/Greed Index"],
-      "threshold": {
-        "fear": 25,
-        "greed": 75
-      },
+      "threshold": {"fear": 25, "greed": 75},
       "action": "谨慎追高,考虑卖出"
     },
-    " capitulation": {
+    "capitulation": {
       "name": "恐慌抛售",
       "description": "极端恐慌导致的超卖",
       "indicators": ["Volume Spike", "Put/Call Ratio", "Social Sentiment"],
-      "threshold": {
-        "put_call": 1.5,
-        "volume_spike": 3.0
-      },
+      "threshold": {"put_call": 1.5, "volume_spike": 3.0},
       "action": "考虑买入"
+    },
+    "greed_extreme": {
+      "name": "极度贪婪",
+      "description": "市场极度贪婪",
+      "indicators": ["Fear/Greed Index > 85", "Social Volume 10x", "New Highs"],
+      "action": "分批卖出"
+    },
+    "fear_extreme": {
+      "name": "极度恐慌",
+      "description": "市场极度恐慌",
+      "indicators": ["Fear/Greed Index < 15", "Volume Spike", "Put/Call > 2"],
+      "action": "分批买入"
     }
   },
   "patterns": {
@@ -174,6 +326,24 @@
       "direction": "反转",
       "reliability": "中",
       "timeframe": "1d-1w"
+    },
+    "triangle": {
+      "name": "三角形整理",
+      "direction": "突破",
+      "reliability": "中",
+      "timeframe": "15m-4h"
+    },
+    "wedge": {
+      "name": "楔形",
+      "direction": "反转",
+      "reliability": "中",
+      "timeframe": "1h-1d"
+    },
+    "channel": {
+      "name": "通道",
+      "direction": "顺势",
+      "reliability": "高",
+      "timeframe": "1h-4h"
     }
   }
 }
