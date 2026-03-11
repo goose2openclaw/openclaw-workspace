@@ -1,107 +1,63 @@
 {
   "crypto_trends": {
-    "momentum": {
-      "name": "动量趋势",
-      "indicators": ["RSI", "MACD", "MA Cross", "ADX"],
-      "reliability": "高",
-      "timeframes": {
-        "1m": {"duration": "5-30分钟", "profit_target": "1-3%", "risk": "低"},
-        "5m": {"duration": "1-4小时", "profit_target": "3-8%", "risk": "中"},
-        "1h": {"duration": "1-3天", "profit_target": "8-15%", "risk": "中"},
-        "4h": {"duration": "3-7天", "profit_target": "15-30%", "risk": "高"},
-        "1d": {"duration": "1-4周", "profit_target": "30%+", "risk": "高"}
-      }
-    },
-    "breakout": {
-      "name": "突破趋势",
-      "indicators": ["Volume", "Bollinger Bands", "Support/Resistance"],
-      "reliability": "高",
-      "timeframes": {
-        "15m": {"duration": "2-8小时", "profit_target": "5-15%"},
-        "1h": {"duration": "1-3天", "profit_target": "10-25%"},
-        "4h": {"duration": "3-10天", "profit_target": "20-40%"}
-      }
-    },
-    "reversal": {
-      "name": "反转趋势",
-      "indicators": ["RSI", "Stochastic", "Divergence"],
-      "reliability": "中",
-      "timeframes": {
-        "5m": {"duration": "30分钟-2小时", "profit_target": "3-8%"},
-        "15m": {"duration": "2-6小时", "profit_target": "6-12%"},
-        "1h": {"duration": "6小时-2天", "profit_target": "10-20%"}
-      }
-    },
-    "volatility": {
-      "name": "波动率趋势",
-      "indicators": ["ATR", "Bollinger Width", "Volume"],
-      "reliability": "中",
-      "timeframes": {
-        "1m": {"duration": "10-60分钟", "profit_target": "2-6%"},
-        "5m": {"duration": "1-4小时", "profit_target": "5-12%"},
-        "15m": {"duration": "2-8小时", "profit_target": "8-20%"}
-      }
-    },
-    "gap_fill": {"name": "缺口回补", "reliability": "高", "timeframes": {"1m": {"profit_target": "1-3%"}, "5m": {"profit_target": "2-5%"}}},
-    "liquidation_wave": {"name": "清算浪潮", "reliability": "中", "timeframes": {"5m": {"profit_target": "5-15%"}, "15m": {"profit_target": "10-25%"}}},
-    "whale_accumulation": {"name": "巨鲸积累", "reliability": "高", "timeframes": {"1h": {"profit_target": "10-25%"}, "4h": {"profit_target": "20-40%"}, "1d": {"profit_target": "40-80%"}}},
-    "news_driven": {"name": "新闻驱动", "reliability": "高", "timeframes": {"1m": {"profit_target": "3-10%"}, "5m": {"profit_target": "8-20%"}, "15m": {"profit_target": "15-30%"}}},
-    "etf_flow": {"name": "ETF资金流", "reliability": "高", "timeframes": {"15m": {"profit_target": "4-10%"}, "1h": {"profit_target": "6-15%"}, "4h": {"profit_target": "10-20%"}}},
-    "futures_basis": {"name": "期货基差", "reliability": "中", "timeframes": {"1h": {"profit_target": "1-4%"}, "4h": {"profit_target": "3-8%"}, "1d": {"profit_target": "5-12%"}}},
-    "seasonality": {"name": "季节性规律", "reliability": "中", "timeframes": {"1d": {"profit_target": "3-10%"}, "1w": {"profit_target": "10-25%"}, "1m": {"profit_target": "20-40%"}}},
-    "correlation_break": {"name": "关联断裂", "reliability": "中", "timeframes": {"15m": {"profit_target": "4-10%"}, "1h": {"profit_target": "8-15%"}, "4h": {"profit_target": "12-25%"}}},
-    "accumulation_distribution": {"name": "积累分配", "reliability": "高", "timeframes": {"1h": {"profit_target": "8-20%"}, "4h": {"profit_target": "15-35%"}, "1d": {"profit_target": "40-80%"}}},
-    "order_block": {"name": "订单区块", "reliability": "高", "timeframes": {"1m": {"profit_target": "1-4%"}, "5m": {"profit_target": "3-8%"}, "15m": {"profit_target": "6-15%"}}},
-    "liquidity_sweep": {"name": "流动性扫扫", "reliability": "中", "timeframes": {"1m": {"profit_target": "1-3%"}, "5m": {"profit_target": "2-6%"}}},
-    "market_structure": {"name": "市场结构", "reliability": "高", "timeframes": {"1m": {"profit_target": "2-5%"}, "5m": {"profit_target": "4-10%"}, "15m": {"profit_target": "8-18%"}}},
-    "divergence_pro": {"name": "背离增强版", "reliability": "高", "timeframes": {"5m": {"profit_target": "4-10%"}, "15m": {"profit_target": "8-18%"}, "1h": {"profit_target": "15-30%"}}},
-    "volume_spike": {"name": "成交量脉冲", "reliability": "高", "timeframes": {"1m": {"profit_target": "2-5%"}, "5m": {"profit_target": "4-10%"}, "15m": {"profit_target": "8-15%"}}},
-    "time_decay": {"name": "时间衰减", "reliability": "中", "timeframes": {"5m": {"profit_target": "2-5%"}, "15m": {"profit_target": "4-8%"}, "1h": {"profit_target": "6-12%"}}}
+    "momentum": {"name": "动量趋势", "indicators": ["RSI", "MACD", "ADX"], "reliability": "高", "timeframes": {"1m": {"observe": true, "execute": false}, "5m": {"execute": true, "min_confidence": 3}, "15m": {"execute": true, "min_confidence": 4}, "1h": {"execute": true, "min_confidence": 5}}},
+    "breakout": {"name": "突破趋势", "indicators": ["Volume", "Bollinger"], "reliability": "高", "timeframes": {"1m": {"observe": true, "execute": false}, "5m": {"execute": true, "min_confidence": 3}, "15m": {"execute": true, "min_confidence": 5}}},
+    "reversal": {"name": "反转趋势", "indicators": ["RSI", "Stochastic", "Divergence"], "reliability": "中", "timeframes": {"1m": {"observe": true, "execute": false}, "5m": {"execute": true, "min_confidence": 5}, "15m": {"execute": true, "min_confidence": 6}}},
+    "volatility": {"name": "波动率", "indicators": ["ATR", "Volume"], "reliability": "中", "timeframes": {"1m": {"observe": true, "execute": false}, "5m": {"execute": true, "min_confidence": 4}}},
+    "gap_fill": {"name": "缺口回补", "reliability": "高", "timeframes": {"1m": {"observe": true}, "5m": {"execute": true, "min_confidence": 4}}},
+    "whale_accumulation": {"name": "巨鲸积累", "reliability": "高", "timeframes": {"15m": {"execute": true, "min_confidence": 4}, "1h": {"execute": true, "min_confidence": 5}, "4h": {"execute": true, "min_confidence": 6}}},
+    "news_driven": {"name": "新闻驱动", "reliability": "高", "timeframes": {"1m": {"execute": true, "min_confidence": 5}, "5m": {"execute": true, "min_confidence": 6}}},
+    "etf_flow": {"name": "ETF资金流", "reliability": "高", "timeframes": {"15m": {"execute": true, "min_confidence": 4}, "1h": {"execute": true, "min_confidence": 5}}},
+    "order_block": {"name": "订单区块", "reliability": "高", "timeframes": {"5m": {"execute": true, "min_confidence": 4}, "15m": {"execute": true, "min_confidence": 5}}},
+    "market_structure": {"name": "市场结构", "reliability": "高", "timeframes": {"5m": {"execute": true, "min_confidence": 4}, "15m": {"execute": true, "min_confidence": 5}}},
+    "divergence": {"name": "背离", "reliability": "高", "timeframes": {"5m": {"execute": true, "min_confidence": 5}, "15m": {"execute": true, "min_confidence": 6}}},
+    "volume_spike": {"name": "成交量脉冲", "reliability": "高", "timeframes": {"1m": {"observe": true}, "5m": {"execute": true, "min_confidence": 4}}}
   },
   "stock_trends": {
-    "earnings_momentum": {"name": "财报动量", "reliability": "高", "timeframes": {"1d": {"profit_target": "5-15%"}, "1w": {"profit_target": "15-35%"}, "1m": {"profit_target": "30-60%"}}},
-    "sector_rotation": {"name": "板块轮动", "reliability": "中", "timeframes": {"1d": {"profit_target": "3-8%"}, "1w": {"profit_target": "8-20%"}, "1m": {"profit_target": "20-40%"}}},
-    "technical_breakout": {"name": "技术突破", "reliability": "高", "timeframes": {"4h": {"profit_target": "8-18%"}, "1d": {"profit_target": "15-30%"}, "1w": {"profit_target": "30-60%"}}},
-    "insider_buying": {"name": "内部人买入", "reliability": "高", "timeframes": {"1d": {"profit_target": "5-12%"}, "1w": {"profit_target": "12-25%"}, "1m": {"profit_target": "25-50%"}}},
-    "institutional_accumulation": {"name": "机构建仓", "reliability": "高", "timeframes": {"1w": {"profit_target": "10-20%"}, "1m": {"profit_target": "20-40%"}, "3m": {"profit_target": "40-80%"}}}
+    "earnings_momentum": {"name": "财报动量", "reliability": "高", "timeframes": {"1d": {"execute": true, "min_confidence": 5}, "1w": {"execute": true, "min_confidence": 6}}},
+    "sector_rotation": {"name": "板块轮动", "reliability": "中", "timeframes": {"1w": {"execute": true, "min_confidence": 4}, "1m": {"execute": true, "min_confidence": 5}}},
+    "insider_buying": {"name": "内部人买入", "reliability": "高", "timeframes": {"1d": {"execute": true, "min_confidence": 5}, "1w": {"execute": true, "min_confidence": 6}}},
+    "institutional_accumulation": {"name": "机构建仓", "reliability": "高", "timeframes": {"1w": {"execute": true, "min_confidence": 4}, "1m": {"execute": true, "min_confidence": 5}}}
   },
   "futures_trends": {
-    "contango_backwardation": {"name": "期现价差", "reliability": "中", "timeframes": {"15m": {"profit_target": "1-3%"}, "1h": {"profit_target": "2-5%"}, "4h": {"profit_target": "4-10%"}}},
-    "interest_rate_trend": {"name": "利率趋势", "reliability": "高", "timeframes": {"1d": {"profit_target": "5-15%"}, "1w": {"profit_target": "15-35%"}, "1m": {"profit_target": "30-60%"}}},
-    "commodity_supercycle": {"name": "大宗商品超级周期", "reliability": "高", "timeframes": {"1w": {"profit_target": "15-30%"}, "1m": {"profit_target": "30-80%"}, "3m": {"profit_target": "60-200%"}}},
-    "spread_trading": {"name": "价差交易", "reliability": "高", "timeframes": {"15m": {"profit_target": "1-3%"}, "1h": {"profit_target": "3-8%"}, "4h": {"profit_target": "6-15%"}}}
+    "contango": {"name": "期现价差", "reliability": "中", "timeframes": {"1h": {"execute": true, "min_confidence": 3}, "4h": {"execute": true, "min_confidence": 4}}},
+    "interest_rate": {"name": "利率趋势", "reliability": "高", "timeframes": {"1d": {"execute": true, "min_confidence": 5}, "1w": {"execute": true, "min_confidence": 6}}},
+    "commodity_cycle": {"name": "商品周期", "reliability": "高", "timeframes": {"1w": {"execute": true, "min_confidence": 5}, "1m": {"execute": true, "min_confidence": 6}}}
   },
   "forex_trends": {
-    "carry_trade": {"name": "套息交易", "reliability": "中", "timeframes": {"1h": {"profit_target": "1-4%"}, "4h": {"profit_target": "3-10%"}, "1d": {"profit_target": "8-20%"}}},
-    "risk_on_off": {"name": "风险情绪", "reliability": "高", "timeframes": {"15m": {"profit_target": "1-3%"}, "1h": {"profit_target": "2-6%"}, "4h": {"profit_target": "5-12%"}}}
+    "carry_trade": {"name": "套息交易", "reliability": "中", "timeframes": {"1h": {"execute": true, "min_confidence": 3}, "4h": {"execute": true, "min_confidence": 4}, "1d": {"execute": true, "min_confidence": 5}}},
+    "risk_on_off": {"name": "风险情绪", "reliability": "高", "timeframes": {"15m": {"execute": true, "min_confidence": 4}, "1h": {"execute": true, "min_confidence": 5}}},
+    "usd_strength": {"name": "美元强弱", "reliability": "高", "timeframes": {"1h": {"execute": true, "min_confidence": 4}, "4h": {"execute": true, "min_confidence": 5}}}
   },
-  "market_sentiment": {
-    "fomo": {"threshold": {"fear": 25, "greed": 75}, "action": "谨慎追高,分批卖出", "risk_level": "极高"},
-    "capitulation": {"threshold": {"put_call": 1.5, "volume_spike": 3.0}, "action": "分批买入", "risk_level": "中"},
-    "greed_extreme": {"threshold": {"greed": 85}, "action": "分批卖出,减仓", "risk_level": "极高"},
-    "fear_extreme": {"threshold": {"fear": 15, "put_call": 2.0}, "action": "分批买入,加仓", "risk_level": "中"},
-    "euphoria": {"action": "开始减仓,设置止损", "risk_level": "极高"},
-    "despair": {"action": "逐步建仓", "risk_level": "低"}
+  "sentiment_trends": {
+    "fomo": {"action": "观察/卖出", "risk": "极高", "observe_only": true},
+    "capitulation": {"action": "买入", "risk": "中", "min_confidence": 4},
+    "greed_extreme": {"action": "分批卖出", "risk": "极高", "observe_only": true},
+    "fear_extreme": {"action": "分批买入", "risk": "中", "min_confidence": 4}
   },
   "patterns": {
-    "bull_flag": {"direction": "上涨", "reliability": "高", "profit_target": "15-30%", "stop_loss": "旗杆底部-2%"},
-    "bear_flag": {"direction": "下跌", "reliability": "高", "profit_target": "15-30%", "stop_loss": "旗杆顶部+2%"},
-    "head_shoulders": {"direction": "反转", "reliability": "高", "profit_target": "20-40%", "stop_loss": "颈线外-3%"},
-    "double_top_bottom": {"direction": "反转", "reliability": "中", "profit_target": "15-25%", "stop_loss": "颈线外-2%"},
-    "triangle_ascending": {"direction": "上涨", "reliability": "高", "profit_target": "10-20%"},
-    "triangle_descending": {"direction": "下跌", "reliability": "高", "profit_target": "10-20%"},
-    "wedge_rising": {"direction": "下跌", "reliability": "中", "profit_target": "12-25%"},
-    "wedge_falling": {"direction": "上涨", "reliability": "中", "profit_target": "12-25%"},
-    "channel_up": {"direction": "顺势", "reliability": "高", "profit_target": "通道高度"},
-    "channel_down": {"direction": "顺势", "reliability": "高", "profit_target": "通道高度"}
+    "bull_flag": {"direction": "上涨", "reliability": "高", "timeframes": {"5m": {"execute": true, "min_confidence": 4}, "15m": {"execute": true, "min_confidence": 5}}},
+    "bear_flag": {"direction": "下跌", "reliability": "高", "timeframes": {"5m": {"execute": true, "min_confidence": 4}, "15m": {"execute": true, "min_confidence": 5}}},
+    "head_shoulders": {"direction": "反转", "reliability": "高", "timeframes": {"1h": {"execute": true, "min_confidence": 5}, "4h": {"execute": true, "min_confidence": 6}}},
+    "double_top_bottom": {"direction": "反转", "reliability": "中", "timeframes": {"1h": {"execute": true, "min_confidence": 4}, "4h": {"execute": true, "min_confidence": 5}}},
+    "triangle": {"direction": "突破", "reliability": "高", "timeframes": {"15m": {"execute": true, "min_confidence": 4}, "1h": {"execute": true, "min_confidence": 5}}}
   },
-  "execution_matrix": {
-    "1m": {"quant_interval_ms": 200, "duration_sec": 30, "risk": "极高"},
-    "5m": {"quant_interval_ms": 300, "duration_sec": 60, "risk": "高"},
-    "15m": {"quant_interval_ms": 500, "duration_sec": 120, "risk": "中高"},
-    "30m": {"quant_interval_ms": 800, "duration_sec": 180, "risk": "中"},
-    "1h": {"quant_interval_ms": 1000, "duration_sec": 300, "risk": "中低"},
-    "4h": {"quant_interval_ms": 2000, "duration_sec": 600, "risk": "低"},
-    "1d": {"quant_interval_ms": 5000, "duration_sec": 1800, "risk": "低"}
+  "observe_matrix": {
+    "1m": {"interval_ms": 500, "action": "仅观测"},
+    "5m": {"interval_ms": 500, "action": "观测+低信心执行"},
+    "15m": {"interval_ms": 500, "action": "观测+执行"},
+    "30m": {"interval_ms": 500, "action": "观测+执行"},
+    "1h": {"interval_ms": 500, "action": "观测+高信心执行"},
+    "4h": {"interval_ms": 500, "action": "观测+高确信执行"}
+  },
+  "execution_rules": {
+    "min_confidence_to_execute": 4,
+    "observe_only_timeframes": ["1m"],
+    "max_position_by_risk": {
+      "低": 0.2,
+      "中": 0.15,
+      "高": 0.1,
+      "极高": 0.05
+    }
   }
 }
