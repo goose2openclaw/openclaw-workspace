@@ -236,6 +236,10 @@
     "parallel": {
       "version": "1.2.1",
       "installedAt": 1773350167708
+    },
+    "gpu-cli": {
+      "version": "1.1.1",
+      "installedAt": 1773350583987
     }
   }
 }
