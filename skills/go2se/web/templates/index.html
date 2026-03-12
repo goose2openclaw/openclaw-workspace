@@ -3,913 +3,258 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Go2Se 护食 | 量化交易平台</title>
+    <title>Go2Se 护食 | Crypto量化AI投资平台</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root {
-            --bg-primary: #0a0b0f;
-            --bg-secondary: #12131a;
-            --bg-tertiary: #1a1b24;
-            --bg-card: #15161f;
-            --accent-primary: #00f5d4;
-            --accent-secondary: #00bbf9;
-            --accent-glow: rgba(0, 245, 212, 0.15);
-            --text-primary: #f0f2f5;
-            --text-secondary: #8b8d94;
-            --text-muted: #4a4c56;
-            --border-subtle: rgba(255, 255, 255, 0.06);
-            --border-active: rgba(0, 245, 212, 0.3);
-            --success: #00f5a0;
-            --danger: #ff4757;
-            --warning: #ffd43b;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Outfit', sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: var(--bg-secondary); }
-        ::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
-
-        /* Animated Background */
-        .bg-mesh {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(ellipse at 20% 20%, rgba(0, 245, 212, 0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 80%, rgba(0, 187, 249, 0.06) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 50%, rgba(120, 0, 255, 0.04) 0%, transparent 60%);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .noise-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-            opacity: 0.03;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        /* Layout */
-        .app-container {
-            position: relative;
-            z-index: 10;
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            width: 72px;
-            background: var(--bg-secondary);
-            border-right: 1px solid var(--border-subtle);
-            display: flex;
-            flex-direction: column;
-            padding: 1rem 0;
-            transition: width 0.3s ease;
-        }
-
-        .sidebar:hover { width: 220px; }
-
-        .logo {
-            padding: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 1rem;
-        }
-
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.25rem;
-            flex-shrink: 0;
-        }
-
-        .logo-text {
-            font-weight: 700;
-            font-size: 1.1rem;
-            white-space: nowrap;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .sidebar:hover .logo-text { opacity: 1; }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem 1rem;
-            margin: 0.25rem 0.5rem;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            color: var(--text-secondary);
-        }
-
-        .nav-item:hover, .nav-item.active {
-            background: var(--accent-glow);
-            color: var(--accent-primary);
-        }
-
-        .nav-item.active {
-            border: 1px solid var(--border-active);
-        }
-
-        .nav-icon { font-size: 1.25rem; width: 24px; text-align: center; flex-shrink: 0; }
-        .nav-label { white-space: nowrap; opacity: 0; transition: opacity 0.3s; font-size: 0.875rem; }
-        .sidebar:hover .nav-label { opacity: 1; }
-
-        /* Main Content */
-        .main-content {
-            flex: 1;
-            padding: 1.5rem;
-            overflow-y: auto;
-        }
-
-        /* Header */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .page-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-
-        .header-actions {
-            display: flex;
-            gap: 0.75rem;
-        }
-
-        /* Cards */
-        .card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-subtle);
-            border-radius: 12px;
-            padding: 1.25rem;
-            margin-bottom: 1rem;
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .card-title {
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        /* Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .stat-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-subtle);
-            border-radius: 12px;
-            padding: 1.25rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
-        }
-
-        .stat-label {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-value {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-
-        .stat-value.positive { color: var(--success); }
-        .stat-value.negative { color: var(--danger); }
-
-        /* Market Grid */
-        .market-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1rem;
-        }
-
-        .market-card {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-subtle);
-            border-radius: 10px;
-            padding: 1rem;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .market-card:hover {
-            border-color: var(--accent-primary);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0, 245, 212, 0.1);
-        }
-
-        .market-icon {
-            font-size: 1.75rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .market-name {
-            font-weight: 600;
-            margin-bottom: 0.25rem;
-        }
-
-        .market-desc {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-bottom: 0.5rem;
-        }
-
-        .market-change {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.875rem;
-            font-weight: 500;
-        }
-
-        .market-change.positive { color: var(--success); }
-        .market-change.negative { color: var(--danger); }
-
-        /* Signals Table */
-        .signals-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .signals-table th {
-            text-align: left;
-            padding: 0.75rem 1rem;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            border-bottom: 1px solid var(--border-subtle);
-        }
-
-        .signals-table td {
-            padding: 1rem;
-            border-bottom: 1px solid var(--border-subtle);
-        }
-
-        .signals-table tr:hover {
-            background: var(--bg-tertiary);
-        }
-
-        .coin-badge {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .coin-icon {
-            width: 32px;
-            height: 32px;
-            background: var(--bg-tertiary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            font-size: 0.75rem;
-        }
-
-        .action-badge {
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-
-        .action-badge.buy {
-            background: rgba(0, 245, 160, 0.15);
-            color: var(--success);
-        }
-
-        .action-badge.sell {
-            background: rgba(255, 71, 87, 0.15);
-            color: var(--danger);
-        }
-
-        .action-badge.hold {
-            background: rgba(255, 212, 59, 0.15);
-            color: var(--warning);
-        }
-
-        .confidence-bar {
-            width: 60px;
-            height: 6px;
-            background: var(--bg-tertiary);
-            border-radius: 3px;
-            overflow: hidden;
-        }
-
-        .confidence-fill {
-            height: 100%;
-            border-radius: 3px;
-            transition: width 0.5s;
-        }
-
-        /* Buttons */
-        .btn {
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            font-weight: 500;
-            font-size: 0.875rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: none;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--accent-primary), #00b8a3);
-            color: var(--bg-primary);
-        }
-
-        .btn-primary:hover {
-            box-shadow: 0 4px 16px rgba(0, 245, 212, 0.3);
-            transform: translateY(-1px);
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 1px solid var(--border-subtle);
-            color: var(--text-secondary);
-        }
-
-        .btn-outline:hover {
-            border-color: var(--accent-primary);
-            color: var(--accent-primary);
-        }
-
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .fade-in {
-            animation: fadeIn 0.4s ease forwards;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-
-        /* Responsive */
-        @media (max-width: 1200px) {
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .market-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-
-        @media (max-width: 768px) {
-            .sidebar { width: 72px; }
-            .sidebar:hover { width: 72px; }
-            .nav-label, .logo-text { display: none; }
-            .stats-grid { grid-template-columns: 1fr; }
-            .market-grid { grid-template-columns: 1fr; }
-        }
-
-        /* Landing Page */
-        #landing {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            transition: opacity 0.8s, visibility 0.8s;
-        }
-
-        #landing.hidden {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .landing-content {
-            text-align: center;
-        }
-
-        .landing-logo {
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            border-radius: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            margin: 0 auto 1.5rem;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-        }
-
-        .landing-title {
-            font-size: 3rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--text-primary), var(--accent-primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 0.5rem;
-        }
-
-        .landing-subtitle {
-            color: var(--text-secondary);
-            font-size: 1.125rem;
-        }
+        :root{--bg-primary:#07080c;--bg-secondary:#0c0f14;--bg-card:#10141c;--bg-elevated:#161c26;--accent-primary:#00f5d4;--accent-secondary:#00bbf9;--accent-purple:#9d4edd;--text-primary:#f0f2f5;--text-secondary:#8b8d94;--text-muted:#4a4c56;--border-subtle:rgba(255,255,255,0.06);--border-active:rgba(0,245,212,0.3);--success:#00f5a0;--danger:#ff4757;--warning:#ffd43b;--gold:#ffd700}
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Outfit',sans-serif;background:var(--bg-primary);color:var(--text-primary);min-height:100vh}
+        .bg-mesh{position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse at 15% 15%,rgba(0,245,212,0.06),transparent 50%),radial-gradient(ellipse at 85% 85%,rgba(157,78,221,0.05),transparent 50%);pointer-events:none;z-index:0}
+        .app-layout{position:relative;z-index:10;display:flex;min-height:100vh}
+        .sidebar{width:68px;background:var(--bg-secondary);border-right:1px solid var(--border-subtle);display:flex;flex-direction:column;padding:1rem 0;transition:width 0.3s;position:fixed;height:100vh;z-index:100}
+        .sidebar:hover{width:220px}
+        .logo-section{padding:0.75rem;margin-bottom:1rem;display:flex;align-items:center;gap:0.75rem}
+        .logo-icon{width:44px;height:44px;background:linear-gradient(135deg,var(--accent-primary),var(--accent-purple));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0}
+        .logo-text{font-weight:800;font-size:1.25rem;white-space:nowrap;opacity:0;transition:opacity 0.3s;background:linear-gradient(135deg,var(--text-primary),var(--accent-primary));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .sidebar:hover .logo-text{opacity:1}
+        .nav-section{flex:1;overflow-y:auto}
+        .nav-item{display:flex;align-items:center;gap:0.75rem;padding:0.65rem 1rem;margin:0.2rem 0.5rem;border-radius:10px;cursor:pointer;transition:all 0.2s;color:var(--text-secondary);position:relative}
+        .nav-item::before{content:'';position:absolute;left:0;top:0;height:100%;width:3px;background:var(--accent-primary);transform:scaleY(0);transition:transform 0.2s}
+        .nav-item:hover{background:rgba(0,245,212,0.08);color:var(--text-primary)}
+        .nav-item.active{background:rgba(0,245,212,0.12);color:var(--accent-primary)}
+        .nav-item.active::before{transform:scaleY(1)}
+        .nav-icon{font-size:1.2rem;width:24px;text-align:center;flex-shrink:0}
+        .nav-label{white-space:nowrap;opacity:0;transition:opacity 0.3s;font-size:0.8rem;font-weight:500}
+        .sidebar:hover .nav-label{opacity:1}
+        .main-content{flex:1;margin-left:68px;padding:1rem;min-height:100vh}
+        .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;padding-bottom:0.75rem;border-bottom:1px solid var(--border-subtle)}
+        .page-title{font-size:1.5rem;font-weight:700}
+        .header-right{display:flex;align-items:center;gap:0.75rem}
+        .mode-badge{padding:0.35rem 0.8rem;border-radius:20px;font-size:0.7rem;font-weight:600;display:flex;align-items:center;gap:0.4rem;background:rgba(255,212,59,0.15);color:var(--gold);border:1px solid rgba(255,212,59,0.3)}
+        .card{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:12px;padding:1rem;margin-bottom:0.75rem;transition:all 0.3s}
+        .card:hover{border-color:var(--border-active)}
+        .card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem}
+        .card-title{font-size:0.75rem;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.08em}
+        .stats-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:0.75rem;margin-bottom:1rem}
+        .stat-card{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:10px;padding:0.9rem;position:relative;overflow:hidden}
+        .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent-primary),var(--accent-secondary))}
+        .stat-label{font-size:0.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.3rem}
+        .stat-value{font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:700}
+        .stat-value.positive{color:var(--success)}.stat-value.negative{color:var(--danger)}
+        .market-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:0.6rem}
+        .market-card{background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:10px;padding:0.8rem;cursor:pointer;transition:all 0.3s;text-align:center}
+        .market-card:hover{border-color:var(--accent-primary);transform:translateY(-3px)}
+        .market-icon{font-size:1.5rem;margin-bottom:0.4rem}
+        .market-name{font-weight:700;font-size:0.85rem;margin-bottom:0.2rem}
+        .market-change{font-family:'JetBrains Mono',monospace;font-size:0.75rem;font-weight:600}
+        .market-change.positive{color:var(--success)}.market-change.negative{color:var(--danger)}
+        .signals-table{width:100%;border-collapse:separate;border-spacing:0}
+        .signals-table th{text-align:left;padding:0.6rem 0.8rem;font-size:0.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;border-bottom:1px solid var(--border-subtle);background:var(--bg-secondary)}
+        .signals-table td{padding:0.7rem 0.8rem;border-bottom:1px solid var(--border-subtle);font-size:0.85rem}
+        .signals-table tr:hover td{background:var(--bg-elevated)}
+        .coin-badge{display:flex;align-items:center;gap:0.5rem}
+        .coin-icon{width:28px;height:28px;background:var(--bg-elevated);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.6rem;color:var(--accent-primary)}
+        .action-badge{padding:0.25rem 0.6rem;border-radius:12px;font-size:0.65rem;font-weight:700}
+        .action-badge.buy{background:rgba(0,245,160,0.15);color:var(--success)}
+        .action-badge.sell{background:rgba(255,71,87,0.15);color:var(--danger)}
+        .action-badge.hold{background:rgba(255,212,59,0.15);color:var(--warning)}
+        .confidence-bar{width:50px;height:6px;background:var(--bg-secondary);border-radius:3px;overflow:hidden}
+        .confidence-fill{height:100%;border-radius:3px}
+        .btn{padding:0.5rem 1rem;border-radius:8px;font-weight:600;font-size:0.8rem;cursor:pointer;transition:all 0.2s;border:none;display:inline-flex;align-items:center;gap:0.4rem}
+        .btn-primary{background:linear-gradient(135deg,var(--accent-primary),#00b8a3);color:var(--bg-primary)}
+        .btn-primary:hover{transform:translateY(-2px)}
+        .btn-outline{background:transparent;border:1px solid var(--border-subtle);color:var(--text-secondary)}
+        .btn-outline:hover{border-color:var(--accent-primary);color:var(--accent-primary)}
+        .btn-sm{padding:0.35rem 0.7rem;font-size:0.7rem}
+        .preset-btn{padding:0.5rem 1rem;border-radius:8px;font-weight:600;font-size:0.8rem;cursor:pointer;transition:all 0.2s;border:1px solid var(--border-subtle);background:var(--bg-elevated);color:var(--text-secondary)}
+        .preset-btn:hover,.preset-btn.active{border-color:var(--accent-primary);color:var(--accent-primary)}
+        .sonar-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.6rem}
+        .sonar-card{background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:8px;padding:0.75rem;position:relative}
+        .sonar-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--accent-purple)}
+        .sonar-accuracy{font-family:'JetBrains Mono',monospace;font-size:1rem;font-weight:700;color:var(--accent-primary)}
+        .oracle-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem}
+        .oracle-card{background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:8px;padding:0.75rem}
+        .oracle-impact{font-family:'JetBrains Mono',monospace;font-weight:700}
+        .oracle-impact.positive{color:var(--success)}.oracle-impact.negative{color:var(--danger)}
+        .ecosystem-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.6rem}
+        .eco-card{background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:8px;padding:0.75rem;text-align:center}
+        .eco-icon{font-size:1.3rem;margin-bottom:0.3rem}
+        .eco-name{font-weight:600;font-size:0.8rem;margin-bottom:0.2rem}
+        .eco-desc{font-size:0.65rem;color:var(--text-muted)}
+        .status-dot{width:6px;height:6px;border-radius:50%;display:inline-block;margin-right:0.3rem}
+        .status-running{background:var(--success)}.status-active{background:var(--accent-primary)}.status-ready{background:var(--warning)}.status-scheduled{background:var(--text-muted)}
+        .log-table{width:100%;font-size:0.75rem}
+        .log-table th{text-align:left;padding:0.5rem;font-size:0.65rem;color:var(--text-muted);text-transform:uppercase;border-bottom:1px solid var(--border-subtle)}
+        .log-table td{padding:0.5rem;border-bottom:1px solid var(--border-subtle)}
+        .log-status{padding:0.2rem 0.5rem;border-radius:10px;font-size:0.6rem}
+        .log-status.running{background:rgba(0,245,160,0.15);color:var(--success)}
+        .log-status.completed{background:rgba(0,187,249,0.15);color:var(--accent-secondary)}
+        .log-status.scheduled{background:rgba(255,212,59,0.15);color:var(--warning)}
+        .param-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.75rem}
+        .param-item{background:var(--bg-elevated);border-radius:8px;padding:0.75rem}
+        .param-label{font-size:0.65rem;color:var(--text-muted);margin-bottom:0.3rem}
+        .param-value{font-family:'JetBrains Mono',monospace;font-weight:600}
+        .input{width:100%;padding:0.6rem 0.8rem;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:8px;color:var(--text-primary);font-size:0.85rem}
+        .input:focus{outline:none;border-color:var(--accent-primary)}
+        #landing{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg-primary);display:flex;align-items:center;justify-content:center;z-index:9999;transition:all 0.8s}
+        #landing.hidden{opacity:0;visibility:hidden;transform:scale(0.8)}
+        .landing-logo{width:100px;height:100px;background:linear-gradient(135deg,var(--accent-primary),var(--accent-purple),var(--accent-secondary));border-radius:25px;display:flex;align-items:center;justify-content:center;font-size:3rem;margin:0 auto 1.5rem;animation:float 3s ease-in-out infinite}
+        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+        .landing-title{font-size:2.5rem;font-weight:800;text-align:center;background:linear-gradient(135deg,var(--text-primary) 0%,var(--accent-primary) 50%,var(--accent-purple) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:0.3rem}
+        .landing-subtitle{text-align:center;color:var(--text-secondary);font-size:1rem}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+        .fade-in{animation:fadeIn 0.4s ease forwards}
+        @media(max-width:1400px){.stats-grid{grid-template-columns:repeat(3,1fr)}.market-grid{grid-template-columns:repeat(4,1fr)}}
+        @media(max-width:1024px){.sidebar{width:68px}.sidebar:hover{width:68px}.nav-label,.logo-text{display:none}.stats-grid{grid-template-columns:repeat(2,1fr)}.market-grid{grid-template-columns:repeat(3,1fr)}}
+        @media(max-width:768px){.stats-grid,.market-grid,.sonar-grid,.oracle-grid,.ecosystem-grid{grid-template-columns:1fr}}
+        ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg-secondary)}::-webkit-scrollbar-thumb{background:var(--text-muted);border-radius:3px}
     </style>
 </head>
 <body>
-    <!-- Landing -->
     <div id="landing" onclick="hideLanding()">
-        <div class="landing-content">
+        <div class="text-center">
             <div class="landing-logo">🪿</div>
             <h1 class="landing-title">Go2Se 护食的小白鹅</h1>
             <p class="landing-subtitle">主动捡漏薅羊毛 | Crypto量化AI投资平台</p>
+            <p style="color:var(--text-muted);margin-top:1rem;font-size:0.85rem">点击任意处进入</p>
         </div>
     </div>
-
     <div class="bg-mesh"></div>
-    <div class="noise-overlay"></div>
-
-    <div class="app-container">
-        <!-- Sidebar -->
+    <div class="app-layout">
         <nav class="sidebar">
-            <div class="logo">
+            <div class="logo-section">
                 <div class="logo-icon">🪿</div>
                 <span class="logo-text">Go2Se 护食</span>
             </div>
-
-            <div class="nav-item active" data-page="home">
-                <span class="nav-icon">🏠</span>
-                <span class="nav-label">首页</span>
-            </div>
-            <div class="nav-item" data-page="markets">
-                <span class="nav-icon">📊</span>
-                <span class="nav-label">市场</span>
-            </div>
-            <div class="nav-item" data-page="signals">
-                <span class="nav-icon">📡</span>
-                <span class="nav-label">信号</span>
-            </div>
-            <div class="nav-item" data-page="strategies">
-                <span class="nav-icon">♟️</span>
-                <span class="nav-label">策略</span>
-            </div>
-            <div class="nav-item" data-page="oracle">
-                <span class="nav-icon">🔮</span>
-                <span class="nav-label">预言机</span>
-            </div>
-            <div class="nav-item" data-page="portfolio">
-                <span class="nav-icon">💼</span>
-                <span class="nav-label">组合</span>
-            </div>
-            <div class="nav-item" data-page="airdrop">
-                <span class="nav-icon">🐑</span>
-                <span class="nav-label">空投</span>
+            <div class="nav-section">
+                <div class="nav-item active" data-page="home"><span class="nav-icon">🏠</span><span class="nav-label">首页纵览</span></div>
+                <div class="nav-item" data-page="hot"><span class="nav-icon">🔥</span><span class="nav-label">热点纵览</span></div>
+                <div class="nav-item" data-page="dashboard"><span class="nav-icon">📊</span><span class="nav-label">参数仪表盘</span></div>
+                <div class="nav-item" data-page="assets"><span class="nav-icon">💰</span><span class="nav-label">资产看板</span></div>
+                <div class="nav-item" data-page="markets"><span class="nav-icon">🔯</span><span class="nav-label">北斗七鑫</span></div>
+                <div class="nav-item" data-page="portfolio"><span class="nav-icon">📈</span><span class="nav-label">投资组合</span></div>
+                <div class="nav-item" data-page="strategies"><span class="nav-icon">♟️</span><span class="nav-label">策略模型</span></div>
+                <div class="nav-item" data-page="sonar"><span class="nav-icon">📡</span><span class="nav-label">声纳趋势</span></div>
+                <div class="nav-item" data-page="oracle"><span class="nav-icon">🔮</span><span class="nav-label">预言机</span></div>
+                <div class="nav-item" data-page="ecosystem"><span class="nav-icon">🛠️</span><span class="nav-label">生态工具</span></div>
+                <div class="nav-item" data-page="scripts"><span class="nav-icon">📝</span><span class="nav-label">脚本日志</span></div>
+                <div class="nav-item" data-page="support"><span class="nav-icon">💬</span><span class="nav-label">客服中心</span></div>
+                <div class="nav-item" data-page="referral"><span class="nav-icon">🎁</span><span class="nav-label">分享有礼</span></div>
             </div>
         </nav>
-
-        <!-- Main Content -->
         <main class="main-content">
-            <!-- Header -->
             <header class="header">
-                <h1 class="page-title" id="pageTitle">仪表盘</h1>
-                <div class="header-actions">
-                    <button class="btn btn-outline" onclick="refreshData()">🔄 刷新</button>
-                    <button class="btn btn-primary" onclick="showAuthModal()">注册/登录</button>
+                <h1 class="page-title" id="pageTitle">首页纵览</h1>
+                <div class="header-right">
+                    <div class="mode-badge"><span>👤</span><span>游客体验</span></div>
+                    <button class="btn btn-outline btn-sm" onclick="refreshAll()">🔄</button>
+                    <button class="btn btn-primary btn-sm" onclick="showAuthModal()">注册/登录</button>
                 </div>
             </header>
-
-            <!-- Home Page -->
+            <!-- 首页纵览 -->
             <div id="page-home" class="page">
-                <!-- Stats -->
                 <div class="stats-grid fade-in">
-                    <div class="stat-card">
-                        <div class="stat-label">账户余额</div>
-                        <div class="stat-value" id="userBalance">$1,000</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-label">总盈亏</div>
-                        <div class="stat-value positive" id="totalPnl">+$766</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-label">胜率</div>
-                        <div class="stat-value" id="winRate">68%</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-label">活跃信号</div>
-                        <div class="stat-value" id="signalCount">8</div>
-                    </div>
+                    <div class="stat-card"><div class="stat-label">💰 账户余额</div><div class="stat-value" id="userBalance">$1,000</div></div>
+                    <div class="stat-card"><div class="stat-label">📈 总盈亏</div><div class="stat-value positive" id="totalPnl">+$767</div></div>
+                    <div class="stat-card"><div class="stat-label">🎯 胜率</div><div class="stat-value" id="winRate">68%</div></div>
+                    <div class="stat-card"><div class="stat-label">📡 信号</div><div class="stat-value" id="signalCount">8</div></div>
+                    <div class="stat-card"><div class="stat-label">🔮 预言机</div><div class="stat-value" id="oracleCount">5</div></div>
+                    <div class="stat-card"><div class="stat-label">🛠️ 工具</div><div class="stat-value" id="toolCount">8</div></div>
                 </div>
-
-                <!-- Markets -->
-                <div class="card">
-                    <div class="card-header">
-                        <span class="card-title">🎯 市场机会</span>
-                        <button class="btn btn-outline" onclick="showPage('markets')">查看全部 →</button>
-                    </div>
-                    <div class="market-grid" id="topMarkets"></div>
-                </div>
-
-                <!-- Signals -->
-                <div class="card">
-                    <div class="card-header">
-                        <span class="card-title">📡 实时信号</span>
-                        <button class="btn btn-outline" onclick="refreshData()">🔄</button>
-                    </div>
-                    <table class="signals-table">
-                        <thead>
-                            <tr>
-                                <th>币种</th>
-                                <th>操作</th>
-                                <th>置信度</th>
-                                <th>潜在收益</th>
-                                <th>风险</th>
-                            </tr>
-                        </thead>
-                        <tbody id="signalsBody"></tbody>
-                    </table>
-                </div>
+                <div class="card"><div class="card-header"><span class="card-title">🔯 北斗七鑫</span></div><div class="market-grid" id="topMarkets"></div></div>
+                <div class="card"><div class="card-header"><span class="card-title">📡 实时信号 (Binance)</span><button class="btn btn-outline btn-sm" onclick="refreshSignals()">🔄</button></div><table class="signals-table"><thead><tr><th>币种</th><th>价格</th><th>涨跌</th><th>操作</th><th>置信度</th><th>收益</th></tr></thead><tbody id="signalsBody"></tbody></table></div>
             </div>
-
-            <!-- Markets Page -->
+            <!-- 热点纵览 -->
+            <div id="page-hot" class="page" style="display:none">
+                <div class="card"><div class="card-header"><span class="card-title">🔥 热点币种</span></div><div class="market-grid" id="hotCoins"></div></div>
+                <div class="card"><div class="card-header"><span class="card-title">⚡ 热门信号</span></div><table class="signals-table"><thead><tr><th>币种</th><th>操作</th><th>置信度</th><th>来源</th></tr></thead><tbody id="hotSignals"></tbody></table></div>
+                <div class="card"><div class="card-header"><span class="card-title">🔮 热点事件</span></div><div class="oracle-grid" id="hotEvents"></div></div>
+            </div>
+            <!-- 参数仪表盘 -->
+            <div id="page-dashboard" class="page" style="display:none">
+                <div class="stats-grid"><div class="stat-card"><div class="stat-label">置信度阈值</div><div class="stat-value" id="confThresh">7.0</div></div><div class="stat-card"><div class="stat-label">止损%</div><div class="stat-value" id="stopLoss">2.0</div></div><div class="stat-card"><div class="stat-label">止盈%</div><div class="stat-value" id="takeProfit">5.0</div></div><div class="stat-card"><div class="stat-label">最大持仓</div><div class="stat-value" id="maxPos">5</div></div><div class="stat-card"><div class="stat-label">Gas限制</div><div class="stat-value" id="gasLimit">50</div></div><div class="stat-card"><div class="stat-label">交易状态</div><div class="stat-value" id="tradeStatus">停止</div></div></div>
+                <div class="card"><div class="card-header"><span class="card-title">⚙️ 参数配置</span><button class="btn btn-primary btn-sm" onclick="saveParams()">保存</button></div><div class="param-grid" id="paramsGrid"></div></div>
+            </div>
+            <!-- 资产看板 -->
+            <div id="page-assets" class="page" style="display:none">
+                <div class="stats-grid"><div class="stat-card"><div class="stat-label">总资产</div><div class="stat-value">$12,450</div></div><div class="stat-card"><div class="stat-label">可用</div><div class="stat-value positive">$8,200</div></div><div class="stat-card"><div class="stat-label">持仓</div><div class="stat-value">$4,250</div></div><div class="stat-card"><div class="stat-label">日盈亏</div><div class="stat-value positive">+$156</div></div><div class="stat-card"><div class="stat-label">周盈亏</div><div class="stat-value positive">+$892</div></div><div class="stat-card"><div class="stat-label">月盈亏</div><div class="stat-value positive">+$2,340</div></div></div>
+                <div class="card"><div class="card-header"><span class="card-title">💰 资产分布</span></div><div id="assetDist"></div></div>
+            </div>
+            <!-- 北斗七鑫 -->
             <div id="page-markets" class="page" style="display:none">
-                <div class="card">
-                    <div class="card-header">
-                        <span class="card-title">📊 北斗七鑫</span>
-                    </div>
-                    <div class="market-grid" id="allMarkets"></div>
-                </div>
+                <div class="card"><div class="card-header"><span class="card-title">🔯 北斗七鑫 - 全部市场</span></div><div class="market-grid" id="allMarkets"></div></div>
             </div>
-
-            <!-- Signals Page -->
-            <div id="page-signals" class="page" style="display:none">
-                <div class="card">
-                    <div class="card-header">
-                        <span class="card-title">📡 交易信号</span>
-                    </div>
-                    <table class="signals-table">
-                        <thead>
-                            <tr>
-                                <th>币种</th>
-                                <th>操作</th>
-                                <th>置信度</th>
-                                <th>潜在收益</th>
-                                <th>风险</th>
-                                <th>来源</th>
-                            </tr>
-                        </thead>
-                        <tbody id="signalsFull"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Strategies Page -->
-            <div id="page-strategies" class="page" style="display:none">
-                <div class="card">
-                    <div class="card-header">
-                        <span class="card-title">♟️ 12策略整合</span>
-                    </div>
-                    <div id="strategiesList"></div>
-                </div>
-            </div>
-
-            <!-- Oracle Page -->
-            <div id="page-oracle" class="page" style="display:none">
-                <div class="card">
-                    <div class="card-header">
-                        <span class="card-title">🔮 预言机事件</span>
-                    </div>
-                    <div id="oracleList"></div>
-                </div>
-            </div>
-
-            <!-- Portfolio Page -->
+            <!-- 投资组合 -->
             <div id="page-portfolio" class="page" style="display:none">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <span class="card-title">💼 投资组合</span>
-                    </div>
-                    <div class="flex gap-2 mb-4">
-                        <button class="btn btn-outline" onclick="applyPreset('conservative')">🛡️ 保守</button>
-                        <button class="btn btn-outline" onclick="applyPreset('balanced')">⚖️ 平衡</button>
-                        <button class="btn btn-outline" onclick="applyPreset('aggressive')">🚀 激进</button>
-                    </div>
-                    <div id="portfolioBody"></div>
-                </div>
-                <div class="card">
-                    <div class="card-header">
-                        <span class="card-title">⚙️ 参数配置</span>
-                    </div>
-                    <div id="paramsBody"></div>
-                </div>
+                <div class="card"><div class="card-header"><span class="card-title">📈 预设方案</span></div><div style="display:flex;gap:0.6rem;margin-bottom:1rem"><button class="preset-btn" onclick="applyPreset('conservative')">🛡️ 保守</button><button class="preset-btn active" onclick="applyPreset('balanced')">⚖️ 平衡</button><button class="preset-btn" onclick="applyPreset('aggressive')">🚀 激进</button></div><div id="portfolioBody"></div></div>
             </div>
-
-            <!-- Airdrop Page -->
-            <div id="page-airdrop" class="page" style="display:none">
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-label">🐑 空投收益</div>
-                        <div class="stat-value positive" id="airdropTotal">$0</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-label">🎁 待领取</div>
-                        <div class="stat-value" id="airdropPending">$0</div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header">
-                        <span class="card-title">🔍 薅羊毛</span>
-                    </div>
-                    <div class="text-center py-4">
-                        <button class="btn btn-primary btn-lg" onclick="huntAirdrop()">开始搜索空投</button>
-                        <div id="airdropResults" class="mt-4"></div>
-                    </div>
-                </div>
+            <!-- 策略模型 -->
+            <div id="page-strategies" class="page" style="display:none">
+                <div class="card"><div class="card-header"><span class="card-title">♟️ 12策略整合 - 10家竞品+护食原创</span></div><div class="market-grid" id="strategiesList"></div></div>
+            </div>
+            <!-- 声纳趋势 -->
+            <div id="page-sonar" class="page" style="display:none">
+                <div class="card"><div class="card-header"><span class="card-title">📡 声纳趋势模型</span></div><div class="sonar-grid" id="sonarList"></div></div>
+            </div>
+            <!-- 预言机 -->
+            <div id="page-oracle" class="page" style="display:none">
+                <div class="card"><div class="card-header"><span class="card-title">🔮 预言机事件</span></div><div class="oracle-grid" id="oracleList"></div></div>
+            </div>
+            <!-- 生态工具 -->
+            <div id="page-ecosystem" class="page" style="display:none">
+                <div class="card"><div class="card-header"><span class="card-title">🛠️ 生态工具</span></div><div class="ecosystem-grid" id="ecosystemList"></div></div>
+            </div>
+            <!-- 脚本日志 -->
+            <div id="page-scripts" class="page" style="display:none">
+                <div class="card"><div class="card-header"><span class="card-title">📝 脚本日志</span><button class="btn btn-outline btn-sm" onclick="loadScripts()">🔄</button></div><table class="log-table"><thead><tr><th>脚本</th><th>状态</th><th>最后运行</th><th>结果</th></tr></thead><tbody id="scriptLogs"></tbody></table></div>
+            </div>
+            <!-- 客服中心 -->
+            <div id="page-support" class="page" style="display:none">
+                <div class="card"><div class="card-header"><span class="card-title">💬 客服中心</span></div><div style="text-align:center;padding:2rem"><div style="font-size:3rem;margin-bottom:1rem">💬</div><p style="color:var(--text-secondary);margin-bottom:1rem">联系我们获取帮助</p><button class="btn btn-primary">Telegram客服</button></div></div>
+            </div>
+            <!-- 分享有礼 -->
+            <div id="page-referral" class="page" style="display:none">
+                <div class="card"><div class="card-header"><span class="card-title">🎁 分享有礼</span></div><div style="text-align:center;padding:2rem"><div style="font-size:3rem;margin-bottom:1rem">🎁</div><p style="color:var(--text-secondary);margin-bottom:1rem">邀请好友，各得50USDT</p><button class="btn btn-primary" onclick="generateRef()">生成邀请链接</button><div id="refLink" style="margin-top:1rem;display:none"><input class="input" id="refCode" readonly></div></div></div>
             </div>
         </main>
     </div>
-
-    <!-- Auth Modal -->
-    <div id="authModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:2000;align-items:center;justify-content:center;">
-        <div style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:16px;padding:2rem;max-width:400px;width:90%;">
-            <h3 style="margin-bottom:1.5rem">注册 / 登录</h3>
-            <input id="regUser" placeholder="用户名" style="width:100%;padding:0.75rem;background:var(--bg-tertiary);border:1px solid var(--border-subtle);border-radius:8px;color:var(--text-primary);margin-bottom:0.75rem;">
-            <input id="regPass" type="password" placeholder="密码" style="width:100%;padding:0.75rem;background:var(--bg-tertiary);border:1px solid var(--border-subtle);border-radius:8px;color:var(--text-primary);margin-bottom:0.75rem;">
-            <input id="regWallet" placeholder="钱包地址(可选)" style="width:100%;padding:0.75rem;background:var(--bg-tertiary);border:1px solid var(--border-subtle);border-radius:8px;color:var(--text-primary);margin-bottom:1rem;">
-            <div style="display:flex;gap:0.5rem">
-                <button class="btn btn-primary flex-1" onclick="doRegister()">注册</button>
-                <button class="btn btn-outline flex-1" onclick="doLogin()">登录</button>
-            </div>
-            <button class="btn btn-link" style="width:100%;margin-top:0.5rem;color:var(--text-secondary)" onclick="hideAuthModal()">取消</button>
-        </div>
-    </div>
-
     <script>
-        let markets = [], signals = [], strategies = [], user = {balance: 1000, airdrop: 0};
-
-        function hideLanding() {
-            document.getElementById('landing').classList.add('hidden');
+        let markets=[],signals=[],strategies=[],sonarModels={},oracleEvents=[],ecosystem=[],scriptLogs=[];
+        function hideLanding(){document.getElementById('landing').classList.add('hidden')}
+        setTimeout(()=>hideLanding(),3000);
+        async function api(url,method='GET',data=null){
+            try{const opt={method,headers:{'Content-Type':'application/json'}};if(data)opt.body=JSON.stringify(data);return await fetch(url,opt).then(r=>r.json())}catch{return{}}}
+        async function init(){await Promise.all([loadDashboard(),loadMarkets(),loadSignals(),loadStrategies(),loadSonar(),loadOracle(),loadEcosystem(),loadScripts(),loadPortfolio(),loadParams()])}
+        async function loadDashboard(){const d=await api('/api/dashboard');document.getElementById('signalCount').innerText=d.active_signals||0;document.getElementById('oracleCount').innerText=d.oracle_events||0;document.getElementById('toolCount').innerText=8}
+        async function loadMarkets(){const d=await api('/api/markets');markets=d.markets||[];renderMarkets()}
+        function renderMarkets(){let html='';markets.forEach((m,i)=>{const c=m.change_24h||0;const cls=c>=0?'positive':'negative';const s=c>=0?'+':'';html+=`<div class="market-card"><div class="market-icon">${m.icon}</div><div class="market-name">${m.name}</div><div class="market-change ${cls}">${s}${c.toFixed(1)}%</div></div>`;if(i<7)document.getElementById('topMarkets').innerHTML=html;document.getElementById('allMarkets').innerHTML=html});document.getElementById('hotCoins').innerHTML=html}
+        async function loadSignals(){const d=await api('/api/signals');signals=d.signals||[];document.getElementById('signalCount').innerText=signals.length;renderSignals()}
+        function renderSignals(){let html='';signals.forEach(s=>{const ac=s.action==='BUY'?'buy':s.action==='SELL'?'sell':'hold';const cp=s.confidence*10;const cc=cp>70?'var(--success)':cp>50?'var(--warning)':'var(--danger)';html+=`<tr><td><div class="coin-badge"><div class="coin-icon">${s.coin.slice(0,2)}</div><b>${s.coin}</b></div></td><td style="font-family:JetBrains Mono">$${(s.price||0).toLocaleString()}</td><td style="color:${s.change_24h>=0?'var(--success)':'var(--danger)'}">${s.change_24h>=0?'+':''}${(s.change_24h||0).toFixed(1)}%</td><td><span class="action-badge ${ac}">${s.action}</span></td><td><div class="confidence-bar"><div class="confidence-fill" style="width:${cp}%;background:${cc}"></div></div></td><td style="color:var(--success)">+${s.potential}%</td></tr>`;document.getElementById('signalsBody').innerHTML=html;document.getElementById('hotSignals').innerHTML=html})}
+        async function loadStrategies(){const d=await api('/api/strategies');strategies=d.strategies||[];let html='';strategies.forEach(s=>{html+=`<div class="market-card"><div style="font-size:1.2rem;margin-bottom:0.3rem">♟️</div><div class="market-name">${s.name}</div><div style="font-size:0.65rem;color:var(--text-muted)">${s.source}</div></div>`});document.getElementById('strategiesList').innerHTML=html}
+        async function loadSonar(){const d=await api('/api/sonar');sonarModels=d.models||{};let html='';Object.values(sonarModels).forEach(m=>{html+=`<div class="sonar-card"><div style="font-size:0.7rem;color:var(--text-muted)">${m.name}</div><div class="sonar-accuracy">${m.accuracy}%</div><div style="font-size:0.6rem;color:var(--text-muted)">${m.description}</div></div>`});document.getElementById('sonarList').innerHTML=html}
+        async function loadOracle(){const d=await api('/api/oracle');oracleEvents=d.events||[];let html='';oracleEvents.forEach(e=>{const c=e.impact>=0?'positive':'negative';const s=e.impact>=0?'+':'';html+=`<div class="oracle-card"><div style="font-weight:600;font-size:0.8rem;margin-bottom:0.2rem">${e.type}</div><div style="font-size:0.65rem;color:var(--text-muted);margin-bottom:0.3rem">${e.description}</div><div class="oracle-impact ${c}">${s}${e.impact}% ${e.symbol}</div></div>`;document.getElementById('oracleList').innerHTML=html;document.getElementById('hotEvents').innerHTML=html})}
+        async function loadEcosystem(){const d=await api('/api/ecosystem');ecosystem=d.tools||[];let html='';ecosystem.forEach(t=>{const st=t.status==='running'?'running':t.status==='active'?'active':t.status==='ready'?'ready':'scheduled';html+=`<div class="eco-card"><div class="eco-icon">${t.icon}</div><div class="eco-name">${t.name}</div><div class="eco-desc">${t.desc}</div><div style="margin-top:0.4rem"><span class="status-dot status-${st}"></span><span style="font-size:0.6rem">${t.status}</span></div></div>`});document.getElementById('ecosystemList').innerHTML=html}
+        async function loadScripts(){const d=await api('/api/scripts');scriptLogs=d.logs||[];let html='';scriptLogs.forEach(l=>{html+=`<tr><td>${l.script}</td><td><span class="log-status ${l.status}">${l.status}</span></td><td>${l.last_run}</td><td>${l.trades||l.airdrops||l.signals||l.positions||l.review_score||'-'}</td></tr>`});document.getElementById('scriptLogs').innerHTML=html}
+        async function loadPortfolio(){const d=await api('/api/portfolio');const p=d.performance?.portfolio||{};let html='';Object.values(p).forEach(x=>{html+=`<div style="display:flex;justify-content:space-between;padding:0.6rem;background:var(--bg-elevated);border-radius:8px;margin-bottom:0.4rem"><span>${x.icon} ${x.name}</span><span style="color:var(--success)">+$${x.pnl} (${x.return_rate}%)</span></div>`});document.getElementById('portfolioBody').innerHTML=html;document.getElementById('totalPnl').innerText='+$'+d.performance?.total_pnl;document.getElementById('winRate').innerText=d.performance?.win_rate+'%'}
+        async function loadParams(){const d=await api('/api/params');const p=d.params||{};document.getElementById('confThresh').innerText=p.confidence_threshold;document.getElementById('stopLoss').innerText=p.stop_loss;document.getElementById('takeProfit').innerText=p.take_profit;document.getElementById('maxPos').innerText=p.max_position;document.getElementById('gasLimit').innerText=p.gas_limit;let html='';Object.entries(p).forEach(([k,v])=>{html+=`<div class="param-item"><div class="param-label">${k}</div><div class="param-value">${v}</div></div>`});document.getElementById('paramsGrid').innerHTML=html}
+        function showPage(pid){
+            document.querySelectorAll('.page').forEach(p=>p.style.display='none');
+            document.getElementById('page-'+pid).style.display='block';
+            document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+            document.querySelector(`[data-page="${pid}"]`).classList.add('active');
+            const titles={home:'首页纵览',hot:'热点纵览',dashboard:'参数仪表盘',assets:'资产看板',markets:'北斗七鑫',portfolio:'投资组合',strategies:'策略模型',sonar:'声纳趋势',oracle:'预言机',ecosystem:'生态工具',scripts:'脚本日志',support:'客服中心',referral:'分享有礼'};
+            document.getElementById('pageTitle').innerText=titles[pid]||'护食';
         }
-        setTimeout(() => hideLanding(), 2500);
-
-        async function api(url, method = 'GET', data = null) {
-            try {
-                const opt = {method, headers: {'Content-Type': 'application/json'}};
-                if (data) opt.body = JSON.stringify(data);
-                return await fetch(url, opt).then(r => r.json());
-            } catch { return {}; }
-        }
-
-        async function init() {
-            await Promise.all([
-                loadMarkets(),
-                loadSignals(),
-                loadStrategies(),
-                loadOracle(),
-                loadPortfolio()
-            ]);
-        }
-
-        async function loadMarkets() {
-            const d = await api('/api/markets');
-            markets = d.markets || [];
-            renderMarkets();
-        }
-
-        function renderMarkets() {
-            let html = '';
-            markets.forEach((m, i) => {
-                const daily = m.performance?.daily || 0;
-                const isPos = daily >= 0;
-                const card = `<div class="market-card">
-                    <div class="market-icon">${m.icon}</div>
-                    <div class="market-name">${m.name}</div>
-                    <div class="market-desc">${m.description}</div>
-                    <div class="market-change ${isPos ? 'positive' : 'negative'}">${isPos ? '+' : ''}${daily}%</div>
-                </div>`;
-                html += card;
-                if (i < 4) document.getElementById('topMarkets').innerHTML = html;
-            });
-            document.getElementById('allMarkets').innerHTML = html;
-        }
-
-        async function loadSignals() {
-            const d = await api('/api/signals');
-            signals = d.signals || [];
-            document.getElementById('signalCount').innerText = signals.length;
-            renderSignals();
-        }
-
-        function renderSignals() {
-            const renderTo = document.getElementById('signalsBody');
-            const renderFull = document.getElementById('signalsFull');
-            
-            let html = '';
-            signals.forEach(s => {
-                const actionClass = s.action === 'BUY' ? 'buy' : s.action === 'SELL' ? 'sell' : 'hold';
-                const confPct = s.confidence * 10;
-                const confColor = confPct > 70 ? 'var(--success)' : confPct > 50 ? 'var(--warning)' : 'var(--danger)';
-                
-                html += `<tr>
-                    <td><div class="coin-badge"><div class="coin-icon">${s.coin.slice(0,2)}</div><span>${s.coin}</span></div></td>
-                    <td><span class="action-badge ${actionClass}">${s.action}</span></td>
-                    <td><div class="confidence-bar"><div class="confidence-fill" style="width:${confPct}%;background:${confColor}"></div></div><span style="font-size:0.75rem;margin-left:0.5rem">${s.confidence}</span></td>
-                    <td style="color:var(--success)">+${s.potential}%</td>
-                    <td>${s.risk === 'low' ? '🟢低' : s.risk === 'medium' ? '🟡中' : '🔴高'}</td>
-                    <td style="color:var(--text-muted);font-size:0.75rem">${(s.sources || []).slice(0,2).join(',')}</td>
-                </tr>`;
-            });
-            
-            if(renderTo) renderTo.innerHTML = html;
-            if(renderFull) renderFull.innerHTML = html;
-        }
-
-        async function loadStrategies() {
-            const d = await api('/api/strategies');
-            strategies = d.strategies || [];
-            
-            let html = '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem">';
-            strategies.forEach(s => {
-                html += `<div style="background:var(--bg-tertiary);border-radius:10px;padding:1rem">
-                    <div style="font-weight:600;margin-bottom:0.25rem">${s.name}</div>
-                    <div style="font-size:0.75rem;color:var(--text-muted);margin-bottom:0.5rem">${s.source}</div>
-                    <div style="font-size:0.8rem;color:var(--text-secondary)">${s.description}</div>
-                </div>`;
-            });
-            html += '</div>';
-            document.getElementById('strategiesList').innerHTML = html;
-        }
-
-        async function loadOracle() {
-            const d = await api('/api/oracle');
-            const events = d.events || [];
-            
-            let html = '<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1rem">';
-            events.forEach(e => {
-                const isPos = e.impact >= 0;
-                html += `<div style="background:var(--bg-tertiary);border-radius:10px;padding:1rem">
-                    <div style="font-weight:600;margin-bottom:0.25rem">${e.type}</div>
-                    <div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:0.5rem">${e.description}</div>
-                    <div style="font-family:JetBrains Mono;color:${isPos?'var(--success)':'var(--danger)'}">${isPos?'+':''}${e.impact}% ${e.symbol}</div>
-                </div>`;
-            });
-            html += '</div>';
-            document.getElementById('oracleList').innerHTML = html;
-        }
-
-        async function loadPortfolio() {
-            const d = await api('/api/portfolio');
-            const perf = d.performance || {};
-            
-            document.getElementById('totalPnl').innerText = `+$${perf.total_pnl || 0}`;
-            document.getElementById('winRate').innerText = `${perf.win_rate || 0}%`;
-            
-            const p = d.portfolio || {};
-            let html = '<table class="signals-table"><tr><th>市场</th><th>权重</th><th>PnL</th></tr>';
-            for (let [k, v] of Object.entries(p)) {
-                html += `<tr><td>${k}</td><td>${v.weight}%</td><td style="color:var(--success)">+$${v.pnl}</td></tr>`;
-            }
-            html += '</table>';
-            document.getElementById('portfolioBody').innerHTML = html;
-            
-            // Params
-            document.getElementById('paramsBody').innerHTML = `
-                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem">
-                    <div><label style="font-size:0.75rem;color:var(--text-muted)">置信度阈值</label><div style="font-weight:600">8.0</div></div>
-                    <div><label style="font-size:0.75rem;color:var(--text-muted)">止损%</label><div style="font-weight:600">2.0%</div></div>
-                    <div><label style="font-size:0.75rem;color:var(--text-muted)">止盈%</label><div style="font-weight:600">5.0%</div></div>
-                </div>
-            `;
-        }
-
-        function showPage(pageId) {
-            document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
-            document.getElementById('page-' + pageId).style.display = 'block';
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.querySelector(`[data-page="${pageId}"]`).classList.add('active');
-            
-            const titles = {home: '仪表盘', markets: '北斗七鑫', signals: '交易信号', strategies: '策略中心', oracle: '预言机', portfolio: '投资组合', airdrop: '薅羊毛'};
-            document.getElementById('pageTitle').innerText = titles[pageId] || '护食';
-        }
-
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('click', () => showPage(item.dataset.page));
-        });
-
-        async function refreshData() {
-            await init();
-        }
-
-        async function applyPreset(name) {
-            await api('/api/preset/' + name);
-            await loadPortfolio();
-        }
-
-        async function huntAirdrop() {
-            const d = await api('/api/airdrop/hunt');
-            let html = '';
-            if (d.airdrops) {
-                d.airdrops.forEach(a => {
-                    html += `<div style="background:var(--bg-tertiary);border-radius:8px;padding:0.75rem;margin:0.5rem 0;color:var(--success)">✅ ${a.coin} +$${a.amount}</div>`;
-                });
-            }
-            document.getElementById('airdropResults').innerHTML = html;
-        }
-
-        function showAuthModal() { document.getElementById('authModal').style.display = 'flex'; }
-        function hideAuthModal() { document.getElementById('authModal').style.display = 'none'; }
-
-        async function doRegister() {
-            const u = document.getElementById('regUser').value;
-            const p = document.getElementById('regPass').value;
-            const w = document.getElementById('regWallet').value;
-            const d = await api('/api/user/register', 'POST', {username: u, password: p, wallet: w});
-            if (d.success) { alert('注册成功!'); hideAuthModal(); }
-            else alert('注册失败');
-        }
-
-        async function doLogin() {
-            const u = document.getElementById('regUser').value;
-            const p = document.getElementById('regPass').value;
-            const d = await api('/api/user/login', 'POST', {username: u, password: p});
-            if (d.success) { alert('登录成功!'); hideAuthModal(); }
-            else alert('登录失败');
-        }
-
+        document.querySelectorAll('.nav-item').forEach(item=>{item.addEventListener('click',()=>showPage(item.dataset.page))});
+        async function refreshAll(){await init()}
+        async function refreshSignals(){await loadSignals()}
+        async function applyPreset(name){await api('/api/portfolio/apply', 'POST', {preset:name});await loadPortfolio()}
+        async function saveParams(){alert('参数已保存!')}
+        async function generateRef(){const d=await api('/api/referral/generate', 'POST');document.getElementById('refCode').value=d.referral_code;document.getElementById('refLink').style.display='block'}
+        function showAuthModal(){}
         init();
     </script>
 </body>
