@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Go2Se 护食 | 量化交易平台</title>
+    <title>护食 Pro | 量化交易平台</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -496,8 +496,8 @@
     <div id="landing" onclick="hideLanding()">
         <div class="landing-content">
             <div class="landing-logo">🪿</div>
-            <h1 class="landing-title">Go2Se 护食的小白鹅</h1>
-            <p class="landing-subtitle">主动捡漏薅羊毛 | Crypto量化AI投资平台</p>
+            <h1 class="landing-title">护食 Pro</h1>
+            <p class="landing-subtitle">专业量化交易平台</p>
         </div>
     </div>
 
@@ -509,7 +509,7 @@
         <nav class="sidebar">
             <div class="logo">
                 <div class="logo-icon">🪿</div>
-                <span class="logo-text">Go2Se 护食</span>
+                <span class="logo-text">护食</span>
             </div>
 
             <div class="nav-item active" data-page="home">
