@@ -192,6 +192,42 @@
     "using-superpowers": {
       "version": "0.1.0",
       "installedAt": 1773279661588
+    },
+    "skill-creator": {
+      "version": "0.1.0",
+      "installedAt": 1773349164962
+    },
+    "agent-team-orchestration": {
+      "version": "1.0.0",
+      "installedAt": 1773349260653
+    },
+    "frontend-design-pro": {
+      "version": "1.0.0",
+      "installedAt": 1773349267297
+    },
+    "frontend-performance": {
+      "version": "1.0.0",
+      "installedAt": 1773349272398
+    },
+    "brainstorming": {
+      "version": "0.1.0",
+      "installedAt": 1773349343537
+    },
+    "marketing-mode": {
+      "version": "1.0.0",
+      "installedAt": 1773349380844
+    },
+    "seo": {
+      "version": "1.0.3",
+      "installedAt": 1773349573068
+    },
+    "supabase": {
+      "version": "1.0.0",
+      "installedAt": 1773349624521
+    },
+    "tailwind-design-system": {
+      "version": "1.0.0",
+      "installedAt": 1773349691375
     }
   }
 }
