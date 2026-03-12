@@ -1,49 +1,107 @@
 #!/usr/bin/env python3
 """
-GO2SE Market Maker Alliance
-做市商联盟协作平台
+GO2SE Market Maker Alliance V2 - Enhanced
+做市商联盟V2 - 增强版
+包含：竞品分析、跟单分钱、协作池
 """
 
 import random
-from datetime import datetime
+import json
+from datetime import datetime, timedelta
 from typing import Dict, List
 
-class MarketMakerAlliance:
-    """做市商联盟"""
+class MarketMakerAllianceV2:
+    """做市商联盟 V2"""
     
     def __init__(self):
         self.enabled = False  # 外挂开关
         
-        # 联盟成员
-        self.members = {
-            "tier1": {
-                "name": "Tier 1 做市商",
-                "min_capital": 1000000,
-                "fee": 0.02,
-                "members": 5,
-                "volume": 50000000
+        # 竞品做市商
+        self.competitors = {
+            "hummingbot": {
+                "name": "Hummingbot",
+                "type": "Open Source",
+                "users": 50000,
+                "strategies": ["arbitrage", "cross_exchange", "liquidty"],
+                "fee": 0,
+                "api": True
             },
-            "tier2": {
-                "name": "Tier 2 做市商",
-                "min_capital": 100000,
-                "fee": 0.03,
-                "members": 15,
-                "volume": 10000000
+            "coinrule": {
+                "name": "Coinrule",
+                "type": "SaaS",
+                "users": 150000,
+                "strategies": ["grid", "trailing", "trigger"],
+                "fee": 29.99,
+                "api": True
             },
-            "tier3": {
-                "name": "Tier 3 做市商",
-                "min_capital": 10000,
+            "3commas": {
+                "name": "3Commas",
+                "type": "SaaS",
+                "users": 200000,
+                "strategies": ["grid", "dca", "bot_trading"],
+                "fee": 37,
+                "api": True
+            },
+            "cryptohopper": {
+                "name": "CryptoHopper",
+                "type": "SaaS",
+                "users": 180000,
+                "strategies": ["market_making", "arbitrage", "signals"],
+                "fee": 24.99,
+                "api": True
+            },
+            "pionex": {
+                "name": "Pionex",
+                "type": "Exchange",
+                "users": 5000000,
+                "strategies": ["grid", "martingale", "rebalancing"],
                 "fee": 0.05,
-                "members": 50,
-                "volume": 2000000
+                "api": False
+            },
+            "bitsgap": {
+                "name": "Bitsgap",
+                "type": "SaaS",
+                "users": 100000,
+                "strategies": ["grid", "futures", "signals"],
+                "fee": 19,
+                "api": True
             }
         }
         
         # 协作池
         self.pools = {
-            "spot": {"name": "现货池", "liquidity": 25000000, "earners": 120},
-            "futures": {"name": "合约池", "liquidity": 35000000, "earners": 85},
-            "arbitrage": {"name": "套利池", "liquidity": 15000000, "earners": 45}
+            "spot_making": {
+                "name": "现货做市",
+                "min_capital": 10000,
+                "fee": 0.03,
+                "liquidity": 15000000,
+                "members": 85,
+                "performance": 12.5
+            },
+            "futures_making": {
+                "name": "合约做市",
+                "min_capital": 50000,
+                "fee": 0.02,
+                "liquidity": 25000000,
+                "members": 45,
+                "performance": 28.5
+            },
+            "arbitrage": {
+                "name": "跨所套利",
+                "min_capital": 100000,
+                "fee": 0.015,
+                "liquidity": 10000000,
+                "members": 25,
+                "performance": 35.8
+            },
+            "copy_trading": {
+                "name": "跟单分成",
+                "min_capital": 1000,
+                "fee": 0.1,  # 10% 分成
+                "liquidity": 5000000,
+                "members": 250,
+                "performance": 22.3
+            }
         }
         
         # 安全配置
@@ -51,108 +109,198 @@ class MarketMakerAlliance:
             "multi_sig": True,
             "time_lock": True,
             "encryption": "AES-256",
-            "audit_interval": "weekly"
+            "audit": "weekly",
+            "insurance_fund": 500000  # 保险基金
         }
     
-    def toggle_ally(self, enable: bool) -> dict:
-        """切换外挂开关"""
-        self.enabled = enable
-        return {
-            "status": "enabled" if enable else "disabled",
-            "timestamp": datetime.now().isoformat(),
-            "message": "做市商联盟已开启" if enable else "做市商联盟已关闭"
-        }
-    
-    def get_security_status(self) -> dict:
-        """安全状态"""
-        return {
-            "enabled": self.enabled,
-            "multi_sig_wallet": self.security["multi_sig"],
-            "time_lock": self.security["time_lock"],
-            "encryption": self.security["encryption"],
-            "audit_frequency": self.security["audit_interval"],
-            "fundssecured": "🔒 资金由多签钱包托管",
-            "data_encrypted": "🔐 数据AES-256加密"
-        }
-    
-    def calculate_profits(self, pool: str, capital: float, days: int = 30) -> dict:
-        """计算收益"""
-        pool_data = self.pools.get(pool, self.pools["spot"])
-        
-        # 做市收益
-        daily_rate = random.uniform(0.02, 0.08)  # 2-8%
-        base_earnings = capital * daily_rate * days
-        
-        # 减去费用
-        member_tier = self._get_tier(capital)
-        fee = base_earnings * member_tier["fee"]
-        net_earnings = base_earnings - fee
-        
-        return {
-            "pool": pool_data["name"],
-            "capital": capital,
-            "days": days,
-            "gross_earnings": round(base_earnings, 2),
-            "fee": round(fee, 2),
-            "net_earnings": round(net_earnings, 2),
-            "roi_daily": round(daily_rate * 100, 2),
-            "roi_monthly": round(net_earnings / capital * 100, 2)
-        }
-    
-    def _get_tier(self, capital: float) -> dict:
-        """获取层级"""
-        if capital >= 1000000:
-            return self.members["tier1"]
-        elif capital >= 100000:
-            return self.members["tier2"]
-        else:
-            return self.members["tier3"]
-    
-    def run_dashboard(self):
-        """运行仪表板"""
+    def analyze_competitors(self) -> Dict:
+        """分析竞品"""
         print("\n" + "="*70)
-        print("🤝 GO2SE 做市商联盟平台".center(70))
+        print("🔍 竞品做市商分析")
         print("="*70)
         
-        # 外挂开关
-        status = "🔴 关闭" if not self.enabled else "🟢 开启"
-        print(f"\n⚡ 外挂状态: {status}")
+        results = []
         
-        # 安全状态
-        security = self.get_security_status()
+        for comp_id, comp in self.competitors.items():
+            # 计算竞争力分数
+            score = 0
+            
+            # 用户规模
+            if comp["users"] > 1000000:
+                score += 30
+            elif comp["users"] > 100000:
+                score += 20
+            elif comp["users"] > 10000:
+                score += 10
+            
+            # 免费/低价
+            if comp["fee"] == 0:
+                score += 25
+            elif comp["fee"] < 20:
+                score += 15
+            elif comp["fee"] < 50:
+                score += 10
+            
+            # API支持
+            if comp["api"]:
+                score += 20
+            
+            # 策略数量
+            score += len(comp["strategies"]) * 5
+            
+            # 找出可复制的策略
+            copyable = []
+            for strat in comp["strategies"]:
+                if strat in ["arbitrage", "grid", "liquidty", "cross_exchange"]:
+                    copyable.append(strat)
+            
+            results.append({
+                "id": comp_id,
+                "name": comp["name"],
+                "type": comp["type"],
+                "users": comp["users"],
+                "fee": comp["fee"],
+                "score": score,
+                "strategies": comp["strategies"],
+                "copyable": copyable
+            })
+        
+        # 排序
+        results.sort(key=lambda x: x["score"], reverse=True)
+        
+        # 打印
+        print("\n📊 竞品排名:")
+        for i, r in enumerate(results, 1):
+            bar = "█" * int(r["score"]/10) + "░" * (10 - int(r["score"]/10))
+            print(f"\n{i}. {r['name']} ({r['type']})")
+            print(f"   用户: {r['users']:,} | 费用: ${r['fee']}")
+            print(f"   竞争力: [{bar}] {r['score']}")
+            print(f"   策略: {', '.join(r['strategies'])}")
+            if r["copyable"]:
+                print(f"   ✅ 可复制: {', '.join(r['copyable'])}")
+        
+        # 建议
+        print("\n\n💡 建议:")
+        top = results[0]
+        print(f"   • 可借鉴 {top['name']} 的 {', '.join(top['copyable'][:2])} 策略")
+        print(f"   • 考虑免费策略吸引用户 (如 {results[-1]['name']})")
+        print(f"   • 强化API对接能力")
+        
+        return {"analyzed": len(results), "competitors": results}
+    
+    def find_copy_opportunities(self) -> List[Dict]:
+        """找跟单机会"""
+        print("\n" + "="*70)
+        print("💰 跟单分成机会")
+        print("="*70)
+        
+        opportunities = []
+        
+        # 模拟顶级交易员
+        traders = [
+            {"name": " WhaleTrader", "win_rate": 72, "roi": 45, "followers": 2500, "fee": 15},
+            {"name": " AlphaMiner", "win_rate": 68, "roi": 38, "followers": 1800, "fee": 12},
+            {"name": " GridMaster", "win_rate": 65, "roi": 28, "followers": 3500, "fee": 10},
+            {"name": " ArbitragePro", "win_rate": 78, "roi": 55, "followers": 1200, "fee": 20},
+            {"name": " SignalKing", "win_rate": 62, "roi": 22, "followers": 5000, "fee": 8},
+        ]
+        
+        for t in traders:
+            # 计算跟单收益
+            investment = 1000
+            profit = investment * t["roi"] / 100
+            platform_fee = profit * 0.1  # 10%平台
+            trader_fee = profit * t["fee"] / 100
+            net_profit = profit - platform_fee - trader_fee
+            
+            opportunities.append({
+                "trader": t["name"],
+                "win_rate": t["win_rate"],
+                "roi": t["roi"],
+                "followers": t["followers"],
+                "fee": t["fee"],
+                "potential_profit": round(net_profit, 2),
+                "recommendation": "🟢 强烈推荐" if t["roi"] > 30 else ("🟡 可尝试" if t["roi"] > 20 else "⏸️ 观望")
+            })
+        
+        opportunities.sort(key=lambda x: x["roi"], reverse=True)
+        
+        print("\n🎯 最佳跟单机会:")
+        for i, opp in enumerate(opportunities, 1):
+            bar = "█" * int(opp["roi"]/5) + "░" * (20 - int(opp["roi"]/5))
+            print(f"\n{i}. {opp['trader']}")
+            print(f"   胜率: {opp['win_rate']}% | 收益: {opp['roi']}% | 跟随者: {opp['followers']}")
+            print(f"   分成: {opp['fee']}% | 预计收益: ${opp['potential_profit']}")
+            print(f"   {opp['recommendation']}")
+        
+        return opportunities
+    
+    def calculate_pool_returns(self) -> Dict:
+        """计算池收益"""
+        results = []
+        
+        for pool_id, pool in self.pools.items():
+            # 模拟收益
+            capital = 10000
+            days = 30
+            daily = pool["performance"] / 365
+            
+            gross = capital * daily * days
+            fee = gross * pool["fee"]
+            net = gross - fee
+            
+            results.append({
+                "name": pool["name"],
+                "liquidity": pool["liquidity"],
+                "members": pool["members"],
+                "performance": pool["performance"],
+                "fee": pool["fee"],
+                "monthly_return": round(net, 2),
+                "annual_roi": pool["performance"]
+            })
+        
+        return {"pools": results}
+    
+    def toggle(self, enable: bool) -> Dict:
+        """开关"""
+        self.enabled = enable
+        return {"enabled": enable, "timestamp": datetime.now().isoformat()}
+    
+    def run(self):
+        """运行"""
+        print("\n" + "="*70)
+        print("🤝 GO2SE 做市商联盟 V2".center(70))
+        print("🪿 竞品分析 + 跟单分成".center(70))
+        print("="*70)
+        
+        # 状态
+        status = "🟢 开启" if self.enabled else "🔴 关闭"
+        print(f"\n⚡ 联盟状态: {status}")
+        
+        # 安全
         print(f"\n🔐 安全保障:")
-        print(f"   • 多签钱包: {'✅' if security['multi_sig_wallet'] else '❌'} {security['fundssecured']}")
-        print(f"   • 时间锁: {'✅' if security['time_lock'] else '❌'}")
-        print(f"   • 加密: {security['encryption']}")
-        print(f"   • 审计: {security['audit_frequency']}")
+        print(f"   • 多签钱包: {'✅' if self.security['multi_sig'] else '❌'}")
+        print(f"   • 时间锁: {'✅' if self.security['time_lock'] else '❌'}")
+        print(f"   • 加密: {self.security['encryption']}")
+        print(f"   • 保险基金: ${self.security['insurance_fund']:,}")
         
-        # 联盟成员
-        print(f"\n👥 联盟成员:")
-        for tier_id, tier in self.members.items():
-            print(f"   {tier['name']}")
-            print(f"      最低资金: ${tier['min_capital']:,} | 手续费: {tier['fee']*100}%")
-            print(f"      成员: {tier['members']}人 | 交易量: ${tier['volume']:,}")
+        # 竞品分析
+        self.analyze_competitors()
         
-        # 协作池
-        print(f"\n💰 协作池:")
-        total_liq = 0
-        for pool_id, pool in self.pools.items():
-            print(f"   🏊 {pool['name']}")
-            print(f"      流动性: ${pool['liquidity']:,} | 参与者: {pool['earners']}")
-            total_liq += pool["liquidity"]
+        # 跟单机会
+        self.find_copy_opportunities()
         
-        print(f"\n   总流动性: ${total_liq:,}")
+        # 池收益
+        pools = self.calculate_pool_returns()
         
-        # 收益示例
-        print(f"\n\n💵 收益示例 ($10,000 投资 30天):")
-        print("-"*60)
-        for pool_id, pool in self.pools.items():
-            profit = self.calculate_profits(pool_id, 10000, 30)
-            print(f"\n   {profit['pool']}:")
-            print(f"      毛收益: ${profit['gross_earnings']:.2f}")
-            print(f"      费用:   ${profit['fee']:.2f}")
-            print(f"      净收益: ${profit['net_earnings']:.2f}")
-            print(f"      月化:   {profit['roi_monthly']:.1f}%")
+        print("\n" + "="*70)
+        print("💰 协作池收益")
+        print("="*70)
+        
+        for p in pools["pools"]:
+            print(f"\n🏊 {p['name']}")
+            print(f"   流动性: ${p['liquidity']:,} | 成员: {p['members']}")
+            print(f"   年化: {p['annual_roi']}% | 月收益: ${p['monthly_return']}")
         
         print("\n" + "="*70)
 
@@ -160,22 +308,23 @@ class MarketMakerAlliance:
 def main():
     import sys
     
-    alliance = MarketMakerAlliance()
+    ally = MarketMakerAllianceV2()
     
     if len(sys.argv) > 1:
         if sys.argv[1] == "on":
-            result = alliance.toggle_ally(True)
-            print(result)
+            result = ally.toggle(True)
+            print(f"✅ 联盟已开启: {result}")
         elif sys.argv[1] == "off":
-            result = alliance.toggle_ally(False)
-            print(result)
-        elif sys.argv[1] == "status":
-            import json
-            print(json.dumps(alliance.get_security_status(), indent=2))
+            result = ally.toggle(False)
+            print(f"🔴 联盟已关闭: {result}")
+        elif sys.argv[1] == "analyze":
+            ally.analyze_competitors()
+        elif sys.argv[1] == "copy":
+            ally.find_copy_opportunities()
         else:
-            alliance.run_dashboard()
+            ally.run()
     else:
-        alliance.run_dashboard()
+        ally.run()
 
 
 if __name__ == "__main__":
