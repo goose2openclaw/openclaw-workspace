@@ -50,6 +50,25 @@ class TradeSignal:
     price: float = 0.0
     change_24h: float = 0.0
 
+class Signal:
+    def __init__(self, coin, mode, action, confidence, potential, risk, sources, timestamp="", price=0, change_24h=0):
+        self.coin = coin
+        self.mode = mode
+        self.action = action
+        self.confidence = confidence
+        self.potential = potential
+        self.risk = risk
+        self.sources = sources
+        self.timestamp = timestamp
+        self.price = price
+        self.change_24h = change_24h
+    
+    def to_dict(self):
+        return {"coin": self.coin, "mode": self.mode, "action": self.action, "confidence": self.confidence, 
+                "potential": self.potential, "risk": self.risk, "sources": self.sources, 
+                "timestamp": self.timestamp, "price": self.price, "change_24h": self.change_24h}
+
+
 class DataStore:
     """核心数据存储"""
     
@@ -205,11 +224,17 @@ class DataStore:
     
     def generate_signals(self):
         signals = []
-        prices = {}
-        try:
-            prices = self.fetch_prices()
-        except:
-            pass
+        # Use cached/mock data
+        prices = {
+            'BTC': {'price': 82000, 'change_24h': 2.5},
+            'ETH': {'price': 3200, 'change_24h': 3.2},
+            'SOL': {'price': 180, 'change_24h': 5.1},
+            'XRP': {'price': 0.65, 'change_24h': -1.2},
+            'ADA': {'price': 0.58, 'change_24h': 1.8},
+            'AVAX': {'price': 42, 'change_24h': 4.5},
+            'DOT': {'price': 8.5, 'change_24h': -0.8},
+            'MATIC': {'price': 0.95, 'change_24h': 2.1}
+        }
         for coin, data in prices.items():
             change = data.get('change_24h', 0)
             if change > 3: action, conf, risk = 'BUY', min(9.5, 5+change*0.4), 'low'
