@@ -1,0 +1,816 @@
+{
+  "updated_at": "2026-03-12T06:37:17.579591",
+  "total_models": 81,
+  "models": [
+    {
+      "id": "BTC_momentum_5837",
+      "symbol": "BTC",
+      "market": "crypto",
+      "type": "momentum",
+      "confidence": 8.6,
+      "accuracy": 70.4,
+      "last_signal": "SELL",
+      "last_updated": "2026-03-12T06:37:17.574469"
+    },
+    {
+      "id": "BTC_breakout_1052",
+      "symbol": "BTC",
+      "market": "crypto",
+      "type": "breakout",
+      "confidence": 6.5,
+      "accuracy": 59.2,
+      "last_signal": "HOLD",
+      "last_updated": "2026-03-12T06:37:17.574477"
+    },
+    {
+      "id": "BTC_reversal_5436",
+      "symbol": "BTC",
+      "market": "crypto",
+      "type": "reversal",
+      "confidence": 8.7,
+      "accuracy": 62.7,
+      "last_signal": "BUY",
+      "last_updated": "2026-03-12T06:37:17.574481"
+    },
+    {
+      "id": "ETH_momentum_5381",
+      "symbol": "ETH",
+      "market": "crypto",
+      "type": "momentum",
+      "confidence": 5.2,
+      "accuracy": 58.6,
+      "last_signal": "BUY",
+      "last_updated": "2026-03-12T06:37:17.574485"
+    },
+    {
+      "id": "ETH_breakout_8667",
+      "symbol": "ETH",
+      "market": "crypto",
+      "type": "breakout",
+      "confidence": 6.6,
+      "accuracy": 62.4,
+      "last_signal": "SELL",
+      "last_updated": "2026-03-12T06:37:17.574489"
+    },
+    {
+      "id": "ETH_reversal_7890",
+      "symbol": "ETH",
+      "market": "crypto",
+      "type": "reversal",
+      "confidence": 6.3,
+      "accuracy": 65.0,
+      "last_signal": "SELL",
+      "last_updated": "2026-03-12T06:37:17.574492"
+    },
+    {
+      "id": "SOL_momentum_2493",
+      "symbol": "SOL",
+      "market": "crypto",
+      "type": "momentum",
+      "confidence": 5.6,
+      "accuracy": 73.4,
+      "last_signal": "BUY",
+      "last_updated": "2026-03-12T06:37:17.574495"
+    },
+    {
+      "id": "SOL_breakout_6368",
+      "symbol": "SOL",
+      "market": "crypto",
+      "type": "breakout",
+      "confidence": 6.4,
+      "accuracy": 61.5,
+      "last_signal": "SELL",
+      "last_updated": "2026-03-12T06:37:17.574499"
+    },
+    {
+      "id": "SOL_reversal_9951",
+      "symbol": "SOL",
+      "market": "crypto",
+      "type": "reversal",
+      "confidence": 7.9,
+      "accuracy": 66.1,
+      "last_signal": "SELL",
+      "last_updated": "2026-03-12T06:37:17.574503"
+    },
+    {
+      "id": "XRP_momentum_7902",
+      "symbol": "XRP",
+      "market": "crypto",
+      "type": "momentum",
+      "confidence": 9.3,
+      "accuracy": 60.1,
+      "last_signal": "SELL",
+      "last_updated": "2026-03-12T06:37:17.574507"
+    },
+    {
+      "id": "XRP_breakout_6290",
+      "symbol": "XRP",
+      "market": "crypto",
+      "type": "breakout",
+      "confidence": 6.1,
+      "accuracy": 72.9,
+      "last_signal": "BUY",
+      "last_updated": "2026-03-12T06:37:17.574510"
+    },
+    {
+      "id": "XRP_reversal_1687",
+      "symbol": "XRP",
+      "market": "crypto",
+      "type": "reversal",
+      "confidence": 5.0,
+      "accuracy": 61.8,
+      "last_signal": "SELL",
+      "last_updated": "2026-03-12T06:37:17.574514"
+    },
+    {
+      "id": "ADA_momentum_5072",
+      "symbol": "ADA",
+      "market": "crypto",
+      "type": "momentum",
+      "confidence": 7.8,
+      "accuracy": 73.0,
+      "last_signal": "HOLD",
+      "last_updated": "2026-03-12T06:37:17.574517"
+    },
+    {
+      "id": "ADA_breakout_7247",
+      "symbol": "ADA",
+      "market": "crypto",
+      "type": "breakout",
+      "confidence": 5.7,
+      "accuracy": 70.7,
+      "last_signal": "SELL",
+      "last_updated": "2026-03-12T06:37:17.574521"
+    },
+    {
+      "id": "ADA_reversal_8790",
+      "symbol": "ADA",
+      "market": "crypto",
+      "type": "reversal",
+      "confidence": 5.6,
+      "accuracy": 74.7,
+      "last_signal": "BUY",
+      "last_updated": "2026-03-12T06:37:17.574525"
+    },
+    {
+      "id": "AVAX_momentum_4042",
+      "symbol": "AVAX",
+      "market": "crypto",
+      "type": "momentum",
+      "confidence": 5.2,
+      "accuracy": 70.7,
+      "last_signal": "BUY",
+      "last_updated": "2026-03-12T06:37:17.574528"
+    },
+    {
+      "id": "AVAX_breakout_2891",
+      "symbol": "AVAX",
+      "market": "crypto",
+      "type": "breakout",
+      "confidence": 8.6,
+      "accuracy": 66.2,
+      "last_signal": "BUY",
+      "last_updated": "2026-03-12T06:37:17.574531"
+    },
+    {
+      "id": "AVAX_reversal_3122",
+      "symbol": "AVAX",
+      "market": "crypto",
+      "type": "reversal",
+      "confidence": 7.5,
+      "accuracy": 63.3,
+      "last_signal": "SELL",
+      "last_updated": "2026-03-12T06:37:17.574535"
+    },
+    {
+      "id": "DOT_momentum_4079",
+      "symbol": "DOT",
+      "market": "crypto",
+      "type": "momentum",
+      "confidence": 8.0,
+      "accuracy": 68.7,
+      "last_signal": "SELL",
+      "last_updated": "2026-03-12T06:37:17.574539"
+    },
+    {
+      "id": "DOT_breakout_6926",
+      "symbol": "DOT",
+      "market": "crypto",
+      "type": "breakout",
+      "confidence": 6.7,
+      "accuracy": 58.6,
+      "last_signal": "HOLD",
+      "last_updated": "2026-03-12T06:37:17.574542"
+    },
+    {
+      "id": "DOT_reversal_4835",
+      "symbol": "DOT",
+      "market": "crypto",
+      "type": "reversal",
+      "confidence": 5.8,
+      "accuracy": 69.9,
+      "last_signal": "SELL",
+      "last_updated": "2026-03-12T06:37:17.574545"
+    },
+    {
+      "id": "UNI_momentum_6129",
+      "symbol": "UNI",
+      "market": "defi",
+      "type": "momentum",
+      "confidence": 4.7,
+      "accuracy": 60.5,
+      "last_signal": "HOLD",
+      "last_updated": "2026-03-12T06:37:17.574549"
+    },
+    {
+      "id": "UNI_breakout_4588",
+      "symbol": "UNI",
+      "market": "defi",
+      "type": "breakout",
+      "confidence": 5.5,
+      "accuracy": 60.9,
+      "last_signal": "BUY",
+      "last_updated": "2026-03-12T06:37:17.574552"
+    },
+    {
+      "id": "UNI_reversal_6775",
+      "symbol": "UNI",
+      "market": "defi",
+      "type": "reversal",
+      "confidence": 5.5,
+      "accuracy": 53.9,
+      "last_signal": "BUY",
+      "last_updated": "2026-03-12T06:37:17.574556"
+    },
+    {
+      "id": "AAVE_momentum_3076",
+      "symbol": "AAVE",
+      "market": "defi",
+      "type": "momentum",
+      "confidence": 5.8,
+      "accuracy": 69.5,
+      "last_signal": "SELL",
+      "last_updated": "2026-03-12T06:37:17.574559"
+    },
+    {
+      "id": "AAVE_breakout_8128",
+      "symbol": "AAVE",
+      "market": "defi",
+      "type": "breakout",
+      "confidence": 8.8,
+      "accuracy": 66.9,
+      "last_signal": "BUY",
+      "last_updated": "2026-03-12T06:37:17.574563"
+    },
+    {
+      "id": "AAVE_reversal_5917",
+      "symbol": "AAVE",
+      "market": "defi",
+      "type": "reversal",
+      "confidence": 5.7,
+      "accuracy": 57.7,
+      "last_signal": "BUY",
+      "last_updated": "2026-03-12T06:37:17.574566"
+    },
+    {
+      "id": "MKR_momentum_4709",
+      "symbol": "MKR",
+      "market": "defi",
+      "type": "momentum",
+      "confidence": 6.5,
+      "accuracy": 62.7,
+      "last_signal": "BUY",
+      "last_updated": "2026-03-12T06:37:17.574570"
+    },
+    {
+      "id": "MKR_breakout_6276",
+      "symbol": "MKR",
+      "market": "defi",
+      "type": "breakout",
+      "confidence": 7.1,
+      "accuracy": 61.0,
+      "last_signal": "BUY",
+      "last_updated": "2026-03-12T06:37:17.574573"
+    },
+    {
+      "id": "MKR_reversal_7550",
+      "symbol": "MKR",
+      "market": "defi",
+      "type": "reversal",
+      "confidence": 9.0,
+      "accuracy": 68.4,
+      "last_signal": "BUY",
+      "last_updated": "2026-03-12T06:37:17.574576"
+    },
+    {
+      "id": "COMP_momentum_8784",
+      "symbol": "COMP",
+      "market": "defi",
+      "type": "momentum",
+      "confidence": 5.6,
+      "accuracy": 56.0,
+      "last_signal": "HOLD",
+      "last_updated": "2026-03-12T06:37:17.574580"
+    },
+    {
+      "id": "COMP_breakout_5658",
+      "symbol": "COMP",
+      "market": "defi",
+      "type": "breakout",
+      "confidence": 7.9,
+      "accuracy": 58.1,
+      "last_signal": "HOLD",
+      "last_updated": "2026-03-12T06:37:17.574583"
+    },
+    {
+      "id": "COMP_reversal_5518",
+      "symbol": "COMP",
+      "market": "defi",
+      "type": "reversal",
+      "confidence": 8.2,
+      "accuracy": 60.0,
+      "last_signal": "SELL",
+      "last_updated": "2026-03-12T06:37:17.574586"
+    },
+    {
+      "id": "SUSHI_momentum_4501",
+      "symbol": "SUSHI",
+      "market": "defi",
+      "type": "momentum",
+      "confidence": 7.3,
+      "accuracy": 57.1,
+      "last_signal": "BUY",
+      "last_updated": "2026-03-12T06:37:17.574590"
+    },
+    {
+      "id": "SUSHI_breakout_9349",
+      "symbol": "SUSHI",
+      "market": "defi",
+      "type": "breakout",
+      "confidence": 6.3,
+      "accuracy": 56.2,
+      "last_signal": "SELL",
+      "last_updated": "2026-03-12T06:37:17.574593"
+    },
+    {
+      "id": "SUSHI_reversal_2783",
+      "symbol": "SUSHI",
+      "market": "defi",
+      "type": "reversal",
+      "confidence": 6.1,
+      "accuracy": 63.0,
+      "last_signal": "BUY",
+      "last_updated": "2026-03-12T06:37:17.574596"
+    },
+    {
+      "id": "ARB_momentum_6507",
+      "symbol": "ARB",
+      "market": "layer1",
+      "type": "momentum",
+      "confidence": 6.5,
+      "accuracy": 57.1,
+      "last_signal": "BUY",
+      "last_updated": "2026-03-12T06:37:17.574600"
+    },
+    {
+      "id": "ARB_breakout_3141",
+      "symbol": "ARB",
+      "market": "layer1",
+      "type": "breakout",
+      "confidence": 8.5,
+      "accuracy": 56.3,
+      "last_signal": "BUY",
+      "last_updated": "2026-03-12T06:37:17.574603"
+    },
+    {
+      "id": "ARB_reversal_4186",
+      "symbol": "ARB",
+      "market": "layer1",
+      "type": "reversal",
+      "confidence": 4.8,
+      "accuracy": 59.8,
+      "last_signal": "BUY",
+      "last_updated": "2026-03-12T06:37:17.574606"
+    },
+    {
+      "id": "OP_momentum_5077",
+      "symbol": "OP",
+      "market": "layer1",
+      "type": "momentum",
+      "confidence": 6.1,
+      "accuracy": 67.2,
+      "last_signal": "SELL",
+      "last_updated": "2026-03-12T06:37:17.574610"
+    },
+    {
+      "id": "OP_breakout_3424",
+      "symbol": "OP",
+      "market": "layer1",
+      "type": "breakout",
+      "confidence": 8.4,
+      "accuracy": 69.6,
+      "last_signal": "BUY",
+      "last_updated": "2026-03-12T06:37:17.574613"
+    },
+    {
+      "id": "OP_reversal_1250",
+      "symbol": "OP",
+      "market": "layer1",
+      "type": "reversal",
+      "confidence": 9.2,
+      "accuracy": 72.4,
+      "last_signal": "BUY",
+      "last_updated": "2026-03-12T06:37:17.574616"
+    },
+    {
+      "id": "MATIC_momentum_7242",
+      "symbol": "MATIC",
+      "market": "layer1",
+      "type": "momentum",
+      "confidence": 9.0,
+      "accuracy": 59.4,
+      "last_signal": "SELL",
+      "last_updated": "2026-03-12T06:37:17.574620"
+    },
+    {
+      "id": "MATIC_breakout_7502",
+      "symbol": "MATIC",
+      "market": "layer1",
+      "type": "breakout",
+      "confidence": 5.1,
+      "accuracy": 69.2,
+      "last_signal": "HOLD",
+      "last_updated": "2026-03-12T06:37:17.574623"
+    },
+    {
+      "id": "MATIC_reversal_8409",
+      "symbol": "MATIC",
+      "market": "layer1",
+      "type": "reversal",
+      "confidence": 6.0,
+      "accuracy": 62.6,
+      "last_signal": "BUY",
+      "last_updated": "2026-03-12T06:37:17.574626"
+    },
+    {
+      "id": "AVAX_momentum_5998",
+      "symbol": "AVAX",
+      "market": "layer1",
+      "type": "momentum",
+      "confidence": 6.4,
+      "accuracy": 73.6,
+      "last_signal": "HOLD",
+      "last_updated": "2026-03-12T06:37:17.574630"
+    },
+    {
+      "id": "AVAX_breakout_7014",
+      "symbol": "AVAX",
+      "market": "layer1",
+      "type": "breakout",
+      "confidence": 7.6,
+      "accuracy": 75.2,
+      "last_signal": "BUY",
+      "last_updated": "2026-03-12T06:37:17.574633"
+    },
+    {
+      "id": "AVAX_reversal_6904",
+      "symbol": "AVAX",
+      "market": "layer1",
+      "type": "reversal",
+      "confidence": 7.8,
+      "accuracy": 73.9,
+      "last_signal": "HOLD",
+      "last_updated": "2026-03-12T06:37:17.574636"
+    },
+    {
+      "id": "SOL_momentum_8018",
+      "symbol": "SOL",
+      "market": "layer1",
+      "type": "momentum",
+      "confidence": 6.6,
+      "accuracy": 55.5,
+      "last_signal": "HOLD",
+      "last_updated": "2026-03-12T06:37:17.574639"
+    },
+    {
+      "id": "SOL_breakout_2262",
+      "symbol": "SOL",
+      "market": "layer1",
+      "type": "breakout",
+      "confidence": 6.3,
+      "accuracy": 73.7,
+      "last_signal": "BUY",
+      "last_updated": "2026-03-12T06:37:17.574643"
+    },
+    {
+      "id": "SOL_reversal_7348",
+      "symbol": "SOL",
+      "market": "layer1",
+      "type": "reversal",
+      "confidence": 7.8,
+      "accuracy": 57.5,
+      "last_signal": "HOLD",
+      "last_updated": "2026-03-12T06:37:17.574646"
+    },
+    {
+      "id": "PEPE_momentum_5860",
+      "symbol": "PEPE",
+      "market": "meme",
+      "type": "momentum",
+      "confidence": 7.7,
+      "accuracy": 73.7,
+      "last_signal": "BUY",
+      "last_updated": "2026-03-12T06:37:17.574649"
+    },
+    {
+      "id": "PEPE_breakout_9410",
+      "symbol": "PEPE",
+      "market": "meme",
+      "type": "breakout",
+      "confidence": 7.7,
+      "accuracy": 57.5,
+      "last_signal": "BUY",
+      "last_updated": "2026-03-12T06:37:17.574653"
+    },
+    {
+      "id": "PEPE_reversal_3708",
+      "symbol": "PEPE",
+      "market": "meme",
+      "type": "reversal",
+      "confidence": 9.1,
+      "accuracy": 71.3,
+      "last_signal": "BUY",
+      "last_updated": "2026-03-12T06:37:17.574656"
+    },
+    {
+      "id": "WIF_momentum_2067",
+      "symbol": "WIF",
+      "market": "meme",
+      "type": "momentum",
+      "confidence": 8.3,
+      "accuracy": 56.4,
+      "last_signal": "BUY",
+      "last_updated": "2026-03-12T06:37:17.574660"
+    },
+    {
+      "id": "WIF_breakout_4911",
+      "symbol": "WIF",
+      "market": "meme",
+      "type": "breakout",
+      "confidence": 7.0,
+      "accuracy": 75.0,
+      "last_signal": "BUY",
+      "last_updated": "2026-03-12T06:37:17.574663"
+    },
+    {
+      "id": "WIF_reversal_1297",
+      "symbol": "WIF",
+      "market": "meme",
+      "type": "reversal",
+      "confidence": 7.9,
+      "accuracy": 65.9,
+      "last_signal": "HOLD",
+      "last_updated": "2026-03-12T06:37:17.574666"
+    },
+    {
+      "id": "BONK_momentum_9247",
+      "symbol": "BONK",
+      "market": "meme",
+      "type": "momentum",
+      "confidence": 6.5,
+      "accuracy": 55.9,
+      "last_signal": "SELL",
+      "last_updated": "2026-03-12T06:37:17.574670"
+    },
+    {
+      "id": "BONK_breakout_3461",
+      "symbol": "BONK",
+      "market": "meme",
+      "type": "breakout",
+      "confidence": 7.3,
+      "accuracy": 72.3,
+      "last_signal": "HOLD",
+      "last_updated": "2026-03-12T06:37:17.574673"
+    },
+    {
+      "id": "BONK_reversal_6952",
+      "symbol": "BONK",
+      "market": "meme",
+      "type": "reversal",
+      "confidence": 8.2,
+      "accuracy": 73.0,
+      "last_signal": "SELL",
+      "last_updated": "2026-03-12T06:37:17.574676"
+    },
+    {
+      "id": "MOG_momentum_7742",
+      "symbol": "MOG",
+      "market": "meme",
+      "type": "momentum",
+      "confidence": 5.3,
+      "accuracy": 66.4,
+      "last_signal": "SELL",
+      "last_updated": "2026-03-12T06:37:17.574679"
+    },
+    {
+      "id": "MOG_breakout_2699",
+      "symbol": "MOG",
+      "market": "meme",
+      "type": "breakout",
+      "confidence": 7.6,
+      "accuracy": 70.8,
+      "last_signal": "HOLD",
+      "last_updated": "2026-03-12T06:37:17.574683"
+    },
+    {
+      "id": "MOG_reversal_6115",
+      "symbol": "MOG",
+      "market": "meme",
+      "type": "reversal",
+      "confidence": 5.8,
+      "accuracy": 61.8,
+      "last_signal": "HOLD",
+      "last_updated": "2026-03-12T06:37:17.574686"
+    },
+    {
+      "id": "SHIB_momentum_9209",
+      "symbol": "SHIB",
+      "market": "meme",
+      "type": "momentum",
+      "confidence": 5.3,
+      "accuracy": 66.5,
+      "last_signal": "SELL",
+      "last_updated": "2026-03-12T06:37:17.574689"
+    },
+    {
+      "id": "SHIB_breakout_2217",
+      "symbol": "SHIB",
+      "market": "meme",
+      "type": "breakout",
+      "confidence": 7.2,
+      "accuracy": 74.4,
+      "last_signal": "HOLD",
+      "last_updated": "2026-03-12T06:37:17.574692"
+    },
+    {
+      "id": "SHIB_reversal_1767",
+      "symbol": "SHIB",
+      "market": "meme",
+      "type": "reversal",
+      "confidence": 7.2,
+      "accuracy": 57.0,
+      "last_signal": "SELL",
+      "last_updated": "2026-03-12T06:37:17.574695"
+    },
+    {
+      "id": "FET_momentum_4804",
+      "symbol": "FET",
+      "market": "ai",
+      "type": "momentum",
+      "confidence": 7.3,
+      "accuracy": 69.2,
+      "last_signal": "HOLD",
+      "last_updated": "2026-03-12T06:37:17.574699"
+    },
+    {
+      "id": "FET_breakout_4150",
+      "symbol": "FET",
+      "market": "ai",
+      "type": "breakout",
+      "confidence": 6.1,
+      "accuracy": 73.1,
+      "last_signal": "HOLD",
+      "last_updated": "2026-03-12T06:37:17.574702"
+    },
+    {
+      "id": "FET_reversal_9684",
+      "symbol": "FET",
+      "market": "ai",
+      "type": "reversal",
+      "confidence": 8.0,
+      "accuracy": 55.2,
+      "last_signal": "SELL",
+      "last_updated": "2026-03-12T06:37:17.574705"
+    },
+    {
+      "id": "AGIX_momentum_5414",
+      "symbol": "AGIX",
+      "market": "ai",
+      "type": "momentum",
+      "confidence": 8.1,
+      "accuracy": 55.2,
+      "last_signal": "SELL",
+      "last_updated": "2026-03-12T06:37:17.574708"
+    },
+    {
+      "id": "AGIX_breakout_8439",
+      "symbol": "AGIX",
+      "market": "ai",
+      "type": "breakout",
+      "confidence": 6.1,
+      "accuracy": 72.2,
+      "last_signal": "BUY",
+      "last_updated": "2026-03-12T06:37:17.574711"
+    },
+    {
+      "id": "AGIX_reversal_4039",
+      "symbol": "AGIX",
+      "market": "ai",
+      "type": "reversal",
+      "confidence": 6.2,
+      "accuracy": 65.5,
+      "last_signal": "BUY",
+      "last_updated": "2026-03-12T06:37:17.574714"
+    },
+    {
+      "id": "RNDR_momentum_6192",
+      "symbol": "RNDR",
+      "market": "ai",
+      "type": "momentum",
+      "confidence": 5.0,
+      "accuracy": 68.3,
+      "last_signal": "SELL",
+      "last_updated": "2026-03-12T06:37:17.574717"
+    },
+    {
+      "id": "RNDR_breakout_4859",
+      "symbol": "RNDR",
+      "market": "ai",
+      "type": "breakout",
+      "confidence": 8.1,
+      "accuracy": 68.6,
+      "last_signal": "SELL",
+      "last_updated": "2026-03-12T06:37:17.574720"
+    },
+    {
+      "id": "RNDR_reversal_7266",
+      "symbol": "RNDR",
+      "market": "ai",
+      "type": "reversal",
+      "confidence": 6.8,
+      "accuracy": 67.6,
+      "last_signal": "BUY",
+      "last_updated": "2026-03-12T06:37:17.574723"
+    },
+    {
+      "id": "OCEAN_momentum_6044",
+      "symbol": "OCEAN",
+      "market": "ai",
+      "type": "momentum",
+      "confidence": 7.8,
+      "accuracy": 73.3,
+      "last_signal": "SELL",
+      "last_updated": "2026-03-12T06:37:17.574727"
+    },
+    {
+      "id": "OCEAN_breakout_1882",
+      "symbol": "OCEAN",
+      "market": "ai",
+      "type": "breakout",
+      "confidence": 5.3,
+      "accuracy": 64.6,
+      "last_signal": "BUY",
+      "last_updated": "2026-03-12T06:37:17.574730"
+    },
+    {
+      "id": "OCEAN_reversal_3820",
+      "symbol": "OCEAN",
+      "market": "ai",
+      "type": "reversal",
+      "confidence": 7.4,
+      "accuracy": 60.8,
+      "last_signal": "BUY",
+      "last_updated": "2026-03-12T06:37:17.574733"
+    },
+    {
+      "id": "GRT_momentum_2324",
+      "symbol": "GRT",
+      "market": "ai",
+      "type": "momentum",
+      "confidence": 7.9,
+      "accuracy": 60.7,
+      "last_signal": "BUY",
+      "last_updated": "2026-03-12T06:37:17.574736"
+    },
+    {
+      "id": "GRT_breakout_2413",
+      "symbol": "GRT",
+      "market": "ai",
+      "type": "breakout",
+      "confidence": 7.9,
+      "accuracy": 70.8,
+      "last_signal": "SELL",
+      "last_updated": "2026-03-12T06:37:17.574739"
+    },
+    {
+      "id": "GRT_reversal_6503",
+      "symbol": "GRT",
+      "market": "ai",
+      "type": "reversal",
+      "confidence": 8.8,
+      "accuracy": 71.1,
+      "last_signal": "BUY",
+      "last_updated": "2026-03-12T06:37:17.574742"
+    }
+  ]
+}
