@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Go2Se Pro | 量化交易平台</title>
+    <title>护食 Pro | 量化交易平台</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -496,7 +496,7 @@
     <div id="landing" onclick="hideLanding()">
         <div class="landing-content">
             <div class="landing-logo">🪿</div>
-            <h1 class="landing-title">Go2Se Pro</h1>
+            <h1 class="landing-title">护食 Pro</h1>
             <p class="landing-subtitle">专业量化交易平台</p>
         </div>
     </div>
@@ -509,7 +509,7 @@
         <nav class="sidebar">
             <div class="logo">
                 <div class="logo-icon">🪿</div>
-                <span class="logo-text">Go2Se</span>
+                <span class="logo-text">护食</span>
             </div>
 
             <div class="nav-item active" data-page="home">
@@ -609,7 +609,7 @@
             <div id="page-markets" class="page" style="display:none">
                 <div class="card">
                     <div class="card-header">
-                        <span class="card-title">📊 7连环市场</span>
+                        <span class="card-title">📊 北斗七鑫</span>
                     </div>
                     <div class="market-grid" id="allMarkets"></div>
                 </div>
@@ -862,8 +862,8 @@
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.querySelector(`[data-page="${pageId}"]`).classList.add('active');
             
-            const titles = {home: '仪表盘', markets: '7连环市场', signals: '交易信号', strategies: '策略中心', oracle: '预言机', portfolio: '投资组合', airdrop: '薅羊毛'};
-            document.getElementById('pageTitle').innerText = titles[pageId] || 'Go2Se';
+            const titles = {home: '仪表盘', markets: '北斗七鑫', signals: '交易信号', strategies: '策略中心', oracle: '预言机', portfolio: '投资组合', airdrop: '薅羊毛'};
+            document.getElementById('pageTitle').innerText = titles[pageId] || '护食';
         }
 
         document.querySelectorAll('.nav-item').forEach(item => {

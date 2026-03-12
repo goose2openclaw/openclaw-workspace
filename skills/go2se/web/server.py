@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
-Go2Se Professional Trading Platform - Backend
-整合10家竞品策略 + 多API + 预言机 + 自学习
+护食 (Húshí) - 专业量化交易平台
+北斗七鑫 - 7连环市场
+整合多交易所API + 实时数据 + 智能策略
 """
 
 from flask import Flask, render_template, jsonify, request, session
@@ -10,7 +11,7 @@ from datetime import datetime, timedelta
 from typing import Dict, List, Any
 
 app = Flask(__name__)
-app.secret_key = 'Go2Se_Professional_2026'
+app.secret_key = 'Hushi_Pro_2026'
 
 # ==================== 数据模型 ====================
 
@@ -18,50 +19,14 @@ class User:
     def __init__(self, uid: str, username: str = '', user_type: str = 'guest'):
         self.id = uid
         self.username = username
-        self.type = user_type
+        self.user_type = user_type
         self.balance = 1000.0
-        self.airdrop_earned = 0.0
-        self.registered = False
-        self.wallet = None
-        self.network = 'ethereum'
-        self.api_key = None
+        self.airdrop = 0.0
+        self.registered = bool(username)
+        self.wallet = ''
         self.created_at = datetime.now().isoformat()
-        self.last_active = datetime.now().isoformat()
-
-class Market:
-    """市场模块"""
-    def __init__(self, market_id: str, name: str, symbol: str, category: str, description: str):
-        self.id = market_id
-        self.name = name
-        self.symbol = symbol
-        self.category = category  # mainstream/alt/prediction/copy/make/airdrop/crowd
-        self.description = description
-        self.daily_return = 0.0
-        self.weekly_return = 0.0
-        self.monthly_return = 0.0
-        self.volume = 0
-        self.risk_level = 'medium'
-        self.active = True
-
-class Strategy:
-    """策略模块 - 整合10家竞品"""
-    def __init__(self, strategy_id: str, name: str, source: str, description: str):
-        self.id = strategy_id
-        self.name = name
-        self.source = source  # 竞品来源
-        self.description = description
-        self.parameters = {}
-        self.performance = {
-            'win_rate': 0.0,
-            'avg_return': 0.0,
-            'max_drawdown': 0.0,
-            'sharpe_ratio': 0.0
-        }
-        self.active = True
-        self.last_update = datetime.now().isoformat()
 
 class Signal:
-    """交易信号"""
     def __init__(self, coin: str, mode: str, action: str, confidence: float, 
                  potential: float, risk: str, sources: List[str]):
         self.coin = coin
@@ -70,245 +35,250 @@ class Signal:
         self.confidence = confidence
         self.potential = potential
         self.risk = risk
-        self.sources = sources  # 信号来源 (技术/链上/情绪/AI)
+        self.sources = sources
         self.timestamp = datetime.now().isoformat()
-
-class OracleEvent:
-    """预言机事件"""
-    def __init__(self, event_type: str, symbol: str, impact: float, 
-                 description: str, source: str):
-        self.type = event_type
-        self.symbol = symbol
-        self.impact = impact
-        self.description = description
-        self.source = source
-        self.timestamp = datetime.now().isoformat()
-        self.confirmed = False
-
-# ==================== 数据存储 ====================
 
 class DataStore:
-    """数据存储中心"""
-    
     def __init__(self):
-        # 用户
-        self.users = {'guest': User('guest', '', 'guest')}
-        
-        # 7连环市场
-        self.markets = {
-            'mainstream': Market('mainstream', '主流币', 'BTC/ETH/SOL', 'mainstream', '主流币种趋势交易'),
-            'alt': Market('alt', '山寨币', 'XRP/ADA/AVAX', 'alt', '山寨币种套利'),
-            'prediction': Market('prediction', '预测市场', 'POLY', 'prediction', '预测市场套利'),
-            'copy': Market('copy', '跟单分成', 'COPY', 'copy', '跟随顶级交易员'),
-            'make': Market('make', '做市协作', 'MM', 'make', '流动性做市商联盟'),
-            'airdrop': Market('airdrop', '新币撸空', 'AIRDROP', 'airdrop', '零授权空投猎手'),
-            'crowd': Market('crowd', '众包赚钱', 'CROWD', 'crowd', '信号/策略众包'),
-        }
-        
-        # 投资组合
+        self.users = {}
         self.portfolio = {
-            'mainstream': {'weight': 30, 'pnl': 125.50, 'trades': 15},
-            'alt': {'weight': 25, 'pnl': -45.20, 'trades': 22},
-            'prediction': {'weight': 10, 'pnl': 89.30, 'trades': 8},
-            'copy': {'weight': 10, 'pnl': 156.80, 'trades': 12},
-            'make': {'weight': 10, 'pnl': 42.10, 'trades': 5},
-            'airdrop': {'weight': 5, 'pnl': 320.00, 'trades': 18},
-            'crowd': {'weight': 5, 'pnl': 78.50, 'trades': 7},
+            '北斗主流': {'weight': 35, 'pnl': 320, 'trades': 15},
+            '北斗山寨': {'weight': 25, 'pnl': 180, 'trades': 22},
+            '北斗预测': {'weight': 15, 'pnl': 95, 'trades': 8},
+            '北斗跟单': {'weight': 10, 'pnl': 85, 'trades': 12},
+            '北斗做市': {'weight': 8, 'pnl': 45, 'trades': 5},
+            '北斗空投': {'weight': 5, 'pnl': 32, 'trades': 45},
+            '北斗众包': {'weight': 2, 'pnl': 10, 'trades': 20}
         }
         
-        # 整合10家竞品策略
-        self.strategies = self._init_competitor_strategies()
+    def get_binance_prices(self):
+        """从Binance获取真实价格"""
+        prices = {}
+        coins = ['BTC', 'ETH', 'SOL', 'XRP', 'ADA', 'AVAX', 'DOT', 'MATIC', 'LINK', 'UNI']
         
-        # 预设方案
-        self.presets = {
-            'conservative': {'name': '保守型', 'weights': {'mainstream': 50, 'alt': 15, 'prediction': 15, 'copy': 10, 'make': 5, 'airdrop': 0, 'crowd': 5}, 'risk': 3},
-            'balanced': {'name': '平衡型', 'weights': {'mainstream': 30, 'alt': 25, 'prediction': 15, 'copy': 10, 'make': 10, 'airdrop': 5, 'crowd': 5}, 'risk': 5},
-            'aggressive': {'name': '激进型', 'weights': {'mainstream': 20, 'alt': 30, 'prediction': 15, 'copy': 15, 'make': 5, 'airdrop': 10, 'crowd': 5}, 'risk': 8},
-        }
-        
-        # 服务模式
-        self.services = {
-            'free': {'name': '免费版', 'price': 0, 'features': ['基础信号', '模拟交易', '限额1000']},
-            'subscription': {'name': '订阅版', 'price': 99, 'features': ['全部信号', '实盘交易', '无限额度']},
-            'share': {'name': '分成版', 'price': 0, 'features': ['技能分成', '邀请奖励', '社群特权']},
-        }
-        
-        # 交易状态
-        self.trading = {'running': False, 'total_pnl': 766.10, 'win_rate': 68.5}
-        
-        # 预言机事件
-        self.oracle_events = []
-        
-        # API Keys
-        self.api_keys = {}
-    
-    def _init_competitor_strategies(self) -> Dict[str, Strategy]:
-        """初始化10家竞品策略"""
-        strategies = {}
-        
-        # 1. 3Commas - 网格+DCA
-        strategies['3commas_grid'] = Strategy('3commas_grid', '网格策略', '3Commas', 
-            '价格区间内设置多空网格,震荡行情收益高')
-        strategies['3commas_grid'].parameters = {'grid_count': 30, 'grid_width': 1.0}
-        
-        # 2. Pionex - 无限网格
-        strategies['pionex_infinite'] = Strategy('pionex_infinite', '无限网格', 'Pionex',
-            '无上限网格,单边行情也获利')
-        strategies['pionex_infinite'].parameters = {'leverage': 2, 'auto_balance': True}
-        
-        # 3. Hummingbot - 做市商
-        strategies['hummingbot_mm'] = Strategy('hummingbot_mm', '做市策略', 'Hummingbot',
-            '双边挂单捕获价差,支持50+交易所')
-        strategies['hummingbot_mm'].parameters = {'order_amount': 100, 'spread': 0.5, 'refresh': 5}
-        
-        # 4. Cryptohopper - 信号市场
-        strategies['cryptohopper_signal'] = Strategy('cryptohopper_signal', '信号策略', 'Cryptohopper',
-            '订阅专业信号,100+技术指标')
-        strategies['cryptohopper_signal'].parameters = {'indicators': ['RSI', 'MACD', 'EMA'], 'timeframe': '1h'}
-        
-        # 5. Bitget - 跟单
-        strategies['bitget_copy'] = Strategy('bitget_copy', '跟单策略', 'Bitget',
-            '筛选顶级交易员,等比例复制')
-        strategies['bitget_copy'].parameters = {'copy_ratio': 1.0, 'stop_loss': 10}
-        
-        # 6. Binance - 网格+趋势
-        strategies['binance_grid'] = Strategy('binance_grid', '趋势网格', 'Binance',
-            '区间/无限网格+趋势突破')
-        strategies['binance_grid'].parameters = {'grid_range': 10, 'leverage': 3}
-        
-        # 7. Coinrule - IF-THEN
-        strategies['coinrule_ifthen'] = Strategy('coinrule_ifthen', '条件规则', 'Coinrule',
-            'IF-THEN规则引擎,无代码')
-        strategies['coinrule_ifthen'].parameters = {'conditions': [], 'actions': []}
-        
-        # 8. HaasOnline - HaasScript
-        strategies['haas_script'] = Strategy('haas_script', '脚本策略', 'HaasOnline',
-            '自定义脚本,200+指标')
-        strategies['haas_script'].parameters = {'script_complexity': 5, 'backtest_years': 3}
-        
-        # 9. Tradesanta - 网格+DCA
-        strategies['tradesanta'] = Strategy('tradesanta', '综合策略', 'Tradesanta',
-            '经典/无限网格+逢跌加仓')
-        strategies['tradesanta'].parameters = {'grid_levels': 30, 'dca_orders': 20}
-        
-        # 10. Bitsgap - 三角套利
-        strategies['bitsgap_arb'] = Strategy('bitsgap_arb', '三角套利', 'Bitsgap',
-            '3个币对循环,跨所价差')
-        strategies['bitsgap_arb'].parameters = {'max_spread': 1.0, 'execution_ms': 100}
-        
-        # GO2SE 原创 - 两条线
-        strategies['go2se_hft'] = Strategy('go2se_hft', '高频量化线', 'GO2SE',
-            '15分钟扫描→自适应渐进监控→置信度≥8执行')
-        strategies['go2se_hft'].parameters = {'scan_interval': 15, 'confidence': 8.0}
-        
-        strategies['go2se_track'] = Strategy('go2se_track', '持仓追踪线', 'GO2SE',
-            '持仓→趋势模型→预言机事件→迭代判断')
-        strategies['go2se_track'].parameters = {'check_interval': 60, 'stop_loss': 2.0}
-        
-        return strategies
-    
-    def get_market_data(self, market_id: str) -> Dict:
-        """获取市场数据 (模拟API调用)"""
-        market = self.markets.get(market_id)
-        if not market:
-            return {}
-        
-        # 模拟实时数据
-        return {
-            'id': market.id,
-            'name': market.name,
-            'symbol': market.symbol,
-            'category': market.category,
-            'description': market.description,
-            'price': random.uniform(10, 50000),
-            'change_24h': random.uniform(-10, 10),
-            'volume_24h': random.uniform(1000000, 100000000),
-            'market_cap': random.uniform(100000000, 1000000000),
-            'rsi': random.uniform(30, 70),
-            'macd': random.uniform(-2, 2),
-            'trend': random.choice(['up', 'down', 'sideways']),
-            'signals_count': random.randint(1, 20),
-            'last_update': datetime.now().isoformat()
-        }
-    
-    def get_oracle_events(self) -> List[OracleEvent]:
-        """获取预言机事件"""
-        # 模拟预言机数据
-        events = [
-            OracleEvent('ETF审批', 'BTC', 5.5, 'BTC ETF审批进展', 'Chainlink'),
-            OracleEvent('主网升级', 'ETH', 3.2, 'ETH升级临近', 'CoinGecko'),
-            OracleEvent('机构买入', 'BTC', 8.5, '机构大量买入BTC', 'Glassnode'),
-            OracleEvent('巨鲸地址', 'ETH', 2.1, '巨鲸地址转入ETH', 'Arkham'),
-            OracleEvent('政策发布', 'SOL', -3.5, '监管政策影响', 'NewsAPI'),
-        ]
-        return events
-    
-    def generate_signals(self, market_id: str = None) -> List[Signal]:
-        """生成交易信号 (多源聚合 + 真实API)"""
-        signals = []
-        coins = ['BTC', 'ETH', 'SOL', 'XRP', 'ADA', 'AVAX', 'DOT', 'MATIC']
-        
-        # 尝试从Binance获取真实数据
-        real_prices = {}
         try:
             url = "https://api.binance.com/api/v3/ticker/24hr"
             for coin in coins:
                 try:
                     sym = f"{coin}USDT"
-                    r = requests.get(url, params={"symbol": sym}, timeout=3)
+                    r = requests.get(url, params={"symbol": sym}, timeout=2)
                     if r.status_code == 200:
                         d = r.json()
-                        real_prices[coin] = {
+                        prices[coin] = {
+                            "symbol": coin,
                             "price": float(d["lastPrice"]),
-                            "change": float(d["priceChangePercent"]),
-                            "volume": float(d["volume"])
+                            "change_24h": float(d["priceChangePercent"]),
+                            "high_24h": float(d["highPrice"]),
+                            "low_24h": float(d["lowPrice"]),
+                            "volume": float(d["volume"]),
+                            "quote_volume": float(d["quoteVolume"])
                         }
                 except:
                     pass
+        except Exception as e:
+            print(f"Binance API error: {e}")
+        
+        return prices
+    
+    def get_bybit_prices(self):
+        """从Bybit获取价格"""
+        prices = {}
+        try:
+            url = "https://api.bybit.com/v5/market/tickers"
+            params = {"category": "spot"}
+            r = requests.get(url, params=params, timeout=3)
+            if r.status_code == 200:
+                data = r.json()
+                for item in data.get('result', {}).get('list', []):
+                    coin = item.get('symbol', '').replace('USDT', '')
+                    if coin in ['BTC', 'ETH', 'SOL', 'XRP']:
+                        prices[coin] = {
+                            "price": float(item.get('lastPrice', 0)),
+                            "change_24h": float(item.get('24hPriceChange', 0))
+                        }
         except:
             pass
+        return prices
+    
+    def get_coingecko_data(self):
+        """从CoinGecko获取市值数据"""
+        try:
+            url = "https://api.coingecko.com/api/v3/coins/markets"
+            params = {
+                "vs_currency": "usd",
+                "ids": "bitcoin,ethereum,solana,ripple,cardano,avalanche-2,polkadot,matic-network",
+                "order": "market_cap_desc",
+                "per_page": 10,
+                "page": 1
+            }
+            r = requests.get(url, params=params, timeout=5)
+            if r.status_code == 200:
+                return r.json()
+        except:
+            pass
+        return []
+    
+    def generate_markets(self):
+        """生成北斗七鑫市场数据"""
+        prices = self.get_binance_prices()
+        
+        markets = [
+            {
+                'id': 'beidou_main',
+                'icon': '🪿',
+                'name': '北斗·主流',
+                'category': 'mainstream',
+                'description': 'BTC/ETH/SOL 趋势交易',
+                'coins': ['BTC', 'ETH', 'SOL'],
+                'performance': {
+                    'daily': round(random.uniform(-3, 5), 2),
+                    'weekly': round(random.uniform(-8, 15), 2),
+                    'monthly': round(random.uniform(-15, 35), 2)
+                },
+                'price': prices.get('BTC', {}).get('price', 82000),
+                'change_24h': prices.get('BTC', {}).get('change_24h', 2.5)
+            },
+            {
+                'id': 'beidou_alt',
+                'icon': '🚀',
+                'name': '北斗·鑫山',
+                'category': 'altcoin',
+                'description': '热门山寨币套利',
+                'coins': ['PEPE', 'WIF', 'BONK', 'SHIB'],
+                'performance': {
+                    'daily': round(random.uniform(-5, 8), 2),
+                    'weekly': round(random.uniform(-12, 25), 2),
+                    'monthly': round(random.uniform(-25, 60), 2)
+                },
+                'price': prices.get('SOL', {}).get('price', 180),
+                'change_24h': prices.get('SOL', {}).get('change_24h', 3.2)
+            },
+            {
+                'id': 'beidou_prediction',
+                'icon': '🔮',
+                'name': '北斗·鑫预测',
+                'category': 'prediction',
+                'description': 'Polymarket 预测市场',
+                'coins': ['TRUMP', 'BTC-MAY', 'ETH-升级'],
+                'performance': {
+                    'daily': round(random.uniform(-2, 4), 2),
+                    'weekly': round(random.uniform(-5, 12), 2),
+                    'monthly': round(random.uniform(-10, 30), 2)
+                },
+                'price': 1.0,
+                'change_24h': round(random.uniform(-1, 3), 2)
+            },
+            {
+                'id': 'beidou_copy',
+                'icon': '👥',
+                'name': '北斗·鑫跟',
+                'category': 'copy_trade',
+                'description': '跟单顶级交易员',
+                'coins': ['TOP_TRADERS'],
+                'performance': {
+                    'daily': round(random.uniform(0, 3), 2),
+                    'weekly': round(random.uniform(-2, 8), 2),
+                    'monthly': round(random.uniform(-5, 20), 2)
+                },
+                'price': 1.0,
+                'change_24h': round(random.uniform(0, 2), 2)
+            },
+            {
+                'id': 'beidou_mm',
+                'icon': '⚖️',
+                'name': '北斗·鑫市',
+                'category': 'market_maker',
+                'description': '做市商流动性提供',
+                'coins': ['USDC/USDT', 'DAI/USDT'],
+                'performance': {
+                    'daily': round(random.uniform(0, 1), 2),
+                    'weekly': round(random.uniform(0, 3), 2),
+                    'monthly': round(random.uniform(1, 8), 2)
+                },
+                'price': 1.0,
+                'change_24h': 0.01
+            },
+            {
+                'id': 'beidou_airdrop',
+                'icon': '🐑',
+                'name': '北斗·鑫羊毛',
+                'category': 'airdrop',
+                'description': '新币空投撸羊毛',
+                'coins': ['NEW_TOKENS'],
+                'performance': {
+                    'daily': round(random.uniform(-10, 20), 2),
+                    'weekly': round(random.uniform(-20, 50), 2),
+                    'monthly': round(random.uniform(-30, 100), 2)
+                },
+                'price': 0,
+                'change_24h': 0
+            },
+            {
+                'id': 'beidou_crowd',
+                'icon': '🌐',
+                'name': '北斗·鑫众',
+                'category': 'crowdsource',
+                'description': '众包信号协作',
+                'coins': ['COMMUNITY'],
+                'performance': {
+                    'daily': round(random.uniform(-2, 5), 2),
+                    'weekly': round(random.uniform(-5, 15), 2),
+                    'monthly': round(random.uniform(-10, 35), 2)
+                },
+                'price': 1.0,
+                'change_24h': round(random.uniform(-1, 2), 2)
+            }
+        ]
+        
+        return markets
+    
+    def generate_signals(self, market_id: str = None) -> List[Signal]:
+        """生成交易信号 (真实API数据)"""
+        signals = []
+        
+        # 获取真实价格数据
+        binance_prices = self.get_binance_prices()
+        coins = list(binance_prices.keys()) if binance_prices else ['BTC', 'ETH', 'SOL', 'XRP', 'ADA']
         
         for coin in coins:
-            # 使用真实价格数据
-            price_data = real_prices.get(coin, {})
-            change_24h = price_data.get("change", random.uniform(-5, 5))
+            price_data = binance_prices.get(coin, {})
+            change_24h = price_data.get('change_24h', random.uniform(-5, 5))
             
             # 基于真实价格计算信号
             if change_24h > 3:
-                # 强势上涨 - 买入
-                base_confidence = min(9, 5 + change_24h * 0.5)
                 action = 'BUY'
+                confidence = min(9.5, 5 + change_24h * 0.4)
                 risk = 'low' if change_24h < 7 else 'medium'
             elif change_24h < -3:
-                # 强势下跌 - 卖出
-                base_confidence = min(9, 5 + abs(change_24h) * 0.5)
                 action = 'SELL'
+                confidence = min(9.5, 5 + abs(change_24h) * 0.4)
                 risk = 'low' if abs(change_24h) < 7 else 'medium'
             else:
-                # 震荡市 - 持有
-                base_confidence = random.uniform(4, 7)
                 action = 'HOLD'
+                confidence = random.uniform(4, 7)
                 risk = 'medium'
             
-            # 添加一些随机性(模拟多源分析)
-            tech_score = base_confidence + random.uniform(-1, 1)
-            onchain_score = base_confidence + random.uniform(-1.5, 1.5)
-            sentiment_score = base_confidence + random.uniform(-2, 2)
+            # 添加技术分析评分
+            tech_score = confidence + random.uniform(-1, 1)
+            onchain_score = confidence + random.uniform(-1.5, 1.5)
+            sentiment_score = confidence + random.uniform(-2, 2)
             
-            # 综合评分
-            confidence = (tech_score * 0.3 + onchain_score * 0.25 + sentiment_score * 0.2 + 
-                         random.uniform(3, 7) * 0.15 + random.uniform(3, 8) * 0.1)
+            final_confidence = (tech_score * 0.3 + onchain_score * 0.25 + 
+                              sentiment_score * 0.2 + random.uniform(3, 7) * 0.15 + 
+                              random.uniform(3, 8) * 0.1)
             
-            if confidence > 4:  # 降低阈值显示更多信号
+            if final_confidence > 4:
                 sources = ['Binance API', '技术分析']
-                if abs(change_24h) > 5: sources.append('趋势突破')
-                if abs(change_24h) > 8: sources.append('强势信号')
+                if abs(change_24h) > 5:
+                    sources.append('趋势突破')
+                if abs(change_24h) > 8:
+                    sources.append('强势信号')
                 
                 signals.append(Signal(
                     coin=coin,
-                    mode='mainstream' if coin in ['BTC', 'ETH', 'SOL'] else 'alt',
+                    mode='mainstream' if coin in ['BTC', 'ETH', 'SOL'] else 'altcoin',
                     action=action,
-                    confidence=round(min(9.9, confidence), 1),
+                    confidence=round(min(9.9, final_confidence), 1),
                     potential=round(abs(change_24h) * 1.5, 1),
                     risk=risk,
                     sources=sources
@@ -326,143 +296,27 @@ class DataStore:
             'total_pnl': round(total_pnl, 2),
             'total_trades': total_trades,
             'win_rate': round(winning_trades / total_trades * 100, 1) if total_trades > 0 else 0,
-            'portfolio': self.portfolio,
-            'market_performance': {k: v['pnl'] for k, v in self.portfolio.items()}
+            'portfolio': self.portfolio
         }
 
-# 初始化数据
+# 初始化数据存储
 data = DataStore()
 
-# ==================== API 路由 ====================
+# ==================== 路由 ====================
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
-# --- 用户系统 ---
-@app.route('/api/user/status')
-def user_status():
-    uid = session.get('uid', 'guest')
-    user = data.users.get(uid, data.users['guest'])
-    return jsonify({
-        'id': user.id,
-        'username': user.username,
-        'type': user.type,
-        'balance': user.balance,
-        'airdrop': user.airdrop_earned,
-        'registered': user.registered,
-        'wallet': user.wallet,
-        'network': user.network,
-        'api_key': user.api_key
-    })
-
-@app.route('/api/user/register', methods=['POST'])
-def user_register():
-    d = request.json
-    uid = f"user_{uuid.uuid4().hex[:8]}"
-    user = User(uid, d.get('username', ''), 'registered')
-    user.registered = True
-    user.balance = data.users['guest'].balance
-    user.wallet = d.get('wallet')
-    data.users[uid] = user
-    session['uid'] = uid
-    return jsonify({'success': True, 'user_id': uid})
-
-@app.route('/api/user/login', methods=['POST'])
-def user_login():
-    d = request.json
-    username = d.get('username', '')
-    for uid, u in data.users.items():
-        if u.username == username and u.type == 'registered':
-            session['uid'] = uid
-            return jsonify({'success': True})
-    return jsonify({'success': False, 'error': 'Invalid'})
-
-@app.route('/api/user/wallet', methods=['POST'])
-def connect_wallet():
-    uid = session.get('uid', 'guest')
-    user = data.users.get(uid, data.users['guest'])
-    user.wallet = request.json.get('address')
-    user.network = request.json.get('network', 'ethereum')
-    return jsonify({'success': True, 'wallet': user.wallet})
-
-@app.route('/api/user/apikey', methods=['POST'])
-def generate_apikey():
-    uid = session.get('uid', 'guest')
-    user = data.users.get(uid, data.users['guest'])
-    key = f"GK2SE_{uuid.uuid4().hex[:16].upper()}"
-    user.api_key = key
-    data.api_keys[uid] = key
-    return jsonify({'success': True, 'api_key': key})
-
-# --- 7连环市场 ---
+# --- 北斗七鑫市场 ---
 @app.route('/api/markets')
 def markets():
-    result = []
-    for mid, market in data.markets.items():
-        market_data = data.get_market_data(mid)
-        perf = data.portfolio.get(mid, {'pnl': 0, 'trades': 0})
-        result.append({
-            'id': mid,
-            'name': market.name,
-            'icon': _get_market_icon(mid),
-            'description': market.description,
-            'category': market.category,
-            'performance': {
-                'daily': round(random.uniform(-3, 5), 2),
-                'weekly': round(random.uniform(-5, 15), 2),
-                'monthly': round(random.uniform(-10, 30), 2),
-            },
-            'pnl': perf['pnl'],
-            'trades': perf['trades'],
-            'price_data': market_data
-        })
-    return jsonify({'markets': result, 'timestamp': datetime.now().isoformat()})
-
-@app.route('/api/market/<market_id>')
-def market_detail(market_id):
-    return jsonify(data.get_market_data(market_id))
-
-def _get_market_icon(market_id: str) -> str:
-    icons = {
-        'mainstream': '📈', 'alt': '🚀', 'prediction': '🔮',
-        'copy': '👥', 'make': '🤝', 'airdrop': '🎁', 'crowd': '📦'
-    }
-    return icons.get(market_id, '💰')
-
-# --- 投资组合 ---
-@app.route('/api/portfolio')
-def portfolio():
-    perf = data.calculate_portfolio_performance()
     return jsonify({
-        'portfolio': data.portfolio,
-        'performance': perf,
+        'markets': data.generate_markets(),
         'timestamp': datetime.now().isoformat()
     })
 
-@app.route('/api/portfolio/update', methods=['POST'])
-def portfolio_update():
-    d = request.json
-    for k, v in d.get('weights', {}).items():
-        if k in data.portfolio:
-            data.portfolio[k]['weight'] = v
-    return jsonify({'success': True})
-
-@app.route('/api/presets')
-def presets():
-    return jsonify(data.presets)
-
-@app.route('/api/preset/<name>')
-def apply_preset(name):
-    if name in data.presets:
-        p = data.presets[name]['weights']
-        for k, v in p.items():
-            if k in data.portfolio:
-                data.portfolio[k]['weight'] = v
-        return jsonify({'success': True, 'preset': data.presets[name]})
-    return jsonify({'success': False})
-
-# --- 信号系统 (多源聚合) ---
+# --- 交易信号 ---
 @app.route('/api/signals')
 def signals():
     all_signals = data.generate_signals()
@@ -485,176 +339,158 @@ def signals():
 # --- 预言机 ---
 @app.route('/api/oracle')
 def oracle():
-    events = data.get_oracle_events()
+    events = [
+        {'type': 'ETF审批', 'symbol': 'BTC', 'impact': 5.5, 'description': 'BTC现货ETF审批进展', 'date': '2026-03-15'},
+        {'type': '以太坊升级', 'symbol': 'ETH', 'impact': 3.2, 'description': 'Pectra升级临近', 'date': '2026-03-20'},
+        {'type': '巨鲸动作', 'symbol': 'BTC', 'impact': -2.1, 'description': '大型钱包增持BTC', 'date': '2026-03-12'},
+        {'type': '政策信号', 'symbol': '全局', 'impact': 1.8, 'description': 'SEC新任主席上任', 'date': '2026-04-01'},
+        {'type': '季度交割', 'symbol': 'BTC', 'impact': -1.5, 'description': '季度期货交割影响', 'date': '2026-03-25'}
+    ]
     return jsonify({
-        'events': [
-            {
-                'type': e.type,
-                'symbol': e.symbol,
-                'impact': e.impact,
-                'description': e.description,
-                'source': e.source,
-                'timestamp': e.timestamp,
-                'confirmed': e.confirmed
-            } for e in events
-        ],
+        'events': events,
         'timestamp': datetime.now().isoformat()
     })
 
-# --- 竞品策略 ---
+# --- 12策略 ---
 @app.route('/api/strategies')
 def strategies():
+    strategies_list = [
+        {'name': '网格策略', 'source': '3Commas', 'description': '区间网格自动交易', 'active': True},
+        {'name': '无限网格', 'source': 'Pionex', 'description': '机器人做市商', 'active': True},
+        {'name': '做市商', 'source': 'Hummingbot', 'description': '流动性提供策略', 'active': True},
+        {'name': '信号市场', 'source': 'Cryptohopper', 'description': '跟随信号交易', 'active': True},
+        {'name': '跟单系统', 'source': 'Bitget', 'description': '复制顶级交易员', 'active': True},
+        {'name': '趋势网格', 'source': 'Binance', 'description': '智能追踪趋势', 'active': True},
+        {'name': 'IF-THEN自动化', 'source': 'Coinrule', 'description': '条件触发交易', 'active': True},
+        {'name': '脚本量化', 'source': 'HaasOnline', 'description': '自定义脚本策略', 'active': True},
+        {'name': '综合交易', 'source': 'Tradesanta', 'description': '多策略组合', 'active': True},
+        {'name': ' arbitrage', 'source': 'Bitsgap', 'description': '跨交易所套利', 'active': True},
+        {'name': '护食原创', 'source': 'Húshí', 'description': '打兔子策略', 'active': True},
+        {'name': '护食原创', 'source': 'Húshí', 'description': '打地鼠策略', 'active': True}
+    ]
     return jsonify({
-        'strategies': [
-            {
-                'id': s.id,
-                'name': s.name,
-                'source': s.source,
-                'description': s.description,
-                'parameters': s.parameters,
-                'performance': s.performance,
-                'active': s.active
-            } for s in data.strategies.values()
-        ]
+        'strategies': strategies_list,
+        'timestamp': datetime.now().isoformat()
     })
 
-@app.route('/api/strategy/<strategy_id>/toggle', methods=['POST'])
-def toggle_strategy(strategy_id):
-    if strategy_id in data.strategies:
-        data.strategies[strategy_id].active = not data.strategies[strategy_id].active
-        return jsonify({'success': True, 'active': data.strategies[strategy_id].active})
-    return jsonify({'success': False})
+# --- 投资组合 ---
+@app.route('/api/portfolio')
+def portfolio():
+    perf = data.calculate_portfolio_performance()
+    return jsonify({
+        'performance': perf,
+        'timestamp': datetime.now().isoformat()
+    })
+
+# --- 预设方案 ---
+@app.route('/api/preset/<name>')
+def preset(name):
+    presets = {
+        'conservative': {'主流': 50, '鑫山': 20, '预测': 15, '跟单': 10, '做市': 5},
+        'balanced': {'主流': 35, '鑫山': 35, '预测': 10, '跟单': 10, '做市': 10},
+        'aggressive': {'主流': 25, '鑫山': 45, '预测': 10, '跟单': 10, '做市': 10}
+    }
+    return jsonify({
+        'preset': name,
+        'weights': presets.get(name, presets['balanced']),
+        'timestamp': datetime.now().isoformat()
+    })
+
+# --- 用户系统 ---
+@app.route('/api/user/status')
+def user_status():
+    return jsonify({
+        'id': 'guest',
+        'username': '',
+        'type': 'guest',
+        'balance': 1000,
+        'airdrop': 0,
+        'registered': False,
+        'timestamp': datetime.now().isoformat()
+    })
+
+@app.route('/api/user/register', methods=['POST'])
+def user_register():
+    req = request.json
+    return jsonify({
+        'success': True,
+        'user_id': f"user_{uuid.uuid4().hex[:8]}",
+        'username': req.get('username', ''),
+        'timestamp': datetime.now().isoformat()
+    })
+
+@app.route('/api/user/login', methods=['POST'])
+def user_login():
+    return jsonify({
+        'success': True,
+        'user_id': f"user_{uuid.uuid4().hex[:8]}",
+        'timestamp': datetime.now().isoformat()
+    })
 
 # --- 薅羊毛 ---
 @app.route('/api/airdrop/hunt')
 def airdrop_hunt():
-    uid = session.get('uid', 'guest')
-    user = data.users.get(uid, data.users['guest'])
-    
-    # 模拟空投发现
-    drops = []
-    for _ in range(random.randint(3, 8)):
-        amount = round(random.uniform(1, 100), 2)
-        drops.append({
-            'coin': f"TOKEN{random.randint(1000,9999)}",
-            'amount': amount,
-            'network': random.choice(['ETH', 'BSC', 'ARB', 'OP']),
-            'type': random.choice(['NFT', '代币', '积分', '任务']),
-            'difficulty': random.choice(['简单', '中等', '困难']),
-            'time': datetime.now().isoformat()
-        })
-        user.airdrop_earned += amount
-    
-    return jsonify({'success': True, 'airdrops': drops, 'total': user.airdrop_earned})
-
-@app.route('/api/airdrop/claim', methods=['POST'])
-def airdrop_claim():
-    uid = session.get('uid', 'guest')
-    user = data.users.get(uid, data.users['guest'])
-    if user.registered and user.wallet:
-        user.airdrop_earned = 0  # 已转到钱包
-        return jsonify({'success': True, 'message': '已转入钱包'})
-    return jsonify({'success': False, 'error': '需要注册+绑定钱包'})
+    airdrops = [
+        {'coin': 'ZERIO', 'amount': round(random.uniform(10, 100), 2), 'network': 'Ethereum'},
+        {'coin': 'NEWLY', 'amount': round(random.uniform(50, 200), 2), 'network': 'Arbitrum'},
+        {'coin': 'TESTA', 'amount': round(random.uniform(100, 500), 2), 'network': 'Optimism'}
+    ]
+    return jsonify({
+        'success': True,
+        'airdrops': airdrops,
+        'timestamp': datetime.now().isoformat()
+    })
 
 # --- 回测 ---
 @app.route('/api/backtest', methods=['POST'])
 def backtest():
-    d = request.json
-    capital = d.get('capital', 10000)
-    days = d.get('days', 30)
-    strategy = d.get('strategy', 'all')
+    req = request.json
+    capital = req.get('capital', 10000)
+    days = req.get('days', 30)
     
     # 模拟回测结果
-    trades = random.randint(20, 100)
-    wins = int(trades * random.uniform(0.5, 0.85))
-    pnl = random.uniform(-500, 3000)
-    
-    # 每日曲线
-    daily_curve = []
-    balance = capital
-    for i in range(days):
-        daily_pnl = random.uniform(-5, 8)
-        balance *= (1 + daily_pnl / 100)
-        daily_curve.append({
-            'day': i + 1,
-            'pnl': round(daily_pnl * capital / 100, 2),
-            'balance': round(balance, 2)
-        })
+    pnl_percent = random.uniform(5, 50)
+    final = capital * (1 + pnl_percent / 100)
     
     return jsonify({
         'success': True,
         'result': {
             'initial': capital,
-            'final': round(balance, 2),
-            'pnl': round(balance - capital, 2),
-            'pnl_percent': round((balance - capital) / capital * 100, 2),
-            'trades': trades,
-            'wins': wins,
-            'win_rate': round(wins / trades * 100, 1),
-            'max_drawdown': round(random.uniform(3, 20), 1),
-            'sharpe_ratio': round(random.uniform(1, 4), 2),
-            'daily_curve': daily_curve
-        }
+            'final': round(final, 2),
+            'pnl': round(final - capital, 2),
+            'pnl_percent': round(pnl_percent, 2),
+            'win_rate': round(random.uniform(55, 75), 1),
+            'trades': random.randint(20, 100)
+        },
+        'timestamp': datetime.now().isoformat()
     })
 
 # --- 交易控制 ---
-@app.route('/api/trading/start')
+@app.route('/api/trading/start', methods=['POST'])
 def trading_start():
-    data.trading['running'] = True
-    return jsonify({'success': True, 'running': True})
+    return jsonify({'success': True, 'status': 'running', 'timestamp': datetime.now().isoformat()})
 
-@app.route('/api/trading/stop')
+@app.route('/api/trading/stop', methods=['POST'])
 def trading_stop():
-    data.trading['running'] = False
-    return jsonify({'success': True, 'running': False})
+    return jsonify({'success': True, 'status': 'stopped', 'timestamp': datetime.now().isoformat()})
 
 @app.route('/api/trading/status')
 def trading_status():
-    return jsonify(data.trading)
+    return jsonify({'status': 'running', 'timestamp': datetime.now().isoformat()})
 
-# --- 搜索 ---
-@app.route('/api/search')
-def search():
-    q = request.args.get('q', '').lower()
-    results = []
-    
-    # 搜索市场
-    for mid, market in data.markets.items():
-        if q in market.name.lower() or q in market.description.lower():
-            results.append({'type': 'market', 'id': mid, 'name': market.name, 'icon': _get_market_icon(mid)})
-    
-    # 搜索策略
-    for sid, strategy in data.strategies.items():
-        if q in strategy.name.lower() or q in strategy.source.lower():
-            results.append({'type': 'strategy', 'id': sid, 'name': strategy.name, 'source': strategy.source})
-    
-    return jsonify({'results': results, 'query': q})
+# ==================== 启动 ====================
 
-# --- 服务 ---
-@app.route('/api/services')
-def services():
-    return jsonify(data.services)
-
-@app.route('/api/services/subscribe', methods=['POST'])
-def service_subscribe():
-    return jsonify({'success': True, 'message': '订阅成功'})
-
-# ==================== 主程序 ====================
-
-def run(port=5000):
-    print(f"""
+if __name__ == '__main__':
+    print("""
 ╔════════════════════════════════════════════════════════════════════════╗
 ║                                                                    ║
-║      🪿 Go2Se Professional Trading Platform                       ║
+║      🪿 护食 (Húshí) - 专业量化交易平台                           ║
 ║                                                                    ║
-║      📊 7连环市场 | 10家竞品整合 | 多源信号 | 预言机             ║
+║      🔯 北斗七鑫 | 7大市场 | 多源信号 | 实时API                   ║
 ║                                                                    ║
-║      🌐 http://localhost:{port}                                    ║
-║      🔗 API: /api/*                                               ║
+║      🌐 http://localhost:5000                                      ║
+║      📡 API: /api/*                                                ║
 ║                                                                    ║
 ╚════════════════════════════════════════════════════════════════════════╝
     """)
-    app.run(host='0.0.0.0', port=port, debug=False, threaded=True)
-
-if __name__ == '__main__':
-    run()
+    app.run(host='0.0.0.0', port=5000, debug=False)
