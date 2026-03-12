@@ -38,7 +38,7 @@ class User:
     created_at: str = ''
 
 @dataclass
-class Signal:
+class TradeSignal:
     coin: str
     mode: str
     action: str
@@ -157,6 +157,7 @@ class DataStore:
         if cached:
             self.trading_pairs = cached
             return cached
+        # Return mock data if API fails
         try:
             url = "https://api.binance.com/api/v3/ticker/24hr"
             pairs = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT', 'XRPUSDT', 'ADAUSDT', 'AVAXUSDT', 'DOTUSDT', 'MATICUSDT']
@@ -204,7 +205,11 @@ class DataStore:
     
     def generate_signals(self):
         signals = []
-        prices = self.fetch_prices()
+        prices = {}
+        try:
+            prices = self.fetch_prices()
+        except:
+            pass
         for coin, data in prices.items():
             change = data.get('change_24h', 0)
             if change > 3: action, conf, risk = 'BUY', min(9.5, 5+change*0.4), 'low'
