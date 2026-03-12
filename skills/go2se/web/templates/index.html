@@ -3,303 +3,245 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🪿 Go2Se 量化交易系统</title>
+    <title>🪿 Go2Se | 专业量化交易平台</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --primary: #00d4aa; --secondary: #1a1a2e; --dark: #0f0f1a; --card-bg: #16213e; --text: #e4e4e7; }
+        :root { --primary: #00E5CC; --bg-dark: #0A0E17; --bg-card: #111827; --text: #F3F4F6; --text-muted: #9CA3AF; --gold: #FFD700; --success: #10B981; --danger: #EF4444; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--dark); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; min-height: 100vh; }
-        .logo { font-size: 2rem; font-weight: bold; background: linear-gradient(135deg, #fff 0%, var(--primary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .logo-sub { font-size: 0.8rem; color: #9ca3af; }
-        .navbar { background: var(--secondary); border-bottom: 1px solid rgba(0,212,170,0.3); padding: 1rem 2rem; }
-        .navbar-brand { font-size: 1.5rem; font-weight: bold; color: var(--primary) !important; }
-        .sidebar { background: var(--secondary); min-height: calc(100vh - 60px); padding: 1rem; }
-        .nav-link { color: var(--text); padding: 0.75rem 1rem; border-radius: 8px; margin-bottom: 0.5rem; }
-        .nav-link:hover, .nav-link.active { background: rgba(0,212,170,0.2); color: var(--primary); }
-        .card { background: var(--card-bg); border: 1px solid rgba(0,212,170,0.2); border-radius: 12px; margin-bottom: 1rem; }
-        .card-header { background: transparent; border-bottom: 1px solid rgba(0,212,170,0.1); padding: 1rem; font-weight: 600; }
-        .stat-card { background: linear-gradient(135deg, var(--card-bg) 0%, rgba(0,212,170,0.1) 100%); border-radius: 12px; padding: 1.25rem; text-align: center; }
-        .stat-value { font-size: 1.75rem; font-weight: bold; color: var(--primary); }
-        .stat-label { font-size: 0.85rem; color: #9ca3af; }
-        .pnl-positive { color: #10b981; }
-        .pnl-negative { color: #ef4444; }
-        .btn-primary { background: var(--primary); border: none; color: var(--dark); font-weight: 600; }
-        .btn-gold { background: linear-gradient(135deg, #ffd700, #ffaa00); color: #000; }
-        .form-control, .form-select { background: var(--dark); border: 1px solid rgba(0,212,170,0.3); color: var(--text); }
-        .range-slider { -webkit-appearance: none; width: 100%; height: 8px; border-radius: 4px; background: var(--dark); }
-        .range-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: var(--primary); }
-        .status-badge { padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.75rem; }
-        .status-running { background: rgba(16,185,129,0.2); color: #10b981; }
-        .status-stopped { background: rgba(239,68,68,0.2); color: #ef4444; }
-        .signal-item { background: var(--dark); border-radius: 8px; padding: 0.75rem; margin-bottom: 0.5rem; border-left: 3px solid var(--primary); }
-        .wallet-connected { background: rgba(16,185,129,0.2); border: 1px solid #10b981; border-radius: 8px; padding: 0.5rem 1rem; }
-        .main-content { padding: 1.5rem; }
-        .table { color: var(--text); }
-        .balance-display { background: linear-gradient(135deg, rgba(0,212,170,0.1), rgba(255,215,0,0.1)); border-radius: 12px; padding: 1rem; margin-bottom: 1rem; }
-        .balance-value { font-size: 2rem; font-weight: bold; color: var(--primary); }
-        .balance-label { font-size: 0.85rem; color: #9ca3af; }
-        .airdrop-card { background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,165,0,0.1)); border: 1px solid rgba(255,215,0,0.3); border-radius: 12px; padding: 1rem; }
-        .user-badge { padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.75rem; }
-        .badge-guest { background: rgba(255,215,0,0.2); color: #ffd700; }
-        .badge-user { background: rgba(0,212,170,0.2); color: var(--primary); }
+        body { background: var(--bg-dark); color: var(--text); font-family: 'Noto Sans SC', sans-serif; overflow-x: hidden; }
+        
+        #landing { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--bg-dark); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; transition: all 1.5s; }
+        #landing.hidden { opacity: 0; pointer-events: none; transform: scale(0.5); }
+        
+        .goose-anim { font-size: 100px; animation: gooseFloat 2s ease-in-out infinite; filter: drop-shadow(0 30px 50px rgba(0,229,204,0.4)); }
+        @keyframes gooseFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-30px); } }
+        
+        .baby-flock { position: absolute; bottom: -20px; display: flex; gap: 8px; }
+        .baby-anim { font-size: 20px; animation: babyPeek 1.5s ease-in-out infinite; }
+        @keyframes babyPeek { 0%, 100% { transform: translateY(15px); opacity: 0.5; } 50% { transform: translateY(0); opacity: 1; } }
+        
+        .landing-text { margin-top: 50px; text-align: center; animation: fadeInUp 1s ease 0.5s both; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        .landing-text h1 { font-size: 4rem; font-weight: 800; background: linear-gradient(135deg, #fff, var(--primary), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .navbar { background: rgba(10,14,23,0.95); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0,229,204,0.1); padding: 0.7rem 2rem; position: fixed; width: 100%; z-index: 1000; }
+        .navbar-brand { font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, #fff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        .search-box { background: var(--bg-card); border: 1px solid rgba(0,229,204,0.2); border-radius: 50px; padding: 0.4rem 1.2rem; display: flex; align-items: center; gap: 8px; }
+        .search-box input { background: transparent; border: none; color: var(--text); width: 250px; outline: none; }
+        
+        .sidebar { position: fixed; left: 0; top: 54px; width: 220px; height: calc(100vh - 54px); background: var(--bg-card); border-right: 1px solid rgba(0,229,204,0.1); padding: 1.5rem 0; overflow-y: auto; z-index: 100; }
+        .nav-item { padding: 0.8rem 1.5rem; color: var(--text-muted); cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 12px; border-left: 3px solid transparent; }
+        .nav-item:hover { background: rgba(0,229,204,0.1); color: var(--text); }
+        .nav-item.active { background: rgba(0,229,204,0.15); color: var(--primary); border-left-color: var(--primary); }
+        
+        .main-content { margin-left: 220px; padding: 80px 30px 30px; min-height: 100vh; }
+        .page { display: none; animation: fadeIn 0.4s ease; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .card { background: var(--bg-card); border: 1px solid rgba(0,229,204,0.1); border-radius: 16px; transition: all 0.3s; }
+        .card:hover { border-color: rgba(0,229,204,0.3); }
+        .card-header { background: transparent; border-bottom: 1px solid rgba(0,229,204,0.1); padding: 1rem 1.5rem; font-weight: 600; }
+        
+        .market-card { background: var(--bg-card); border: 1px solid rgba(0,229,204,0.15); border-radius: 20px; padding: 1.5rem; cursor: pointer; transition: all 0.4s; position: relative; overflow: hidden; }
+        .market-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(135deg, #00E5CC, #00B8A3); transform: scaleX(0); transition: transform 0.3s; }
+        .market-card:hover::before { transform: scaleX(1); }
+        .market-card:hover { transform: translateY(-8px); box-shadow: 0 25px 50px rgba(0,229,204,0.2); }
+        
+        .stat-card { background: linear-gradient(135deg, var(--bg-card), rgba(0,229,204,0.08)); border-radius: 16px; padding: 1.5rem; text-align: center; }
+        .stat-value { font-size: 2rem; font-weight: 700; color: var(--primary); }
+        .stat-label { color: var(--text-muted); font-size: 0.85rem; margin-top: 0.3rem; }
+        
+        .balance-display { background: linear-gradient(135deg, rgba(0,229,204,0.1), rgba(255,215,0,0.05)); border: 1px solid rgba(0,229,204,0.2); border-radius: 20px; padding: 1.5rem; }
+        .balance-value { font-size: 2.5rem; font-weight: 700; }
+        
+        .btn-primary { background: linear-gradient(135deg, #00E5CC, #00B8A3); border: none; padding: 0.6rem 1.5rem; border-radius: 10px; font-weight: 600; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,229,204,0.4); }
+        .btn-outline { background: transparent; border: 1px solid rgba(0,229,204,0.4); color: var(--primary); padding: 0.6rem 1.5rem; border-radius: 10px; }
+        
+        .user-badge { padding: 0.3rem 1rem; border-radius: 20px; font-size: 0.85rem; }
+        .badge-guest { background: rgba(255,215,0,0.15); color: var(--gold); border: 1px solid rgba(255,215,0,0.3); }
+        .badge-user { background: rgba(0,229,204,0.15); color: var(--primary); border: 1px solid rgba(0,229,204,0.3); }
+        
+        .mini-goose { position: fixed; bottom: 20px; right: 20px; font-size: 35px; animation: miniFloat 3s ease-in-out infinite; z-index: 1000; cursor: pointer; opacity: 0.7; }
+        .mini-goose:hover { opacity: 1; transform: scale(1.15); }
+        @keyframes miniFloat { 0%, 100% { transform: translateY(0) rotate(-5deg); } 50% { transform: translateY(-15px) rotate(5deg); } }
+        
+        .perf-positive { background: rgba(16,185,129,0.2); color: var(--success); }
+        .perf-negative { background: rgba(239,68,68,0.2); color: var(--danger); }
+        
+        @media (max-width: 768px) { .sidebar { display: none; } .main-content { margin-left: 0; } }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark">
+    <div id="landing">
+        <div class="goose-anim">🪿</div>
+        <div class="baby-flock"><span class="baby-anim">🐤</span><span class="baby-anim">🐤</span><span class="baby-anim">🐤</span></div>
+        <div class="landing-text"><h1>Go2Se</h1><p>专业量化交易平台</p></div>
+    </div>
+    
+    <div class="mini-goose" onclick="scrollToTop()">🪿</div>
+
+    <nav class="navbar">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <span style="font-size:2rem;">🪿</span>
-                <span class="logo">Go2Se</span>
-                <span class="logo-sub">量化交易系统</span>
-            </a>
+            <a class="navbar-brand" href="#">🪿 Go2Se</a>
+            <div class="search-box"><i class="fas fa-search" style="color:var(--text-muted)"></i><input type="text" placeholder="搜索市场、策略..." id="searchInput"></div>
             <div class="d-flex align-items-center gap-3">
-                <span id="userBadge" class="user-badge badge-guest"><i class="fas fa-user"></i> 游客</span>
-                <span id="statusBadge" class="status-badge status-stopped"><i class="fas fa-circle"></i> 已停止</span>
-                <div id="walletSection"><button class="btn btn-outline-primary btn-sm" onclick="document.querySelector('a[href=#auth]').click()"><i class="fas fa-wallet"></i> 连接钱包</button></div>
+                <span class="user-badge badge-guest" id="userBadge"><i class="fas fa-user"></i> 游客</span>
+                <button class="btn btn-outline btn-sm" onclick="showAuth()">注册/登录</button>
             </div>
         </div>
     </nav>
-    <div class="container-fluid px-4">
-        <div class="balance-display">
+
+    <nav class="sidebar">
+        <div class="nav-item active" onclick="showPage('home',this)"><i class="fas fa-home"></i> 首页</div>
+        <div class="nav-item" onclick="showPage('markets',this)"><i class="fas fa-chart-line"></i> 7连环市场</div>
+        <div class="nav-item" onclick="showPage('strategies',this)"><i class="fas fa-chess"></i> 策略中心</div>
+        <div class="nav-item" onclick="showPage('signals',this)"><i class="fas fa-broadcast-tower"></i> 信号系统</div>
+        <div class="nav-item" onclick="showPage('oracle',this)"><i class="fas fa-link"></i> 预言机</div>
+        <div class="nav-item" onclick="showPage('portfolio',this)"><i class="fas fa-chart-pie"></i> 投资组合</div>
+        <div class="nav-item" onclick="showPage('airdrop',this)"><i class="fas fa-gift"></i> 薅羊毛</div>
+        <div class="nav-item" onclick="showPage('backtest',this)"><i class="fas fa-history"></i> 回测工具</div>
+        <div class="nav-item" onclick="showPage('services',this)"><i class="fas fa-crown"></i> 服务模式</div>
+    </nav>
+
+    <main class="main-content">
+        <div id="page-home" class="page active">
+            <h2 class="mb-4">欢迎来到 <span style="color:var(--primary)">Go2Se</span></h2>
+            <div class="row mb-4">
+                <div class="col-md-4"><div class="balance-display text-center"><div class="balance-value" id="userBalance">$1,000</div><div class="stat-label">🎁 模拟余额</div></div></div>
+                <div class="col-md-4"><div class="balance-display text-center"><div class="balance-value" style="color:var(--gold)" id="airdropBalance">$0</div><div class="stat-label">🐑 薅羊毛</div></div></div>
+                <div class="col-md-4"><div class="balance-display text-center"><div class="balance-value" style="color:var(--success)" id="totalPnl">+$766</div><div class="stat-label">📈 累计盈亏</div></div></div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-md-3"><div class="stat-card"><div class="stat-value" id="winRate">68%</div><div class="stat-label">胜率</div></div></div>
+                <div class="col-md-3"><div class="stat-card"><div class="stat-value">7</div><div class="stat-label">活跃市场</div></div></div>
+                <div class="col-md-3"><div class="stat-card"><div class="stat-value" id="signalCount">12</div><div class="stat-label">今日信号</div></div></div>
+                <div class="col-md-3"><div class="stat-card"><div class="stat-value" id="strategyCount">12</div><div class="stat-label">整合策略</div></div></div>
+            </div>
+            <h4 class="mb-3">🎯 7连环市场机遇</h4>
+            <div class="row" id="marketsPreview"></div>
+        </div>
+
+        <div id="page-markets" class="page"><h2 class="mb-4">🎯 7连环市场</h2><div class="row" id="marketsFull"></div></div>
+        
+        <div id="page-strategies" class="page"><h2 class="mb-4">♟️ 策略中心 - 10家竞品有机融合</h2><div class="row" id="strategiesList"></div></div>
+        
+        <div id="page-signals" class="page">
+            <h2 class="mb-4">📡 多源聚合信号</h2>
+            <div class="card"><div class="card-header d-flex justify-content-between"><span>实时信号</span><button class="btn btn-sm btn-primary" onclick="refreshSignals()">🔄 刷新</button></div>
+            <div class="card-body"><table class="table table-dark"><thead><tr><th>币</th><th>模式</th><th>操作</th><th>置信度</th><th>收益</th><th>风险</th></tr></thead><tbody id="signalsBody"></tbody></table></div></div>
+        </div>
+        
+        <div id="page-oracle" class="page"><h2 class="mb-4">🔗 预言机事件</h2><div class="row" id="oracleEvents"></div></div>
+        
+        <div id="page-portfolio" class="page"><h2 class="mb-4">💼 投资组合</h2><div class="card"><div class="card-header">预设方案</div><div class="card-body"><button class="btn btn-outline me-2" onclick="applyPreset('conservative')">🛡️ 保守</button><button class="btn btn-outline me-2" onclick="applyPreset('balanced')">⚖️ 平衡</button><button class="btn btn-outline" onclick="applyPreset('aggressive')">🚀 激进</button></div></div></div>
+        
+        <div id="page-airdrop" class="page">
+            <h2 class="mb-4">🐑 智能薅羊毛</h2>
             <div class="row">
-                <div class="col-md-4"><div class="balance-value" id="userBalance">$1000.00</div><div class="balance-label">模拟余额</div></div>
-                <div class="col-md-4"><div class="balance-value" style="color:#ffd700;" id="airdropBalance">$0.00</div><div class="balance-label">🐑 薅羊毛收益</div></div>
-                <div class="col-md-4"><div class="balance-value" id="walletBalance">$0.00</div><div class="balance-label">💳 钱包余额</div></div>
+                <div class="col-md-6"><div class="card"><div class="card-header">搜索空投</div><div class="card-body text-center"><button class="btn btn-warning btn-lg" onclick="huntAirdrop()">🔍 开始薅羊毛</button><div id="airdropResults" class="mt-3"></div></div></div></div>
+                <div class="col-md-6"><div class="card"><div class="card-header">收益统计</div><div class="card-body text-center"><div class="balance-value" style="color:var(--gold)" id="airdropTotal">$0</div><button class="btn btn-primary mt-3" onclick="claimAirdrop()">领取到钱包</button></div></div></div>
             </div>
         </div>
-    </div>
-    <div class="container-fluid">
-        <div class="row">
-            <nav class="col-md-2 sidebar d-none d-md-block">
-                <div class="nav flex-column">
-                    <a class="nav-link active" href="#dashboard" data-bs-toggle="tab"><i class="fas fa-chart-line"></i> 仪表盘</a>
-                    <a class="nav-link" href="#config" data-bs-toggle="tab"><i class="fas fa-cogs"></i> 参数配置</a>
-                    <a class="nav-link" href="#presets" data-bs-toggle="tab"><i class="fas fa-sliders-h"></i> 方案预设</a>
-                    <a class="nav-link" href="#signals" data-bs-toggle="tab"><i class="fas fa-broadcast-tower"></i> 信号监控</a>
-                    <a class="nav-link" href="#airdrop" data-bs-toggle="tab"><i class="fas fa-shekel-sign"></i> 🐑 薅羊毛</a>
-                    <a class="nav-link" href="#backtest" data-bs-toggle="tab"><i class="fas fa-history"></i> 回测</a>
-                    <a class="nav-link" href="#simulation" data-bs-toggle="tab"><i class="fas fa-play-circle"></i> 模拟交易</a>
-                    <a class="nav-link" href="#auth" data-bs-toggle="tab"><i class="fas fa-user-plus"></i> 用户中心</a>
-                </div>
-            </nav>
-            <main class="col-md-10 main-content">
-                <div class="tab-content">
-                    <div class="tab-pane fade show active" id="dashboard">
-                        <h4 class="mb-4"><i class="fas fa-chart-line"></i> 仪表盘</h4>
-                        <div class="row mb-4">
-                            <div class="col-md-3"><div class="stat-card"><div class="stat-value" id="totalPnl">$0.00</div><div class="stat-label">总盈亏</div></div></div>
-                            <div class="col-md-3"><div class="stat-card"><div class="stat-value" id="todayPnl">$0.00</div><div class="stat-label">今日盈亏</div></div></div>
-                            <div class="col-md-3"><div class="stat-card"><div class="stat-value" id="winRate">0%</div><div class="stat-label">胜率</div></div></div>
-                            <div class="col-md-3"><div class="stat-card"><div class="stat-value" id="positions">0</div><div class="stat-label">持仓数</div></div></div>
-                        </div>
-                        <div class="row mb-4">
-                            <div class="col-md-6"><button class="btn btn-success w-100" id="startBtn" onclick="startTrading()">开始交易</button><button class="btn btn-danger w-100 mt-2" id="stopBtn" onclick="stopTrading()" style="display:none;">停止交易</button></div>
-                            <div class="col-md-6"><button class="btn btn-primary w-100" onclick="refreshSignals()">刷新信号</button></div>
-                        </div>
-                        <div class="card"><div class="card-header">实时信号</div><div class="card-body" id="signalsList"><p class="text-muted">点击"刷新信号"</p></div></div>
-                    </div>
-                    <div class="tab-pane fade" id="config">
-                        <h4 class="mb-4">参数配置</h4>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="card"><div class="card-header">投资组合</div><div class="card-body">
-                                    <div class="mb-3"><label>打兔子: <span id="rabbitValue">35</span>%</label><input type="range" class="range-slider" id="rabbitWeight" value="35" oninput="updateSlider('rabbit')"></div>
-                                    <div class="mb-3"><label>打地鼠: <span id="moleValue">35</span>%</label><input type="range" class="range-slider" id="moleWeight" value="35" oninput="updateSlider('mole')"></div>
-                                    <div class="mb-3"><label>预测: <span id="predictionValue">10</span>%</label><input type="range" class="range-slider" id="predictionWeight" value="10" oninput="updateSlider('prediction')"></div>
-                                    <div class="mb-3"><label>跟单: <span id="copyTradeValue">10</span>%</label><input type="range" class="range-slider" id="copyTradeWeight" value="10" oninput="updateSlider('copyTrade')"></div>
-                                    <div class="mb-3"><label>做市: <span id="marketMakeValue">10</span>%</label><input type="range" class="range-slider" id="marketMakeWeight" value="10" oninput="updateSlider('marketMake')"></div>
-                                </div></div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="card"><div class="card-header">高频量化</div><div class="card-body">
-                                    <div class="mb-3"><label>扫描间隔(分)</label><input type="number" class="form-control" id="scanInterval" value="15"></div>
-                                    <div class="mb-3"><label>置信度阈值</label><input type="number" class="form-control" id="confidenceThreshold" value="8.0"></div>
-                                    <div class="mb-3"><label>止损%</label><input type="number" class="form-control" id="stopLoss" value="2.0"></div>
-                                    <div class="mb-3"><label>止盈%</label><input type="number" class="form-control" id="takeProfit" value="5.0"></div>
-                                </div></div>
-                            </div>
-                        </div>
-                        <button class="btn btn-primary" onclick="saveConfig()">保存配置</button>
-                    </div>
-                    <div class="tab-pane fade" id="presets">
-                        <h4 class="mb-4">方案预设</h4>
-                        <button class="btn btn-outline-primary preset-btn" onclick="applyPreset('conservative')">保守型</button>
-                        <button class="btn btn-outline-primary preset-btn" onclick="applyPreset('balanced')">平衡型</button>
-                        <button class="btn btn-outline-primary preset-btn" onclick="applyPreset('aggressive')">激进型</button>
-                        <div class="card mt-3"><div class="card-body" id="presetDetails">选择预设</div></div>
-                    </div>
-                    <div class="tab-pane fade" id="signals">
-                        <h4 class="mb-4">信号监控</h4>
-                        <div class="card"><div class="card-body"><table class="table table-dark"><thead><tr><th>币种</th><th>模式</th><th>操作</th><th>置信度</th><th>收益</th></tr></thead><tbody id="signalsTableBody"></tbody></table></div></div>
-                    </div>
-                    <div class="tab-pane fade" id="airdrop">
-                        <h4 class="mb-4">🐑 薅羊毛</h4>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="airdrop-card mb-4">
-                                    <h5>搜索空投</h5>
-                                    <button class="btn btn-gold w-100 mt-2" onclick="huntAirdrop()">开始薅羊毛</button>
-                                    <div id="airdropResults" class="mt-3"></div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="card mb-4"><div class="card-body text-center">
-                                    <div class="balance-value" style="color:#ffd700;" id="airdropTotal">$0.00</div>
-                                    <div class="balance-label">累计收益</div>
-                                    <button class="btn btn-primary mt-3" onclick="transferToWallet()">转到钱包</button>
-                                </div></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="backtest">
-                        <h4 class="mb-4">回测</h4>
-                        <div class="card mb-4"><div class="card-body"><input type="number" id="backtestCapital" value="10000" placeholder="初始资金"><input type="number" id="backtestDays" value="30" placeholder="天数"><button onclick="runBacktest()">开始回测</button></div></div>
-                        <div id="backtestResults" style="display:none;"></div>
-                    </div>
-                    <div class="tab-pane fade" id="simulation">
-                        <h4 class="mb-4">模拟交易</h4>
-                        <div class="card mb-4"><div class="card-body"><input type="number" id="simCapital" value="1000" placeholder="模拟资金"><input type="number" id="simDays" value="7" placeholder="天数"><button class="btn btn-success" onclick="runSimulation()">开始模拟</button></div></div>
-                        <div id="simulationResults" style="display:none;"></div>
-                    </div>
-                    <div class="tab-pane fade" id="auth">
-                        <h4 class="mb-4">用户中心</h4>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="card mb-4"><div class="card-header">游客特权</div><div class="card-body">
-                                    <ul><li>💰 赠送1000USDT模拟交易</li><li>🐑 薅羊毛赚收益</li><li>📊 全部功能免费用</li></ul>
-                                    <div class="alert alert-warning">注册用户可将羊毛收益转到真实钱包!</div>
-                                </div></div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="card mb-4"><div class="card-header">注册/登录</div><div class="card-body">
-                                    <input class="form-control mb-2" id="regUsername" placeholder="用户名">
-                                    <input class="form-control mb-2" id="regPassword" type="password" placeholder="密码">
-                                    <input class="form-control mb-2" id="regWallet" placeholder="钱包地址(可选)">
-                                    <button class="btn btn-primary w-100 mb-2" onclick="register()">注册并转换</button>
-                                    <button class="btn btn-outline-primary w-100" onclick="login()">登录</button>
-                                </div></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </main>
+        
+        <div id="page-backtest" class="page">
+            <h2 class="mb-4">🔬 回测工具</h2>
+            <div class="card mb-4"><div class="card-body"><div class="row"><div class="col-md-3"><input type="number" class="form-control" id="btCapital" placeholder="初始资金" value="10000"></div><div class="col-md-3"><input type="number" class="form-control" id="btDays" placeholder="天数" value="30"></div><div class="col-md-3"><button class="btn btn-primary w-100" onclick="runBacktest()">开始回测</button></div></div></div></div>
+            <div id="backtestResults"></div>
         </div>
-    </div>
+        
+        <div id="page-services" class="page">
+            <h2 class="mb-4">👑 服务模式</h2>
+            <div class="row">
+                <div class="col-md-4"><div class="card text-center p-4"><h4>🆓 免费版</h4><div style="font-size:2rem;font-weight:700;color:var(--primary)">¥0<span style="font-size:1rem;color:var(--text-muted)">/永久</span></div><ul class="list-unstyled text-start mt-3"><li>✅ 基础信号</li><li>✅ 模拟交易</li><li>❌ 实盘</li></ul><button class="btn btn-outline mt-3 w-100">当前使用</button></div></div>
+                <div class="col-md-4"><div class="card text-center p-4" style="border-color:var(--primary)"><span class="badge bg-warning text-dark mb-2">推荐</span><h4>⚡ 订阅版</h4><div style="font-size:2rem;font-weight:700;color:var(--primary)">¥99<span style="font-size:1rem;color:var(--text-muted)">/月</span></div><ul class="list-unstyled text-start mt-3"><li>✅ 全部信号</li><li>✅ 实盘交易</li><li>✅ 无限额度</li></ul><button class="btn btn-primary mt-3 w-100">立即订阅</button></div></div>
+                <div class="col-md-4"><div class="card text-center p-4"><h4>🤝 分成版</h4><div style="font-size:2rem;font-weight:700;color:var(--primary)">¥0<span style="font-size:1rem;color:var(--text-muted)">/入驻</span></div><ul class="list-unstyled text-start mt-3"><li>✅ 技能分成</li><li>✅ 邀请奖励</li><li>✅ 被动收入</li></ul><button class="btn btn-outline mt-3 w-100">申请加入</button></div></div>
+            </div>
+        </div>
+    </main>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        let currentUser = { type: 'guest', balance: 1000, airdrop_earned: 0 };
+        let markets = [], strategies = [];
         
-        async function apiCall(endpoint, method = 'GET', data = null) {
-            const options = { method, headers: { 'Content-Type': 'application/json' } };
-            if (data) options.body = JSON.stringify(data);
-            return fetch(endpoint, options).then(r => r.json());
+        setTimeout(() => document.getElementById('landing').classList.add('hidden'), 3500);
+        
+        async function api(url) { return fetch(url).then(r => r.json()); }
+        
+        async function init() {
+            const m = await api('/api/markets');
+            markets = m.markets;
+            renderMarkets();
+            const s = await api('/api/strategies');
+            strategies = s.strategies;
+            document.getElementById('strategyCount').innerText = strategies.length;
+            renderStrategies();
+            refreshSignals();
         }
         
-        async function refreshUserStatus() {
-            const data = await apiCall('/api/user/status');
-            if (data.user) {
-                currentUser = data.user;
-                document.getElementById('userBalance').textContent = '$' + currentUser.balance.toFixed(2);
-                document.getElementById('airdropBalance').textContent = '$' + (currentUser.airdrop_earned || 0).toFixed(2);
-                document.getElementById('airdropTotal').textContent = '$' + (currentUser.airdrop_earned || 0).toFixed(2);
-                const badge = document.getElementById('userBadge');
-                badge.className = 'user-badge ' + (currentUser.registered ? 'badge-user' : 'badge-guest');
-                badge.innerHTML = '<i class="fas fa-' + (currentUser.registered ? 'user-check' : 'user') + '"></i> ' + (currentUser.registered ? '已注册' : '游客');
-            }
+        function renderMarkets() {
+            let html = '';
+            markets.forEach(m => {
+                const d = m.performance.daily;
+                html += `<div class="col-md-6 col-lg-4 mb-4"><div class="market-card"><div style="font-size:2.5rem">${m.icon}</div><div class="mt-2" style="font-size:1.25rem;font-weight:700">${m.name}</div><div class="text-muted mb-2">${m.description}</div><span class="perf-badge ${d>=0?'perf-positive':'perf-negative'}">${d>=0?'+':''}${d}%</span></div></div>`;
+            });
+            document.getElementById('marketsPreview').innerHTML = html;
+            document.getElementById('marketsFull').innerHTML = html;
         }
         
-        async function refreshStatus() {
-            const data = await apiCall('/api/status');
-            document.getElementById('totalPnl').textContent = '$' + data.status.total_pnl.toFixed(2);
-            document.getElementById('totalPnl').className = 'stat-value ' + (data.status.total_pnl >= 0 ? 'pnl-positive' : 'pnl-negative');
-            document.getElementById('todayPnl').textContent = '$' + data.status.today_pnl.toFixed(2);
-            document.getElementById('winRate').textContent = data.status.win_rate.toFixed(1) + '%';
-            document.getElementById('positions').textContent = data.status.positions.length;
-            const sb = document.getElementById('statusBadge');
-            sb.className = 'status-badge ' + (data.status.running ? 'status-running' : 'status-stopped');
-            sb.innerHTML = '<i class="fas fa-circle"></i> ' + (data.status.running ? '运行中' : '已停止');
-            document.getElementById('startBtn').style.display = data.status.running ? 'none' : 'block';
-            document.getElementById('stopBtn').style.display = data.status.running ? 'block' : 'none';
-            if (data.wallet && data.wallet.address) document.getElementById('walletSection').innerHTML = '<div class="wallet-connected"><i class="fas fa-check-circle"></i> ' + data.wallet.address.substring(0,8) + '...</div>';
+        function renderStrategies() {
+            let html = '';
+            strategies.forEach(s => {
+                html += `<div class="col-md-6 mb-4"><div class="card"><div class="card-body"><h5>${s.name}</h5><p class="text-muted small">来源: ${s.source}</p><p>${s.description}</p></div></div></div>`;
+            });
+            document.getElementById('strategiesList').innerHTML = html;
         }
         
-        async function startTrading() { await apiCall('/api/trading/start'); refreshStatus(); }
-        async function stopTrading() { await apiCall('/api/trading/stop'); refreshStatus(); }
+        function showPage(pid, el) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('page-' + pid).classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            el.classList.add('active');
+        }
         
         async function refreshSignals() {
-            const data = await apiCall('/api/signals');
+            const s = await api('/api/signals');
             let html = '';
-            data.signals.forEach(s => { html += '<tr><td><b>'+s.coin+'</b></td><td>'+s.mode+'</td><td><span class="badge '+(s.action=='BUY'?'bg-success':'bg-warning')+'">'+s.action+'</span></td><td>'+s.confidence+'</td><td>+'+s.potential+'%</td></tr>'; });
-            document.getElementById('signalsTableBody').innerHTML = html;
+            s.signals.forEach(sig => {
+                html += `<tr><td><b>${sig.coin}</b></td><td>${sig.mode}</td><td><span class="badge ${sig.action=='BUY'?'bg-success':'bg-warning'}">${sig.action}</span></td><td>${sig.confidence}</td><td>+${sig.potential}%</td><td>${sig.risk}</td></tr>`;
+            });
+            document.getElementById('signalsBody').innerHTML = html;
+            document.getElementById('signalCount').innerText = s.signals.length;
         }
         
         async function huntAirdrop() {
-            const data = await apiCall('/api/airdrop/hunt');
+            const r = await api('/api/airdrop/hunt');
             let html = '';
-            if (data.success && data.airdrops.length > 0) {
-                data.airdrops.forEach(a => { html += '<div class="alert alert-success">发现 ' + a.coin + ': +' + a.amount.toFixed(2) + ' USDT</div>'; });
-            } else { html = '<div class="alert alert-secondary">没有发现新空投</div>'; }
+            if(r.success && r.airdrops.length) {
+                r.airdrops.forEach(a => html += `<div class="alert alert-success">发现 ${a.coin}: +$${a.amount}</div>`);
+            }
             document.getElementById('airdropResults').innerHTML = html;
-            refreshUserStatus();
-        }
-        
-        async function transferToWallet() {
-            const amount = prompt('输入转账金额:', currentUser.airdrop_earned.toFixed(2));
-            if (amount) {
-                const d = await apiCall('/api/user/wallet/transfer', 'POST', { amount: parseFloat(amount) });
-                alert(d.success ? '转账成功!' : '失败: ' + d.error);
-                refreshUserStatus();
-            }
-        }
-        
-        async function register() {
-            const d = await apiCall('/api/user/register', 'POST', { username: document.getElementById('regUsername').value, password: document.getElementById('regPassword').value, wallet: document.getElementById('regWallet').value });
-            alert(d.success ? '注册成功!羊毛可转钱包了' : '失败: ' + d.error);
-            refreshUserStatus();
-        }
-        
-        async function login() {
-            const d = await apiCall('/api/user/login', 'POST', { username: document.getElementById('regUsername').value, password: document.getElementById('regPassword').value });
-            alert(d.success ? '登录成功!' : '失败: ' + d.error);
-        }
-        
-        function updateSlider(t) { document.getElementById(t+'Value').textContent = document.getElementById(t+'Weight').value; }
-        
-        async function saveConfig() {
-            await apiCall('/api/config', 'POST', { portfolio: { rabbit_weight: parseInt(document.getElementById('rabbitWeight').value), mole_weight: parseInt(document.getElementById('moleWeight').value), prediction_weight: parseInt(document.getElementById('predictionWeight').value), copy_trade_weight: parseInt(document.getElementById('copyTradeWeight').value), market_make_weight: parseInt(document.getElementById('marketMakeWeight').value) }, hft_config: { scan_interval: parseInt(document.getElementById('scanInterval').value), confidence_threshold: parseFloat(document.getElementById('confidenceThreshold').value) }, position_config: { stop_loss: parseFloat(document.getElementById('stopLoss').value), take_profit: parseFloat(document.getElementById('takeProfit').value) }});
-            alert('配置已保存');
-        }
-        
-        async function applyPreset(name) {
-            const d = await apiCall('/api/preset/' + name);
-            if (d.success) {
-                document.getElementById('rabbitWeight').value = d.preset.rabbit_weight; updateSlider('rabbit');
-                document.getElementById('moleWeight').value = d.preset.mole_weight; updateSlider('mole');
-                document.getElementById('presetDetails').innerHTML = '<b>' + d.preset.name + '</b><br>兔子' + d.preset.rabbit_weight + '%<br>地鼠' + d.preset.mole_weight + '%<br>阈值' + d.preset.confidence_threshold;
-            }
+            document.getElementById('airdropTotal').innerText = '$' + r.total;
+            document.getElementById('airdropBalance').innerText = '$' + r.total;
         }
         
         async function runBacktest() {
-            const d = await apiCall('/api/backtest', 'POST', { capital: parseInt(document.getElementById('backtestCapital').value), days: parseInt(document.getElementById('backtestDays').value) });
-            if (d.success) {
-                document.getElementById('backtestResults').style.display = 'block';
-                document.getElementById('backtestResults').innerHTML = '<div class="card-body">最终资金: $' + d.results.final_capital + '<br>盈亏: $' + d.results.total_pnl + '<br>胜率: ' + d.results.win_rate + '%</div>';
+            const capital = document.getElementById('btCapital').value;
+            const days = document.getElementById('btDays').value;
+            const r = await api('/api/backtest', 'POST', {capital: parseInt(capital), days: parseInt(days)});
+            if(r.success) {
+                document.getElementById('backtestResults').innerHTML = `<div class="card"><div class="card-body"><h5>回测结果</h5><p>初始: $${r.result.initial} → 最终: $${r.result.final}</p><p class="text-success">盈亏: +$${r.result.pnl} (${r.result.pnl_percent}%)</p><p>胜率: ${r.result.win_rate}%</p></div></div>`;
             }
         }
         
-        async function runSimulation() {
-            const d = await apiCall('/api/simulation', 'POST', { capital: parseInt(document.getElementById('simCapital').value), days: parseInt(document.getElementById('simDays').value) });
-            if (d.success) {
-                document.getElementById('simulationResults').style.display = 'block';
-                document.getElementById('simulationResults').innerHTML = '<div class="card-body">最终: $' + d.simulation.final_capital + '<br>收益: ' + d.simulation.pnl_percent + '%</div>';
-                refreshUserStatus();
-            }
+        async function applyPreset(name) {
+            await api('/api/preset/' + name);
+            alert('已应用预设: ' + name);
         }
         
-        refreshUserStatus();
-        refreshStatus();
-        setInterval(refreshStatus, 5000);
+        init();
     </script>
 </body>
 </html>
