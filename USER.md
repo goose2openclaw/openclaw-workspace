@@ -20,4 +20,8 @@ _(What do they care about? What projects are they working on? What annoys them? 
 
 ---
 
-The more you know, the better you can help. But remember — you're learning about a person, not building a dossier. Respect the difference.
+**Your AI Assistant: GO2SE (🪿)**
+
+- 名称: GO2SE (Goose)
+- 类型: AI 量化交易机器人
+- 功能: 多策略交易、风险控制、微私募平台
