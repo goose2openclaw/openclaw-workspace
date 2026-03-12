@@ -1,0 +1,66 @@
+{
+  "start_time": "2026-03-12T17:28:15.666696",
+  "iterations": 2,
+  "total_signals": 8,
+  "trades_executed": 4,
+  "pnl": 8.572701615397433,
+  "weights": {
+    "mainstream": 0.35,
+    "mole": 0.3,
+    "airdrop": 0.15,
+    "oracle": 0.1,
+    "copy_trade": 0.1
+  },
+  "best_performers": [
+    {
+      "coin": "ETH",
+      "confidence": 7.5,
+      "potential": 8.2,
+      "timestamp": "2026-03-12T17:28:16.667281"
+    },
+    {
+      "coin": "SOL",
+      "confidence": 6.8,
+      "potential": 12.5,
+      "timestamp": "2026-03-12T17:28:16.667294"
+    },
+    {
+      "coin": "ETH",
+      "confidence": 7.5,
+      "potential": 8.2,
+      "timestamp": "2026-03-12T17:28:23.833267"
+    },
+    {
+      "coin": "SOL",
+      "confidence": 6.8,
+      "potential": 12.5,
+      "timestamp": "2026-03-12T17:28:23.833272"
+    }
+  ],
+  "adjustments_log": [
+    {
+      "time": "2026-03-12T17:28:16.667302",
+      "signals": 4,
+      "buy": 2,
+      "weights": {
+        "mainstream": 0.35,
+        "mole": 0.3,
+        "airdrop": 0.15,
+        "oracle": 0.1,
+        "copy_trade": 0.1
+      }
+    },
+    {
+      "time": "2026-03-12T17:28:23.833276",
+      "signals": 4,
+      "buy": 2,
+      "weights": {
+        "mainstream": 0.35,
+        "mole": 0.3,
+        "airdrop": 0.15,
+        "oracle": 0.1,
+        "copy_trade": 0.1
+      }
+    }
+  ]
+}

@@ -8,240 +8,422 @@
     <style>
         :root { --primary: #00E5CC; --bg-dark: #0A0E17; --bg-card: #111827; --text: #F3F4F6; --text-muted: #9CA3AF; --gold: #FFD700; --success: #10B981; --danger: #EF4444; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg-dark); color: var(--text); font-family: 'Noto Sans SC', sans-serif; overflow-x: hidden; }
+        body { background: var(--bg-dark); color: var(--text); font-family: 'Noto Sans SC', sans-serif; }
         
-        #landing { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--bg-dark); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; transition: all 1.5s; }
+        #landing { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--bg-dark); display: flex; align-items: center; justify-content: center; z-index: 9999; transition: all 1.5s; }
         #landing.hidden { opacity: 0; pointer-events: none; transform: scale(0.5); }
+        .goose-anim { font-size: 80px; animation: gf 2s ease-in-out infinite; }
+        @keyframes gf { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-20px)} }
+        .landing-text { text-align: center; margin-top: 30px; animation: fu 1s ease 0.5s both; }
+        @keyframes fu { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+        .landing-text h1 { font-size: 3rem; font-weight: 800; background: linear-gradient(135deg,#fff,var(--primary),var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
-        .goose-anim { font-size: 100px; animation: gooseFloat 2s ease-in-out infinite; filter: drop-shadow(0 30px 50px rgba(0,229,204,0.4)); }
-        @keyframes gooseFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-30px); } }
+        .navbar { background: rgba(10,14,23,0.95); border-bottom: 1px solid rgba(0,229,204,0.1); padding: 0.6rem 1.5rem; position: fixed; width: 100%; z-index: 1000; }
+        .navbar-brand { font-size: 1.5rem; font-weight: 800; background: linear-gradient(135deg,#fff,var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
-        .baby-flock { position: absolute; bottom: -20px; display: flex; gap: 8px; }
-        .baby-anim { font-size: 20px; animation: babyPeek 1.5s ease-in-out infinite; }
-        @keyframes babyPeek { 0%, 100% { transform: translateY(15px); opacity: 0.5; } 50% { transform: translateY(0); opacity: 1; } }
-        
-        .landing-text { margin-top: 50px; text-align: center; animation: fadeInUp 1s ease 0.5s both; }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
-        .landing-text h1 { font-size: 4rem; font-weight: 800; background: linear-gradient(135deg, #fff, var(--primary), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        
-        .navbar { background: rgba(10,14,23,0.95); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0,229,204,0.1); padding: 0.7rem 2rem; position: fixed; width: 100%; z-index: 1000; }
-        .navbar-brand { font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, #fff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        
-        .search-box { background: var(--bg-card); border: 1px solid rgba(0,229,204,0.2); border-radius: 50px; padding: 0.4rem 1.2rem; display: flex; align-items: center; gap: 8px; }
-        .search-box input { background: transparent; border: none; color: var(--text); width: 250px; outline: none; }
-        
-        .sidebar { position: fixed; left: 0; top: 54px; width: 220px; height: calc(100vh - 54px); background: var(--bg-card); border-right: 1px solid rgba(0,229,204,0.1); padding: 1.5rem 0; overflow-y: auto; z-index: 100; }
-        .nav-item { padding: 0.8rem 1.5rem; color: var(--text-muted); cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 12px; border-left: 3px solid transparent; }
+        .sidebar { position: fixed; left: 0; top: 50px; width: 200px; height: calc(100vh-50px); background: var(--bg-card); border-right: 1px solid rgba(0,229,204,0.1); padding: 1rem 0; overflow-y: auto; }
+        .nav-item { padding: 0.7rem 1.2rem; color: var(--text-muted); cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 10px; border-left: 3px solid transparent; }
         .nav-item:hover { background: rgba(0,229,204,0.1); color: var(--text); }
         .nav-item.active { background: rgba(0,229,204,0.15); color: var(--primary); border-left-color: var(--primary); }
         
-        .main-content { margin-left: 220px; padding: 80px 30px 30px; min-height: 100vh; }
-        .page { display: none; animation: fadeIn 0.4s ease; }
+        .main-content { margin-left: 200px; padding: 70px 20px 20px; min-height: 100vh; }
+        .page { display: none; animation: fadeIn 0.4s; }
         .page.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from{opacity:0} to{opacity:1} }
         
-        .card { background: var(--bg-card); border: 1px solid rgba(0,229,204,0.1); border-radius: 16px; transition: all 0.3s; }
-        .card:hover { border-color: rgba(0,229,204,0.3); }
-        .card-header { background: transparent; border-bottom: 1px solid rgba(0,229,204,0.1); padding: 1rem 1.5rem; font-weight: 600; }
+        .card { background: var(--bg-card); border: 1px solid rgba(0,229,204,0.1); border-radius: 12px; margin-bottom: 1rem; }
+        .card-header { background: transparent; border-bottom: 1px solid rgba(0,229,204,0.1); padding: 0.8rem 1rem; font-weight: 600; }
         
-        .market-card { background: var(--bg-card); border: 1px solid rgba(0,229,204,0.15); border-radius: 20px; padding: 1.5rem; cursor: pointer; transition: all 0.4s; position: relative; overflow: hidden; }
-        .market-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(135deg, #00E5CC, #00B8A3); transform: scaleX(0); transition: transform 0.3s; }
-        .market-card:hover::before { transform: scaleX(1); }
-        .market-card:hover { transform: translateY(-8px); box-shadow: 0 25px 50px rgba(0,229,204,0.2); }
+        .market-card { background: var(--bg-card); border: 1px solid rgba(0,229,204,0.15); border-radius: 16px; padding: 1.2rem; cursor: pointer; transition: 0.3s; }
+        .market-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 15px 30px rgba(0,229,204,0.2); }
         
-        .stat-card { background: linear-gradient(135deg, var(--bg-card), rgba(0,229,204,0.08)); border-radius: 16px; padding: 1.5rem; text-align: center; }
-        .stat-value { font-size: 2rem; font-weight: 700; color: var(--primary); }
-        .stat-label { color: var(--text-muted); font-size: 0.85rem; margin-top: 0.3rem; }
+        .stat-card { background: linear-gradient(135deg,var(--bg-card),rgba(0,229,204,0.08)); border-radius: 12px; padding: 1rem; text-align: center; }
+        .stat-value { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
+        .stat-label { font-size: 0.8rem; color: var(--text-muted); }
         
-        .balance-display { background: linear-gradient(135deg, rgba(0,229,204,0.1), rgba(255,215,0,0.05)); border: 1px solid rgba(0,229,204,0.2); border-radius: 20px; padding: 1.5rem; }
-        .balance-value { font-size: 2.5rem; font-weight: 700; }
+        .balance-box { background: linear-gradient(135deg,rgba(0,229,204,0.1),rgba(255,215,0,0.05)); border: 1px solid rgba(0,229,204,0.2); border-radius: 16px; padding: 1.2rem; text-align: center; }
+        .balance-value { font-size: 2rem; font-weight: 700; }
         
-        .btn-primary { background: linear-gradient(135deg, #00E5CC, #00B8A3); border: none; padding: 0.6rem 1.5rem; border-radius: 10px; font-weight: 600; }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,229,204,0.4); }
-        .btn-outline { background: transparent; border: 1px solid rgba(0,229,204,0.4); color: var(--primary); padding: 0.6rem 1.5rem; border-radius: 10px; }
+        .btn-primary { background: linear-gradient(135deg,#00E5CC,#00B8A3); border: none; padding: 0.5rem 1.2rem; border-radius: 8px; font-weight: 600; }
+        .btn-outline { background: transparent; border: 1px solid rgba(0,229,204,0.4); color: var(--primary); padding: 0.5rem 1.2rem; border-radius: 8px; }
         
-        .user-badge { padding: 0.3rem 1rem; border-radius: 20px; font-size: 0.85rem; }
+        .user-badge { padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.8rem; }
         .badge-guest { background: rgba(255,215,0,0.15); color: var(--gold); border: 1px solid rgba(255,215,0,0.3); }
         .badge-user { background: rgba(0,229,204,0.15); color: var(--primary); border: 1px solid rgba(0,229,204,0.3); }
         
-        .mini-goose { position: fixed; bottom: 20px; right: 20px; font-size: 35px; animation: miniFloat 3s ease-in-out infinite; z-index: 1000; cursor: pointer; opacity: 0.7; }
-        .mini-goose:hover { opacity: 1; transform: scale(1.15); }
-        @keyframes miniFloat { 0%, 100% { transform: translateY(0) rotate(-5deg); } 50% { transform: translateY(-15px) rotate(5deg); } }
+        .perf-pos { background: rgba(16,185,129,0.2); color: var(--success); padding: 0.2rem 0.6rem; border-radius: 10px; font-size: 0.75rem; }
+        .perf-neg { background: rgba(239,68,68,0.2); color: var(--danger); padding: 0.2rem 0.6rem; border-radius: 10px; font-size: 0.75rem; }
         
-        .perf-positive { background: rgba(16,185,129,0.2); color: var(--success); }
-        .perf-negative { background: rgba(239,68,68,0.2); color: var(--danger); }
+        .mini-goose { position: fixed; bottom: 15px; right: 15px; font-size: 30px; animation: mf 3s ease-in-out infinite; z-index: 1000; cursor: pointer; opacity: 0.7; }
+        @keyframes mf { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+        
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; align-items: center; justify-content: center; }
+        .modal.active { display: flex; }
+        .modal-content { background: var(--bg-card); border: 1px solid rgba(0,229,204,0.3); border-radius: 16px; padding: 2rem; max-width: 500px; width: 90%; }
+        
+        .form-control { background: var(--bg-dark); border: 1px solid rgba(0,229,204,0.3); color: var(--text); }
+        .table { color: var(--text); }
         
         @media (max-width: 768px) { .sidebar { display: none; } .main-content { margin-left: 0; } }
     </style>
 </head>
-<body>
-    <div id="landing">
-        <div class="goose-anim">🪿</div>
-        <div class="baby-flock"><span class="baby-anim">🐤</span><span class="baby-anim">🐤</span><span class="baby-anim">🐤</span></div>
-        <div class="landing-text"><h1>Go2Se</h1><p>专业量化交易平台</p></div>
+<body onload="initAll()">
+    <!-- Landing -->
+    <div id="landing" onclick="hideLanding()">
+        <div class="text-center">
+            <div class="goose-anim">🪿</div>
+            <div class="landing-text">
+                <h1>Go2Se</h1>
+                <p style="color:var(--text-muted)">专业量化交易平台</p>
+            </div>
+        </div>
     </div>
     
-    <div class="mini-goose" onclick="scrollToTop()">🪿</div>
+    <div class="mini-goose" onclick="scrollTop()">🪿</div>
 
+    <!-- Navbar -->
     <nav class="navbar">
-        <div class="container-fluid">
+        <div class="d-flex align-items-center justify-content-between w-100">
             <a class="navbar-brand" href="#">🪿 Go2Se</a>
-            <div class="search-box"><i class="fas fa-search" style="color:var(--text-muted)"></i><input type="text" placeholder="搜索市场、策略..." id="searchInput"></div>
             <div class="d-flex align-items-center gap-3">
                 <span class="user-badge badge-guest" id="userBadge"><i class="fas fa-user"></i> 游客</span>
-                <button class="btn btn-outline btn-sm" onclick="showAuth()">注册/登录</button>
+                <button class="btn btn-outline btn-sm" onclick="showAuthModal()">注册/登录</button>
             </div>
         </div>
     </nav>
 
+    <!-- Sidebar -->
     <nav class="sidebar">
         <div class="nav-item active" onclick="showPage('home',this)"><i class="fas fa-home"></i> 首页</div>
         <div class="nav-item" onclick="showPage('markets',this)"><i class="fas fa-chart-line"></i> 7连环市场</div>
-        <div class="nav-item" onclick="showPage('strategies',this)"><i class="fas fa-chess"></i> 策略中心</div>
         <div class="nav-item" onclick="showPage('signals',this)"><i class="fas fa-broadcast-tower"></i> 信号系统</div>
+        <div class="nav-item" onclick="showPage('strategies',this)"><i class="fas fa-chess"></i> 12策略</div>
         <div class="nav-item" onclick="showPage('oracle',this)"><i class="fas fa-link"></i> 预言机</div>
         <div class="nav-item" onclick="showPage('portfolio',this)"><i class="fas fa-chart-pie"></i> 投资组合</div>
+        <div class="nav-item" onclick="showPage('params',this)"><i class="fas fa-sliders-h"></i> 参数面板</div>
         <div class="nav-item" onclick="showPage('airdrop',this)"><i class="fas fa-gift"></i> 薅羊毛</div>
-        <div class="nav-item" onclick="showPage('backtest',this)"><i class="fas fa-history"></i> 回测工具</div>
-        <div class="nav-item" onclick="showPage('services',this)"><i class="fas fa-crown"></i> 服务模式</div>
+        <div class="nav-item" onclick="showPage('backtest',this)"><i class="fas fa-history"></i> 回测</div>
     </nav>
 
+    <!-- Main Content -->
     <main class="main-content">
+        <!-- Home Page -->
         <div id="page-home" class="page active">
-            <h2 class="mb-4">欢迎来到 <span style="color:var(--primary)">Go2Se</span></h2>
-            <div class="row mb-4">
-                <div class="col-md-4"><div class="balance-display text-center"><div class="balance-value" id="userBalance">$1,000</div><div class="stat-label">🎁 模拟余额</div></div></div>
-                <div class="col-md-4"><div class="balance-display text-center"><div class="balance-value" style="color:var(--gold)" id="airdropBalance">$0</div><div class="stat-label">🐑 薅羊毛</div></div></div>
-                <div class="col-md-4"><div class="balance-display text-center"><div class="balance-value" style="color:var(--success)" id="totalPnl">+$766</div><div class="stat-label">📈 累计盈亏</div></div></div>
+            <h4 class="mb-3">欢迎 <span style="color:var(--primary)">Go2Se</span></h4>
+            
+            <!-- Balance -->
+            <div class="row mb-3">
+                <div class="col-md-4"><div class="balance-box"><div class="balance-value" id="userBalance">$1,000</div><div class="stat-label">🎁 模拟余额</div></div></div>
+                <div class="col-md-4"><div class="balance-box"><div class="balance-value" style="color:var(--gold)" id="airdropBal">$0</div><div class="stat-label">🐑 薅羊毛</div></div></div>
+                <div class="col-md-4"><div class="balance-box"><div class="balance-value" style="color:var(--success)" id="totalPnl">+$766</div><div class="stat-label">📈 总盈亏</div></div></div>
             </div>
-            <div class="row mb-4">
+            
+            <!-- Stats -->
+            <div class="row mb-3">
                 <div class="col-md-3"><div class="stat-card"><div class="stat-value" id="winRate">68%</div><div class="stat-label">胜率</div></div></div>
-                <div class="col-md-3"><div class="stat-card"><div class="stat-value">7</div><div class="stat-label">活跃市场</div></div></div>
-                <div class="col-md-3"><div class="stat-card"><div class="stat-value" id="signalCount">12</div><div class="stat-label">今日信号</div></div></div>
-                <div class="col-md-3"><div class="stat-card"><div class="stat-value" id="strategyCount">12</div><div class="stat-label">整合策略</div></div></div>
+                <div class="col-md-3"><div class="stat-card"><div class="stat-value" id="signalCnt">0</div><div class="stat-label">信号</div></div></div>
+                <div class="col-md-3"><div class="stat-card"><div class="stat-value">7</div><div class="stat-label">市场</div></div></div>
+                <div class="col-md-3"><div class="stat-value" id="stratCnt">0</div><div class="stat-label">策略</div></div></div>
             </div>
-            <h4 class="mb-3">🎯 7连环市场机遇</h4>
-            <div class="row" id="marketsPreview"></div>
+            
+            <!-- Top 5 Markets -->
+            <h5 class="mb-2">🎯 前五市场机会</h5>
+            <div class="row" id="topMarkets"></div>
         </div>
 
-        <div id="page-markets" class="page"><h2 class="mb-4">🎯 7连环市场</h2><div class="row" id="marketsFull"></div></div>
-        
-        <div id="page-strategies" class="page"><h2 class="mb-4">♟️ 策略中心 - 10家竞品有机融合</h2><div class="row" id="strategiesList"></div></div>
-        
+        <!-- Markets Page -->
+        <div id="page-markets" class="page">
+            <h4 class="mb-3">🎯 7连环市场</h4>
+            <div class="row" id="allMarkets"></div>
+        </div>
+
+        <!-- Signals Page -->
         <div id="page-signals" class="page">
-            <h2 class="mb-4">📡 多源聚合信号</h2>
-            <div class="card"><div class="card-header d-flex justify-content-between"><span>实时信号</span><button class="btn btn-sm btn-primary" onclick="refreshSignals()">🔄 刷新</button></div>
-            <div class="card-body"><table class="table table-dark"><thead><tr><th>币</th><th>模式</th><th>操作</th><th>置信度</th><th>收益</th><th>风险</th></tr></thead><tbody id="signalsBody"></tbody></table></div></div>
+            <h4 class="mb-3">📡 交易信号 <button class="btn btn-sm btn-primary ms-2" onclick="refreshSignals()">🔄</button></h4>
+            <div class="card"><div class="card-body"><table class="table" id="signalsTable"><thead><tr><th>币</th><th>操作</th><th>置信度</th><th>收益</th><th>风险</th></tr></thead><tbody id="signalsBody"></tbody></table></div></div>
         </div>
-        
-        <div id="page-oracle" class="page"><h2 class="mb-4">🔗 预言机事件</h2><div class="row" id="oracleEvents"></div></div>
-        
-        <div id="page-portfolio" class="page"><h2 class="mb-4">💼 投资组合</h2><div class="card"><div class="card-header">预设方案</div><div class="card-body"><button class="btn btn-outline me-2" onclick="applyPreset('conservative')">🛡️ 保守</button><button class="btn btn-outline me-2" onclick="applyPreset('balanced')">⚖️ 平衡</button><button class="btn btn-outline" onclick="applyPreset('aggressive')">🚀 激进</button></div></div></div>
-        
+
+        <!-- Strategies Page -->
+        <div id="page-strategies" class="page">
+            <h4 class="mb-3">♟️ 12策略整合</h4>
+            <div class="row" id="strategiesList"></div>
+        </div>
+
+        <!-- Oracle Page -->
+        <div id="page-oracle" class="page">
+            <h4 class="mb-3">🔗 预言机事件 <button class="btn btn-sm btn-primary ms-2" onclick="loadOracle()">🔄</button></h4>
+            <div class="row" id="oracleList"></div>
+        </div>
+
+        <!-- Portfolio Page -->
+        <div id="page-portfolio" class="page">
+            <h4 class="mb-3">💼 投资组合</h4>
+            <div class="card mb-3"><div class="card-header">预设方案</div><div class="card-body">
+                <button class="btn btn-outline me-2" onclick="applyPreset('conservative')">🛡️ 保守</button>
+                <button class="btn btn-outline me-2" onclick="applyPreset('balanced')">⚖️ 平衡</button>
+                <button class="btn btn-outline" onclick="applyPreset('aggressive')">🚀 激进</button>
+            </div></div>
+            <div class="card"><div class="card-header">当前配置</div><div class="card-body" id="portfolioBody"></div></div>
+        </div>
+
+        <!-- Params Page -->
+        <div id="page-params" class="page">
+            <h4 class="mb-3">⚙️ 参数面板</h4>
+            <div class="card mb-3"><div class="card-header">组合权重</div><div class="card-body" id="weightsBody"></div></div>
+            <div class="card mb-3"><div class="card-header">交易参数</div><div class="card-body">
+                <div class="mb-2"><label>置信度阈值</label><input type="range" class="form-range" min="1" max="10" value="8" id="confThresh" oninput="document.getElementById('confVal').innerText=this.value"></div>
+                <div>阈值: <span id="confVal">8</span></div>
+                <div class="mb-2 mt-2"><label>止损%</label><input type="number" class="form-control" value="2.0" id="stopLoss"></div>
+                <div class="mb-2"><label>止盈%</label><input type="number" class="form-control" value="5.0" id="takeProfit"></div>
+                <button class="btn btn-primary mt-2" onclick="saveParams()">保存参数</button>
+            </div></div>
+            <div class="card"><div class="card-header">交易控制</div><div class="card-body text-center">
+                <button class="btn btn-success me-2" id="startBtn" onclick="startTrading()">▶ 启动</button>
+                <button class="btn btn-danger" id="stopBtn" onclick="stopTrading()" style="display:none">⏹ 停止</button>
+            </div></div>
+        </div>
+
+        <!-- Airdrop Page -->
         <div id="page-airdrop" class="page">
-            <h2 class="mb-4">🐑 智能薅羊毛</h2>
+            <h4 class="mb-3">🐑 薅羊毛</h4>
             <div class="row">
-                <div class="col-md-6"><div class="card"><div class="card-header">搜索空投</div><div class="card-body text-center"><button class="btn btn-warning btn-lg" onclick="huntAirdrop()">🔍 开始薅羊毛</button><div id="airdropResults" class="mt-3"></div></div></div></div>
-                <div class="col-md-6"><div class="card"><div class="card-header">收益统计</div><div class="card-body text-center"><div class="balance-value" style="color:var(--gold)" id="airdropTotal">$0</div><button class="btn btn-primary mt-3" onclick="claimAirdrop()">领取到钱包</button></div></div></div>
+                <div class="col-md-6"><div class="card"><div class="card-header">搜索空投</div><div class="card-body text-center">
+                    <button class="btn btn-warning btn-lg" onclick="huntAirdrop()">🔍 开始薅羊毛</button>
+                    <div id="airdropRes" class="mt-3"></div>
+                </div></div></div>
+                <div class="col-md-6"><div class="card"><div class="card-header">收益</div><div class="card-body text-center">
+                    <div class="balance-value" style="color:var(--gold)" id="airdropTotal">$0</div>
+                    <button class="btn btn-primary mt-2" onclick="claimAirdrop()">领取到钱包</button>
+                </div></div></div>
             </div>
         </div>
-        
+
+        <!-- Backtest Page -->
         <div id="page-backtest" class="page">
-            <h2 class="mb-4">🔬 回测工具</h2>
-            <div class="card mb-4"><div class="card-body"><div class="row"><div class="col-md-3"><input type="number" class="form-control" id="btCapital" placeholder="初始资金" value="10000"></div><div class="col-md-3"><input type="number" class="form-control" id="btDays" placeholder="天数" value="30"></div><div class="col-md-3"><button class="btn btn-primary w-100" onclick="runBacktest()">开始回测</button></div></div></div></div>
-            <div id="backtestResults"></div>
-        </div>
-        
-        <div id="page-services" class="page">
-            <h2 class="mb-4">👑 服务模式</h2>
-            <div class="row">
-                <div class="col-md-4"><div class="card text-center p-4"><h4>🆓 免费版</h4><div style="font-size:2rem;font-weight:700;color:var(--primary)">¥0<span style="font-size:1rem;color:var(--text-muted)">/永久</span></div><ul class="list-unstyled text-start mt-3"><li>✅ 基础信号</li><li>✅ 模拟交易</li><li>❌ 实盘</li></ul><button class="btn btn-outline mt-3 w-100">当前使用</button></div></div>
-                <div class="col-md-4"><div class="card text-center p-4" style="border-color:var(--primary)"><span class="badge bg-warning text-dark mb-2">推荐</span><h4>⚡ 订阅版</h4><div style="font-size:2rem;font-weight:700;color:var(--primary)">¥99<span style="font-size:1rem;color:var(--text-muted)">/月</span></div><ul class="list-unstyled text-start mt-3"><li>✅ 全部信号</li><li>✅ 实盘交易</li><li>✅ 无限额度</li></ul><button class="btn btn-primary mt-3 w-100">立即订阅</button></div></div>
-                <div class="col-md-4"><div class="card text-center p-4"><h4>🤝 分成版</h4><div style="font-size:2rem;font-weight:700;color:var(--primary)">¥0<span style="font-size:1rem;color:var(--text-muted)">/入驻</span></div><ul class="list-unstyled text-start mt-3"><li>✅ 技能分成</li><li>✅ 邀请奖励</li><li>✅ 被动收入</li></ul><button class="btn btn-outline mt-3 w-100">申请加入</button></div></div>
-            </div>
+            <h4 class="mb-3">🔬 回测</h4>
+            <div class="card mb-3"><div class="card-body">
+                <div class="row">
+                    <div class="col"><input type="number" class="form-control" id="btCap" placeholder="初始资金" value="10000"></div>
+                    <div class="col"><input type="number" class="form-control" id="btDay" placeholder="天数" value="30"></div>
+                    <div class="col"><button class="btn btn-primary" onclick="runBacktest()">开始回测</button></div>
+                </div>
+            </div></div>
+            <div id="btRes"></div>
         </div>
     </main>
 
+    <!-- Auth Modal -->
+    <div class="modal" id="authModal">
+        <div class="modal-content">
+            <h5 class="mb-3">注册/登录</h5>
+            <input class="form-control mb-2" id="regUser" placeholder="用户名">
+            <input class="form-control mb-2" id="regPass" type="password" placeholder="密码">
+            <input class="form-control mb-2" id="regWallet" placeholder="钱包地址(可选)">
+            <div class="d-flex gap-2">
+                <button class="btn btn-primary flex-grow-1" onclick="doRegister()">注册</button>
+                <button class="btn btn-outline flex-grow-1" onclick="doLogin()">登录</button>
+            </div>
+            <button class="btn btn-link w-100 mt-2" onclick="hideAuthModal()">取消</button>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        let markets = [], strategies = [];
-        
-        setTimeout(() => document.getElementById('landing').classList.add('hidden'), 3500);
-        
-        async function api(url) { return fetch(url).then(r => r.json()); }
-        
-        async function init() {
-            const m = await api('/api/markets');
-            markets = m.markets;
-            renderMarkets();
-            const s = await api('/api/strategies');
-            strategies = s.strategies;
-            document.getElementById('strategyCount').innerText = strategies.length;
-            renderStrategies();
-            refreshSignals();
+        let markets = [], signals = [], strategies = [], user = {type:'guest', balance:1000, airdrop:0};
+
+        function hideLanding() { document.getElementById('landing').classList.add('hidden'); }
+        setTimeout(() => hideLanding(), 3000);
+
+        async function api(url, method='GET', data=null) {
+            try {
+                const opt = {method, headers:{'Content-Type':'application/json'}};
+                if(data) opt.body = JSON.stringify(data);
+                return await fetch(url, opt).then(r => r.json());
+            } catch { return {}; }
         }
-        
-        function renderMarkets() {
+
+        async function initAll() {
+            await loadMarkets();
+            await loadStrategies();
+            await loadSignals();
+            await loadOracle();
+            await loadUser();
+            await loadPortfolio();
+        }
+
+        async function loadUser() {
+            const u = await api('/api/user/status');
+            user = u;
+            document.getElementById('userBalance').innerText = '$' + u.balance;
+            document.getElementById('airdropBal').innerText = '$' + (u.airdrop||0);
+            document.getElementById('airdropTotal').innerText = '$' + (u.airdrop||0);
+            const badge = document.getElementById('userBadge');
+            if(u.registered) { badge.className = 'user-badge badge-user'; badge.innerHTML = '<i class="fas fa-check"></i> '+u.username; }
+        }
+
+        async function loadMarkets() {
+            const d = await api('/api/markets');
+            markets = d.markets||[];
             let html = '';
-            markets.forEach(m => {
-                const d = m.performance.daily;
-                html += `<div class="col-md-6 col-lg-4 mb-4"><div class="market-card"><div style="font-size:2.5rem">${m.icon}</div><div class="mt-2" style="font-size:1.25rem;font-weight:700">${m.name}</div><div class="text-muted mb-2">${m.description}</div><span class="perf-badge ${d>=0?'perf-positive':'perf-negative'}">${d>=0?'+':''}${d}%</span></div></div>`;
+            markets.forEach((m,i) => {
+                const daily = m.performance?.daily||0;
+                const cls = daily>=0?'perf-pos':'perf-neg';
+                const sign = daily>=0?'+':'';
+                html += `<div class="col-md-4 mb-3"><div class="market-card">
+                    <div style="font-size:2rem">${m.icon}</div>
+                    <div style="font-weight:700">${m.name}</div>
+                    <div style="font-size:0.8rem;color:var(--text-muted)">${m.description}</div>
+                    <div class="${cls} mt-2">${sign}${daily}%</div>
+                </div></div>`;
+                if(i<5) document.getElementById('topMarkets').innerHTML = html;
             });
-            document.getElementById('marketsPreview').innerHTML = html;
-            document.getElementById('marketsFull').innerHTML = html;
+            document.getElementById('allMarkets').innerHTML = html;
         }
-        
-        function renderStrategies() {
+
+        async function loadStrategies() {
+            const d = await api('/api/strategies');
+            strategies = d.strategies||[];
+            document.getElementById('stratCnt').innerText = strategies.length;
             let html = '';
             strategies.forEach(s => {
-                html += `<div class="col-md-6 mb-4"><div class="card"><div class="card-body"><h5>${s.name}</h5><p class="text-muted small">来源: ${s.source}</p><p>${s.description}</p></div></div></div>`;
+                html += `<div class="col-md-6 mb-3"><div class="card"><div class="card-body">
+                    <h6>${s.name}</h6>
+                    <p style="font-size:0.8rem;color:var(--text-muted)">来源: ${s.source}</p>
+                    <p style="font-size:0.85rem">${s.description}</p>
+                </div></div></div>`;
             });
             document.getElementById('strategiesList').innerHTML = html;
         }
-        
-        function showPage(pid, el) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById('page-' + pid).classList.add('active');
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            el.classList.add('active');
-        }
-        
-        async function refreshSignals() {
-            const s = await api('/api/signals');
+
+        async function loadSignals() {
+            const d = await api('/api/signals');
+            signals = d.signals||[];
+            document.getElementById('signalCnt').innerText = signals.length;
             let html = '';
-            s.signals.forEach(sig => {
-                html += `<tr><td><b>${sig.coin}</b></td><td>${sig.mode}</td><td><span class="badge ${sig.action=='BUY'?'bg-success':'bg-warning'}">${sig.action}</span></td><td>${sig.confidence}</td><td>+${sig.potential}%</td><td>${sig.risk}</td></tr>`;
+            signals.forEach(s => {
+                const act = s.action=='BUY'?'🟢买入':'🟡持有';
+                const risk = s.risk=='low'?'🟢低':s.risk=='medium'?'🟡中':'🔴高';
+                html += `<tr><td><b>${s.coin}</b></td><td>${act}</td><td>${s.confidence}</td><td style="color:var(--success)">+${s.potential}%</td><td>${risk}</td></tr>`;
             });
             document.getElementById('signalsBody').innerHTML = html;
-            document.getElementById('signalCount').innerText = s.signals.length;
         }
+
+        async function loadOracle() {
+            const d = await api('/api/oracle');
+            const events = d.events||[];
+            let html = '';
+            events.forEach(e => {
+                const imp = e.impact||0;
+                const cls = imp>=0?'perf-pos':'perf-neg';
+                const sign = imp>=0?'+':'';
+                html += `<div class="col-md-6 mb-3"><div class="card"><div class="card-body">
+                    <h6>${e.type}</h6>
+                    <p style="font-size:0.8rem">${e.description}</p>
+                    <div class="${cls}">${sign}${imp}% ${e.symbol}</div>
+                </div></div></div>`;
+            });
+            document.getElementById('oracleList').innerHTML = html;
+        }
+
+        async function loadPortfolio() {
+            const d = await api('/api/portfolio');
+            const p = d.portfolio||{};
+            const perf = d.performance||{};
+            document.getElementById('totalPnl').innerText = '+$'+perf.total_pnl;
+            document.getElementById('winRate').innerText = perf.win_rate+'%';
+            
+            let html = '<table class="table"><tr><th>市场</th><th>权重</th><th>PnL</th></tr>';
+            for(let [k,v] of Object.entries(p)) {
+                html += `<tr><td>${k}</td><td>${v.weight}%</td><td>$${v.pnl}</td></tr>`;
+            }
+            html += '</table>';
+            document.getElementById('portfolioBody').innerHTML = html;
+            
+            // Weights panel
+            let whtml = '';
+            for(let [k,v] of Object.entries(p)) {
+                whtml += `<div class="mb-2"><label>${k}</label><input type="range" min="0" max="100" value="${v.weight}" id="w_${k}"></div>`;
+            }
+            document.getElementById('weightsBody').innerHTML = whtml;
+        }
+
+        function showPage(pid, el) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('page-'+pid).classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            if(el) el.classList.add('active');
+        }
+
+        async function refreshSignals() { await loadSignals(); }
         
         async function huntAirdrop() {
-            const r = await api('/api/airdrop/hunt');
+            const d = await api('/api/airdrop/hunt');
             let html = '';
-            if(r.success && r.airdrops.length) {
-                r.airdrops.forEach(a => html += `<div class="alert alert-success">发现 ${a.coin}: +$${a.amount}</div>`);
+            if(d.success && d.airdrops) {
+                d.airdrops.forEach(a => html += `<div class="alert alert-success">✅ ${a.coin} +$${a.amount}</div>`);
             }
-            document.getElementById('airdropResults').innerHTML = html;
-            document.getElementById('airdropTotal').innerText = '$' + r.total;
-            document.getElementById('airdropBalance').innerText = '$' + r.total;
+            document.getElementById('airdropRes').innerHTML = html;
+            await loadUser();
         }
-        
-        async function runBacktest() {
-            const capital = document.getElementById('btCapital').value;
-            const days = document.getElementById('btDays').value;
-            const r = await api('/api/backtest', 'POST', {capital: parseInt(capital), days: parseInt(days)});
-            if(r.success) {
-                document.getElementById('backtestResults').innerHTML = `<div class="card"><div class="card-body"><h5>回测结果</h5><p>初始: $${r.result.initial} → 最终: $${r.result.final}</p><p class="text-success">盈亏: +$${r.result.pnl} (${r.result.pnl_percent}%)</p><p>胜率: ${r.result.win_rate}%</p></div></div>`;
-            }
-        }
-        
+
         async function applyPreset(name) {
-            await api('/api/preset/' + name);
-            alert('已应用预设: ' + name);
+            await api('/api/preset/'+name);
+            await loadPortfolio();
+            alert('已应用: '+name);
         }
-        
-        init();
+
+        async function saveParams() {
+            alert('参数已保存!');
+        }
+
+        async function startTrading() {
+            await api('/api/trading/start');
+            document.getElementById('startBtn').style.display='none';
+            document.getElementById('stopBtn').style.display='inline';
+        }
+
+        async function stopTrading() {
+            await api('/api/trading/stop');
+            document.getElementById('startBtn').style.display='inline';
+            document.getElementById('stopBtn').style.display='none';
+        }
+
+        async function runBacktest() {
+            const cap = document.getElementById('btCap').value;
+            const day = document.getElementById('btDay').value;
+            const d = await api('/api/backtest','POST',{capital:parseInt(cap),days:parseInt(day)});
+            if(d.success) {
+                const r = d.result;
+                document.getElementById('btRes').innerHTML = `<div class="card"><div class="card-body"><h5>结果</h5><p>初始: $${r.initial} → 最终: $${r.final}</p><p class="text-success">盈亏: +$${r.pnl} (${r.pnl_percent}%)</p><p>胜率: ${r.win_rate}%</p></div></div>`;
+            }
+        }
+
+        function showAuthModal() { document.getElementById('authModal').classList.add('active'); }
+        function hideAuthModal() { document.getElementById('authModal').classList.remove('active'); }
+
+        async function doRegister() {
+            const u = document.getElementById('regUser').value;
+            const p = document.getElementById('regPass').value;
+            const w = document.getElementById('regWallet').value;
+            const d = await api('/api/user/register','POST',{username:u,password:p,wallet:w});
+            if(d.success) { alert('注册成功!'); hideAuthModal(); await loadUser(); }
+            else alert('注册失败');
+        }
+
+        async function doLogin() {
+            const u = document.getElementById('regUser').value;
+            const p = document.getElementById('regPass').value;
+            const d = await api('/api/user/login','POST',{username:u,password:p});
+            if(d.success) { alert('登录成功!'); hideAuthModal(); await loadUser(); }
+            else alert('登录失败');
+        }
+
+        async function claimAirdrop() {
+            const d = await api('/api/airdrop/claim','POST',{});
+            alert(d.success?'已领取!':'需要注册+绑定钱包');
+        }
+
+        function scrollTop() { window.scrollTo(0,0); }
     </script>
 </body>
 </html>

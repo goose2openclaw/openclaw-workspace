@@ -9,14 +9,13 @@ echo "
 ╚══════════════════════════════════════════════════════════════╝
 "
 
-# 检查依赖
-echo "📦 检查依赖..."
-pip install flask requests -q 2>/dev/null
+# 激活虚拟环境
+cd /root/.openclaw/workspace/skills/go2se/web
+source ./venv/bin/activate
 
 # 启动服务
 echo "🚀 启动 GO2SE Web UI..."
 echo "🌐 访问地址: http://localhost:5000"
 echo ""
 
-cd /root/.openclaw/workspace/skills/go2se/web
-python3 server.py
+python server.py
