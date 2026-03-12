@@ -4,7 +4,18 @@
 完整后台系统 v2 - 北斗七鑫 + 白皮书所有功能
 """
 
+import time
 from flask import Flask, render_template, jsonify, request, session
+
+# Simple cache
+_cache = {'prices': {'data': {}, 'time': 0}}
+CACHE_TTL = 60  # 60 seconds
+
+def get_cached_prices():
+    now = time.time()
+    if now - _cache['prices']['time'] < CACHE_TTL and _cache['prices']['data']:
+        return _cache['prices']['data']
+    return None
 import json, random, uuid, time, requests
 from datetime import datetime, timedelta
 from typing import Dict, List, Any
@@ -142,6 +153,10 @@ class DataStore:
         self.trading_enabled = False
         
     def fetch_prices(self):
+        cached = get_cached_prices()
+        if cached:
+            self.trading_pairs = cached
+            return cached
         try:
             url = "https://api.binance.com/api/v3/ticker/24hr"
             pairs = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT', 'XRPUSDT', 'ADAUSDT', 'AVAXUSDT', 'DOTUSDT', 'MATICUSDT']
@@ -158,6 +173,8 @@ class DataStore:
                         }
                 except: pass
         except: pass
+        _cache['prices']['data'] = self.trading_pairs
+        _cache['prices']['time'] = time.time()
         return self.trading_pairs
     
     def generate_markets(self):
