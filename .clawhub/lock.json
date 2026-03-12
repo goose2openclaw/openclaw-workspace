@@ -228,6 +228,14 @@
     "tailwind-design-system": {
       "version": "1.0.0",
       "installedAt": 1773349691375
+    },
+    "browser": {
+      "version": "1.0.0",
+      "installedAt": 1773349751552
+    },
+    "parallel": {
+      "version": "1.2.1",
+      "installedAt": 1773350167708
     }
   }
 }
