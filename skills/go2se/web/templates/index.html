@@ -1,261 +1,577 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Go2Se 护食 | Crypto量化AI投资平台</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        :root{--bg-primary:#07080c;--bg-secondary:#0c0f14;--bg-card:#10141c;--bg-elevated:#161c26;--accent-primary:#00f5d4;--accent-secondary:#00bbf9;--accent-purple:#9d4edd;--text-primary:#f0f2f5;--text-secondary:#8b8d94;--text-muted:#4a4c56;--border-subtle:rgba(255,255,255,0.06);--border-active:rgba(0,245,212,0.3);--success:#00f5a0;--danger:#ff4757;--warning:#ffd43b;--gold:#ffd700}
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:'Outfit',sans-serif;background:var(--bg-primary);color:var(--text-primary);min-height:100vh}
-        .bg-mesh{position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse at 15% 15%,rgba(0,245,212,0.06),transparent 50%),radial-gradient(ellipse at 85% 85%,rgba(157,78,221,0.05),transparent 50%);pointer-events:none;z-index:0}
-        .app-layout{position:relative;z-index:10;display:flex;min-height:100vh}
-        .sidebar{width:68px;background:var(--bg-secondary);border-right:1px solid var(--border-subtle);display:flex;flex-direction:column;padding:1rem 0;transition:width 0.3s;position:fixed;height:100vh;z-index:100}
-        .sidebar:hover{width:220px}
-        .logo-section{padding:0.75rem;margin-bottom:1rem;display:flex;align-items:center;gap:0.75rem}
-        .logo-icon{width:44px;height:44px;background:linear-gradient(135deg,var(--accent-primary),var(--accent-purple));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0}
-        .logo-text{font-weight:800;font-size:1.25rem;white-space:nowrap;opacity:0;transition:opacity 0.3s;background:linear-gradient(135deg,var(--text-primary),var(--accent-primary));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-        .sidebar:hover .logo-text{opacity:1}
-        .nav-section{flex:1;overflow-y:auto}
-        .nav-item{display:flex;align-items:center;gap:0.75rem;padding:0.65rem 1rem;margin:0.2rem 0.5rem;border-radius:10px;cursor:pointer;transition:all 0.2s;color:var(--text-secondary);position:relative}
-        .nav-item::before{content:'';position:absolute;left:0;top:0;height:100%;width:3px;background:var(--accent-primary);transform:scaleY(0);transition:transform 0.2s}
-        .nav-item:hover{background:rgba(0,245,212,0.08);color:var(--text-primary)}
-        .nav-item.active{background:rgba(0,245,212,0.12);color:var(--accent-primary)}
-        .nav-item.active::before{transform:scaleY(1)}
-        .nav-icon{font-size:1.2rem;width:24px;text-align:center;flex-shrink:0}
-        .nav-label{white-space:nowrap;opacity:0;transition:opacity 0.3s;font-size:0.8rem;font-weight:500}
-        .sidebar:hover .nav-label{opacity:1}
-        .main-content{flex:1;margin-left:68px;padding:1rem;min-height:100vh}
-        .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;padding-bottom:0.75rem;border-bottom:1px solid var(--border-subtle)}
-        .page-title{font-size:1.5rem;font-weight:700}
-        .header-right{display:flex;align-items:center;gap:0.75rem}
-        .mode-badge{padding:0.35rem 0.8rem;border-radius:20px;font-size:0.7rem;font-weight:600;display:flex;align-items:center;gap:0.4rem;background:rgba(255,212,59,0.15);color:var(--gold);border:1px solid rgba(255,212,59,0.3)}
-        .card{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:12px;padding:1rem;margin-bottom:0.75rem;transition:all 0.3s}
-        .card:hover{border-color:var(--border-active)}
-        .card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem}
-        .card-title{font-size:0.75rem;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.08em}
-        .stats-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:0.75rem;margin-bottom:1rem}
-        .stat-card{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:10px;padding:0.9rem;position:relative;overflow:hidden}
-        .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent-primary),var(--accent-secondary))}
-        .stat-label{font-size:0.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.3rem}
-        .stat-value{font-family:'JetBrains Mono',monospace;font-size:1.3rem;font-weight:700}
-        .stat-value.positive{color:var(--success)}.stat-value.negative{color:var(--danger)}
-        .market-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:0.6rem}
-        .market-card{background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:10px;padding:0.8rem;cursor:pointer;transition:all 0.3s;text-align:center}
-        .market-card:hover{border-color:var(--accent-primary);transform:translateY(-3px)}
-        .market-icon{font-size:1.5rem;margin-bottom:0.4rem}
-        .market-name{font-weight:700;font-size:0.85rem;margin-bottom:0.2rem}
-        .market-change{font-family:'JetBrains Mono',monospace;font-size:0.75rem;font-weight:600}
-        .market-change.positive{color:var(--success)}.market-change.negative{color:var(--danger)}
-        .signals-table{width:100%;border-collapse:separate;border-spacing:0}
-        .signals-table th{text-align:left;padding:0.6rem 0.8rem;font-size:0.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.08em;border-bottom:1px solid var(--border-subtle);background:var(--bg-secondary)}
-        .signals-table td{padding:0.7rem 0.8rem;border-bottom:1px solid var(--border-subtle);font-size:0.85rem}
-        .signals-table tr:hover td{background:var(--bg-elevated)}
-        .coin-badge{display:flex;align-items:center;gap:0.5rem}
-        .coin-icon{width:28px;height:28px;background:var(--bg-elevated);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.6rem;color:var(--accent-primary)}
-        .action-badge{padding:0.25rem 0.6rem;border-radius:12px;font-size:0.65rem;font-weight:700}
-        .action-badge.buy{background:rgba(0,245,160,0.15);color:var(--success)}
-        .action-badge.sell{background:rgba(255,71,87,0.15);color:var(--danger)}
-        .action-badge.hold{background:rgba(255,212,59,0.15);color:var(--warning)}
-        .confidence-bar{width:50px;height:6px;background:var(--bg-secondary);border-radius:3px;overflow:hidden}
-        .confidence-fill{height:100%;border-radius:3px}
-        .btn{padding:0.5rem 1rem;border-radius:8px;font-weight:600;font-size:0.8rem;cursor:pointer;transition:all 0.2s;border:none;display:inline-flex;align-items:center;gap:0.4rem}
-        .btn-primary{background:linear-gradient(135deg,var(--accent-primary),#00b8a3);color:var(--bg-primary)}
-        .btn-primary:hover{transform:translateY(-2px)}
-        .btn-outline{background:transparent;border:1px solid var(--border-subtle);color:var(--text-secondary)}
-        .btn-outline:hover{border-color:var(--accent-primary);color:var(--accent-primary)}
-        .btn-sm{padding:0.35rem 0.7rem;font-size:0.7rem}
-        .preset-btn{padding:0.5rem 1rem;border-radius:8px;font-weight:600;font-size:0.8rem;cursor:pointer;transition:all 0.2s;border:1px solid var(--border-subtle);background:var(--bg-elevated);color:var(--text-secondary)}
-        .preset-btn:hover,.preset-btn.active{border-color:var(--accent-primary);color:var(--accent-primary)}
-        .sonar-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.6rem}
-        .sonar-card{background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:8px;padding:0.75rem;position:relative}
-        .sonar-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:var(--accent-purple)}
-        .sonar-accuracy{font-family:'JetBrains Mono',monospace;font-size:1rem;font-weight:700;color:var(--accent-primary)}
-        .oracle-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem}
-        .oracle-card{background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:8px;padding:0.75rem}
-        .oracle-impact{font-family:'JetBrains Mono',monospace;font-weight:700}
-        .oracle-impact.positive{color:var(--success)}.oracle-impact.negative{color:var(--danger)}
-        .ecosystem-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.6rem}
-        .eco-card{background:var(--bg-elevated);border:1px solid var(--border-subtle);border-radius:8px;padding:0.75rem;text-align:center}
-        .eco-icon{font-size:1.3rem;margin-bottom:0.3rem}
-        .eco-name{font-weight:600;font-size:0.8rem;margin-bottom:0.2rem}
-        .eco-desc{font-size:0.65rem;color:var(--text-muted)}
-        .status-dot{width:6px;height:6px;border-radius:50%;display:inline-block;margin-right:0.3rem}
-        .status-running{background:var(--success)}.status-active{background:var(--accent-primary)}.status-ready{background:var(--warning)}.status-scheduled{background:var(--text-muted)}
-        .log-table{width:100%;font-size:0.75rem}
-        .log-table th{text-align:left;padding:0.5rem;font-size:0.65rem;color:var(--text-muted);text-transform:uppercase;border-bottom:1px solid var(--border-subtle)}
-        .log-table td{padding:0.5rem;border-bottom:1px solid var(--border-subtle)}
-        .log-status{padding:0.2rem 0.5rem;border-radius:10px;font-size:0.6rem}
-        .log-status.running{background:rgba(0,245,160,0.15);color:var(--success)}
-        .log-status.completed{background:rgba(0,187,249,0.15);color:var(--accent-secondary)}
-        .log-status.scheduled{background:rgba(255,212,59,0.15);color:var(--warning)}
-        .param-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.75rem}
-        .param-item{background:var(--bg-elevated);border-radius:8px;padding:0.75rem}
-        .param-label{font-size:0.65rem;color:var(--text-muted);margin-bottom:0.3rem}
-        .param-value{font-family:'JetBrains Mono',monospace;font-weight:600}
-        .input{width:100%;padding:0.6rem 0.8rem;background:var(--bg-secondary);border:1px solid var(--border-subtle);border-radius:8px;color:var(--text-primary);font-size:0.85rem}
-        .input:focus{outline:none;border-color:var(--accent-primary)}
-        #landing{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg-primary);display:flex;align-items:center;justify-content:center;z-index:9999;transition:all 0.8s}
-        #landing.hidden{opacity:0;visibility:hidden;transform:scale(0.8)}
-        .landing-logo{width:100px;height:100px;background:linear-gradient(135deg,var(--accent-primary),var(--accent-purple),var(--accent-secondary));border-radius:25px;display:flex;align-items:center;justify-content:center;font-size:3rem;margin:0 auto 1.5rem;animation:float 3s ease-in-out infinite}
-        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
-        .landing-title{font-size:2.5rem;font-weight:800;text-align:center;background:linear-gradient(135deg,var(--text-primary) 0%,var(--accent-primary) 50%,var(--accent-purple) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:0.3rem}
-        .landing-subtitle{text-align:center;color:var(--text-secondary);font-size:1rem}
-        @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-        .fade-in{animation:fadeIn 0.4s ease forwards}
-        @media(max-width:1400px){.stats-grid{grid-template-columns:repeat(3,1fr)}.market-grid{grid-template-columns:repeat(4,1fr)}}
-        @media(max-width:1024px){.sidebar{width:68px}.sidebar:hover{width:68px}.nav-label,.logo-text{display:none}.stats-grid{grid-template-columns:repeat(2,1fr)}.market-grid{grid-template-columns:repeat(3,1fr)}}
-        @media(max-width:768px){.stats-grid,.market-grid,.sonar-grid,.oracle-grid,.ecosystem-grid{grid-template-columns:1fr}}
-        ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg-secondary)}::-webkit-scrollbar-thumb{background:var(--text-muted);border-radius:3px}
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🪿 Go2Se 智能投资平台</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ====== 配色方案 v2 ====== */
+:root{
+--bg:#0A0E17;
+--card:#111827;
+--card-hover:#1a2234;
+--border:#1e293b;
+--accent:#00D4AA;
+--accent-glow:rgba(0,212,170,0.3);
+--accent-soft:rgba(0,212,170,0.12);
+--purple:#7C3AED;
+--purple-soft:rgba(124,58,237,0.12);
+--gold:#F59E0B;
+--gold-soft:rgba(245,158,11,0.12);
+--success:#00D4AA;
+--warning:#F59E0B;
+--danger:#EF4444;
+--text:#f1f5f9;
+--text-muted:#94a3b8;
+--text-quiet:#64748b;
+--font-display:'Inter',sans-serif;
+--font-mono:'JetBrains Mono',monospace;
+}
+
+/* ====== 基础样式 ====== */
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--font-display);padding:20px;min-height:100vh;overflow-x:hidden}
+.container{max-width:1600px;margin:0 auto;position:relative}
+
+/* ====== 启动动画 ====== */
+#loader{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:opacity 0.5s,visibility 0.5s}
+#loader.hidden{opacity:0;visibility:hidden}
+.loader-logo{font-size:4rem;margin-bottom:2rem;animation:pulse 2s ease-in-out infinite}
+.loader-title{font-size:2.5rem;font-weight:700;color:var(--accent);margin-bottom:1rem;letter-spacing:2px}
+.loader-subtitle{color:var(--text-muted);margin-bottom:2rem;font-size:1rem}
+.loader-progress{width:300px;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.loader-bar{height:100%;background:linear-gradient(90deg,var(--accent),var(--purple));width:0%;transition:width 0.3s;border-radius:2px}
+.loader-text{color:var(--text-muted);margin-top:1rem;font-size:0.85rem;font-family:var(--font-mono)}
+
+@keyframes pulse{
+0%,100%{transform:scale(1);filter:drop-shadow(0 0 20px var(--accent-glow))}
+50%{transform:scale(1.05);filter:drop-shadow(0 0 40px var(--accent-glow))}
+}
+
+/* ====== 页面切换动画 ====== */
+.page{opacity:0;transform:translateX(30px);transition:opacity 0.3s,transform 0.3s;display:none}
+.page.active{display:block}
+.page.active.show{opacity:1;transform:translateX(0)}
+.page.exit{opacity:0;transform:translateX(-30px)}
+
+/* ====== 标题样式 ====== */
+h1{color:var(--accent);text-align:center;margin-bottom:30px;font-size:2rem;font-weight:700;letter-spacing:1px}
+h2{color:var(--text);margin:30px 0 20px;font-size:1.4rem;border-bottom:2px solid var(--border);padding-bottom:12px;display:flex;align-items:center;gap:10px}
+h2::before{content:'';width:4px;height:24px;background:linear-gradient(180deg,var(--accent),var(--purple));border-radius:2px}
+
+/* ====== 导航 ====== */
+.nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:30px;justify-content:center;padding:20px;background:var(--card);border-radius:16px;border:1px solid var(--border)}
+.nav-btn{padding:14px 28px;background:transparent;border:1px solid var(--border);color:var(--text-muted);cursor:pointer;border-radius:10px;font-size:0.95rem;font-family:var(--font-display);transition:all 0.25s;position:relative;overflow:hidden}
+.nav-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--accent-soft),var(--purple-soft));opacity:0;transition:opacity 0.25s}
+.nav-btn:hover{color:var(--text);border-color:var(--accent);transform:translateY(-2px)}
+.nav-btn:hover::before{opacity:1}
+.nav-btn.active{background:linear-gradient(135deg,var(--accent),#00a88a);color:#000;border-color:var(--accent);font-weight:600;box-shadow:0 4px 20px var(--accent-glow)}
+.nav-btn .shortcut{position:absolute;top:4px;right:6px;font-size:0.7rem;opacity:0.5;font-family:var(--font-mono)}
+
+/* ====== 右侧快捷导航 ====== */
+.side-nav{position:fixed;right:20px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:8px;z-index:100}
+.side-btn{width:44px;height:44px;background:var(--card);border:1px solid var(--border);border-radius:10px;color:var(--text-muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.2rem;transition:all 0.25s}
+.side-btn:hover{background:var(--card-hover);color:var(--accent);border-color:var(--accent);transform:scale(1.1)}
+.side-btn.active{background:var(--accent);color:#000;border-color:var(--accent);box-shadow:0 0 20px var(--accent-glow)}
+
+/* ====== 卡片网格 ====== */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;transition:all 0.25s;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--purple));opacity:0;transition:opacity 0.25s}
+.card:hover{transform:translateY(-4px);border-color:var(--accent);background:var(--card-hover)}
+.card:hover::before{opacity:1}
+.card-title{color:var(--accent);font-size:1rem;margin-bottom:12px;font-weight:600;display:flex;align-items:center;gap:8px}
+.card-value{font-size:2.2rem;font-weight:700;font-family:var(--font-mono);background:linear-gradient(135deg,var(--text),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:8px 0}
+.card-label{color:var(--text-muted);font-size:0.85rem}
+.card-value.positive{background:linear-gradient(135deg,#00D4AA,#10b981);-webkit-background-clip:text}
+.card-value.negative{background:linear-gradient(135deg,#EF4444,#dc2626);-webkit-background-clip:text}
+
+/* ====== 列表 ====== */
+.list{background:var(--card);border-radius:14px;overflow:hidden;border:1px solid var(--border)}
+.list-item{display:flex;justify-content:space-between;align-items:center;padding:18px 24px;border-bottom:1px solid var(--border);transition:all 0.2s}
+.list-item:last-child{border:none}
+.list-item:hover{background:var(--card-hover);padding-left:28px;border-left:3px solid var(--accent)}
+
+/* ====== 标签 ====== */
+.tag{display:inline-flex;align-items:center;gap:4px;padding:5px 12px;border-radius:20px;font-size:0.8rem;background:var(--accent-soft);color:var(--accent);font-weight:500}
+.tag.success{background:rgba(0,212,170,0.15);color:var(--success)}
+.tag.warning{background:var(--gold-soft);color:var(--gold)}
+.tag.danger{background:rgba(239,68,68,0.15);color:var(--danger)}
+.tag.purple{background:var(--purple-soft);color:var(--purple)}
+.tag.gold{background:var(--gold-soft);color:var(--gold)}
+
+/* ====== 信号发光效果 ====== */
+.signal-glow{position:relative}
+.signal-glow::after{content:'';position:absolute;inset:-2px;background:linear-gradient(45deg,var(--accent),var(--purple),var(--gold));border-radius:16px;opacity:0;z-index:-1;animation:none}
+.signal-glow.active::after{opacity:0.5;animation:glow-pulse 2s ease-in-out infinite}
+@keyframes glow-pulse{0%,100%{opacity:0.3;transform:scale(1)}50%{opacity:0.6;transform:scale(1.02)}}
+
+/* ====== 置信度进度条 ====== */
+.confidence-bar{height:8px;background:var(--border);border-radius:4px;overflow:hidden;margin-top:8px}
+.confidence-fill{height:100%;background:linear-gradient(90deg,var(--danger),var(--gold),var(--success));border-radius:4px;transition:width 0.5s}
+
+/* ====== 按钮 ====== */
+.btn{padding:10px 20px;border-radius:8px;border:none;cursor:pointer;font-size:0.9rem;font-weight:500;transition:all 0.2s}
+.btn-primary{background:linear-gradient(135deg,var(--accent),#00a88a);color:#000}
+.btn-primary:hover{box-shadow:0 4px 20px var(--accent-glow);transform:translateY(-2px)}
+.btn-secondary{background:var(--card);border:1px solid var(--border);color:var(--text)}
+.btn-secondary:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ====== 状态指示器 ====== */
+.status{display:inline-flex;align-items:center;gap:8px}
+.status-dot{width:10px;height:10px;border-radius:50%;background:var(--success);animation:pulse-dot 2s infinite}
+.status-dot.warning{background:var(--warning)}
+.status-dot.danger{background:var(--danger)}
+@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:0.5}}
+
+/* ====== 搜索框 ====== */
+.search-box{display:flex;gap:12px;margin-bottom:24px}
+.search-input{flex:1;padding:14px 20px;background:var(--card);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:1rem;transition:all 0.2s}
+.search-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+
+/* ====== 客服机器人 ====== */
+.chat-widget{position:fixed;bottom:24px;right:80px;z-index:1000}
+.chat-btn{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--purple));color:#000;font-size:22px;cursor:pointer;border:none;box-shadow:0 4px 24px var(--accent-glow);transition:all 0.3s}
+.chat-btn:hover{transform:scale(1.1);box-shadow:0 6px 32px var(--accent-glow)}
+.chat-panel{position:fixed;bottom:90px;right:80px;width:380px;height:520px;background:var(--card);border:1px solid var(--border);border-radius:16px;display:none;flex-direction:column;box-shadow:0 8px 40px rgba(0,0,0,0.5);z-index:1001}
+.chat-panel.show{display:flex;animation:slide-up 0.3s}
+@keyframes slide-up{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.chat-header{padding:18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,var(--accent-soft),var(--purple-soft))}
+.chat-header h3{color:var(--accent);font-size:1rem;font-weight:600}
+.chat-close{background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:1.4rem;transition:color 0.2s}
+.chat-close:hover{color:var(--danger)}
+.chat-messages{flex:1;padding:18px;overflow-y:auto;display:flex;flex-direction:column;gap:12px}
+.chat-msg{padding:12px 16px;border-radius:14px;max-width:85%;font-size:0.9rem;line-height:1.5}
+.chat-msg.ai{background:var(--card-hover);align-self:flex-start;border-bottom-left-radius:4px}
+.chat-msg.user{background:linear-gradient(135deg,var(--accent),#00a88a);color:#000;align-self:flex-end;border-bottom-right-radius:4px}
+.chat-input{padding:16px;border-top:1px solid var(--border);display:flex;gap:10px}
+.chat-input input{flex:1;padding:12px 16px;background:var(--bg);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:0.95rem}
+.chat-input input:focus{outline:none;border-color:var(--accent)}
+.chat-input button{padding:12px 24px;background:var(--accent);color:#000;border:none;border-radius:10px;cursor:pointer;font-weight:600;transition:all 0.2s}
+.chat-input button:hover{box-shadow:0 4px 16px var(--accent-glow)}
+
+/* ====== 快捷键提示 ====== */
+.shortcuts-hint{position:fixed;bottom:20px;left:20px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 16px;font-size:0.8rem;color:var(--text-muted);display:flex;gap:16px}
+.shortcuts-hint kbd{background:var(--bg);padding:2px 8px;border-radius:4px;font-family:var(--font-mono);color:var(--accent)}
+
+/* ====== 统计数字动画 ====== */
+.stat-animate{transition:all 0.5s}
+
+/* ====== 响应式 ====== */
+@media(max-width:768px){
+.side-nav{display:none}
+.nav{flex-direction:column}
+.chat-panel{width:calc(100vw-40px);right:20px}
+}
+
+/* ====== 页面标题增强 ====== */
+.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.page-header h2{margin-bottom:0;border:none;padding:0}
+.refresh-btn{padding:10px 16px;background:var(--card);border:1px solid var(--border);border-radius:8px;color:var(--text-muted);cursor:pointer;display:flex;align-items:center;gap:6px;transition:all 0.2s}
+.refresh-btn:hover{color:var(--accent);border-color:var(--accent)}
+.refresh-btn .spin{animation:spin 1s linear infinite}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:360deg)}}
+</style>
 </head>
 <body>
-    <div id="landing" onclick="hideLanding()">
-        <div class="text-center">
-            <div class="landing-logo">🪿</div>
-            <h1 class="landing-title">Go2Se 护食的小白鹅</h1>
-            <p class="landing-subtitle">主动捡漏薅羊毛 | Crypto量化AI投资平台</p>
-            <p style="color:var(--text-muted);margin-top:1rem;font-size:0.85rem">点击任意处进入</p>
-        </div>
-    </div>
-    <div class="bg-mesh"></div>
-    <div class="app-layout">
-        <nav class="sidebar">
-            <div class="logo-section">
-                <div class="logo-icon">🪿</div>
-                <span class="logo-text">Go2Se 护食</span>
-            </div>
-            <div class="nav-section">
-                <div class="nav-item active" data-page="home"><span class="nav-icon">🏠</span><span class="nav-label">首页纵览</span></div>
-                <div class="nav-item" data-page="hot"><span class="nav-icon">🔥</span><span class="nav-label">热点纵览</span></div>
-                <div class="nav-item" data-page="dashboard"><span class="nav-icon">📊</span><span class="nav-label">参数仪表盘</span></div>
-                <div class="nav-item" data-page="assets"><span class="nav-icon">💰</span><span class="nav-label">资产看板</span></div>
-                <div class="nav-item" data-page="markets"><span class="nav-icon">🔯</span><span class="nav-label">北斗七鑫</span></div>
-                <div class="nav-item" data-page="portfolio"><span class="nav-icon">📈</span><span class="nav-label">投资组合</span></div>
-                <div class="nav-item" data-page="strategies"><span class="nav-icon">♟️</span><span class="nav-label">策略模型</span></div>
-                <div class="nav-item" data-page="sonar"><span class="nav-icon">📡</span><span class="nav-label">声纳趋势</span></div>
-                <div class="nav-item" data-page="oracle"><span class="nav-icon">🔮</span><span class="nav-label">预言机</span></div>
-                <div class="nav-item" data-page="ecosystem"><span class="nav-icon">🛠️</span><span class="nav-label">生态工具</span></div>
-                <div class="nav-item" data-page="scripts"><span class="nav-icon">📝</span><span class="nav-label">脚本日志</span></div>
-                <div class="nav-item" data-page="support"><span class="nav-icon">💬</span><span class="nav-label">客服中心</span></div>
-                <div class="nav-item" data-page="referral"><span class="nav-icon">🎁</span><span class="nav-label">分享有礼</span></div>
-            </div>
-        </nav>
-        <main class="main-content">
-            <header class="header">
-                <h1 class="page-title" id="pageTitle">首页纵览</h1>
-                <div class="header-right">
-                    <div class="mode-badge"><span>👤</span><span>游客体验</span></div>
-                    <button class="btn btn-outline btn-sm" onclick="refreshAll()">🔄</button>
-                    <button class="btn btn-primary btn-sm" onclick="showAuthModal()">注册/登录</button>
-                </div>
-            </header>
-            <!-- 首页纵览 -->
-            <div id="page-home" class="page">
-                <div class="stats-grid fade-in">
-                    <div class="stat-card"><div class="stat-label">💰 账户余额</div><div class="stat-value" id="userBalance">$1,000</div></div>
-                    <div class="stat-card"><div class="stat-label">📈 总盈亏</div><div class="stat-value positive" id="totalPnl">+$767</div></div>
-                    <div class="stat-card"><div class="stat-label">🎯 胜率</div><div class="stat-value" id="winRate">68%</div></div>
-                    <div class="stat-card"><div class="stat-label">📡 信号</div><div class="stat-value" id="signalCount">8</div></div>
-                    <div class="stat-card"><div class="stat-label">🔮 预言机</div><div class="stat-value" id="oracleCount">5</div></div>
-                    <div class="stat-card"><div class="stat-label">🛠️ 工具</div><div class="stat-value" id="toolCount">8</div></div>
-                </div>
-                <div class="card"><div class="card-header"><span class="card-title">🔯 北斗七鑫</span></div><div class="market-grid" id="topMarkets"></div></div>
-                <div class="card"><div class="card-header"><span class="card-title">📡 实时信号 (Binance)</span><button class="btn btn-outline btn-sm" onclick="refreshSignals()">🔄</button></div><table class="signals-table"><thead><tr><th>币种</th><th>价格</th><th>涨跌</th><th>操作</th><th>置信度</th><th>收益</th></tr></thead><tbody id="signalsBody"></tbody></table></div>
-            </div>
-            <!-- 热点纵览 -->
-            <div id="page-hot" class="page" style="display:none">
-                <div class="card"><div class="card-header"><span class="card-title">🔥 热点币种</span></div><div class="market-grid" id="hotCoins"></div></div>
-                <div class="card"><div class="card-header"><span class="card-title">⚡ 热门信号</span></div><table class="signals-table"><thead><tr><th>币种</th><th>操作</th><th>置信度</th><th>来源</th></tr></thead><tbody id="hotSignals"></tbody></table></div>
-                <div class="card"><div class="card-header"><span class="card-title">🔮 热点事件</span></div><div class="oracle-grid" id="hotEvents"></div></div>
-            </div>
-            <!-- 参数仪表盘 -->
-            <div id="page-dashboard" class="page" style="display:none">
-                <div class="stats-grid"><div class="stat-card"><div class="stat-label">置信度阈值</div><div class="stat-value" id="confThresh">7.0</div></div><div class="stat-card"><div class="stat-label">止损%</div><div class="stat-value" id="stopLoss">2.0</div></div><div class="stat-card"><div class="stat-label">止盈%</div><div class="stat-value" id="takeProfit">5.0</div></div><div class="stat-card"><div class="stat-label">最大持仓</div><div class="stat-value" id="maxPos">5</div></div><div class="stat-card"><div class="stat-label">Gas限制</div><div class="stat-value" id="gasLimit">50</div></div><div class="stat-card"><div class="stat-label">交易状态</div><div class="stat-value" id="tradeStatus">停止</div></div></div>
-                <div class="card"><div class="card-header"><span class="card-title">⚙️ 参数配置</span><button class="btn btn-primary btn-sm" onclick="saveParams()">保存</button></div><div class="param-grid" id="paramsGrid"></div></div>
-            </div>
-            <!-- 资产看板 -->
-            <div id="page-assets" class="page" style="display:none">
-                <div class="stats-grid"><div class="stat-card"><div class="stat-label">总资产</div><div class="stat-value">$12,450</div></div><div class="stat-card"><div class="stat-label">可用</div><div class="stat-value positive">$8,200</div></div><div class="stat-card"><div class="stat-label">持仓</div><div class="stat-value">$4,250</div></div><div class="stat-card"><div class="stat-label">日盈亏</div><div class="stat-value positive">+$156</div></div><div class="stat-card"><div class="stat-label">周盈亏</div><div class="stat-value positive">+$892</div></div><div class="stat-card"><div class="stat-label">月盈亏</div><div class="stat-value positive">+$2,340</div></div></div>
-                <div class="card"><div class="card-header"><span class="card-title">💰 资产分布</span></div><div id="assetDist"></div></div>
-            </div>
-            <!-- 北斗七鑫 -->
-            <div id="page-markets" class="page" style="display:none">
-                <div class="card"><div class="card-header"><span class="card-title">🔯 北斗七鑫 - 全部市场</span></div><div class="market-grid" id="allMarkets"></div></div>
-            </div>
-            <!-- 投资组合 -->
-            <div id="page-portfolio" class="page" style="display:none">
-                <div class="card"><div class="card-header"><span class="card-title">📈 预设方案</span></div><div style="display:flex;gap:0.6rem;margin-bottom:1rem"><button class="preset-btn" onclick="applyPreset('conservative')">🛡️ 保守</button><button class="preset-btn active" onclick="applyPreset('balanced')">⚖️ 平衡</button><button class="preset-btn" onclick="applyPreset('aggressive')">🚀 激进</button></div><div id="portfolioBody"></div></div>
-            </div>
-            <!-- 策略模型 -->
-            <div id="page-strategies" class="page" style="display:none">
-                <div class="card"><div class="card-header"><span class="card-title">♟️ 12策略整合 - 10家竞品+护食原创</span></div><div class="market-grid" id="strategiesList"></div></div>
-            </div>
-            <!-- 声纳趋势 -->
-            <div id="page-sonar" class="page" style="display:none">
-                <div class="card"><div class="card-header"><span class="card-title">📡 声纳趋势模型</span></div><div class="sonar-grid" id="sonarList"></div></div>
-            </div>
-            <!-- 预言机 -->
-            <div id="page-oracle" class="page" style="display:none">
-                <div class="card"><div class="card-header"><span class="card-title">🔮 预言机事件</span></div><div class="oracle-grid" id="oracleList"></div></div>
-            </div>
-            <!-- 生态工具 -->
-            <div id="page-ecosystem" class="page" style="display:none">
-                <div class="card"><div class="card-header"><span class="card-title">🛠️ 生态工具</span></div><div class="ecosystem-grid" id="ecosystemList"></div></div>
-            </div>
-            <!-- 脚本日志 -->
-            <div id="page-scripts" class="page" style="display:none">
-                <div class="card"><div class="card-header"><span class="card-title">📝 脚本日志</span><button class="btn btn-outline btn-sm" onclick="loadScripts()">🔄</button></div><table class="log-table"><thead><tr><th>脚本</th><th>状态</th><th>最后运行</th><th>结果</th></tr></thead><tbody id="scriptLogs"></tbody></table></div>
-            </div>
-            <!-- 客服中心 -->
-            <div id="page-support" class="page" style="display:none">
-                <div class="card"><div class="card-header"><span class="card-title">💬 客服中心</span></div><div style="text-align:center;padding:2rem"><div style="font-size:3rem;margin-bottom:1rem">💬</div><p style="color:var(--text-secondary);margin-bottom:1rem">联系我们获取帮助</p><button class="btn btn-primary">Telegram客服</button></div></div>
-            </div>
-            <!-- 分享有礼 -->
-            <div id="page-referral" class="page" style="display:none">
-                <div class="card"><div class="card-header"><span class="card-title">🎁 分享有礼</span></div><div style="text-align:center;padding:2rem"><div style="font-size:3rem;margin-bottom:1rem">🎁</div><p style="color:var(--text-secondary);margin-bottom:1rem">邀请好友，各得50USDT</p><button class="btn btn-primary" onclick="generateRef()">生成邀请链接</button><div id="refLink" style="margin-top:1rem;display:none"><input class="input" id="refCode" readonly></div></div></div>
-            </div>
-        </main>
-    </div>
-    <script>
-        let markets=[],signals=[],strategies=[],sonarModels={},oracleEvents=[],ecosystem=[],scriptLogs=[];
-        function hideLanding(){document.getElementById('landing').classList.add('hidden')}
-        setTimeout(()=>hideLanding(),3000);
-        async function api(url,method='GET',data=null){
-            try{const opt={method,headers:{'Content-Type':'application/json'}};if(data)opt.body=JSON.stringify(data);return await fetch(url,opt).then(r=>r.json())}catch{return{}}}
-        async function init(){await Promise.all([loadDashboard(),loadMarkets(),loadSignals(),loadStrategies(),loadSonar(),loadOracle(),loadEcosystem(),loadScripts(),loadPortfolio(),loadParams()])}
-        async function loadDashboard(){const d=await api('/api/dashboard');document.getElementById('signalCount').innerText=d.active_signals||0;document.getElementById('oracleCount').innerText=d.oracle_events||0;document.getElementById('toolCount').innerText=8}
-        async function loadMarkets(){const d=await api('/api/markets');markets=d.markets||[];renderMarkets()}
-        function renderMarkets(){let html='';markets.forEach((m,i)=>{const c=m.change_24h||0;const cls=c>=0?'positive':'negative';const s=c>=0?'+':'';html+=`<div class="market-card"><div class="market-icon">${m.icon}</div><div class="market-name">${m.name}</div><div class="market-change ${cls}">${s}${c.toFixed(1)}%</div></div>`;if(i<7)document.getElementById('topMarkets').innerHTML=html;document.getElementById('allMarkets').innerHTML=html});document.getElementById('hotCoins').innerHTML=html}
-        async function loadSignals(){const d=await api('/api/signals');signals=d.signals||[];document.getElementById('signalCount').innerText=signals.length;renderSignals()}
-        function renderSignals(){let html='';signals.forEach(s=>{const ac=s.action==='BUY'?'buy':s.action==='SELL'?'sell':'hold';const cp=s.confidence*10;const cc=cp>70?'var(--success)':cp>50?'var(--warning)':'var(--danger)';html+=`<tr><td><div class="coin-badge"><div class="coin-icon">${s.coin.slice(0,2)}</div><b>${s.coin}</b></div></td><td style="font-family:JetBrains Mono">$${(s.price||0).toLocaleString()}</td><td style="color:${s.change_24h>=0?'var(--success)':'var(--danger)'}">${s.change_24h>=0?'+':''}${(s.change_24h||0).toFixed(1)}%</td><td><span class="action-badge ${ac}">${s.action}</span></td><td><div class="confidence-bar"><div class="confidence-fill" style="width:${cp}%;background:${cc}"></div></div></td><td style="color:var(--success)">+${s.potential}%</td></tr>`;document.getElementById('signalsBody').innerHTML=html;document.getElementById('hotSignals').innerHTML=html})}
-        async function loadStrategies(){const d=await api('/api/strategies');strategies=d.strategies||[];let html='';strategies.forEach(s=>{html+=`<div class="market-card"><div style="font-size:1.2rem;margin-bottom:0.3rem">♟️</div><div class="market-name">${s.name}</div><div style="font-size:0.65rem;color:var(--text-muted)">${s.source}</div></div>`});document.getElementById('strategiesList').innerHTML=html}
-        async function loadSonar(){const d=await api('/api/sonar');sonarModels=d.models||{};let html='';Object.values(sonarModels).forEach(m=>{html+=`<div class="sonar-card"><div style="font-size:0.7rem;color:var(--text-muted)">${m.name}</div><div class="sonar-accuracy">${m.accuracy}%</div><div style="font-size:0.6rem;color:var(--text-muted)">${m.description}</div></div>`});document.getElementById('sonarList').innerHTML=html}
-        async function loadOracle(){const d=await api('/api/oracle');oracleEvents=d.events||[];let html='';oracleEvents.forEach(e=>{const c=e.impact>=0?'positive':'negative';const s=e.impact>=0?'+':'';html+=`<div class="oracle-card"><div style="font-weight:600;font-size:0.8rem;margin-bottom:0.2rem">${e.type}</div><div style="font-size:0.65rem;color:var(--text-muted);margin-bottom:0.3rem">${e.description}</div><div class="oracle-impact ${c}">${s}${e.impact}% ${e.symbol}</div></div>`;document.getElementById('oracleList').innerHTML=html;document.getElementById('hotEvents').innerHTML=html})}
-        async function loadEcosystem(){const d=await api('/api/ecosystem');ecosystem=d.tools||[];let html='';ecosystem.forEach(t=>{const st=t.status==='running'?'running':t.status==='active'?'active':t.status==='ready'?'ready':'scheduled';html+=`<div class="eco-card"><div class="eco-icon">${t.icon}</div><div class="eco-name">${t.name}</div><div class="eco-desc">${t.desc}</div><div style="margin-top:0.4rem"><span class="status-dot status-${st}"></span><span style="font-size:0.6rem">${t.status}</span></div></div>`});document.getElementById('ecosystemList').innerHTML=html}
-        async function loadScripts(){const d=await api('/api/scripts');scriptLogs=d.logs||[];let html='';scriptLogs.forEach(l=>{html+=`<tr><td>${l.script}</td><td><span class="log-status ${l.status}">${l.status}</span></td><td>${l.last_run}</td><td>${l.trades||l.airdrops||l.signals||l.positions||l.review_score||'-'}</td></tr>`});document.getElementById('scriptLogs').innerHTML=html}
-        async function loadPortfolio(){const d=await api('/api/portfolio');const p=d.performance?.portfolio||{};let html='';Object.values(p).forEach(x=>{html+=`<div style="display:flex;justify-content:space-between;padding:0.6rem;background:var(--bg-elevated);border-radius:8px;margin-bottom:0.4rem"><span>${x.icon} ${x.name}</span><span style="color:var(--success)">+$${x.pnl} (${x.return_rate}%)</span></div>`});document.getElementById('portfolioBody').innerHTML=html;document.getElementById('totalPnl').innerText='+$'+d.performance?.total_pnl;document.getElementById('winRate').innerText=d.performance?.win_rate+'%'}
-        async function loadParams(){const d=await api('/api/params');const p=d.params||{};document.getElementById('confThresh').innerText=p.confidence_threshold;document.getElementById('stopLoss').innerText=p.stop_loss;document.getElementById('takeProfit').innerText=p.take_profit;document.getElementById('maxPos').innerText=p.max_position;document.getElementById('gasLimit').innerText=p.gas_limit;let html='';Object.entries(p).forEach(([k,v])=>{html+=`<div class="param-item"><div class="param-label">${k}</div><div class="param-value">${v}</div></div>`});document.getElementById('paramsGrid').innerHTML=html}
-        function showPage(pid){
-            document.querySelectorAll('.page').forEach(p=>p.style.display='none');
-            document.getElementById('page-'+pid).style.display='block';
-            document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-            document.querySelector(`[data-page="${pid}"]`).classList.add('active');
-            const titles={home:'首页纵览',hot:'热点纵览',dashboard:'参数仪表盘',assets:'资产看板',markets:'北斗七鑫',portfolio:'投资组合',strategies:'策略模型',sonar:'声纳趋势',oracle:'预言机',ecosystem:'生态工具',scripts:'脚本日志',support:'客服中心',referral:'分享有礼'};
-            document.getElementById('pageTitle').innerText=titles[pid]||'护食';
-        }
-        document.querySelectorAll('.nav-item').forEach(item=>{item.addEventListener('click',()=>showPage(item.dataset.page))});
-        async function refreshAll(){await init()}
-        async function refreshSignals(){await loadSignals()}
-        async function applyPreset(name){await api('/api/portfolio/apply', 'POST', {preset:name});await loadPortfolio()}
-        async function saveParams(){alert('参数已保存!')}
-        async function generateRef(){const d=await api('/api/referral/generate', 'POST');document.getElementById('refCode').value=d.referral_code;document.getElementById('refLink').style.display='block'}
-        function showAuthModal(){}
-        init();
-    </script>
+
+<!-- 启动动画 -->
+<div id="loader">
+<div class="loader-logo">🪿</div>
+<div class="loader-title">GO2SE</div>
+<div class="loader-subtitle">智能投资平台 v2.0</div>
+<div class="loader-progress"><div class="loader-bar" id="loaderBar"></div></div>
+<div class="loader-text" id="loaderText">正在初始化...</div>
+</div>
+
+<div class="container">
+<h1>🪿 Go2Se 智能投资平台 <span style="font-size:0.9rem;color:var(--text-muted);font-weight:400">v2.0</span></h1>
+
+<!-- 一级导航 -->
+<nav class="nav">
+<button class="nav-btn active" onclick="showPage('dashboard')"><span class="shortcut">1</span>📊 总览</button>
+<button class="nav-btn" onclick="showPage('market')"><span class="shortcut">2</span>📈 市场</button>
+<button class="nav-btn" onclick="showPage('strategy')"><span class="shortcut">3</span>🎯 策略</button>
+<button class="nav-btn" onclick="showPage('signals')"><span class="shortcut">4</span>🔔 信号</button>
+<button class="nav-btn" onclick="showPage('trading')"><span class="shortcut">5</span>💹 交易</button>
+<button class="nav-btn" onclick="showPage('wallet')"><span class="shortcut">6</span>💰 钱包</button>
+<button class="nav-btn" onclick="showPage('settings')"><span class="shortcut">7</span>⚙️ 设置</button>
+</nav>
+
+<!-- 右侧快捷导航 -->
+<nav class="side-nav">
+<button class="side-btn" onclick="showPage('dashboard')" title="总览">📊</button>
+<button class="side-btn" onclick="showPage('market')" title="市场">📈</button>
+<button class="side-btn" onclick="showPage('strategy')" title="策略">🎯</button>
+<button class="side-btn" onclick="showPage('signals')" title="信号">🔔</button>
+<button class="side-btn" onclick="showPage('trading')" title="交易">💹</button>
+<button class="side-btn" onclick="showPage('wallet')" title="钱包">💰</button>
+<button class="side-btn" onclick="showPage('settings')" title="设置">⚙️</button>
+</nav>
+
+<!-- 页面1: 总览 -->
+<div id="dashboard" class="page active show">
+<div class="page-header">
+<h2>📊 平台总览</h2>
+<button class="refresh-btn" onclick="refreshDashboard()"><span>🔄</span> 刷新 <span class="spin" id="refreshSpin" style="display:none">⟳</span></button>
+</div>
+<div class="grid">
+<div class="card signal-glow" id="trendCard">
+<div class="card-title">🧠 当前趋势</div>
+<div class="card-value" id="trend">-</div>
+<div class="card-label">声纳系统判断</div>
+</div>
+<div class="card">
+<div class="card-title">🎯 最终决策</div>
+<div class="card-value" id="decision">-</div>
+<div class="card-label">操作建议</div>
+</div>
+<div class="card">
+<div class="card-title">📊 置信度</div>
+<div class="card-value" id="confidence">-</div>
+<div class="confidence-bar"><div class="confidence-fill" id="confidenceFill" style="width:0%"></div></div>
+<div class="card-label">决策置信度</div>
+</div>
+<div class="card">
+<div class="card-title">🏆 胜率</div>
+<div class="card-value positive" id="winrate">-</div>
+<div class="card-label">回测胜率</div>
+</div>
+</div>
+
+<!-- 快速统计 -->
+<h2>📈 核心指标</h2>
+<div class="grid">
+<div class="card"><div class="card-title">💵 总资产</div><div class="card-value" id="totalAssets">$85,000</div><div class="card-label">中转钱包</div></div>
+<div class="card"><div class="card-title">📱 活跃API</div><div class="card-value" id="activeApi">51</div><div class="card-label">84% 正常运行</div></div>
+<div class="card"><div class="card-title">⚡ 响应延迟</div><div class="card-value" id="latency">72ms</div><div class="card-label">决策 &lt;20ms</div></div>
+<div class="card"><div class="card-title">🤖 策略数</div><div class="card-value">35+</div><div class="card-label">7大工具</div></div>
+</div>
+</div>
+
+<!-- 页面2: 市场 -->
+<div id="market" class="page">
+<div class="page-header">
+<h2>📈 市场行情</h2>
+</div>
+<div class="search-box">
+<input type="text" class="search-input" placeholder="搜索币种..." id="marketSearch" oninput="filterMarket()">
+</div>
+<div class="grid" id="marketGrid">
+<div class="card"><div class="card-title">₿ Bitcoin</div><div class="card-value positive" id="btcPrice">$75,145</div><div class="tag success">+3.62%</div><div class="card-label">BTC/USDT</div></div>
+<div class="card"><div class="card-title">Ξ Ethereum</div><div class="card-value" id="ethPrice">$2,845</div><div class="tag">+1.23%</div><div class="card-label">ETH/USDT</div></div>
+<div class="card"><div class="card-title">✕ XRP</div><div class="card-value" id="xrpPrice">$0.58</div><div class="tag warning">-0.45%</div><div class="card-label">XRP/USDT</div></div>
+<div class="card"><div class="card-title">♾️ Solana</div><div class="card-value" id="solPrice">$178</div><div class="tag success">+5.21%</div><div class="card-label">SOL/USDT</div></div>
+</div>
+
+<h2>🔥 强势币种</h2>
+<div class="list" id="strongCoins">
+<div class="list-item"><span>SOL</span><span class="tag success">强势上涨</span></div>
+<div class="list-item"><span>BTC</span><span class="tag success">突破阻力</span></div>
+<div class="list-item"><span>PEPE</span><span class="tag success"> meme机会</span></div>
+</div>
+
+<h2>⚠️ 弱势币种</h2>
+<div class="list" id="weakCoins">
+<div class="list-item"><span>XRP</span><span class="tag danger">超买回调</span></div>
+<div class="list-item"><span>ADA</span><span class="tag warning">横盘整理</span></div>
+</div>
+</div>
+
+<!-- 页面3: 策略 -->
+<div id="strategy" class="page">
+<h2>🎯 投资策略组合</h2>
+<div class="grid">
+<div class="card"><div class="card-title">🐰 打兔子</div><div class="card-value">25%</div><div class="tag success">主流趋势</div><div class="card-label">BTC/ETH/SOL</div></div>
+<div class="card"><div class="card-title">🐹 打地鼠</div><div class="card-value">20%</div><div class="tag success">套利策略</div><div class="card-label">CEX↔DEX</div></div>
+<div class="card"><div class="card-title">🔮 走着瞧</div><div class="card-value">15%</div><div class="tag purple">预测市场</div><div class="card-label">Polymarket</div></div>
+<div class="card"><div class="card-title">👑 跟大哥</div><div class="card-value">15%</div><div class="tag">做市商</div><div class="card-label">Binance</div></div>
+<div class="card"><div class="card-title">🍀 搭便车</div><div class="card-value">10%</div><div class="tag">跟单交易</div><div class="card-label">3Commas</div></div>
+<div class="card"><div class="card-title">✂️ 薅羊毛</div><div class="card-value">3%</div><div class="tag warning">空投猎手</div><div class="card-label">10平台</div></div>
+<div class="card"><div class="card-title">👶 穷孩子</div><div class="card-value">2%</div><div class="tag success">众包任务</div><div class="card-label">8平台</div></div>
+</div>
+
+<h2>📈 策略列表</h2>
+<div class="list">
+<div class="list-item"><span>🐰 趋势交易</span><span class="tag success">bullish</span><span>75%</span></div>
+<div class="list-item"><span>🐹 网格交易</span><span class="tag">neutral</span><span>68%</span></div>
+<div class="list-item"><span>🔮 DCA定投</span><span class="tag success">neutral</span><span>72%</span></div>
+<div class="list-item"><span>✂️ 套利策略</span><span class="tag warning">testing</span><span>65%</span></div>
+</div>
+</div>
+
+<!-- 页面4: 信号 -->
+<div id="signals" class="page">
+<h2>🔔 AI信号分析</h2>
+<div class="grid">
+<div class="card signal-glow" id="ethSignal">
+<div class="card-title">🔔 ETH 信号</div>
+<div class="card-value" id="ethSignalValue">-</div>
+<div class="confidence-bar"><div class="confidence-fill" id="ethConfidence"></div></div>
+<div class="card-label">置信度 <span id="ethConfValue">0</span>%</div>
+</div>
+<div class="card signal-glow" id="xrpSignal">
+<div class="card-title">🔔 XRP 信号</div>
+<div class="card-value" id="xrpSignalValue">-</div>
+<div class="confidence-bar"><div class="confidence-fill" id="xrpConfidence"></div></div>
+<div class="card-label">置信度 <span id="xrpConfValue">0</span>%</div>
+</div>
+</div>
+
+<h2>📡 声纳模型</h2>
+<div class="grid">
+<div class="card"><div class="card-title">📊 技术指标</div><div class="card-value">20+</div><div class="card-label">趋势模型</div></div>
+<div class="card"><div class="card-title">⛓️ 链上数据</div><div class="card-value">15+</div><div class="card-label">链上指标</div></div>
+<div class="card"><div class="card-title">📰 市场情绪</div><div class="card-value">10+</div><div class="card-label">情绪分析</div></div>
+<div class="card"><div class="card-title">🔮 预测市场</div><div class="card-value">6</div><div class="card-label">Polymarket</div></div>
+</div>
+</div>
+
+<!-- 页面5: 交易 -->
+<div id="trading" class="page">
+<h2>💹 持仓管理</h2>
+<div class="grid">
+<div class="card"><div class="card-title">📦 持仓数量</div><div class="card-value">8</div><div class="card-label">活跃持仓</div></div>
+<div class="card"><div class="card-title">📈 今日盈亏</div><div class="card-value positive" id="todayPnL">+$1,234</div><div class="tag success">+2.15%</div></div>
+<div class="card"><div class="card-title">📊 总盈亏</div><div class="card-value positive" id="totalPnL">+$12,450</div><div class="tag success">+14.6%</div></div>
+<div class="card"><div class="card-title">🎯 胜率</div><div class="card-value">73%</div><div class="card-label">交易胜率</div></div>
+</div>
+
+<h2>📋 历史记录</h2>
+<div class="list" id="tradeHistory">
+<div class="list-item"><span>BTC/USDT</span><span class="tag success">买入</span><span style="font-family:var(--font-mono)">$75,000</span></div>
+<div class="list-item"><span>ETH/USDT</span><span class="tag success">卖出</span><span style="font-family:var(--font-mono)">$2,800</span></div>
+<div class="list-item"><span>SOL/USDT</span><span class="tag">买入</span><span style="font-family:var(--font-mono)">$170</span></div>
+</div>
+</div>
+
+<!-- 页面6: 钱包 -->
+<div id="wallet" class="page">
+<h2>💰 钱包管理</h2>
+<div class="grid">
+<div class="card"><div class="card-title">🏦 主钱包</div><div class="card-value">$85,000</div><div class="tag success">活跃</div><div class="card-label">Binance</div></div>
+</div>
+
+<h2>🔗 子钱包分配</h2>
+<div class="list" id="wallets">
+<div class="list-item"><span>🐰 打兔子</span><span class="tag success">$2,500</span><span class="status"><span class="status-dot"></span>运行中</span></div>
+<div class="list-item"><span>🐹 打地鼠</span><span class="tag success">$3,000</span><span class="status"><span class="status-dot"></span>运行中</span></div>
+<div class="list-item"><span>🔮 走着燋</span><span class="tag success">$3,000</span><span class="status"><span class="status-dot"></span>运行中</span></div>
+<div class="list-item"><span>👑 跟大哥</span><span class="tag">$1,500</span><span class="status"><span class="status-dot warning"></span>待机</span></div>
+<div class="list-item"><span>🍀 搭便车</span><span class="tag">$1,000</span><span class="status"><span class="status-dot"></span>运行中</span></div>
+<div class="list-item"><span>✂️ 薅羊毛</span><span class="tag warning">$1,500</span><span class="status"><span class="status-dot"></span>运行中</span></div>
+<div class="list-item"><span>👶 穷孩子</span><span class="tag success">$500</span><span class="status"><span class="status-dot"></span>运行中</span></div>
+</div>
+</div>
+
+<!-- 页面7: 设置 -->
+<div id="settings" class="page">
+<h2>⚙️ 系统设置</h2>
+<div class="grid">
+<div class="card"><div class="card-title">🔑 API配置</div><div class="card-label">Binance/Bybit/OKX</div><span class="tag success">已配置</span></div>
+<div class="card"><div class="card-title">🛡️ 风控规则</div><div class="card-label">8大规则</div><span class="tag success">已启用</span></div>
+<div class="card"><div class="card-title">⏰ 调度间隔</div><div class="card-value">30m</div><div class="card-label">自动交易</div></div>
+<div class="card"><div class="card-title">🔔 通知</div><div class="card-label">Telegram</div><span class="tag success">已连接</span></div>
+</div>
+
+<h2>🛡️ 风控规则</h2>
+<div class="list">
+<div class="list-item"><span>R001 仓位限制</span><span class="tag">仓位 &gt;80%</span></div>
+<div class="list-item"><span>R002 日内熔断</span><span class="tag danger">亏损 &gt;30%</span></div>
+<div class="list-item"><span>R003 单笔风险</span><span class="tag warning">风险 &gt;5%</span></div>
+<div class="list-item"><span>R004 波动止损</span><span class="tag">波动 &gt;8%</span></div>
+</div>
+</div>
+
+</div>
+
+<!-- 客服机器人 -->
+<div class="chat-widget">
+<button class="chat-btn" onclick="toggleChat()">💬</button>
+</div>
+
+<div class="chat-panel" id="chatPanel">
+<div class="chat-header">
+<h3>🪿 Go2Se 智能客服</h3>
+<button class="chat-close" onclick="toggleChat()">×</button>
+</div>
+<div class="chat-messages" id="chatMessages">
+<div class="chat-msg ai">您好！我是Go2Se智能客服，有什么可以帮您？</div>
+</div>
+<div class="chat-input">
+<input type="text" id="chatInput" placeholder="输入问题..." onkeypress="if(event.key==='Enter')sendMsg()">
+<button onclick="sendMsg()">发送</button>
+</div>
+</div>
+
+<!-- 快捷键提示 -->
+<div class="shortcuts-hint">
+<span><kbd>1-7</kbd> 切换页面</span>
+<span><kbd>Esc</kbd> 返回首页</span>
+<span><kbd>Ctrl+R</kbd> 刷新</span>
+</div>
+
+<script>
+// ====== 启动动画 ======
+let loadProgress=0;
+const loaderBar=document.getElementById('loaderBar');
+const loaderText=document.getElementById('loaderText');
+const loader=document.getElementById('loader');
+const loadSteps=['初始化系统...','加载配置...','连接API...','获取市场数据...','准备就绪！'];
+
+function updateLoader(){
+if(loadProgress<100){
+loadProgress+=Math.random()*15+5;
+if(loadProgress>100)loadProgress=100;
+loaderBar.style.width=loadProgress+'%';
+loaderText.textContent=loadSteps[Math.floor(loadProgress/20)]||loadSteps[loadSteps.length-1];
+setTimeout(updateLoader,200);
+}else{
+setTimeout(()=>{loader.classList.add('hidden');},300);
+}
+}
+updateLoader();
+
+// ====== 页面切换 ======
+const pageNames=['dashboard','market','strategy','signals','trading','wallet','settings'];
+function showPage(pageId){
+// 退出动画
+document.querySelectorAll('.page.active').forEach(p=>{p.classList.remove('show');p.classList.add('exit');});
+setTimeout(()=>{
+document.querySelectorAll('.page').forEach(p=>p.classList.remove('active','exit'));
+document.getElementById(pageId).classList.add('active');
+// 进入动画
+setTimeout(()=>document.getElementById(pageId).classList.add('show'),50);
+},300);
+
+// 更新导航
+document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+document.querySelectorAll('.side-btn').forEach(b=>b.classList.remove('active'));
+event?.target?.classList?.add('active');
+
+// 更新侧边导航
+const pageIndex=pageNames.indexOf(pageId);
+if(pageIndex>=0){
+document.querySelectorAll('.nav-btn')[pageIndex]?.classList?.add('active');
+document.querySelectorAll('.side-btn')[pageIndex]?.classList?.add('active');
+}
+
+loadPageData(pageId);
+}
+
+// ====== 刷新功能 ======
+function refreshDashboard(){
+const spin=document.getElementById('refreshSpin');
+spin.style.display='inline';
+loadPageData('dashboard');
+setTimeout(()=>spin.style.display='none',1000);
+}
+
+// ====== 加载页面数据 ======
+async function loadPageData(pageId){
+if(pageId==='dashboard'){
+try{
+const r=await fetch('/api/core/decision_chain');
+const d=await r.json();
+const dc=d.decision_chain;
+if(dc){
+document.getElementById('trend').textContent=dc['1_sonar_trend']?.trend||'--';
+document.getElementById('decision').textContent=dc['5_final_decision']?.action||'--';
+const conf=dc['5_final_decision']?.confidence||0;
+document.getElementById('confidence').textContent=conf+'%';
+document.getElementById('confidenceFill').style.width=conf+'%';
+// 信号发光
+if(conf>70){
+document.getElementById('trendCard').classList.add('active');
+}
+}
+}catch(e){console.error(e);}
+}
+}
+
+// ====== 客服聊天 ======
+function toggleChat(){
+document.getElementById('chatPanel').classList.toggle('show');
+}
+function addMsg(text,isUser=false){
+const div=document.createElement('div');
+div.className='chat-msg '+(isUser?'user':'ai');
+div.textContent=text;
+document.getElementById('chatMessages').appendChild(div);
+document.getElementById('chatMessages').scrollTop=document.getElementById('chatMessages').scrollHeight;
+}
+function sendMsg(){
+const input=document.getElementById('chatInput');
+const text=input.value.trim();
+if(!text)return;
+addMsg(text,true);
+input.value='';
+setTimeout(()=>{
+const replies={
+'策略':'🎯 投资策略包含：打兔子(趋势25%)、打地鼠(套利20%)、走着瞧(预测15%)、跟大哥(做市15%)、搭便车(跟单10%)、薅羊毛(空投3%)、穷孩子(众包2%)。',
+'风险':'🛡️ 风险管理规则：R001仓位限制80%、R002日内熔断30%、R003单笔风险5%、R004波动止损8%，还有流动性检查/API故障/异常检测/情绪过热。',
+'工具':'🛠️ 北斗七鑫：打兔子(主流趋势)、打地鼠(CEX+DEX套利)、走着瞧(Polymarket预测)、搭便车(3Commas跟单)、跟大哥(做市商)、薅羊毛(10平台空投)、穷孩子(8平台众包)。',
+'赚钱':'💰 赚钱机会：众包8平台+空投10平台+Polymarket预测市场，总计51个API，84%正常运行。',
+'帮助':'您好！可以问：策略、风险、工具、赚钱、帮助'
+};
+let reply=replies['帮助'];
+for(let key in replies){if(text.includes(key)){reply=replies[key];break;}}
+addMsg(reply);
+},500);
+}
+
+// ====== 键盘快捷键 ======
+document.addEventListener('keydown',(e)=>{
+// 数字键1-7切换页面
+if(e.key>='1'&&e.key<='7'){
+const idx=parseInt(e.key)-1;
+if(idx<pageNames.length){
+showPage(pageNames[idx]);
+}
+}
+// ESC返回首页
+if(e.key==='Escape'){
+showPage('dashboard');
+}
+// Ctrl+R刷新
+if(e.ctrlKey&&e.key==='r'){
+e.preventDefault();
+refreshDashboard();
+}
+});
+
+// ====== 页面加载完成后自动刷新数据 ======
+document.addEventListener('DOMContentLoaded',()=>{
+loadPageData('dashboard');
+setInterval(()=>loadPageData('dashboard'),30000);
+});
+
+// ====== 市场搜索过滤 ======
+function filterMarket(){
+const search=document.getElementById('marketSearch').value.toLowerCase();
+document.querySelectorAll('#marketGrid .card').forEach(card=>{
+const text=card.textContent.toLowerCase();
+card.style.display=text.includes(search)?'':'none';
+});
+}
+
+// ====== 数字动画效果 ======
+function animateValue(id,start,end,duration){
+const obj=document.getElementById(id);
+const range=end-start;
+const startTime=performance.now();
+function update(currentTime){
+const elapsed=currentTime-startTime;
+const progress=Math.min(elapsed/duration,1);
+const value=start+range*progress;
+obj.textContent=value>=1000?'$'+(value/1000).toFixed(1)+'K':'$'+value.toFixed(0);
+if(progress<1)requestAnimationFrame(update);
+}
+requestAnimationFrame(update);
+}
+</script>
 </body>
 </html>

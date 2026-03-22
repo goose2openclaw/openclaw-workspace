@@ -1,5 +1,265 @@
 # MEMORY.md - 长期记忆
 
+## 2026.03.22 五条平行工作执行
+
+### 执行内容
+
+#### ① 系统健康 (10%)
+- ✅ 检查进程状态
+- ✅ 启动GO2SE服务 (localhost:5000)
+- ⚠️ 发现磁盘空间不足 (99%)，清理日志文件
+
+#### ② 监控回复 (5%)
+- ✅ 实时响应用户消息
+
+#### ③ 调度准备 (10%)
+- ✅ 设置Cron任务:
+  - GO2SE健康检查 (每30分钟)
+  - GO2SE市场数据刷新 (每5分钟)
+
+#### ④ 执行工作 (70%)
+- ✅ 清理日志文件 (xiami_scanner.log)
+- ✅ GO2SE UI服务运行中
+
+#### ⑤ 社交学习 (5%)
+- ⚠️ 需要配置web_search API key
+
+---
+
+## 2026.03.22 UI升级2 - GO2Se智能投资平台v2.0
+
+### 升级内容
+1. **配色方案升级**: 夜空蓝(#0A0E17)+翡翠绿(#00D4AA)+紫罗兰(#7C3AED)+琥珀金(#F59E0B)
+2. **字体升级**: JetBrains Mono(数字)+Inter(界面)
+3. **启动动画**: Logo脉冲+进度条+状态文字
+4. **7页导航**: 总览/市场/策略/信号/交易/钱包/设置
+5. **右侧快捷导航**: 侧边栏快速跳转
+6. **键盘快捷键**: 1-7切换页面, ESC返回, Ctrl+R刷新
+7. **页面切换动画**: 淡入淡出+滑入滑出效果
+8. **信号发光效果**: 置信度>70%时边缘发光
+9. **置信度进度条**: 渐变色进度条可视化
+10. **客服聊天升级**: 更好的UI和交互
+
+### 文件位置
+- `/root/.openclaw/workspace/skills/go2se/web/templates/index.html`
+
+---
+
+## 2026.03.21 CEO升级 - 人设特质
+
+### 核心人设
+- **积极** - 永远正向，拥抱挑战
+- **主动** - 不等不问，自己找事干
+- **灵活** - 随机应变，灵活调度
+- **创造性** - 创新思维，寻找最优解
+- **高质量** - 最高标准，不将就
+
+## 执行准则
+- **积极自主**：不等不问，自己找事干
+- **开创性**：创新思维，寻找最优解
+- **高质量**：最高标准，不将就
+
+## 2026.03.21 CEO升级 - 五条平行工作线
+
+### 五条平行工作线
+| 工作线 | 任务 |
+|--------|------|
+| ① 系统健康 | 负总责、灵活调度、确保不当机 |
+| ② 监控 | 预判维护OpenClaw和GO2SE丝滑运转 |
+| ③ 调度准备 | 每30分钟迭代 |
+| ④ 执行工作 | 平台开发、功能实现 |
+| ⑤ 社交学习 | 外部学习、合作伙伴 |
+
+### 评测综合能力
+| 评测工具 | 用途 |
+|----------|------|
+| 回测模拟 | 策略历史回测 |
+| **MiroFish** | 变量仿真、预测市场 |
+| 代码评测 | 代码质量 |
+| 策略评测 | 信号、风控 |
+| 平台评测 | UI/UX |
+
+### MiroFish 工作交互
+- 预测: /api/oracle/mirofish/predict
+- 批量: /api/oracle/mirofish/batch
+- 市场: 6大预测市场
+
+### MiroFish 团队核心技能
+- **打破局限**: 超越单一视角，多维度分析
+- **发现新问题**: 主动识别隐藏风险和机会
+- **发现真相**: 100智能体共识，还原真实趋势
+- **自主迭代**: 自动触发策略优化和平台升级
+
+### 五条平行工作线 (更新)
+| 工作线 | 资源 | 任务 |
+|--------|------|------|
+| ① 系统健康 | 10% | 负总责、灵活调度、监控不当机 |
+| ② 监控回复 | 5% | 主会话实时响应 |
+| ③ 调度准备 | 10% | 每30分钟迭代 |
+| ④ 执行工作 | 70% | 平台开发、功能实现 |
+| ⑤ 社交学习 | 5% | 外部学习、合作伙伴 |
+
+### 团队架构 (三组 + MiroFish团队技能)
+| 组/技能 | 职责 |
+|---------|------|
+| 技术组 | 平台迭代开发、算力优化 |
+| 策略组 | 信号扫描、风控、算力利用 |
+| 运营组 | 外部资源、算力调度 |
+| **MiroFish** | 打破局限、发现真相、自主迭代 |
+
+### 技能清单 (114个)
+- CEO: ai-persona-os, skill-creator, self-improving
+- 技术: nextjs, docker, git-essentials, debug-pro
+- 策略: trading-brain, quant-trading, mirofish
+- 运营: agent-reach, marketing, gog
+- 共享: browser, pdf, weather
+
+**核心原则：不能让算力有闲置**
+
+**管理协调：所有组和技能都在CEO统一管理协调下**
+
+### CEO带领方法
+- 发现问题 → 解决问题 → 迭代进化
+- 调动内外部资源和技能
+- 最高标准完成任务
+
+### 行业最佳实践
+- trading-brain: 信息规模优势、多策略投票、3-Act框架
+- quant-trading-system: 多策略投票、自动开单、止损止盈
+
+## 2026.03.19 专题项目: GO2SE UI/UX 正式版
+
+### 设计理念
+- **惊喜**: 首次访问动画、信号视觉反馈、盈利庆祝效果
+- **踏实**: 实时数据刷新、稳定面板更新、明确操作反馈
+- **安全感**: 风控状态实时显示、资金变动确认、异常告警可视化
+
+### 配色方案 (金融仪表盘风格)
+- 主色: 夜空蓝 (#0A0E17) + 翡翠绿 (#00D4AA)
+- 辅助: 紫罗兰 (#7C3AED) + 琥珀金 (#F59E0B)
+- 字体: JetBrains Mono (数字) + Inter (界面)
+
+### 页面架构 (7页)
+1. 总览 - 仪表盘风格，4大指标+信号+风控+盈亏曲线
+2. 市场 - 实时行情表格+RSI趋势+强势/弱势币
+3. 策略 - 7大投资工具，算力分配可视化
+4. 信号 - AI深度分析，置信度进度条
+5. 交易 - 持仓管理+历史记录+盈亏统计
+6. 钱包 - 主/子钱包分配，资产分布图表
+7. 设置 - 交易配置+8大风控规则+API管理
+
+### 交互设计
+- 键盘快捷键: 1-7切换, ESC返回, Ctrl+R刷新
+- 页面切换: 淡入淡出+滑入滑出
+- 实时反馈: 信号触发发光/交易执行脉冲/数据滚动
+
+### 惊喜元素
+- 启动动画: Logo脉冲+进度条
+- 信号通知: 边缘发光+置信度可视化
+- 盈亏反馈: 绿色庆祝/红色安抚
+- 成就系统: 徽章/盾牌/日历
+
+### 安全元素
+- 三重状态确认 (颜色+文字+图标)
+- 实盘交易二次确认
+- 告警系统 (顶部横幅+声音+推送)
+
+### 参考技能
+- ui-ux-pro-max: 设计指导
+- skill-creator: 技能创建
+
+### SPEC文档
+- 详细设计规格: `/GO2SE_PLATFORM/versions/v6/SPEC.md`
+
+## 2026.03.19 平台优化
+
+### 北斗七鑫 v5 详细架构
+
+#### 双轨通道决策
+- ⚡快速通道: 置信度>70% 优先执行
+- 🔍深度通道: 置信度<70% 详细分析
+- 🎯最终决策: EXECUTE / WAIT + 工具+仓位+止盈
+
+#### 数据库架构
+- 声纳库: 20+趋势模型 (bullish 70-75%, bearish 68-75%, neutral 67-72%)
+- 策略库: 35+策略 (7大工具各多个子策略)
+- API库: 51个API (交易所12/预测8/空投18/众包13)
+
+#### 风控系统 (8大规则)
+| 规则 | 名称 | 触发条件 |
+|------|------|----------|
+| R001 | 仓位限制 | 仓位>80% |
+| R002 | 日内熔断 | 亏损>30% |
+| R003 | 单笔风险 | 风险>5% |
+| R004 | 波动止损 | 波动>8% |
+| R005 | 流动性检查 | Vol<100K |
+| R006 | API故障 | 错误率>1% |
+| R007 | 异常检测 | 偏离>3σ |
+| R008 | 情绪过热 | 波动>5σ |
+
+#### 中转钱包架构
+- 主钱包: $85,000
+- 7个子钱包分配: 打兔子$2,500/打地鼠$3,000/走着燋$3,000/跟大哥$1,500/搭便车$1,000/薅羊毛$1,500/穷孩子$500
+
+#### 统计总览
+- API: 51个 (活跃84%, 降级14%)
+- 延迟: 72ms, 决策<20ms
+- 7大投资工具: 🐰打兔子(25%) 🐹打地鼠(20%) 🔮走着瞧(15%) 👑跟大哥(15%) 🍀搭便车(10%) 💰薅羊毛(3%) 👶穷孩子(2%)
+- 5大核心引擎: 📊数据库 🧠专家模式 ⚡双轨通道 🛡️风控系统 💰中转钱包
+- 核心决策流程: 信号输入 → 深度推理(5步) → 策略执行
+
+### GO2SE生产部署
+- ✅ 完成北斗七鑫v6架构设计
+- ✅ 开发7大策略模块代码 (rabbit/mole/oracle/leader/hitchhiker/airdrop/crowdsource)
+- ✅ 生成各策略逻辑架构图
+- ✅ 完成深度推理与优化分析报告
+- ✅ 完成阿里国际站部署分析
+- ✅ 生成生产级部署套件 (docker-compose.yml)
+- ✅ 本地测试通过 (Binance API/策略运行)
+
+### 测试结果
+- Binance API连接: ✅ 正常
+- BTC价格: $75,145 (+3.62%)
+- 策略信号: ETH/XRP 超买，建议观望
+
+### 待处理
+- 阿里云部署 (等待服务器凭据)
+
+---
+
+## 2026.03.14 今日工作
+
+### 平台开发
+- ✅ 完成一二三级页面层级实现
+- ✅ 添加事件委托确保点击有效
+- ✅ 主题切换功能 🎨
+- ✅ 全局搜索功能 🔍
+- ✅ 快捷键支持 (Esc/Ctrl+R/Ctrl+F)
+- ✅ 交易API修复 (gunicorn启动)
+- ✅ 建立团队管理体系 (TEAM.md)
+- ✅ 创建学习机制 (auto_learn.py)
+
+### 团队建设
+- ✅ 升级SOUL.md - CEO灵魂
+- ✅ 更新IDENTITY.md - 人格定义
+- ✅ 创建TEAM.md - 团队架构
+- ✅ 创建SKILLS.md - 技能体系
+- ✅ 创建EVALUATION.md - 考核机制
+- ✅ 外部平台调研 (3Commas, HaasOnline)
+- ✅ @travislius 加入团队 🎉
+- ✅ @pikachu022700 已邀请
+- ✅ @Katrina-jpg 已邀请
+
+### 团队里程碑
+- ✅ 2026.03.14 09:40 - @travislius 加入团队 🎉
+
+### 三条平行工作线
+1. 主会话响应 - 正常运行
+2. Cron迭代任务 - 每10分钟, 下次 07:35
+3. Go2Se服务 - gunicorn 5000端口
+
+---
+
 ## 用户信息
 - 使用 openclaw-control-ui 界面
 - 对交易自动化 (FreqTrade) 感兴趣
@@ -16,6 +276,83 @@
 - PDF, Scrapling, Trading, Crypto-trading-bot, Trading-brain
 - Binance-grid-trading, Polymarket-bot, Polymarket-arbitrage
 - Pair-trade-screener, Rho-signals, Video-to-text, Weather 等
+- **2026.03.18 新增技能 (16:45-17:20):**
+  - byterover: 项目知识管理 (brv CLI)
+  - mh-wacli: WhatsApp CLI
+  - stock-analysis: 股票分析 (13个Agent协同)
+  - akshare-stock: A股量化
+  - stock-watcher: 股票监视
+  - stock-monitor: 股票监控
+  - tushare-stock-skill: TuShare股票数据
+  - china-stock-analysis: 中国股票分析
+  - ontology: 知识图谱 + 类型化实体管理
+  - proactive-agent-skill: 主动Agent技能
+  - aoms: Always-On Memory Service (4层持久化记忆)
+  - spec-kit: GitHub Spec-Driven Development (从GitHub克隆)
+  - gog: Google Workspace CLI ✅
+  - x-article-reader: X Article Reader ✅
+  - a2a-protocol: A2A Protocol ✅
+  - pls-canvas-design: Canvas设计 ✅
+  - exa-web-search-free: Exa免费网页搜索 ✅
+  - tldr: TLDR简明文档 ✅
+  - git-essentials: Git essentials ✅
+  - git-sync-daemon: Git同步守护进程 ✅
+  - github-pr-manager: GitHub PR管理 ✅
+  - debug-pro: Debug Pro ✅
+  - kesslerio-stealth-browser: 隐形浏览器 ✅
+  - git-crypt-backup: Git加密备份 ✅
+  - autoresearch: 自动研究 ✅
+  - agent-browser: 已安装 ✅
+  - nextjs: 已安装 ✅
+  - docker-essentials: 已安装 ✅
+  - public-apis-skill-creator: 已安装 ✅
+  - knowledge-site-creator: ⚠️ 未找到
+  - kronos: ⚠️ 未找到
+  - task-status: ⚠️ 未找到 (类似: agent-task-tracker)
+  - deepwork-tracker: ⚠️ 未找到
+  - deepkiwi: ⚠️ 未找到
+  - webapp-testing: ⚠️ 未找到 (类似: e2e-testing-patterns)
+  - coding-agent: ⚠️ 未找到 (类似: agentic-coding)
+  - agency-agents: Agency Agents ✅
+  - easyclaw: EasyClaw ✅
+  - turix-cua: TuriX Computer Use ✅
+  - Alphaclaw: ⚠️ 未找到
+  - self-improving: 自我优化 ✅
+  - self-improving-proactive-agent: 主动自我优化Agent ✅
+  - pua: PUA技能 ✅
+  - skill-creator: 已有 ✅
+  - agent-team-orchestration: Agent团队编排 ✅
+  - autoresearch: 已有 ✅
+  - awesome-ai-agent: ⚠️ 未找到 (类似: ai-agent-helper)
+  - **GO2SE平台三级页面 v3**:
+    - 7个一级页面: 总览/市场/策略/信号/交易/钱包/设置
+    - 纵向快捷跳转 (右侧导航)
+    - 键盘快捷键 (1-7切换页面)
+    - **导入动画** (LoadingScreen):
+      - Logo脉冲动画
+      - 进度条加载
+      - 页面切换过渡
+      - 滑入滑出效果
+    - 参考OpenClaw模板重构
+
+### 2026.03.18 新增技能
+- runesleo-systematic-debugging: 系统化调试 ✅
+- structure-thinking: 结构化思考 ✅
+- ui-ux-pro-max: UI/UX Pro Max ✅
+- vibe-coding: Vibe Coding ✅
+- next-best-practices: Next.js 最佳实践 ✅
+- worldmonitor-intelligence-dashboard: 世界监控情报面板 ✅
+- e2e-testing-patterns: E2E测试模式 ✅
+- pls-audit-website: 网站审计 ✅
+- openclaw-optimizer-pro: OpenClaw性能优化指南 ✅
+
+## 学习项目
+- virattt/ai-hedge-fund: AI对冲基金团队 (12位投资传奇Agent协作)
+  - GitHub: https://github.com/virattt/ai-hedge-fund
+- TradingAgents: Multi-Agent LLM金融交易框架
+  - GitHub: https://github.com/TauricResearch/TradingAgents
+  - 架构: Fundamentals/Sentiment/News/Technical Analyst → Researchers → Trader → Risk Manager → Portfolio Manager
+  - 支持: GPT-5.x, Gemini 3.x, Claude 4.x, Grok 4.x, Ollama
 
 ## 交易系统 (XIAMI)
 
@@ -45,8 +382,27 @@
 - xiami-unified: 每15分钟
 - xiami-market-scan: 每30分钟
 - xiami-auto-trade: 每30分钟 (扫描→交易→复盘→优化→GitHub同步)
+- go2se-platform-iteration: 每10分钟
 
 ## 经验总结
 - 容器环境优先考虑 pip 安装而非 Docker
-- 后台进程需要更稳健的管理方式
+- 后台进程需要更稳健的管理方式 (用gunicorn替代flask run)
 - GitHub 仓库: https://github.com/goose2openclaw/openclaw-workspace
+
+## 2026.03.18 改进点
+
+### 技能安装 fallback 机制
+
+### awesome-openclaw-usecases
+- 仓库: hesamsheikh/awesome-openclaw-usecases
+- 描述: OpenClaw 真实用例社区集合 (100+ use cases)
+- 包含: 内容Digest、个人助手、效率工具、开发者/运维等场景
+- 链接: https://github.com/hesamsheikh/awesome-openclaw-usecases
+
+### 技能安装 fallback 机制
+- **问题**: ClawHub 限流时无法安装技能
+- **建议**: 
+  1. ClawHub 限流超过10秒 → 自动转入 awesome-openclaw-skills 搜索
+  2. ClawHub 搜索无结果 → 10秒后自动转入 GitHub 搜索
+- **实现**: 在 skill-manager-all-in-one 技能中添加自动检测和切换逻辑
+- **状态**: 待实现

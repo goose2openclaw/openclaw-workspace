@@ -38,6 +38,17 @@ Skills are shared. Your setup is yours. Keeping them apart means you can update 
 ---
 
 Add whatever helps you do your job. This is your cheat sheet.
--e 
-### Telegram
-- Bot Token: 8393131247:AAGIfQLMtlrgOZx4ZFPriaUtL_opqXOCNDI
+---
+
+### Telegram (GO2SE主Bot)
+
+- **Bot Token:** `8405295378:AAG3bvttAQkwO0tjuTo1ypw02TLSKAFLT0o`
+- **Bot Username:** @G2oseBot
+- **Chat ID:** `-1002381931352`
+
+### GO2SE 团队 Bots
+
+| 成员 | Bot | 状态 |
+|------|-----|------|
+| 主Bot | @G2oseBot | ✅ 已配置 |
+| 策略Bot | (待创建) | ⏳ |
