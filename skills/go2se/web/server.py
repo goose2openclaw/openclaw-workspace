@@ -93,6 +93,7 @@ class Signal:
 # 用户会员配置
 USER_TIERS = {
     'guest': {'name': '游客体验', 'icon': '👤', 'sim_balance': 1000, 'max_daily_trades': 5, 'features': ['模拟交易', '基础信号', '浏览功能'], 'monthly_cost': 0},
+    'expert': {'name': '专家模式', 'icon': '🎓', 'sim_balance': 50000, 'max_daily_trades': 50, 'features': ['专业策略池', '高级技术分析', '自定义参数', '回测功能', '优先信号'], 'monthly_cost': 29},
     'subscriber': {'name': '订阅会员', 'icon': '⭐', 'sim_balance': 100000, 'max_daily_trades': 100, 'features': ['全部策略', '高级信号', 'API调用', '优先客服'], 'monthly_cost': 49},
     'partner': {'name': '分成伙伴', 'icon': '🤝', 'sim_balance': 500000, 'max_daily_trades': 500, 'features': ['跟单分成', '20%收益共享', '专属信号', 'VIP客服'], 'monthly_cost': 99, 'profit_share': 0.20},
     'private': {'name': '私募LP', 'icon': '💎', 'sim_balance': 1000000, 'max_daily_trades': 9999, 'features': ['专属策略', '35%收益分成', '代币奖励', '优先私募', '线下聚会'], 'monthly_cost': 0, 'min_investment': 10000, 'profit_share': 0.35}
