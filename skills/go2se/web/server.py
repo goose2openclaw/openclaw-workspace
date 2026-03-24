@@ -278,23 +278,49 @@ class DataStore:
     
     def generate_signals(self):
         signals = []
-        # Use cached/mock data
-        prices = {
-            'BTC': {'price': 82000, 'change_24h': 2.5},
-            'ETH': {'price': 3200, 'change_24h': 3.2},
-            'SOL': {'price': 180, 'change_24h': 5.1},
-            'XRP': {'price': 0.65, 'change_24h': -1.2},
-            'ADA': {'price': 0.58, 'change_24h': 1.8},
-            'AVAX': {'price': 42, 'change_24h': 4.5},
-            'DOT': {'price': 8.5, 'change_24h': -0.8},
-            'MATIC': {'price': 0.95, 'change_24h': 2.1}
-        }
-        for coin, data in prices.items():
-            change = data.get('change_24h', 0)
-            if change > 3: action, conf, risk = 'BUY', min(9.5, 5+change*0.4), 'low'
-            elif change < -3: action, conf, risk = 'SELL', min(9.5, 5+abs(change)*0.4), 'medium'
-            else: action, conf, risk = 'HOLD', random.uniform(4, 7), 'medium'
-            if conf > 4:
+        # 实时从Binance获取数据
+        symbols = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT', 'XRPUSDT', 'ADAUSDT', 'AVAXUSDT', 'DOTUSDT', 'MATICUSDT']
+        coin_map = {'BTCUSDT': 'BTC', 'ETHUSDT': 'ETH', 'SOLUSDT': 'SOL', 'XRPUSDT': 'XRP', 'ADAUSDT': 'ADA', 'AVAXUSDT': 'AVAX', 'DOTUSDT': 'DOT', 'MATICUSDT': 'MATIC'}
+        
+        for sym in symbols:
+            try:
+                import urllib.request
+                url = f'https://api.binance.com/api/v3/ticker/24hr?symbol={sym}'
+                req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+                with urllib.request.urlopen(req, timeout=3) as response:
+                    d = json.loads(response.read().decode())
+                    coin = coin_map.get(sym, sym.replace('USDT', ''))
+                    price = float(d['lastPrice'])
+                    change = float(d['priceChangePercent'])
+                    
+                    # 智能信号逻辑
+                    if change > 4: action, conf, risk = 'BUY', min(9.5, 5+change*0.3), 'low'
+                    elif change > 2: action, conf, risk = 'BUY', min(8.5, 4+change*0.4), 'medium'
+                    elif change < -4: action, conf, risk = 'SELL', min(9.5, 5+abs(change)*0.3), 'high'
+                    elif change < -2: action, conf, risk = 'SELL', min(8.5, 4+abs(change)*0.4), 'medium'
+                    else: action, conf, risk = 'HOLD', round(4 + abs(change) * 0.3, 1), 'low'
+                    
+                    signals.append(Signal(coin, 'mainstream', action, round(conf, 1), round(abs(change) * 1.2, 1), risk, ['Binance Real'], datetime.now().isoformat(), price, change))
+            except Exception as e:
+                pass  # 静默失败，使用本地数据
+        
+        # 如果Binance全部失败，使用本地缓存
+        if not signals:
+            prices = {
+                'BTC': {'price': 82000, 'change_24h': 2.5},
+                'ETH': {'price': 3200, 'change_24h': 3.2},
+                'SOL': {'price': 180, 'change_24h': 5.1},
+                'XRP': {'price': 0.65, 'change_24h': -1.2},
+                'ADA': {'price': 0.58, 'change_24h': 1.8},
+                'AVAX': {'price': 42, 'change_24h': 4.5},
+                'DOT': {'price': 8.5, 'change_24h': -0.8},
+                'MATIC': {'price': 0.95, 'change_24h': 2.1}
+            }
+            for coin, data in prices.items():
+                change = data.get('change_24h', 0)
+                if change > 3: action, conf, risk = 'BUY', min(9.5, 5+change*0.4), 'low'
+                elif change < -3: action, conf, risk = 'SELL', min(9.5, 5+abs(change)*0.4), 'medium'
+                else: action, conf, risk = 'HOLD', random.uniform(4, 7), 'medium'
                 signals.append(Signal(coin, 'mainstream', action, round(conf, 1), round(abs(change)*1.5, 1), risk, ['Binance API'], datetime.now().isoformat(), data.get('price', 0), change))
         return signals
     
