@@ -20,7 +20,7 @@ def get_cached_prices():
         return _cache['prices']['data']
     return None
 
-def get_backend_data(endpoint, cache_key, ttl=300):
+def get_backend_data(endpoint, cache_key, ttl=60):
     """从后台API获取数据"""
     now = time.time()
     if cache_key in _cache['backend']:
@@ -2745,3 +2745,32 @@ def vpn_disable():
         'message': 'VPN已禁用',
         'timestamp': datetime.now().isoformat()
     })
+
+# ===== MiroFish 预测市场集成 =====
+@app.route('/api/oracle/mirofish/predict', methods=['POST'])
+def mirofish_predict():
+    """MiroFish 预测接口"""
+    data = request.get_json() or {}
+    question = data.get('question', 'BTC tomorrow trend')
+    
+    # 模拟MiroFish响应
+    result = {
+        'question': question,
+        'prediction': 'bullish',
+        'confidence': 0.72,
+        'agents': 100,
+        'rounds': 5,
+        'timestamp': datetime.now().isoformat()
+    }
+    return jsonify(result)
+
+@app.route('/api/oracle/mirofish/markets')
+def mirofish_markets():
+    """MiroFish 市场列表"""
+    markets = [
+        {'name': 'BTC Price', 'symbol': 'BTC-USD', 'trend': 'bullish', 'confidence': 0.72},
+        {'name': 'ETH Price', 'symbol': 'ETH-USD', 'trend': 'bullish', 'confidence': 0.65},
+        {'name': 'SOL Price', 'symbol': 'SOL-USD', 'trend': 'neutral', 'confidence': 0.58}
+    ]
+    return jsonify({'markets': markets, 'timestamp': datetime.now().isoformat()})
+

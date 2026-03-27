@@ -433,6 +433,8 @@
             <!-- 预言机 -->
             <div id="page-oracle" class="page" style="display:none">
                 <div class="card"><div class="card-header"><span class="card-title">🔮 预言机事件 - 外部事件驱动</span></div><div class="oracle-grid" id="oracleList"></div></div>
+                <div class="card" style="margin-top:1rem"><div class="card-header"><span class="card-title">🔮 MiroFish 预测市场 - 多智能体共识</span></div><div class="mirofish-grid" id="mirofishList"></div></div>
+                <div class="card" style="margin-top:1rem"><div class="card-header"><span class="card-title">🎯 实时预测</span></div><div id="mirofishPredict" style="padding:1rem"></div></div>
                 <div class="card"><div class="card-header"><span class="card-title">📖 事件类型</span></div>
                     <div class="strategy-detail">
                         <div class="strat-item"><div class="strat-icon">📋</div><div class="strat-name">ETF审批</div><div class="strat-desc">SEC/BTC现货ETF审批进展，影响BTC价格+5~20%</div><div class="strat-risk">概率: 65%</div></div>
@@ -650,7 +652,7 @@
         setTimeout(()=>hideLanding(),3000);
         async function api(url,method='GET',data=null){
             try{const opt={method,headers:{'Content-Type':'application/json'}};if(data)opt.body=JSON.stringify(data);return await fetch(url,opt).then(r=>r.json())}catch{return{}}}
-        async function init(){await Promise.all([loadDashboard(),loadMarkets(),loadSignals(),loadStrategies(),loadSonar(),loadOracle(),loadEcosystem(),loadScripts(),loadPortfolio(),loadParams()]);renderGainersLosers();startAutoRefresh();renderPortfolio()}
+        async function init(){await Promise.all([loadDashboard(),loadMarkets(),loadSignals(),loadStrategies(),loadSonar(),loadOracle(),loadMiroFishMarkets(),loadMiroFishPredict(),loadEcosystem(),loadScripts(),loadPortfolio(),loadParams()]);renderGainersLosers();startAutoRefresh();renderPortfolio()}
         
         // 自动刷新
         let autoRefreshInterval;
@@ -1880,3 +1882,53 @@
     </script>
 </body>
 </html>
+
+<script>
+// ===== MiroFish 预测市场集成 =====
+async function loadMiroFishMarkets(){
+    try {
+        const d = await api('/api/oracle/mirofish/markets');
+        const markets = d.markets || [];
+        let html = '';
+        markets.forEach(m => {
+            const trendColor = m.trend === 'bullish' ? 'var(--success)' : m.trend === 'bearish' ? 'var(--danger)' : 'var(--warning)';
+            const trendIcon = m.trend === 'bullish' ? '📈' : m.trend === 'bearish' ? '📉' : '➡️';
+            html += `<div class="mirofish-card">
+                <div style="font-size:1.5rem;margin-bottom:0.3rem">${m.symbol}</div>
+                <div style="font-size:0.8rem;color:var(--text-muted)">${m.name}</div>
+                <div class="mirofish-trend" style="color:${trendColor}">${trendIcon} ${m.trend.toUpperCase()}</div>
+                <div class="mirofish-confidence">
+                    <div class="confidence-bar" style="width:${m.confidence*100}%"></div>
+                    <span>${(m.confidence*100).toFixed(0)}%</span>
+                </div>
+            </div>`;
+        });
+        document.getElementById('mirofishList').innerHTML = html;
+    } catch(e) { console.error('MiroFish error:',e); }
+}
+
+async function loadMiroFishPredict(){
+    try {
+        const d = await api('/api/oracle/mirofish/predict', 'POST', {question:'BTC price trend'});
+        if(d.prediction){
+            const color = d.prediction === 'bullish' ? 'var(--success)' : 'var(--danger)';
+            document.getElementById('mirofishPredict').innerHTML = 
+                `<div style="text-align:center">
+                    <div style="font-size:2rem;margin-bottom:0.5rem">${d.prediction==='bullish'?'🐂':'🐻'}</div>
+                    <div style="font-size:1.2rem;color:${color};font-weight:bold">${d.prediction.toUpperCase()}</div>
+                    <div style="font-size:0.8rem;color:var(--text-muted)">置信度: ${(d.confidence*100).toFixed(0)}%</div>
+                    <div style="font-size:0.7rem;color:var(--text-muted)">${d.agents}智能体 × ${d.rounds}轮</div>
+                </div>`;
+        }
+    } catch(e) { console.error('MiroFish predict error:',e); }
+}
+</script>
+
+<style>
+.mirofish-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(140px,1fr)); gap: 0.8rem; padding: 0.8rem; }
+.mirofish-card { background: var(--bg-elevated); border-radius: 12px; padding: 1rem; text-align: center; border: 1px solid var(--border); }
+.mirofish-trend { font-size: 0.9rem; font-weight: 600; margin: 0.5rem 0; }
+.mirofish-confidence { background: var(--bg-primary); border-radius: 8px; height: 24px; position: relative; overflow: hidden; }
+.mirofish-confidence .confidence-bar { background: linear-gradient(90deg, var(--success), var(--warning)); height: 100%; border-radius: 8px; }
+.mirofish-confidence span { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 0.7rem; font-weight: bold; color: var(--text-primary); }
+</style>
