@@ -1,0 +1,115 @@
+{
+  "expert_mode": true,
+  "strategies": {
+    "lean_rsi": {
+      "id": "lean_rsi",
+      "name": "Lean RSI\u5747\u503c\u56de\u5f52",
+      "type": "quant",
+      "enabled": true,
+      "allocation": 0.1,
+      "priority": 5,
+      "capital_ratio": 0.1,
+      "description": "RSI\u7ecf\u5178\u5747\u503c\u56de\u5f52\u7b56\u7565",
+      "source": "local"
+    },
+    "lean_macd": {
+      "id": "lean_macd",
+      "name": "Lean MACD\u8d8b\u52bf",
+      "type": "quant",
+      "enabled": true,
+      "allocation": 0.1,
+      "priority": 5,
+      "capital_ratio": 0.1,
+      "description": "MACD\u91d1\u53c9\u6b7b\u53c9\u7b56\u7565",
+      "source": "local"
+    },
+    "bollinger_bands": {
+      "id": "bollinger_bands",
+      "name": "\u5e03\u6797\u5e26\u7a81\u7834",
+      "type": "quant",
+      "enabled": true,
+      "allocation": 0.1,
+      "priority": 5,
+      "capital_ratio": 0.1,
+      "description": "\u5e03\u6797\u5e26\u4e0a\u4e0b\u8f68\u7a81\u7834",
+      "source": "local"
+    },
+    "ml_ensemble": {
+      "id": "ml_ensemble",
+      "name": "ML\u591a\u6307\u6807\u96c6\u6210",
+      "type": "ML",
+      "enabled": true,
+      "allocation": 0.1,
+      "priority": 5,
+      "capital_ratio": 0.1,
+      "description": "\u591a\u6307\u6807\u52a0\u6743\u673a\u5668\u5b66\u4e60\u4fe1\u53f7",
+      "source": "local"
+    },
+    "stat_arb": {
+      "id": "stat_arb",
+      "name": "\u7edf\u8ba1\u5957\u5229",
+      "type": "arb",
+      "enabled": true,
+      "allocation": 0.1,
+      "priority": 5,
+      "capital_ratio": 0.1,
+      "description": "\u914d\u5bf9\u4ea4\u6613\u7edf\u8ba1\u5957\u5229",
+      "source": "local"
+    },
+    "momentum": {
+      "id": "momentum",
+      "name": "\u52a8\u91cf\u7b56\u7565",
+      "type": "quant",
+      "enabled": true,
+      "allocation": 0.1,
+      "priority": 5,
+      "capital_ratio": 0.1,
+      "description": "\u4ef7\u683c\u52a8\u91cf\u8ddf\u8e2a",
+      "source": "local"
+    },
+    "finta": {
+      "id": "finta",
+      "name": "FinTA\u6280\u672f\u6307\u6807\u5e93",
+      "type": "indicator",
+      "enabled": true,
+      "allocation": 0.1,
+      "priority": 5,
+      "capital_ratio": 0.1,
+      "description": "100+\u6280\u672f\u6307\u6807",
+      "source": "github"
+    },
+    "talib": {
+      "id": "talib",
+      "name": "TA-Lib\u4e13\u4e1a\u5206\u6790",
+      "type": "indicator",
+      "enabled": true,
+      "allocation": 0.1,
+      "priority": 5,
+      "capital_ratio": 0.1,
+      "description": "TA-Lib\u4e13\u4e1a\u6280\u672f\u5206\u6790",
+      "source": "github"
+    },
+    "polymarket": {
+      "id": "polymarket",
+      "name": "Polymarket\u9884\u6d4b\u5e02\u573a",
+      "type": "prediction",
+      "enabled": true,
+      "allocation": 0.1,
+      "priority": 5,
+      "capital_ratio": 0.1,
+      "description": "\u9884\u6d4b\u5e02\u573a\u4ea4\u6613\u4e0e\u5957\u5229",
+      "source": "local"
+    },
+    "onchain": {
+      "id": "onchain",
+      "name": "\u94fe\u4e0a\u5206\u6790\u5de5\u5177",
+      "type": "analytics",
+      "enabled": true,
+      "allocation": 0.1,
+      "priority": 5,
+      "capital_ratio": 0.1,
+      "description": "\u533a\u5757\u94fe\u8ffd\u8e2a\u4e0e\u5730\u5740\u5206\u6790",
+      "source": "local"
+    }
+  }
+}

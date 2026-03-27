@@ -183,5 +183,177 @@
         "time": "2026-03-11T01:30:29.796239"
       }
     ]
+  },
+  {
+    "time": "2026-03-17T16:35:56.800936",
+    "alerts": [
+      {
+        "symbol": "WAVES/USDT",
+        "exchange": "binance",
+        "price": 1.076,
+        "change": 11.967,
+        "volume": 438682.24606,
+        "time": "2026-03-17T16:35:46.401117"
+      },
+      {
+        "symbol": "NULS/USDT",
+        "exchange": "binance",
+        "price": 0.0258,
+        "change": -7.194,
+        "volume": 158334.2691,
+        "time": "2026-03-17T16:35:46.401112"
+      },
+      {
+        "symbol": "ACH/USDT",
+        "exchange": "okx",
+        "price": 0.007576,
+        "change": 5.633017289459008,
+        "volume": 250492.09890909,
+        "time": "2026-03-17T16:35:56.791930"
+      },
+      {
+        "symbol": "ICX/USDT",
+        "exchange": "binance",
+        "price": 0.0393,
+        "change": 5.08,
+        "volume": 606941.58233,
+        "time": "2026-03-17T16:35:46.401108"
+      },
+      {
+        "symbol": "BAT/USDT",
+        "exchange": "bybit",
+        "price": 0.1074,
+        "change": 4.07,
+        "volume": 236603.051102,
+        "time": "2026-03-17T16:35:53.693370"
+      },
+      {
+        "symbol": "ONT/USDT",
+        "exchange": "binance",
+        "price": 0.04565,
+        "change": 3.868,
+        "volume": 633155.93041,
+        "time": "2026-03-17T16:35:46.401095"
+      },
+      {
+        "symbol": "WLFI/USDT",
+        "exchange": "okx",
+        "price": 0.1021,
+        "change": -3.8606403013182673,
+        "volume": 2616318.350354,
+        "time": "2026-03-17T16:35:56.791922"
+      },
+      {
+        "symbol": "UNI/USDT",
+        "exchange": "bybit",
+        "price": 3.987,
+        "change": -3.44,
+        "volume": 3084376.62368,
+        "time": "2026-03-17T16:35:53.693398"
+      },
+      {
+        "symbol": "AERGO/USDT",
+        "exchange": "okx",
+        "price": 0.05689,
+        "change": 3.024266570083303,
+        "volume": 158827.38429498117,
+        "time": "2026-03-17T16:35:56.791910"
+      }
+    ]
+  },
+  {
+    "time": "2026-03-17T17:02:25.000000",
+    "alerts": [
+      {
+        "symbol": "PIPPIN/USDT",
+        "exchange": "mexc",
+        "price": 0.0,
+        "change": -57.8,
+        "volume": 0,
+        "time": "2026-03-17T17:02:25.000000"
+      },
+      {
+        "symbol": "BAN/USDT",
+        "exchange": "mexc",
+        "price": 0.0,
+        "change": 24.0,
+        "volume": 0,
+        "time": "2026-03-17T17:02:25.000000"
+      },
+      {
+        "symbol": "GALAXIS/USDT",
+        "exchange": "mexc",
+        "price": 0.0,
+        "change": -19.3,
+        "volume": 0,
+        "time": "2026-03-17T17:02:25.000000"
+      },
+      {
+        "symbol": "WAVES/USDT",
+        "exchange": "binance",
+        "price": 0.0,
+        "change": 12.0,
+        "volume": 0,
+        "time": "2026-03-17T17:02:25.000000"
+      },
+      {
+        "symbol": "ZEC/USDT",
+        "exchange": "binance",
+        "price": 0.0,
+        "change": 10.6,
+        "volume": 0,
+        "time": "2026-03-17T17:02:25.000000"
+      }
+    ],
+    "api_test": {
+      "fastest": "mexc",
+      "latency_ms": 1241
+    },
+    "best_strategy": "v4",
+    "strategy_stats": {
+      "winrate": "52%",
+      "profit": "3.5%"
+    }
+  },
+  {
+    "time": "2026-03-17T18:03:05.962285",
+    "alerts": [
+      {
+        "symbol": "BTC/USDT",
+        "exchange": "binance",
+        "price": 74473.93,
+        "change": 0.69,
+        "volume": 2008400000,
+        "signal": "\ud83d\udfe1 \u89c2\u671b",
+        "confidence": 2,
+        "time": "2026-03-17T18:03:05.962309"
+      },
+      {
+        "symbol": "ETH/USDT",
+        "exchange": "binance",
+        "price": 2337.56,
+        "change": 0.89,
+        "volume": 1497500000,
+        "signal": "\ud83d\udfe1 \u89c2\u671b",
+        "confidence": 2,
+        "time": "2026-03-17T18:03:05.962314"
+      },
+      {
+        "symbol": "SOL/USDT",
+        "exchange": "binance",
+        "price": 94.48,
+        "change": 0.4,
+        "volume": 341200000,
+        "signal": "\u26aa \u4e2d\u6027",
+        "confidence": 0,
+        "time": "2026-03-17T18:03:05.962316"
+      }
+    ],
+    "api_test": {
+      "fastest": "binance",
+      "latency_ms": 906
+    },
+    "best_strategy": "v4",
+    "summary": "\u5e02\u573a\u6574\u4f53\u5e73\u7a33\uff0c\u4e3b\u8981\u5e01\u79cd\u5c0f\u5e45\u4e0a\u6da8"
   }
 ]

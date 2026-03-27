@@ -1,0 +1,120 @@
+{
+  "generated": "2026-03-15T13:36:50.987026",
+  "initial_investment": 1000,
+  "matrix": {
+    "conservative": {
+      "24": {
+        "initial": 1000,
+        "final": 1122.18,
+        "profit": 122.18,
+        "return_pct": 12.22,
+        "trades": 8.0,
+        "win_rate": 73.7,
+        "fees_paid": 8.0
+      },
+      "48": {
+        "initial": 1000,
+        "final": 1296.58,
+        "profit": 296.58,
+        "return_pct": 29.66,
+        "trades": 15.0,
+        "win_rate": 68.8,
+        "fees_paid": 15.0
+      },
+      "72": {
+        "initial": 1000,
+        "final": 1342.84,
+        "profit": 342.84,
+        "return_pct": 34.28,
+        "trades": 20.3,
+        "win_rate": 65.0,
+        "fees_paid": 20.3
+      },
+      "154": {
+        "initial": 1000,
+        "final": 1833.88,
+        "profit": 833.88,
+        "return_pct": 83.39,
+        "trades": 48.1,
+        "win_rate": 67.4,
+        "fees_paid": 48.1
+      }
+    },
+    "balanced": {
+      "24": {
+        "initial": 1000,
+        "final": 1151.72,
+        "profit": 151.72,
+        "return_pct": 15.17,
+        "trades": 7.5,
+        "win_rate": 73.4,
+        "fees_paid": 7.5
+      },
+      "48": {
+        "initial": 1000,
+        "final": 1625.97,
+        "profit": 625.97,
+        "return_pct": 62.6,
+        "trades": 14.2,
+        "win_rate": 77.6,
+        "fees_paid": 14.2
+      },
+      "72": {
+        "initial": 1000,
+        "final": 1777.72,
+        "profit": 777.72,
+        "return_pct": 77.77,
+        "trades": 22.9,
+        "win_rate": 74.8,
+        "fees_paid": 22.9
+      },
+      "154": {
+        "initial": 1000,
+        "final": 2072.33,
+        "profit": 1072.33,
+        "return_pct": 107.23,
+        "trades": 44.0,
+        "win_rate": 75.1,
+        "fees_paid": 44.0
+      }
+    },
+    "aggressive": {
+      "24": {
+        "initial": 1000,
+        "final": 981.35,
+        "profit": -18.65,
+        "return_pct": -1.86,
+        "trades": 8.2,
+        "win_rate": 54.6,
+        "fees_paid": 8.2
+      },
+      "48": {
+        "initial": 1000,
+        "final": 1087.44,
+        "profit": 87.44,
+        "return_pct": 8.74,
+        "trades": 13.8,
+        "win_rate": 56.1,
+        "fees_paid": 13.8
+      },
+      "72": {
+        "initial": 1000,
+        "final": 1756.04,
+        "profit": 756.04,
+        "return_pct": 75.6,
+        "trades": 19.9,
+        "win_rate": 58.8,
+        "fees_paid": 19.9
+      },
+      "154": {
+        "initial": 1000,
+        "final": 1211.69,
+        "profit": 211.69,
+        "return_pct": 21.17,
+        "trades": 44.3,
+        "win_rate": 58.3,
+        "fees_paid": 44.3
+      }
+    }
+  }
+}

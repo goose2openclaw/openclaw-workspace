@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🪿 GO2SE - 智能投资平台</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ====== GO2SE v3.0 顶级交易平台风格 ====== */
+:root{
+  /* 深夜金融主题 - 像Binance/Bybit */
+  --bg-primary:#0D0D0D;
+  --bg-secondary:#141414;
+  --bg-tertiary:#1A1A1A;
+  --bg-card:#161616;
+  --bg-card-hover:#1C1C1C;
+  
+  /* 边框 */
+  --border-primary:#2A2A2A;
+  --border-secondary:#333333;
+  --border-accent:#00E5A0;
+  
+  /* 品牌色 - 科技绿 */
+  --brand:#00E5A0;
+  --brand-glow:rgba(0,229,160,0.25);
+  --brand-soft:rgba(0,229,160,0.08);
+  --brand-muted:#00B37D;
+  
+  /* 功能色 */
+  --accent-blue:#3B82F6;
+  --accent-purple:#8B5CF6;
+  --accent-orange:#F97316;
+  --accent-pink:#EC4899;
+  
+  /* 语义色 */
+  --success:#00E5A0;
+  --success-bg:rgba(0,229,160,0.1);
+  --warning:#FBBF24;
+  --warning-bg:rgba(251,191,36,0.1);
+  --danger:#EF4444;
+  --danger-bg:rgba(239,68,68,0.1);
+  --info:#3B82F6;
+  --info-bg:rgba(59,130,246,0.1);
+  
+  /* 文字 */
+  --text-primary:#FFFFFF;
+  --text-secondary:#A1A1AA;
+  --text-tertiary:#71717A;
+  --text-quaternary:#52525B;
+  
+  /* 字体 */
+  --font-display:'Space Grotesk',sans-serif;
+  --font-body:'Inter',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+  
+  /* 阴影 */
+  --shadow-sm:0 1px 2px rgba(0,0,0,0.3);
+  --shadow-md:0 4px 12px rgba(0,0,0,0.4);
+  --shadow-lg:0 8px 24px rgba(0,0,0,0.5);
+  --shadow-glow:0 0 40px var(--brand-glow);
+  
+  /* 圆角 */
+  --radius-sm:6px;
+  --radius-md:10px;
+  --radius-lg:16px;
+  --radius-xl:24px;
+}
+
+/* ====== 重置 ====== */
+*{margin:0;padding:0;box-sizing:border-box}
+html{font-size:16px}
+body{background:var(--bg-primary);color:var(--text-primary);font-family:var(--font-body);line-height:1.5;overflow-x:hidden}
+
+/* ====== 启动动画 ====== */
+#loader{position:fixed;inset:0;background:var(--bg-primary);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;transition:all 0.5s}
+#loader.hidden{opacity:0;pointer-events:none}
+.loader-content{text-align:center}
+.loader-logo{font-size:5rem;margin-bottom:1rem;filter:drop-shadow(0 0 30px var(--brand-glow));animation:float 3s ease-in-out infinite}
+.loader-title{font-family:var(--font-display);font-size:3rem;font-weight:700;letter-spacing:-1px;margin-bottom:0.5rem;background:linear-gradient(135deg,#fff,var(--brand));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.loader-subtitle{color:var(--text-secondary);font-size:1.1rem;margin-bottom:2rem;letter-spacing:2px;text-transform:uppercase}
+.loader-progress{width:320px;height:3px;background:var(--border-primary);border-radius:2px;overflow:hidden;margin:0 auto 1rem}
+.loader-bar{height:100%;background:var(--brand);width:0%;border-radius:2px;transition:width 0.3s;box-shadow:0 0 20px var(--brand)}
+.loader-text{color:var(--text-tertiary);font-size:0.85rem;font-family:var(--font-mono)}
+
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+/* ====== 主容器 ====== */
+.app-container{max-width:1920px;margin:0 auto;padding:0}
+
+/* ====== 顶部导航栏 ====== */
+.top-bar{background:var(--bg-secondary);border-bottom:1px solid var(--border-primary);padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.top-bar-left{display:flex;align-items:center;gap:32px}
+.logo{display:flex;align-items:center;gap:12px;font-family:var(--font-display);font-size:1.4rem;font-weight:700}
+.logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--brand),var(--accent-blue));border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+.logo-text{background:linear-gradient(135deg,#fff,var(--brand));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+.top-nav{display:flex;gap:4px}
+.top-nav-item{padding:10px 16px;color:var(--text-secondary);text-decoration:none;font-size:0.9rem;font-weight:500;transition:all 0.2s;border-radius:var(--radius-md);position:relative}
+.top-nav-item:hover{color:var(--text-primary);background:var(--bg-tertiary)}
+.top-nav-item.active{color:var(--brand);background:var(--brand-soft)}
+.top-nav-item.active::after{content:'';position:absolute;bottom:0;left:16px;right:16px;height:2px;background:var(--brand);border-radius:1px}
+
+.top-bar-right{display:flex;align-items:center;gap:16px}
+.top-btn{width:40px;height:40px;background:var(--bg-tertiary);border:1px solid var(--border-primary);border-radius:var(--radius-md);color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.1rem;transition:all 0.2s}
+.top-btn:hover{color:var(--brand);border-color:var(--brand);background:var(--brand-soft)}
+.top-btn.primary{background:var(--brand);color:var(--bg-primary);border:none;font-weight:600}
+.top-btn.primary:hover{box-shadow:var(--shadow-glow)}
+
+.user-avatar{width:36px;height:36px;background:linear-gradient(135deg,var(--accent-purple),var(--accent-pink));border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:0.9rem;cursor:pointer}
+
+/* ====== 市场状态栏 ====== */
+.market-ticker{background:var(--bg-tertiary);padding:12px 24px;display:flex;gap:48px;overflow-x:auto;border-bottom:1px solid var(--border-primary)}
+.ticker-item{display:flex;align-items:center;gap:12px;white-space:nowrap}
+.ticker-symbol{font-weight:600;font-family:var(--font-mono)}
+.ticker-price{font-family:var(--font-mono);font-size:1rem}
+.ticker-change{font-size:0.85rem;font-weight:500;padding:2px 8px;border-radius:4px}
+.ticker-change.up{color:var(--success);background:var(--success-bg)}
+.ticker-change.down{color:var(--danger);background:var(--danger-bg)}
+
+/* ====== 主内容区 ====== */
+.main-content{padding:24px;display:grid;grid-template-columns:1fr 380px;gap:24px;min-height:calc(100vh - 64px - 60px)}
+.main-left{display:flex;flex-direction:column;gap:24px}
+
+/* ====== 卡片通用 ====== */
+.card{background:var(--bg-card);border:1px solid var(--border-primary);border-radius:var(--radius-lg);overflow:hidden}
+.card-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border-primary)}
+.card-title{font-family:var(--font-display);font-size:1rem;font-weight:600;display:flex;align-items:center;gap:10px}
+.card-title-icon{width:28px;height:28px;background:var(--brand-soft);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:0.9rem}
+.card-body{padding:20px}
+
+/* ====== 价格看板 ====== */
+.price-board{height:320px;position:relative}
+.chart-placeholder{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text-tertiary)}
+.chart-placeholder svg{width:64px;height:64px;margin-bottom:16px;opacity:0.5}
+
+/* ====== 信号面板 ====== */
+.signals-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.signal-item{padding:16px;background:var(--bg-tertiary);border-radius:var(--radius-md);border:1px solid var(--border-primary);transition:all 0.2s}
+.signal-item:hover{border-color:var(--brand)}
+.signal-item.best{background:linear-gradient(135deg,var(--brand-soft),var(--success-bg));border-color:var(--brand)}
+.signal-token{font-family:var(--font-display);font-weight:600;font-size:1.1rem;margin-bottom:4px}
+.signal-action{display:inline-flex;align-items:center;gap:6px;font-size:0.8rem;font-weight:500;padding:3px 10px;border-radius:20px}
+.signal-action.buy{color:var(--success);background:var(--success-bg)}
+.signal-action.sell{color:var(--danger);background:var(--danger-bg)}
+.signal-action.hold{color:var(--warning);background:var(--warning-bg)}
+.signal-conf{font-size:0.85rem;color:var(--text-secondary);margin-top:8px}
+.signal-conf bar{height:4px;background:var(--border-primary);border-radius:2px;margin-top:4px;overflow:hidden}
+.signal-conf-fill{height:100%;background:var(--brand);border-radius:2px;transition:width 0.5s}
+
+/* ====== 右侧面板 ====== */
+.main-right{display:flex;flex-direction:column;gap:24px}
+
+/* ====== 资产卡片 ====== */
+.asset-card{background:linear-gradient(135deg,var(--bg-card),var(--bg-tertiary))}
+.asset-balance{text-align:center;padding:24px 20px}
+.asset-label{color:var(--text-secondary);font-size:0.9rem;margin-bottom:8px}
+.asset-value{font-family:var(--font-display);font-size:2.5rem;font-weight:700;background:linear-gradient(135deg,#fff,var(--brand));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+.asset-change{font-size:0.95rem;color:var(--text-secondary)}
+.asset-change.positive{color:var(--success)}
+
+.asset-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border-primary);border-top:1px solid var(--border-primary)}
+.asset-stat{padding:16px;background:var(--bg-secondary);text-align:center}
+.asset-stat-label{font-size:0.75rem;color:var(--text-tertiary);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.5px}
+.asset-stat-value{font-family:var(--font-mono);font-size:1.1rem;font-weight:600}
+
+/* ====== 快速交易 ====== */
+.quick-trade{padding:20px}
+.trade-pair{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.trade-pair-info{display:flex;align-items:center;gap:12px}
+.trade-pair-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--accent-purple),var(--accent-blue));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+.trade-pair-name{font-weight:600;font-size:1.1rem}
+.trade-pair-price{font-family:var(--font-mono);color:var(--text-secondary)}
+
+.trade-inputs{display:flex;flex-direction:column;gap:12px}
+.trade-input-group{display:flex;flex-direction:column;gap:6px}
+.trade-input-label{font-size:0.8rem;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.5px}
+.trade-input{width:100%;padding:14px 16px;background:var(--bg-tertiary);border:1px solid var(--border-primary);border-radius:var(--radius-md);color:var(--text-primary);font-family:var(--font-mono);font-size:1rem;transition:all 0.2s}
+.trade-input:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-soft)}
+
+.trade-buttons{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.trade-btn{padding:14px;border-radius:var(--radius-md);font-weight:600;font-size:1rem;border:none;cursor:pointer;transition:all 0.2s}
+.trade-btn.buy{background:var(--success);color:var(--bg-primary)}
+.trade-btn.buy:hover{box-shadow:var(--shadow-glow)}
+.trade-btn.sell{background:var(--danger);color:#fff}
+.trade-btn.sell:hover{box-shadow:0 0 30px rgba(239,68,68,0.3)}
+
+/* ====== 订单簿风格 ====== */
+.order-book{padding:0}
+.order-book-header{display:flex;padding:12px 16px;border-bottom:1px solid var(--border-primary);font-size:0.75rem;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.5px}
+.order-book-col{flex:1;text-align:right}
+.order-book-col:first-child{text-align:left}
+.order-book-body{max-height:300px;overflow-y:auto}
+.order-book-row{display:flex;padding:8px 16px;font-family:var(--font-mono);font-size:0.85rem;position:relative}
+.order-book-row::before{content:'';position:absolute;right:0;top:0;bottom:0;background:var(--brand);opacity:0.1;z-index:0}
+.order-book-row.sell::before{background:var(--danger)}
+.order-book-row:hover{background:var(--bg-tertiary)}
+.order-book-price{color:var(--text-secondary);z-index:1}
+.order-book-row.buy .order-book-price{color:var(--success)}
+.order-book-row.sell .order-book-price{color:var(--danger)}
+.order-book-qty{color:var(--text-primary);z-index:1}
+.order-book-total{color:var(--text-tertiary);z-index:1}
+
+/* ====== 策略卡片 ====== */
+.strategy-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+.strategy-item{padding:12px;background:var(--bg-tertiary);border-radius:var(--radius-md);text-align:center;border:1px solid var(--border-primary);transition:all 0.2s;cursor:pointer}
+.strategy-item:hover{border-color:var(--brand)}
+.strategy-item.active{border-color:var(--brand);background:var(--brand-soft)}
+.strategy-icon{font-size:1.5rem;margin-bottom:4px}
+.strategy-name{font-size:0.75rem;color:var(--text-secondary)}
+.strategy-alloc{font-family:var(--font-mono);font-size:0.8rem;font-weight:600;color:var(--brand)}
+
+/* ====== 新闻动态 ====== */
+.news-list{max-height:400px;overflow-y:auto}
+.news-item{padding:16px;border-bottom:1px solid var(--border-primary);cursor:pointer;transition:all 0.2s}
+.news-item:hover{background(var(--bg-tertiary))}
+.news-item:last-child{border:none}
+.news-time{font-size:0.75rem;color:var(--text-tertiary);margin-bottom:4px}
+.news-title{font-size:0.9rem;font-weight:500;line-height:1.4}
+.news-tag{font-size:0.7rem;padding:2px 8px;border-radius:4px;margin-top:8px;display:inline-block}
+
+/* ====== 页面切换 ====== */
+.page{display:none;animation:fadeIn 0.3s}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ====== 状态指示 ====== */
+.status-pill{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;font-size:0.8rem;font-weight:500}
+.status-pill.online{background:var(--success-bg);color:var(--success)}
+.status-pill.offline{background:var(--danger-bg);color:var(--danger)}
+.status-dot{width:8px;height:8px;border-radius:50%;background:currentColor;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+
+/* ====== 表格 ====== */
+.data-table{width:100%;border-collapse:collapse}
+.data-table th{text-align:left;padding:12px 16px;font-size:0.75rem;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border-primary);font-weight:500}
+.data-table td{padding:14px 16px;border-bottom:1px solid var(--border-primary);font-size:0.9rem}
+.data-table tr:hover{background(var(--bg-tertiary))}
+.data-table .mono{font-family:var(--font-mono)}
+.data-table .positive{color:var(--success)}
+.data-table .negative{color:var(--danger)}
+
+/* ====== 响应式 ====== */
+@media(max-width:1400px){
+  .main-content{grid-template-columns:1fr}
+  .main-right{grid-row:1}
+  .market-ticker{gap:24px}
+  .signals-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:768px){
+  .top-bar{padding:0 16px}
+  .top-nav{display:none}
+  .main-content{padding:16px}
+  .signals-grid{grid-template-columns:1fr}
+  .strategy-grid{grid-template-columns:repeat(3,1fr)}
+}
+
+/* ====== 页脚 ====== */
+.footer{background:var(--bg-secondary);border-top:1px solid var(--border-primary);padding:16px 24px;display:flex;justify-content:space-between;align-items:center;font-size:0.8rem;color:var(--text-tertiary)}
+.footer-links{display:flex;gap:24px}
+.footer-link{color:var(--text-secondary);text-decoration:none;transition:color 0.2s}
+.footer-link:hover{color:var(--brand)}
+</style>
+</head>
+<body>
+
+<!-- 启动动画 -->
+<div id="loader">
+<div class="loader-content">
+<div class="loader-logo">🪿</div>
+<div class="loader-title">GO2SE</div>
+<div class="loader-subtitle">智能投资平台</div>
+<div class="loader-progress"><div class="loader-bar" id="loaderBar"></div></div>
+<div class="loader-text" id="loaderText">正在初始化...</div>
+</div>
+</div>
+
+<!-- 顶部导航 -->
+<header class="top-bar">
+<div class="top-bar-left">
+<div class="logo">
+<div class="logo-icon">🪿</div>
+<span class="logo-text">GO2SE</span>
+</div>
+<nav class="top-nav">
+<a href="#" class="top-nav-item active" data-page="dashboard">仪表盘</a>
+<a href="#" class="top-nav-item" data-page="market">市场</a>
+<a href="#" class="top-nav-item" data-page="strategies">策略</a>
+<a href="#" class="top-nav-item" data-page="signals">信号</a>
+<a href="#" class="top-nav-item" data-page="trading">交易</a>
+<a href="#" class="top-nav-item" data-page="portfolio">资产</a>
+<a href="#" class="top-nav-item" data-page="settings">设置</a>
+</nav>
+</div>
+<div class="top-bar-right">
+<button class="top-btn" title="搜索">🔍</button>
+<button class="top-btn" title="通知">🔔</button>
+<button class="top-btn" title="主题">🎨</button>
+<button class="top-btn primary" onclick="showPage('quick-trade')">快速交易</button>
+<div class="user-avatar">U</div>
+</div>
+</header>
+
+<!-- 市场行情 -->
+<div class="market-ticker" id="marketTicker">
+<div class="ticker-item"><span class="ticker-symbol">BTC</span><span class="ticker-price">$75,234</span><span class="ticker-change up">+2.34%</span></div>
+<div class="ticker-item"><span class="ticker-symbol">ETH</span><span class="ticker-price">$2,056</span><span class="ticker-change down">-1.01%</span></div>
+<div class="ticker-item"><span class="ticker-symbol">SOL</span><span class="ticker-price">$105</span><span class="ticker-change up">+1.23%</span></div>
+<div class="ticker-item"><span class="ticker-symbol">BNB</span><span class="ticker-price">$582</span><span class="ticker-change up">+0.89%</span></div>
+<div class="ticker-item"><span class="ticker-symbol">XRP</span><span class="ticker-price">$0.52</span><span class="ticker-change down">-2.14%</span></div>
+<div class="ticker-item"><span class="ticker-symbol">DOGE</span><span class="ticker-price">$0.085</span><span class="ticker-change up">+5.67%</span></div>
+</div>
+
+<!-- 主内容 -->
+<div class="main-content">
+<div class="main-left">
+<!-- 价格图表 -->
+<div class="card price-board">
+<div class="card-header">
+<div class="card-title"><span class="card-title-icon">📊</span>BTC/USDT</div>
+<div class="status-pill online"><span class="status-dot"></span>实时</div>
+</div>
+<div class="card-body">
+<div class="chart-placeholder">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3v18h18"/><path d="M7 14l4-4 4 4 6-6"/></svg>
+<div style="font-size:2rem;margin-bottom:8px">📈</div>
+<div>图表区域 (TradingView集成)</div>
+</div>
+</div>
+</div>
+
+<!-- 交易信号 -->
+<div class="card">
+<div class="card-header">
+<div class="card-title"><span class="card-title-icon">🎯</span>AI交易信号</div>
+<span class="status-pill online"><span class="status-dot"></span>实时更新</span>
+</div>
+<div class="card-body">
+<div class="signals-grid">
+<div class="signal-item best">
+<div class="signal-token">SOL/USDT</div>
+<span class="signal-action buy">📈 买入</span>
+<div class="signal-conf">置信度 87%<bar><div class="signal-conf-fill" style="width:87%"></div></bar></div>
+</div>
+<div class="signal-item">
+<div class="signal-token">ETH/USDT</div>
+<span class="signal-action hold">⏸️ 观望</span>
+<div class="signal-conf">置信度 65%<bar><div class="signal-conf-fill" style="width:65%"></div></bar></div>
+</div>
+<div class="signal-item">
+<div class="signal-token">BNB/USDT</div>
+<span class="signal-action sell">📉 卖出</span>
+<div class="signal-conf">置信度 72%<bar><div class="signal-conf-fill" style="width:72%"></div></bar></div>
+</div>
+<div class="signal-item">
+<div class="signal-token">XRP/USDT</div>
+<span class="signal-action hold">⏸️ 观望</span>
+<div class="signal-conf">置信度 45%<bar><div class="signal-conf-fill" style="width:45%"></div></bar></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- 策略分布 -->
+<div class="card">
+<div class="card-header">
+<div class="card-title"><span class="card-title-icon">🎰</span>策略分布</div>
+</div>
+<div class="card-body">
+<div class="strategy-grid">
+<div class="strategy-item active"><div class="strategy-icon">🐰</div><div class="strategy-name">打兔子</div><div class="strategy-alloc">25%</div></div>
+<div class="strategy-item"><div class="strategy-icon">🐹</div><div class="strategy-name">打地鼠</div><div class="strategy-alloc">20%</div></div>
+<div class="strategy-item"><div class="strategy-icon">🔮</div><div class="strategy-name">走着瞧</div><div class="strategy-alloc">15%</div></div>
+<div class="strategy-item"><div class="strategy-icon">👑</div><div class="strategy-name">跟大哥</div><div class="strategy-alloc">15%</div></div>
+<div class="strategy-item"><div class="strategy-icon">🍀</div><div class="strategy-name">搭便车</div><div class="strategy-alloc">10%</div></div>
+<div class="strategy-item"><div class="strategy-icon">💰</div><div class="strategy-name">薅羊毛</div><div class="strategy-alloc">3%</div></div>
+<div class="strategy-item"><div class="strategy-icon">👶</div><div class="strategy-name">穷孩子</div><div class="strategy-alloc">2%</div></div>
+</div>
+</div>
+</div>
+
+<!-- 最新订单簿 -->
+<div class="card">
+<div class="card-header">
+<div class="card-title"><span class="card-title-icon">📚</span>订单簿</div>
+</div>
+<div class="order-book">
+<div class="order-book-header">
+<div class="order-book-col">价格 (USDT)</div>
+<div class="order-book-col">数量</div>
+<div class="order-book-col">总额</div>
+</div>
+<div class="order-book-body">
+<div class="order-book-row sell"><span class="order-book-price">75,245.32</span><span class="order-book-qty">0.523</span><span class="order-book-total">39,353</span></div>
+<div class="order-book-row sell"><span class="order-book-price">75,244.18</span><span class="order-book-qty">1.247</span><span class="order-book-total">93,840</span></div>
+<div class="order-book-row sell"><span class="order-book-price">75,243.05</span><span class="order-book-qty">2.156</span><span class="order-book-total">162,314</span></div>
+<div class="order-book-row buy"><span class="order-book-price">75,242.00</span><span class="order-book-qty">3.891</span><span class="order-book-total">292,767</span></div>
+<div class="order-book-row buy"><span class="order-book-price">75,240.88</span><span class="order-book-qty">1.025</span><span class="order-book-total">77,122</span></div>
+<div class="order-book-row buy"><span class="order-book-price">75,239.55</span><span class="order-book-qty">4.532</span><span class="order-book-total">341,031</span></div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="main-right">
+<!-- 资产概览 -->
+<div class="card asset-card">
+<div class="card-header">
+<div class="card-title"><span class="card-title-icon">💰</span>总资产</div>
+</div>
+<div class="asset-balance">
+<div class="asset-label">账户总价值</div>
+<div class="asset-value">$85,000</div>
+<div class="asset-change positive">+12.4% (今日)</div>
+</div>
+<div class="asset-stats">
+<div class="asset-stat"><div class="asset-stat-label">可用</div><div class="asset-stat-value">$68,400</div></div>
+<div class="asset-stat"><div class="asset-stat-label">持仓</div><div class="asset-stat-value">$16,600</div></div>
+<div class="asset-stat"><div class="asset-stat-label">盈亏</div><div class="asset-stat-value" style="color:var(--success)">+$9,420</div></div>
+</div>
+</div>
+
+<!-- 快速交易 -->
+<div class="card">
+<div class="card-header">
+<div class="card-title"><span class="card-title-icon">⚡</span>快速交易</div>
+</div>
+<div class="quick-trade">
+<div class="trade-pair">
+<div class="trade-pair-info">
+<div class="trade-pair-icon">🚀</div>
+<div>
+<div class="trade-pair-name">SOL/USDT</div>
+<div class="trade-pair-price">$105.42</div>
+</div>
+</div>
+</div>
+<div class="trade-inputs">
+<div class="trade-input-group">
+<label class="trade-input-label">数量 (SOL)</label>
+<input type="number" class="trade-input" placeholder="0.00">
+</div>
+<div class="trade-input-group">
+<label class="trade-input-label">金额 (USDT)</label>
+<input type="number" class="trade-input" placeholder="0.00">
+</div>
+</div>
+<div class="trade-buttons">
+<button class="trade-btn buy">买入 🟢</button>
+<button class="trade-btn sell">卖出 🔴</button>
+</div>
+</div>
+</div>
+
+<!-- 今日信号 -->
+<div class="card">
+<div class="card-header">
+<div class="card-title"><span class="card-title-icon">📡</span>今日信号</div>
+</div>
+<div class="news-list">
+<div class="news-item">
+<div class="news-time">10:32</div>
+<div class="news-title">SOL突破关键阻力位，建议做多</div>
+<span class="news-tag" style="background:var(--success-bg);color:var(--success)">强烈买入</span>
+</div>
+<div class="news-item">
+<div class="news-time">09:15</div>
+<div class="news-title">BTC在75000关口承压，关注回调</div>
+<span class="news-tag" style="background:var(--warning-bg);color:var(--warning)">观望</span>
+</div>
+<div class="news-item">
+<div class="news-time">08:45</div>
+<div class="news-title">ETH资金净流入持续，看好后续</div>
+<span class="news-tag" style="background:var(--info-bg);color:var(--info)">中性</span>
+</div>
+</div>
+</div>
+
+<!-- 风控状态 -->
+<div class="card">
+<div class="card-header">
+<div class="card-title"><span class="card-title-icon">🛡️</span>风控状态</div>
+</div>
+<div class="card-body">
+<table class="data-table">
+<tr><td>总仓位</td><td class="mono">18.5% <span class="positive">✓</span></td></tr>
+<tr><td>单笔风险</td><td class="mono">2.1% <span class="positive">✓</span></td></tr>
+<tr><td>日内波动</td><td class="mono">3.2% <span class="positive">✓</span></td></tr>
+<tr><td>API状态</td><td class="mono">98% <span class="positive">✓</span></td></tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+<!-- 页脚 -->
+<footer class="footer">
+<div>🪿 GO2SE © 2026 | 智能投资平台 v3.0</div>
+<div class="footer-links">
+<a href="#" class="footer-link">文档</a>
+<a href="#" class="footer-link">API</a>
+<a href="#" class="footer-link">支持</a>
+<a href="#" class="footer-link">状态</a>
+</div>
+</footer>
+
+<script>
+// 启动动画
+const loader = document.getElementById('loader');
+const loaderBar = document.getElementById('loaderBar');
+const loaderText = document.getElementById('loaderText');
+let progress = 0;
+
+const loadingSteps = [
+  '加载配置...',
+  '初始化交易引擎...',
+  '连接市场数据...',
+  '加载策略模型...',
+  '启动AI信号系统...',
+  '准备完成!'
+];
+
+function updateLoader() {
+  if (progress < 100) {
+    progress += Math.random() * 15;
+    if (progress > 100) progress = 100;
+    loaderBar.style.width = progress + '%';
+    loaderText.textContent = loadingSteps[Math.floor(progress / 20)] || loadingSteps[loadingSteps.length - 1];
+    setTimeout(updateLoader, 200);
+  } else {
+    setTimeout(() => {
+      loader.classList.add('hidden');
+      initApp();
+    }, 500);
+  }
+}
+
+// 初始化
+function initApp() {
+  console.log('GO2SE v3.0 启动完成');
+  // 可以在这里加载实时数据
+}
+
+// 页面切换
+document.querySelectorAll('.top-nav-item').forEach(item => {
+  item.addEventListener('click', (e) => {
+    e.preventDefault();
+    document.querySelectorAll('.top-nav-item').forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
+  });
+});
+
+// 启动
+updateLoader();
+</script>
+
+</body>
+</html>

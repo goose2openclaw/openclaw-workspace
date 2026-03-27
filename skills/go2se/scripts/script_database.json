@@ -1,0 +1,61 @@
+{
+  "script_database": {
+    "version": "1.0",
+    "created": "2026-03-15",
+    "description": "GO2SE 脚本数据库索引"
+  },
+  "scripts": {
+    "trend_pattern_matcher_v2": {
+      "name": "趋势模型匹配器 v2 (优化版)",
+      "file": "skills/go2se/scripts/trend_pattern_matcher_v2.py",
+      "version": "2.0",
+      "improvements": [
+        "增强形态识别算法 (多因子加权)",
+        "多时间框架交叉验证",
+        "扩展特征提取 (11维特征向量)",
+        "自适应阈值调整",
+        "动态仓位计算",
+        "风险等级分类"
+      ]
+    },
+    "trend_pattern_matcher": {
+      "name": "趋势模型匹配器 v1",
+      "file": "skills/go2se/scripts/trend_pattern_matcher.py",
+      "description": "从市场数据流提取形态，与声纳库趋势模型比对，生成概率输出并触发策略",
+      "category": "analysis",
+      "tags": ["趋势", "形态识别", "模型匹配", "信号触发"],
+      "usage": "python3 skills/go2se/scripts/trend_pattern_matcher.py",
+      "dependencies": ["ccxt", "numpy"],
+      "config": {
+        "min_probability": 0.35,
+        "min_confidence": 4,
+        "max_models": 5
+      },
+      "features": [
+        "多交易所数据获取 (Binance, Bybit, OKX)",
+        "数据去噪音处理 (MA, EMA, Kalman)",
+        "形态特征提取 (趋势, 动量, 波动率)",
+        "趋势模型广泛匹配",
+        "锁定最佳模型组合",
+        "概率输出 (0-100%)",
+        "可调阈值触发策略"
+      ]
+    },
+    "sonar_pro": {
+      "name": "声纳专业版",
+      "file": "skills/go2se/scripts/sonar_pro.py",
+      "description": "多模式交易系统，支持资金利用率和回报率灵活调节"
+    },
+    "trend_db": {
+      "name": "趋势数据库",
+      "file": "skills/go2se/scripts/trend_db.py",
+      "description": "趋势数据库管理器，加载趋势模型，匹配市场，生成信号"
+    }
+  },
+  "categories": {
+    "analysis": ["trend_pattern_matcher", "sonar_pro", "advanced_signals"],
+    "strategy": ["smart_strategy", "mole_strategy", "mainstream_strategy"],
+    "trading": ["auto_trade", "high_freq_trader"],
+    "backtest": ["backtest_engine", "market_simulator"]
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "version": "v4_optimized",
+  "updated": 1709455200,
+  "global_params": {
+    "min_execution_threshold": 0.015,
+    "min_win_rate": 0.55,
+    "max_daily_executions": 8,
+    "max_position_pct": 0.08,
+    "reserve_ratio": 0.2
+  },
+  "tool_weights": {
+    "rabbit": 0.25,
+    "mole": 0.12,
+    "prediction": 0.15,
+    "follow": 0.15,
+    "hitchhike": 0.1,
+    "airdrop": 0.15,
+    "crowdsource": 0.08
+  },
+  "tool_params": {
+    "rabbit": {
+      "name": "\u6253\u5154\u5b50",
+      "confidence_threshold": 0.7,
+      "stop_loss": 0.03,
+      "take_profit": 0.1,
+      "max_position": 0.15
+    },
+    "mole": {
+      "name": "\u6253\u5730\u9f20",
+      "confidence_threshold": 0.4,
+      "stop_loss": 0.05,
+      "take_profit": 0.2,
+      "max_position": 0.05
+    },
+    "prediction": {
+      "name": "\u8d70\u7740\u77a7",
+      "confidence_threshold": 0.55,
+      "stop_loss": 0.05,
+      "take_profit": 0.2,
+      "max_position": 0.08
+    },
+    "follow": {
+      "name": "\u8ddf\u5927\u54e5",
+      "confidence_threshold": 0.6,
+      "stop_loss": 0.04,
+      "take_profit": 0.15,
+      "max_position": 0.1
+    },
+    "hitchhike": {
+      "name": "\u642d\u4fbf\u8f66",
+      "confidence_threshold": 0.7,
+      "stop_loss": 0.02,
+      "take_profit": 0.1,
+      "max_position": 0.2
+    }
+  }
+}

@@ -263,6 +263,28 @@
             </div>
             <!-- 参数仪表盘 -->
             <div id="page-dashboard" class="page" style="display:none">
+                <!-- 回测功能 -->
+                <div class="card" style="border-color:var(--accent-primary)">
+                    <div class="card-header"><span class="card-title">📊 策略回测</span><button class="btn btn-primary btn-sm" onclick="runBacktest()">🚀 运行回测</button></div>
+                    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.5rem;margin-bottom:1rem">
+                        <select id="backtestSymbol" class="input" style="padding:0.5rem">
+                            <option value="BTC/USDT">BTC/USDT</option>
+                            <option value="ETH/USDT">ETH/USDT</option>
+                            <option value="SOL/USDT">SOL/USDT</option>
+                            <option value="BNB/USDT">BNB/USDT</option>
+                        </select>
+                        <select id="backtestTimeframe" class="input" style="padding:0.5rem">
+                            <option value="15m">15分钟</option>
+                            <option value="1h">1小时</option>
+                            <option value="4h">4小时</option>
+                            <option value="1d">1天</option>
+                        </select>
+                        <input type="number" id="backtestCapital" class="input" placeholder="初始资金" value="10000" style="padding:0.5rem">
+                        <button class="btn btn-outline" onclick="runBacktest()">执行</button>
+                    </div>
+                    <div id="backtestResult"></div>
+                </div>
+                
                 <div class="stats-grid"><div class="stat-card"><div class="stat-label">置信度阈值</div><div class="stat-value" id="confThresh">7.0</div></div><div class="stat-card"><div class="stat-label">止损%</div><div class="stat-value" id="stopLoss">2.0</div></div><div class="stat-card"><div class="stat-label">止盈%</div><div class="stat-value" id="takeProfit">5.0</div></div><div class="stat-card"><div class="stat-label">最大持仓</div><div class="stat-value" id="maxPos">5</div></div><div class="stat-card"><div class="stat-label">Gas限制</div><div class="stat-value" id="gasLimit">50</div></div><div class="stat-card"><div class="stat-label">交易状态</div><div class="stat-value" id="tradeStatus">停止</div></div></div>
                 <div class="card"><div class="card-header"><span class="card-title">⚙️ 参数配置 (滑动调节)</span><button class="btn btn-primary btn-sm" onclick="saveParams()">保存配置</button></div>
                     <div class="param-sliders">
@@ -318,6 +340,30 @@
             </div>
             <!-- 资产看板 -->
             <div id="page-assets" class="page" style="display:none">
+                <div class="stats-grid">
+                    <div class="stat-card"><div class="stat-label">💰 总资产</div><div class="stat-value" id="walletBalance">$85,000</div></div>
+                    <div class="stat-card"><div class="stat-label">📈 可用</div><div class="stat-value positive" id="walletAvailable">$68,400</div></div>
+                    <div class="stat-card"><div class="stat-label">🔒 冻结</div><div class="stat-value" id="walletLocked">$16,600</div></div>
+                    <div class="stat-card"><div class="stat-label">📊 持仓数</div><div class="stat-value" id="positionCount">5</div></div>
+                    <div class="stat-card"><div class="stat-label">🎯 今日盈亏</div><div class="stat-value positive" id="dailyPnl">+$1,234</div></div>
+                    <div class="stat-card"><div class="stat-label">📈 总盈亏</div><div class="stat-value positive" id="totalPnl">+$9,420</div></div>
+                </div>
+                
+                <div class="card"><div class="card-header"><span class="card-title">📊 我的持仓</span><button class="btn btn-sm btn-outline" onclick="loadPositions()">🔄</button></div>
+                    <div id="positionsList">
+                        <div style="text-align:center;padding:2rem;color:var(--text-muted)">加载中...</div>
+                    </div>
+                </div>
+                
+                <div class="card"><div class="card-header"><span class="card-title">💰 资产分布</span></div>
+                    <div id="assetDist">
+                        <div style="display:flex;justify-content:space-between;padding:0.5rem"><span>USDT</span><span>$42,500 (50%)</span></div>
+                        <div style="display:flex;justify-content:space-between;padding:0.5rem"><span>BTC</span><span>$21,250 (25%)</span></div>
+                        <div style="display:flex;justify-content:space-between;padding:0.5rem"><span>ETH</span><span>$12,750 (15%)</span></div>
+                        <div style="display:flex;justify-content:space-between;padding:0.5rem"><span>其他</span><span>$8,500 (10%)</span></div>
+                    </div>
+                </div>
+            </div>
                 <div class="stats-grid"><div class="stat-card"><div class="stat-label">总资产</div><div class="stat-value">$12,450</div></div><div class="stat-card"><div class="stat-label">可用</div><div class="stat-value positive">$8,200</div></div><div class="stat-card"><div class="stat-label">持仓</div><div class="stat-value">$4,250</div></div><div class="stat-card"><div class="stat-label">日盈亏</div><div class="stat-value positive">+$156</div></div><div class="stat-card"><div class="stat-label">周盈亏</div><div class="stat-value positive">+$892</div></div><div class="stat-card"><div class="stat-label">月盈亏</div><div class="stat-value positive">+$2,340</div></div></div>
                 <div class="card"><div class="card-header"><span class="card-title">📈 资产成长曲线 (近30日)</span></div>
                     <div class="chart-container">
@@ -1573,7 +1619,264 @@
         if (bidEl) bidEl.innerHTML = bids.map(o => `<div class="ob-row"><span class="ob-price">${o.p.toFixed(2)}</span><span class="ob-qty">${o.q.toFixed(3)}</span></div>`).join('');
     }
 
-    document.addEventListener('DOMContentLoaded', function() { setTimeout(initChart, 500); setTimeout(initOrderBook, 800); });
+    document.addEventListener('DOMContentLoaded', function() { setTimeout(initChart, 500); setTimeout(initOrderBook, 800); loadRealtimePrices(); });
+    
+    // ====== 实时价格加载 ======
+    async function loadRealtimePrices() {
+        try {
+            const d = await api('/api/prices/realtime');
+            if (d && d.prices) {
+                // 更新市场数据
+                Object.entries(d.prices).forEach(([coin, data]) => {
+                    const el = document.getElementById(`price-${coin}`);
+                    if (el) {
+                        el.textContent = '$' + data.price.toLocaleString();
+                        const changeEl = document.getElementById(`change-${coin}`);
+                        if (changeEl) {
+                            changeEl.textContent = (data.change_24h >= 0 ? '+' : '') + data.change_24h.toFixed(2) + '%';
+                            changeEl.className = 'market-change ' + (data.change_24h >= 0 ? 'positive' : 'negative');
+                        }
+                    }
+                });
+            }
+        } catch(e) { console.log('价格加载失败', e); }
+        setTimeout(loadRealtimePrices, 5000); // 每5秒更新
+    }
+    
+    // ====== 交易记录加载 ======
+    async function loadTradeHistory() {
+        try {
+            const d = await api('/api/trades/history?limit=20');
+            if (d && d.trades) {
+                const html = d.trades.map(t => `
+                    <tr>
+                        <td>${t.time}</td>
+                        <td class="mono">${t.symbol}</td>
+                        <td class="${t.side === 'buy' ? 'positive' : 'negative'}">${t.side === 'buy' ? '买入' : '卖出'}</td>
+                        <td class="mono">${t.quantity}</td>
+                        <td class="mono">$${t.price.toLocaleString()}</td>
+                        <td class="mono">$${t.total.toLocaleString()}</td>
+                        <td><span class="log-status success">已完成</span></td>
+                    </tr>
+                `).join('');
+                document.getElementById('tradeHistory').innerHTML = html;
+            }
+            
+            // 加载统计
+            const stats = await api('/api/trades/stats');
+            if (stats && stats.stats) {
+                const s = stats.stats;
+                document.getElementById('totalTrades').textContent = s.total_trades;
+                document.getElementById('winRate').textContent = s.win_rate + '%';
+                document.getElementById('totalPnl').textContent = '+$' + s.total_pnl;
+            }
+        } catch(e) { console.log('交易记录加载失败', e); }
+    }
+    
+    // ====== 持仓加载 ======
+    async function loadPositions() {
+        try {
+            const d = await api('/api/positions');
+            if (d && d.positions) {
+                const html = d.positions.map(p => `
+                    <div style="display:flex;justify-content:space-between;padding:0.75rem;background:var(--bg-elevated);border-radius:8px;margin-bottom:0.5rem">
+                        <div>
+                            <div style="font-weight:600">${p.symbol}</div>
+                            <div style="font-size:0.8rem;color:var(--text-muted)">数量: ${p.quantity} @ $${p.entry_price}</div>
+                        </div>
+                        <div style="text-align:right">
+                            <div style="font-weight:600" class="${p.pnl >= 0 ? 'positive' : 'negative'}">${p.pnl >= 0 ? '+' : ''}$${p.pnl} (${p.pnl_percent.toFixed(2)}%)</div>
+                            <div style="font-size:0.8rem;color:var(--text-muted)">现价: $${p.current_price}</div>
+                        </div>
+                    </div>
+                `).join('');
+                document.getElementById('positionsList').innerHTML = html;
+            }
+        } catch(e) { console.log('持仓加载失败', e); }
+    }
+    
+    // ====== 钱包加载 ======
+    async function loadWallet() {
+        try {
+            const d = await api('/api/wallet/balance');
+            if (d && d.balance) {
+                const b = d.balance;
+                document.getElementById('walletBalance').textContent = '$' + b.total.toLocaleString();
+                document.getElementById('walletAvailable').textContent = '$' + b.available.toLocaleString();
+                document.getElementById('walletLocked').textContent = '$' + b.locked.toLocaleString();
+            }
+        } catch(e) { console.log('钱包加载失败', e); }
+    }
+    
+    // ====== 交易所加载 ======
+    async function loadExchanges() {
+        try {
+            const d = await api('/api/exchanges');
+            if (d && d.exchanges) {
+                const html = d.exchanges.map(e => `
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:0.75rem;background:var(--bg-elevated);border-radius:8px;margin-bottom:0.5rem">
+                        <div>
+                            <div style="font-weight:600">${e.name}</div>
+                            <div style="font-size:0.8rem;color:var(--text-muted)">${e.status === 'connected' ? '已连接' : '未连接'}</div>
+                        </div>
+                        <div>
+                            ${e.status === 'connected' ? 
+                                `<span class="log-status success">✓ 已连接</span>` : 
+                                `<button class="btn btn-sm btn-primary" onclick="connectExchange('${e.id}')">连接</button>`}
+                        </div>
+                    </div>
+                `).join('');
+                document.getElementById('exchangeList').innerHTML = html;
+            }
+        } catch(e) { console.log('交易所加载失败', e); }
+    }
+    
+    // ====== 连接交易所 ======
+    async function connectExchange(exchange) {
+        const apiKey = prompt('输入 API Key:');
+        const secret = prompt('输入 Secret:');
+        if (apiKey && secret) {
+            const d = await api('/api/exchange/connect', 'POST', {exchange, api_key: apiKey, secret});
+            if (d.success) {
+                showNotification('✅ ' + d.message);
+                loadExchanges();
+            }
+        }
+    }
+    
+    // ====== 回测功能 ======
+    async function runBacktest() {
+        const symbol = document.getElementById('backtestSymbol')?.value || 'BTC/USDT';
+        const timeframe = document.getElementById('backtestTimeframe')?.value || '1h';
+        const capital = parseInt(document.getElementById('backtestCapital')?.value) || 10000;
+        
+        showNotification('⏳ 回测运行中...');
+        
+        try {
+            const d = await api('/api/backtest/run', 'POST', {
+                symbol, timeframe, 
+                start_date: '2025-01-01',
+                end_date: '2025-12-31',
+                capital
+            });
+            
+            if (d && d.result) {
+                const r = d.result;
+                const html = `
+                    <div style="margin-top:1rem">
+                        <div class="stats-grid" style="grid-template-columns:repeat(3,1fr)">
+                            <div class="stat-card"><div class="stat-label">初始资金</div><div class="stat-value">$${r.initial_capital.toLocaleString()}</div></div>
+                            <div class="stat-card"><div class="stat-label">最终资金</div><div class="stat-value positive">$${r.final_capital.toLocaleString()}</div></div>
+                            <div class="stat-card"><div class="stat-label">总收益</div><div class="stat-value positive">+${r.total_return.toFixed(2)}%</div></div>
+                            <div class="stat-card"><div class="stat-label">交易次数</div><div class="stat-value">${r.total_trades}</div></div>
+                            <div class="stat-card"><div class="stat-label">胜率</div><div class="stat-value">${r.win_rate}%</div></div>
+                            <div class="stat-card"><div class="stat-label">最大回撤</div><div class="stat-value negative">-${r.max_drawdown}%</div></div>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('backtestResult').innerHTML = html;
+                showNotification('✅ 回测完成! 收益: +' + r.total_return.toFixed(2) + '%');
+            }
+        } catch(e) {
+            showNotification('❌ 回测失败: ' + e.message);
+        }
+    }
+    
+    // ====== 钱包连接 ======
+    async function connectWallet(type) {
+        const d = await api('/api/wallet/connect', 'POST', {wallet: type});
+        if (d.success) {
+            document.getElementById('walletAddress').textContent = d.address;
+            document.getElementById('walletStatus').textContent = '已连接';
+            showNotification('✅ 钱包已连接');
+            loadWallet();
+        }
+    }
+    
+    function disconnectWallet() {
+        document.getElementById('walletAddress').textContent = '';
+        document.getElementById('walletStatus').textContent = '未连接';
+        showNotification('ℹ️ 钱包已断开');
+    }
+    
+    // ====== 交易功能 ======
+    async function quickTrade(coin, action) {
+        const price = document.getElementById('tradePrice')?.textContent?.replace('$','')?.replace(',','') || 75000;
+        const qty = prompt('输入数量:', '0.01');
+        if (!qty) return;
+        
+        showNotification(`${action === 'buy' ? '🟢 买入' : '🔴 卖出'} ${coin} x ${qty} @ $${price}`);
+        
+        // 模拟交易
+        setTimeout(() => {
+            showNotification(`✅ ${action === 'buy' ? '买入' : '卖出'}成功!`);
+            loadTradeHistory();
+            loadPositions();
+        }, 1000);
+    }
+    
+    // ====== 参数保存 ======
+    async function saveParams() {
+        const params = {
+            confidence_threshold: document.getElementById('confThresh').innerText,
+            stop_loss: document.getElementById('stopLoss').innerText,
+            take_profit: document.getElementById('takeProfit').innerText,
+            max_position: document.getElementById('maxPos').innerText,
+            gas_limit: document.getElementById('gasLimit').innerText,
+        };
+        
+        const d = await api('/api/params/update', 'POST', params);
+        if (d.success) {
+            showNotification('✅ 参数已保存');
+        }
+    }
+    
+    // ====== 预设方案应用 ======
+    async function applyPreset(name) {
+        const d = await api('/api/portfolio/apply', 'POST', {preset: name});
+        if (d.success) {
+            showNotification(`✅ 已应用${name}预设方案`);
+            loadPortfolio();
+        }
+    }
+    
+    // ====== 通知函数 ======
+    function showNotification(msg) {
+        const notif = document.getElementById('notification');
+        if (notif) {
+            document.getElementById('notifTitle').textContent = '系统消息';
+            document.getElementById('notifMsg').textContent = msg;
+            notif.classList.add('show');
+            setTimeout(() => notif.classList.remove('show'), 3000);
+        }
+    }
+    
+    // ====== 自动刷新 ======
+    let autoRefreshInterval = null;
+    function startAutoRefresh() {
+        if (autoRefreshInterval) clearInterval(autoRefreshInterval);
+        autoRefreshInterval = setInterval(async () => {
+            await Promise.all([
+                loadRealtimePrices().catch(()=>{}),
+                loadPositions().catch(()=>{}),
+            ]);
+        }, 30000); // 30秒刷新
+    }
+    
+    // ====== 页面加载完成后初始化 ======
+    // 增强初始化
+    const originalInit = typeof init === 'function' ? init : () => {};
+    init = async function() {
+        await originalInit();
+        // 加载额外数据
+        await Promise.all([
+            loadTradeHistory().catch(()=>{}),
+            loadPositions().catch(()=>{}),
+            loadWallet().catch(()=>{}),
+            loadExchanges().catch(()=>{}),
+        ]);
+        startAutoRefresh();
+    };
     </script>
 </body>
 </html>

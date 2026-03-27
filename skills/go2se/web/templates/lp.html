@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Go2Se 私募LP</title>
+<style>
+:root{--bg:#0d1117;--card:#161b22;--border:#30363d;--accent:#58a6ff;--success:#3fb950;--warning:#d29922;--danger:#f85149;--text:#c9d1d9;--muted:#8b949e}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,sans-serif;padding:20px}
+.container{max-width:1200px;margin:0 auto}
+h1{color:var(--accent);text-align:center;margin:30px 0}
+h2{color:var(--text);margin:25px 0 15px;border-bottom:1px solid var(--border);padding-bottom:8px}
+.nav{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:30px;justify-content:center}
+.nav-btn{padding:12px 24px;background:var(--card);border:1px solid var(--border);color:var(--text);cursor:pointer;border-radius:8px}
+.nav-btn:hover,.nav-btn.active{background:var(--accent);color:#000}
+.page{display:none}
+.page.active{display:block}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px}
+.card:hover{border-color:var(--accent)}
+.card-title{color:var(--accent);font-size:1.2rem;margin-bottom:15px}
+.card-value{font-size:2.5rem;font-weight:bold;color:var(--success)}
+.tag{display:inline-block;padding:4px 12px;border-radius:20px;background:rgba(88,166,255,0.2);color:var(--accent);font-size:0.85rem}
+.tag.success{background:rgba(63,185,80,0.2);color:var(--success)}
+.tag.warning{background:rgba(210,153,34,0.2);color:var(--warning)}
+.tag.danger{background:rgba(248,81,73,0.2);color:var(--danger)}
+.list{background:var(--card);border-radius:12px;overflow:hidden}
+.list-item{display:flex;justify-content:space-between;padding:15px 20px;border-bottom:1px solid var(--border)}
+.form-group{margin-bottom:20px}
+.form-group label{display:block;margin-bottom:8px;color:var(--muted)}
+.form-group input,.form-group select{width:100%;padding:12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text)}
+.btn{padding:12px 24px;background:var(--accent);color:#000;border:none;border-radius:8px;cursor:pointer;font-size:1rem}
+.btn:hover{opacity:0.9}
+.progress{height:10px;background:var(--border);border-radius:5px;overflow:hidden}
+.progress-bar{height:100%;background:var(--success)}
+.tier-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;background:var(--card);border:1px solid var(--border);border-radius:8px}
+.tier-badge.vip{border-color:#ffd700}
+.tier-badge.premium{border-color:#c0c0c0}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🪿 Go2Se 私募LP</h1>
+
+<!-- 一级导航 -->
+<nav class="nav">
+<button class="nav-btn active" onclick="showPage('overview')">📊 项目概览</button>
+<button class="nav-btn" onclick="showPage('programs')">📋 投资计划</button>
+<button class="nav-btn" onclick="showPage('investors')">👥 投资人</button>
+<button class="nav-btn" onclick="showPage('apply')">📝 申请投资</button>
+</nav>
+
+<!-- 一级: 项目概览 -->
+<div id="overview" class="page active">
+<h2>📊 数据总览</h2>
+<div class="grid">
+<div class="card"><div class="card-title">总投资人</div><div class="card-value" id="totalInvestors">305</div><div class="tag">累计加入</div></div>
+<div class="card"><div class="card-title">总融资</div><div class="card-value" id="totalRaised">750K</div><div class="tag success">USDT</div></div>
+<div class="card"><div class="card-title">平均投资</div><div class="card-value" id="avgInvest">2,459</div><div class="tag">USDT</div></div>
+<div class="card"><div class="card-title">已实现收益</div><div class="card-value" id="roi">180%</div><div class="tag success">ROI</div></div>
+</div>
+
+<h2>📈 募资进度</h2>
+<div class="card">
+<div style="display:flex;justify-content:space-between;margin-bottom:10px">
+<span>当前进度</span><span id="progressText">75%</span>
+</div>
+<div class="progress"><div class="progress-bar" id="progressBar" style="width:75%"></div></div>
+<div style="margin-top:15px;display:flex;justify-content:space-between;color:var(--muted)">
+<span>已募集: 750,000U</span><span>目标: 1,000,000U</span>
+</div>
+</div>
+</div>
+
+<!-- 一级: 投资计划 -->
+<div id="programs" class="page">
+<h2>📋 投资计划</h2>
+<div class="grid" id="programsGrid">
+<!-- 程序化填充 -->
+</div>
+</div>
+
+<!-- 一级: 投资人 -->
+<div id="investors" class="page">
+<h2>👥 投资人梯队</h2>
+<div class="list" id="investorsList">
+<!-- 程序化填充 -->
+</div>
+
+<h2>🏆 VIP投资人</h2>
+<div class="grid">
+<div class="card tier-badge vip">
+<div><span style="color:#ffd700">⭐</span> <strong>VIP Tier</strong></div>
+<div style="color:var(--muted);margin-top:5px">25位投资人</div>
+<div style="font-size:1.5rem;color:var(--success)">500,000U</div>
+</div>
+<div class="card tier-badge premium">
+<div><span style="color:#c0c0c0">⭐</span> <strong>Premium Tier</strong></div>
+<div style="color:var(--muted);margin-top:5px">80位投资人</div>
+<div style="font-size:1.5rem;color:var(--success)">200,000U</div>
+</div>
+</div>
+</div>
+
+<!-- 一级: 申请投资 -->
+<div id="apply" class="page">
+<h2>📝 申请投资</h2>
+<div class="card">
+<div class="form-group">
+<label>选择投资计划</label>
+<select id="programSelect">
+<option value="seed">种子轮 - 最低1000U</option>
+<option value="angel">天使轮 - 最低5000U</option>
+<option value="community">社区轮 - 最低100U</option>
+</select>
+</div>
+<div class="form-group">
+<label>投资金额 (USDT)</label>
+<input type="number" id="investAmount" placeholder="请输入投资金额">
+</div>
+<div class="form-group">
+<label>联系方式 (Telegram/Email)</label>
+<input type="text" id="contact" placeholder="请输入联系方式">
+</div>
+<button class="btn" onclick="submitApply()">提交申请</button>
+</div>
+
+<h2>⚠️ 风险提示</h2>
+<div class="card">
+<ul style="color:var(--muted);padding-left:20px;line-height:2">
+<li>私募投资风险较高，请确保了解相关风险</li>
+<li>投资锁定期内无法退出</li>
+<li>过往收益不代表未来表现</li>
+<li>请量力而行，不要投资超过承受能力的金额</li>
+</ul>
+</div>
+</div>
+</div>
+
+<script>
+function showPage(id){
+document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+event.target.classList.add('active');
+loadData(id);
+}
+
+async function loadData(id){
+if(id==='programs'){
+const r=await fetch('/api/lp/programs');
+const d=await r.json();
+const html=d.programs.map(p=>\`
+<div class="card">
+<div class="card-title">\${p.name}</div>
+<div class="tag \${p.risk==='高'?'danger':p.risk==='中'?'warning':'success'}">\${p.risk}风险</div>
+<div style="margin:15px 0">
+<div>最低投资: <strong>\${p.min_invest}U</strong></div>
+<div>预期收益: <strong>\${p.return}</strong></div>
+<div>锁定期: <strong>\${p.lock}</strong></div>
+<div>剩余席位: <strong>\${p.spots}</strong></div>
+</div>
+<button class="btn" onclick="selectProgram('\${p.id}')">立即投资</button>
+</div>\`).join('');
+document.getElementById('programsGrid').innerHTML=html;
+}
+if(id==='investors'){
+const r=await fetch('/api/lp/investors');
+const d=await r.json();
+const html=d.investors.map(i=>\`
+<div class="list-item">
+<span>\${i.tier}</span>
+<span>\${i.count}人</span>
+<span style="color:var(--success)">\${i.total}</span>
+</div>\`).join('');
+document.getElementById('investorsList').innerHTML=html;
+}
+}
+
+function selectProgram(id){
+document.getElementById('programSelect').value=id;
+showPage('apply');
+document.querySelectorAll('.nav-btn')[3].click();
+}
+
+function submitApply(){
+const program=document.getElementById('programSelect').value;
+const amount=document.getElementById('investAmount').value;
+if(!amount){alert('请输入投资金额');return;}
+fetch('/api/lp/apply',{
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({program_id:program,amount:parseFloat(amount)})
+}).then(r=>r.json()).then(d=>{
+if(d.success){
+alert('申请已提交！\\n计划:'+d.application.program+'\\n金额:'+d.application.amount+'U\\n状态:'+d.application.status);
+}else{
+alert('错误:'+d.error);
+}
+});
+}
+
+loadData('overview');
+</script>
+</body>
+</html>

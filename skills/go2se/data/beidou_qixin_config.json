@@ -1,0 +1,191 @@
+{
+  "version": "1.0",
+  "timestamp": "2026-03-15",
+  "description": "北斗七鑫各鑫参数配置",
+  
+  "global": {
+    "name": "全局配置",
+    "max_total_positions": 5,
+    "reserved_funds_ratio": 0.10,
+    "api_timeout": 10,
+    "cache_ttl": 60,
+    "mode": "balanced"
+  },
+  
+  "rabbit": {
+    "name": "打兔子",
+    "description": "Top20主流币投资",
+    "enabled": true,
+    "symbols": ["BTC/USDT", "ETH/USDT", "BNB/USDT", "SOL/USDT", "XRP/USDT", "ADA/USDT", "AVAX/USDT", "DOGE/USDT", "DOT/USDT", "MATIC/USDT"],
+    
+    "scan_interval": {"value": 60, "min": 30, "max": 120, "unit": "秒"},
+    "confidence_threshold": {"value": 0.60, "min": 0.5, "max": 0.8},
+    "max_position": {"value": 0.15, "min": 0.05, "max": 0.25, "unit": "比例"},
+    "stop_loss": {"value": 0.03, "min": 0.01, "max": 0.08, "unit": "比例"},
+    "take_profit": {"value": 0.08, "min": 0.05, "max": 0.15, "unit": "比例"},
+    "min_volume": {"value": 1000000, "min": 100000, "max": 5000000, "unit": "USD"},
+    
+    "strategy": {
+      "primary": "momentum",
+      "secondary": "breakout",
+      "timeframes": ["15m", "1h", "4h"]
+    },
+    
+    "indicators": {
+      "rsi": {"weight": 0.8, "enabled": true},
+      "macd": {"weight": 0.7, "enabled": true},
+      "volume": {"weight": 0.6, "enabled": true},
+      "trend_strength": {"weight": 1.0, "enabled": true}
+    }
+  },
+  
+  "mole": {
+    "name": "打地鼠",
+    "description": "高波动币种投资",
+    "enabled": true,
+    "symbols": [],  // 动态获取
+    
+    "scan_interval": {"value": 30, "min": 15, "max": 60, "unit": "秒"},
+    "confidence_threshold": {"value": 0.50, "min": 0.3, "max": 0.7},
+    "max_position": {"value": 0.05, "min": 0.01, "max": 0.15, "unit": "比例"},
+    "stop_loss": {"value": 0.05, "min": 0.02, "max": 0.10, "unit": "比例"},
+    "take_profit": {"value": 0.15, "min": 0.08, "max": 0.25, "unit": "比例"},
+    "min_volatility": {"value": 0.10, "min": 0.05, "max": 0.30, "unit": "比例"},
+    "max_hold_hours": {"value": 24, "min": 4, "max": 72, "unit": "小时"},
+    
+    "strategy": {
+      "primary": "breakout",
+      "secondary": "momentum",
+      "timeframes": ["5m", "15m", "1h"]
+    },
+    
+    "breakout_conditions": {
+      "volume_multiplier": {"value": 2.0, "min": 1.5, "max": 5.0, "unit": "倍数"},
+      "price_change": {"value": 0.03, "min": 0.02, "max": 0.10, "unit": "比例"},
+      "rsi_range": [30, 70]
+    }
+  },
+  
+  "prediction": {
+    "name": "走着瞧",
+    "description": "预测市场投资",
+    "enabled": true,
+    
+    "sources": {
+      "polymarket": {"enabled": true, "weight": 1.0},
+      "polymarket_usdt": {"enabled": true, "weight": 0.8},
+      "omen": {"enabled": false, "weight": 0.5},
+      "augur": {"enabled": false, "weight": 0.5}
+    },
+    
+    "scan_interval": {"value": 120, "min": 60, "max": 300, "unit": "秒"},
+    "confidence_threshold": {"value": 0.55, "min": 0.4, "max": 0.8},
+    "max_position": {"value": 0.08, "min": 0.03, "max": 0.20, "unit": "比例"},
+    "stop_loss": {"value": 0.05, "min": 0.02, "max": 0.10, "unit": "比例"},
+    "take_profit": {"value": 0.20, "min": 0.10, "max": 0.40, "unit": "比例"},
+    "min_probability": {"value": 0.60, "min": 0.40, "max": 0.80, "unit": "比例"},
+    "max_probability": {"value": 0.95, "min": 0.85, "max": 0.99, "unit": "比例"},
+    
+    "strategy": {
+      "primary": "sentiment"
+    },
+    
+    "sentiment_weights": {
+      "twitter": {"value": 0.90, "min": 0.5, "max": 1.0},
+      "reddit": {"value": 0.70, "min": 0.3, "max": 1.0},
+      "telegram": {"value": 0.50, "min": 0.2, "max": 0.8},
+      "news": {"value": 1.00, "min": 0.5, "max": 1.0}
+    }
+  },
+  
+  "follow": {
+    "name": "跟大哥",
+    "description": "做市协调投资",
+    "enabled": true,
+    
+    "sources": {
+      "whale_alerts": {"enabled": true, "weight": 1.0},
+      "large_transfers": {"enabled": true, "weight": 0.8},
+      "funding_rate": {"enabled": true, "weight": 0.7},
+      "exchange_flow": {"enabled": true, "weight": 0.6}
+    },
+    
+    "scan_interval": {"value": 60, "min": 30, "max": 180, "unit": "秒"},
+    "confidence_threshold": {"value": 0.60, "min": 0.4, "max": 0.8},
+    "max_position": {"value": 0.10, "min": 0.05, "max": 0.20, "unit": "比例"},
+    "stop_loss": {"value": 0.04, "min": 0.02, "max": 0.08, "unit": "比例"},
+    "take_profit": {"value": 0.12, "min": 0.06, "max": 0.20, "unit": "比例"},
+    "min_follow_amount": {"value": 1000000, "min": 100000, "max": 10000000, "unit": "USD"},
+    "delay_threshold": {"value": 5, "min": 1, "max": 30, "unit": "秒"},
+    
+    "strategy": {
+      "primary": "whale_follow"
+    },
+    
+    "follow_conditions": {
+      "exchanges": ["binance", "bybit", "okx"],
+      "exclude_cex": true,
+      "auto_take_profit_ratio": 0.80
+    }
+  },
+  
+  "hitchhike": {
+    "name": "搭便车",
+    "description": "复制交易分成",
+    "enabled": true,
+    
+    "platforms": {
+      "binance_copy": {"enabled": true, "weight": 1.0},
+      "bybit_copy": {"enabled": true, "weight": 0.8},
+      "okx_copy": {"enabled": false, "weight": 0.5},
+      "bitget_copy": {"enabled": false, "weight": 0.5}
+    },
+    
+    "scan_interval": {"value": 300, "min": 120, "max": 600, "unit": "秒"},
+    "confidence_threshold": {"value": 0.70, "min": 0.5, "max": 0.9},
+    "max_position": {"value": 0.20, "min": 0.10, "max": 0.30, "unit": "比例"},
+    "stop_loss": {"value": 0.02, "min": 0.01, "max": 0.05, "unit": "比例"},
+    "take_profit": {"value": 0.08, "min": 0.04, "max": 0.15, "unit": "比例"},
+    "follow_ratio": {"value": 0.50, "min": 0.10, "max": 1.0, "unit": "比例"},
+    "max_traders": {"value": 5, "min": 1, "max": 20, "unit": "人"},
+    
+    "strategy": {
+      "primary": "copy_trade"
+    },
+    
+    "filter_conditions": {
+      "min_roi": {"value": 0.10, "min": 0.05, "max": 0.30, "unit": "比例"},
+      "min_followers": {"value": 100, "min": 50, "max": 1000, "unit": "人"},
+      "trading_frequency": "medium",
+      "risk_level": "medium_low",
+      "exclude_new_users": true
+    }
+  },
+  
+  "modes": {
+    "conservative": {
+      "name": "保守",
+      "description": "低风险稳健投资",
+      "scan_interval": 120,
+      "confidence_threshold": 0.70,
+      "reserved_funds_ratio": 0.20,
+      "allocations": {"rabbit": 0.70, "mole": 0.10, "prediction": 0.05, "follow": 0.10, "hitchhike": 0.05}
+    },
+    "balanced": {
+      "name": "平衡",
+      "description": "均衡收益投资",
+      "scan_interval": 60,
+      "confidence_threshold": 0.60,
+      "reserved_funds_ratio": 0.10,
+      "allocations": {"rabbit": 0.50, "mole": 0.20, "prediction": 0.10, "follow": 0.10, "hitchhike": 0.10}
+    },
+    "aggressive": {
+      "name": "激进",
+      "description": "高收益高风险投资",
+      "scan_interval": 30,
+      "confidence_threshold": 0.50,
+      "reserved_funds_ratio": 0.05,
+      "allocations": {"rabbit": 0.30, "mole": 0.35, "prediction": 0.15, "follow": 0.10, "hitchhike": 0.10}
+    }
+  }
+}

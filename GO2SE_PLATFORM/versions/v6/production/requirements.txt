@@ -1,0 +1,25 @@
+# 🪿 GO2SE 依赖包
+
+# 异步框架
+aiohttp>=3.9.0
+asyncpg>=0.29.0
+redis>=5.0.0
+
+# 交易
+ccxt>=4.0.0
+
+# Web服务
+fastapi>=0.109.0
+uvicorn>=0.27.0
+
+# 数据处理
+pandas>=2.0.0
+numpy>=1.26.0
+
+# 监控
+prometheus-client>=0.19.0
+
+# 工具
+python-dotenv>=1.0.0
+pydantic>=2.5.0
+httpx>=0.26.0

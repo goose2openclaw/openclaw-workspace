@@ -1,179 +1,232 @@
----
-name: xiami
-slug: xiami
-version: 1.0.0
-description: |
-  GO2SE (XiaMi) - 融合9大交易机器人精华的多策略加密货币交易系统
-  
-  核心理念: "像虾米一样敏感 - 小规模、灵活、适应性强"
-  
-  结合了:
-  - trading-brain 信息规模优势
-  - rho-signals 多指标信号系统
-  - binance-grid-trading 网格交易
-  - polymarket-arbitrage 套利监控
-  - freqtrade 趋势跟踪
-author: xiami-trading
-tags: [crypto, trading, bot, multi-strategy, grid, arbitrage, signals, AI]
-homepage: https://github.com/xiami-trading/xiami
-metadata: 
-  openclaw:
-    emoji: "🦐"
-    requires:
-      bins: ["python3"]
-      env:
-        - BINANCE_API_KEY
-        - BINANCE_SECRET
-    configPaths: ["~/xiami/"]
+# 🪿 GO2SE 护食 - 完整加密货币量化投资平台
+
+> 版本: 3.0 | 更新: 2026-03-12
+
+## 一句话介绍
+
+**GO2SE 护食** - 帮你赚钱的 AI 量化工具 + 私募LP平台，四种模式：游客体验、订阅会员、分成伙伴、私募LP。
+
 ---
 
-# 🦐 GO2SE Trading System
+## 四种用户模式
 
-> eXtensible AI-Driven Multi-source Intelligent trading
+### 👤 游客模式 (Guest)
+- **模拟资金**: $1,000
+- **每日交易限额**: 5笔
+- **功能**: 模拟交易、浏览信号、基础功能
+- **费用**: 免费
 
-## 核心理念
+### ⭐ 订阅模式 (Subscriber)
+- **模拟资金**: $100,000
+- **每日交易限额**: 100笔
+- **功能**: 全部策略、高级信号、API调用、优先客服
+- **费用**: $49/月
 
-"像虾米一样敏感 - 小规模、灵活、适应性强"
+### 🤝 分成模式 (Partner)
+- **模拟资金**: $500,000
+- **每日交易限额**: 500笔
+- **功能**: 跟单分成、20%收益共享、专属信号、VIP客服
+- **费用**: $99/月 + 20%收益分成
 
-GO2SE 融合了 9 大交易机器人的精华，创建了一个自适应多策略交易系统。
+### 💎 私募LP模式 (Private)
+- **模拟资金**: $1,000,000
+- **每日交易限额**: 无限
+- **功能**: 专属策略、35%收益分成、代币奖励、优先私募、线下聚会
+- **费用**: 投资额$10,000起
 
-## 策略架构
+### 私募池
 
-### 🦐 模式1: 趋势确认模式 (50%仓位)
+| 池 | 门槛 | 年化收益 | 代币奖励 |
+|----|------|----------|----------|
+| 🛡️ 稳健型 | $10,000 | 18% | 5% GO2SE |
+| ⚖️ 平衡型 | $50,000 | 38% | 8% GO2SE |
+| 🚀 激进型 | $100,000 | 85% | 12% GO2SE |
+| 👑 尊享型 | $500,000 | 120% | 20% GO2SE |
 
-**条件 (满足2/3):**
-- RSI(4h) < 40 (超卖)
-- MACD 金叉
-- 价格站上 SMA20
+---
 
-**执行:**
-- 仓位: 10%
-- 止损: 5%
-- 止盈: 15% 或 RSI > 65
+## 功能模块
 
-### 🦐 模式2: 网格震荡模式 (30%仓位)
+### 🏠 首页纵览
+- 账户余额、总盈亏、胜率
+- 北斗七鑫市场快速查看
+- 实时交易信号
 
-**条件:**
-- 波动率 < 3%
-- 价格在 SMA20-SMA50 区间
+### 🔥 热点纵览
+- 热点币种监控
+- 热门信号
+- 热点预言机事件
 
-**执行:**
-- 网格: 5格, 间距 3%
-- 仓位: 每格 2%
+### 📊 参数仪表盘
+- 置信度阈值
+- 止损/止盈设置
+- 最大持仓数
+- Gas限制
+- 交易状态控制
 
-### 🦐 模式3: 套利监控模式 (20%仓位)
+### 💰 资产看板
+- 总资产/可用/持仓
+- 日/周/月盈亏
+- 资产分布图
 
-**监控:**
-- Polymarket + Binance + OKX 三市场
+### 🔯 北斗七鑫
+1. 🐰 打兔子 - 主流币趋势交易
+2. 🐹 打地鼠 - 山寨币套利
+3. 👀 走着瞧 - 预测市场
+4. 🚗 搭便车 - 跟单分成
+5. 🤝 跟大哥 - 做市协作
+6. ✂️ 薅羊毛 - 空投撸羊毛
+7. 🎒 穷孩子 - 众包赚钱
 
-**条件:**
-- 价差 > 2%
-- 流动性充足
+### 📈 投资组合
+- 预设方案：保守/平衡/激进
+- 智能推荐
+- 实时权重调整
 
-**执行:**
-- 仓位: 5%
+### ♟️ 策略模型
+- 12大策略整合 (10家竞品+护食原创)
+- 网格/无限网格/做市/信号/跟单/趋势/IF-THEN/脚本/综合/套利/打兔子/打地鼠
 
-### 🦐 信息过滤 (所有模式)
+### 📡 声纳趋势
+- RSI背离、MACD金叉、成交量爆发
+- 趋势线突破、支撑阻力
+- 链上巨鲸、情绪极端
 
-**优先信号:**
-- Polymarket odds 变化 > 10%
-- Twitter 热度飙升
-- 新闻突变
+### 🔮 预言机
+- ETF审批、升级、巨鲸动作
+- 政策信号、季度交割
+- 影响幅度预测
 
-**过滤规则:**
-- 已涨幅 > 20% 不追高
-- TradingView 讨论热度 > 50% 观望
+### 🛠️ 生态工具
+- 高频量化、持仓追踪
+- 每日复盘、风控系统
+- API聚合、钱包管理、VPN集成
 
-## 安装
+### 📝 脚本日志
+- 实时运行状态
+- 交易/Airdrop/信号数量
+- 复盘评分
+
+### 💬 客服中心
+- Telegram客服
+
+### 🎁 分享有礼
+- 邀请码生成
+- 邀请链接
+- 双向奖励 $50
+
+### 💎 私募LP
+- 私募池介绍
+- 投资组合推荐
+- 加入私募池
+
+### 📊 交易记录
+- 模拟交易历史
+- 实时盈亏
+
+---
+
+## 快速启动
 
 ```bash
-# 1. 安装依赖
-pip install ccxt numpy pandas requests
+# 1. 进入目录
+cd ~/skills/go2se/web
 
-# 2. 配置 API
-export BINANCE_API_KEY="your_key"
-export BINANCE_SECRET="your_secret"
+# 2. 激活虚拟环境
+source venv/bin/activate
 
-# 3. 初始化
-python scripts/xiami.py --init
+# 3. 启动服务
+python server.py
+
+# 4. 访问
+# http://localhost:5000
 ```
 
-## 使用
+---
 
-### 获取信号
-```bash
-python scripts/xiami.py --signal
+## API 接口
+
+### 用户系统
+- `GET /api/user/status` - 获取用户状态
+- `POST /api/user/register` - 注册
+- `POST /api/user/login` - 登录
+- `POST /api/user/upgrade` - 升级用户
+- `GET /api/user/tiers` - 获取会员信息
+
+### 交易
+- `POST /api/trade/execute` - 执行模拟交易
+- `GET /api/trade/history` - 交易历史
+- `GET /api/trade/balance` - 账户余额
+
+### 市场数据
+- `GET /api/markets` - 市场数据
+- `GET /api/signals` - 交易信号
+- `GET /api/prices` - 实时价格
+- `GET /api/hot` - 热点数据
+
+### 投资组合
+- `GET /api/portfolio` - 投资组合
+- `GET /api/portfolio/recommend` - 推荐组合
+- `POST /api/portfolio/apply` - 应用预设
+
+### 预言机 & 声纳
+- `GET /api/oracle` - 预言机事件
+- `GET /api/sonar` - 声纳模型
+
+### 薅羊毛
+- `GET /api/airdrop/hunt` - 搜索空投
+- `POST /api/airdrop/claim` - 领取空投
+
+### 社交
+- `POST /api/referral/generate` - 生成分享链接
+- `POST /api/like/claim` - 领取点赞礼金
+
+---
+
+## 技术栈
+
+- **后端**: Flask + Python 3.12
+- **前端**: HTML5 + Tailwind CSS + Vanilla JS
+- **数据**: 实时API聚合 (Binance/Bybit/OKX)
+- **缓存**: 内存缓存 + TTL
+
+---
+
+## 风险提示
+
+⚠️ 加密货币交易有风险
+- 过去收益不代表未来
+- 请使用闲散资金
+- 模拟交易仅供学习
+
+---
+
+## 文件结构
+
+```
+skills/go2se/
+├── web/
+│   ├── server.py          # Flask后端
+│   ├── templates/
+│   │   └── index.html    # 前端页面
+│   ├── venv/             # 虚拟环境
+│   └── start.sh          # 启动脚本
+├── scripts/              # 交易脚本
+├── *.md                  # 文档
+└── SKILL.md             # 技能定义
 ```
 
-### 运行策略
-```bash
-# 趋势模式
-python scripts/xiami.py --mode trend
+---
 
-# 网格模式
-python scripts/xiami.py --mode grid
+## 登录方式
 
-# 套利模式
-python scripts/xiami.py --mode arbitrage
+- 📧 邮箱登录
+- 💳 钱包登录 (MetaMask)
+- ✈️ Telegram登录
+- 🐦 Twitter登录
 
-# 全部模式
-python scripts/xiami.py --mode all
-```
+---
 
-### 回测
-```bash
-python scripts/xiami.py --backtest --days 30
-```
+**🪿 GO2SE - 帮你赚钱的 AI 工具 + 私募LP平台**
 
-## 配置
-
-编辑 `config.json`:
-
-```json
-{
-  "mode": {
-    "trend": {"enabled": true, "allocation": 0.5},
-    "grid": {"enabled": true, "allocation": 0.3},
-    "arbitrage": {"enabled": true, "allocation": 0.2}
-  },
-  "risk": {
-    "max_position": 0.1,
-    "stop_loss": 0.05,
-    "take_profit": 0.15
-  },
-  "symbols": ["BTC/USDT", "ETH/USDT", "SOL/USDT"]
-}
-```
-
-## 信号系统
-
-| 分数 | 信号 | 建议 |
-|------|------|------|
-| +7~+10 | 强力买入 | 积极建仓 |
-| +3~+6 | 温和看涨 | 小仓位试多 |
-| -2~+2 | 中性 | 观望 |
-| -6~-3 | 温和看跌 | 小仓位试空 |
-| -10~-7 | 强力卖出 | 清仓 |
-
-## 策略优势
-
-1. **自适应**: 根据市场状态自动切换模式
-2. **多指标确认**: 减少假信号
-3. **信息过滤**: 利用多源信息优势
-4. **风险分散**: 三策略同时运行
-
-## 注意事项
-
-⚠️ 交易有风险，请谨慎使用
-- 建议先进行模拟盘测试
-- 设置合理的止损
-- 不要投入超过承受能力的资金
-- 定期检查策略表现
-
-## 更新日志
-
-### v1.0.0 (2026-03-10)
-- 初始版本
-- 融合9大交易策略
-- 三模式自适应切换
-- 多源信息过滤
+© 2026 GO2SE Team
