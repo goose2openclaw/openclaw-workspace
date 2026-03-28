@@ -298,3 +298,65 @@ async def get_stats(db: Session = Depends(get_db)):
             "take_profit": settings.TAKE_PROFIT
         }
     }
+
+
+@router.get("/portfolio")
+async def get_portfolio(db: Session = Depends(get_db)):
+    """获取组合数据 - 修复: 之前缺失此端点导致前端显示空白"""
+    from app.models.models import Trade, Position
+    
+    # 计算总盈亏
+    all_trades = db.query(Trade).all()
+    total_pnl = sum(t.pnl or 0 for t in all_trades)
+    total_trades = len(all_trades)
+    winning_trades = len([t for t in all_trades if (t.pnl or 0) > 0])
+    win_rate = (winning_trades / total_trades * 100) if total_trades > 0 else 0
+    
+    # 获取当前持仓
+    positions = db.query(Position).filter(Position.amount > 0).all()
+    positions_data = [{
+        "symbol": p.symbol,
+        "amount": float(p.amount),
+        "avg_price": float(p.avg_price) if p.avg_price else 0,
+        "current_price": float(p.current_price) if p.current_price else 0,
+        "pnl": float(p.pnl) if p.pnl else 0,
+        "strategy": p.strategy or "unknown"
+    } for p in positions]
+    
+    # 构建组合数据
+    portfolio = {
+        "total_pnl": round(total_pnl, 2),
+        "total_trades": total_trades,
+        "win_rate": round(win_rate, 1),
+        "positions": positions_data,
+        "performance": {
+            "portfolio": {}
+        }
+    }
+    
+    # 按策略分组计算
+    strategies_data = {}
+    for t in all_trades:
+        strat = t.strategy or "unknown"
+        if strat not in strategies_data:
+            strategies_data[strat] = {
+                "name": f"策略-{strat}",
+                "icon": "📊",
+                "weight": getattr(settings, f"{strat.upper()}_WEIGHT", 0.1) * 100,
+                "pnl": 0,
+                "return_rate": 0,
+                "trades": 0,
+                "strategies": [strat],
+                "desc": f"{strat} 策略表现"
+            }
+        strategies_data[strat]["pnl"] += t.pnl or 0
+        strategies_data[strat]["trades"] += 1
+    
+    # 计算收益率
+    for strat, data in strategies_data.items():
+        data["return_rate"] = round((data["pnl"] / 1000) * 100, 2) if data["trades"] > 0 else 0
+        data["pnl"] = round(data["pnl"], 2)
+    
+    portfolio["performance"]["portfolio"] = strategies_data
+    
+    return {"data": portfolio}
