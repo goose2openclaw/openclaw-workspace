@@ -31,7 +31,7 @@ function writeJsonAtomic(filePath, obj) {
 // resolves correctly without embedding machine-specific absolute paths.
 function buildValidationCmd(relModules) {
   const paths = relModules.map(m => `./${m}`);
-  return `node scripts/validate-modules.js ${paths.join(' ')}`;
+  return `cd skills/capability-evolver && node scripts/validate-modules.js ${paths.join(' ')}`;
 }
 
 function getDefaultGenes() {

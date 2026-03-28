@@ -30,8 +30,7 @@
         ]
       },
       "validation": [
-        "node scripts/validate-modules.js ./src/evolve ./src/gep/solidify",
-        "node scripts/validate-modules.js ./src/gep/selector ./src/gep/memoryGraph"
+        "cd skills/capability-evolver && node scripts/validate-modules.js ./src/evolve ./src/gep/solidify && node scripts/validate-modules.js ./src/gep/selector ./src/gep/memoryGraph"
       ]
     },
     {
@@ -64,7 +63,7 @@
         ]
       },
       "validation": [
-        "node scripts/validate-modules.js ./src/evolve ./src/gep/prompt"
+        "cd skills/capability-evolver && node scripts/validate-modules.js ./src/evolve ./src/gep/prompt"
       ]
     },
     {
@@ -100,7 +99,7 @@
         ]
       },
       "validation": [
-        "node scripts/validate-modules.js ./src/evolve ./src/gep/solidify"
+        "cd skills/capability-evolver && node scripts/validate-modules.js ./src/evolve ./src/gep/solidify"
       ]
     }
   ]
