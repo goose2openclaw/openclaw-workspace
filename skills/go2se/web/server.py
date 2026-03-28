@@ -4,7 +4,17 @@
 完整后台系统 v2 - 北斗七鑫 + 白皮书所有功能
 """
 
+import json
+import os
+import random
 import time
+import uuid
+from datetime import datetime, timedelta
+from pathlib import Path
+from typing import Dict, List, Any
+
+import requests
+from dataclasses import dataclass, asdict
 from flask import Flask, render_template, jsonify, request, session
 
 # ==================== 后台API配置 ====================
@@ -36,11 +46,6 @@ def get_backend_data(endpoint, cache_key, ttl=60):
     except Exception as e:
         print(f"[Backend API] {endpoint}: {e}")
     return None
-
-import json, random, uuid, time, requests
-from datetime import datetime, timedelta
-from typing import Dict, List, Any
-from dataclasses import dataclass, asdict
 
 app = Flask(__name__)
 app.secret_key = 'Hushi_Pro_2026_Secure'
@@ -451,6 +456,17 @@ def user_register():
 
 @app.route('/api/user/login', methods=['POST'])
 def user_login(): return jsonify({'success': True, 'user_id': f"user_{uuid.uuid4().hex[:8]}", 'timestamp': datetime.now().isoformat()})
+
+@app.route('/api/health')
+def health():
+    """平台健康检查"""
+    return jsonify({
+        'status': 'ok',
+        'service': 'GO2SE Húshí v2.5',
+        'uptime': 'operational',
+        'backend_api': BACKEND_API,
+        'timestamp': datetime.now().isoformat()
+    })
 
 # 薅羊毛
 @app.route('/api/airdrop/hunt')
@@ -947,7 +963,6 @@ def strategy_backtest_params():
     days = req.get('days', 30)
     
     # 模拟参数优化结果
-    import random
     best_params = {
         'ma_short': params.get('ma_short', random.randint(10, 30)),
         'ma_long': params.get('ma_long', random.randint(40, 100)),
@@ -1111,7 +1126,6 @@ def portfolio_optimize():
     risk_tolerance = req.get('risk_tolerance', 0.5)  # 0-1
     
     # 模拟优化结果
-    import random
     optimal = {
         'BTC': round(0.4 - risk_tolerance * 0.1, 3),
         'ETH': round(0.3 + risk_tolerance * 0.05, 3),
@@ -1835,7 +1849,6 @@ def core_backtest_chain():
     req = request.json
     days = req.get('days', 30)
     
-    import random
     results = []
     for day in range(days):
         trend = random.choice(['bullish', 'bearish', 'neutral'])
@@ -1859,9 +1872,6 @@ def core_backtest_chain():
     })
 
 # ==================== 文档展示系统 ====================
-
-import os
-from pathlib import Path
 
 DOCS_DIR = Path('/root/.openclaw/workspace/skills/go2se/team')
 
