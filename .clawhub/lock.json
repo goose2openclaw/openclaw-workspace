@@ -11,7 +11,7 @@
     },
     "gog": {
       "version": "1.0.0",
-      "installedAt": 1773023165935
+      "installedAt": 1773853620873
     },
     "openclaw-tavily-search": {
       "version": "0.1.0",
@@ -199,7 +199,7 @@
     },
     "agent-team-orchestration": {
       "version": "1.0.0",
-      "installedAt": 1773349260653
+      "installedAt": 1773883331198
     },
     "frontend-design-pro": {
       "version": "1.0.0",
@@ -240,6 +240,214 @@
     "gpu-cli": {
       "version": "1.1.1",
       "installedAt": 1773350583987
+    },
+    "sub-agent-factory": {
+      "version": "1.1.0",
+      "installedAt": 1773411845164
+    },
+    "ai-persona-os": {
+      "version": "1.6.2",
+      "installedAt": 1773411965707
+    },
+    "telegram-bot": {
+      "version": "1.0.0",
+      "installedAt": 1773414422322
+    },
+    "quant-trading-system": {
+      "version": "6.0.0",
+      "installedAt": 1773519253544
+    },
+    "trading-devbox": {
+      "version": "0.1.0",
+      "installedAt": 1773545404904
+    },
+    "awesome-openclaw-skills": {
+      "version": "1.0.0",
+      "installedAt": 1773837489403
+    },
+    "openclaw-optimizer-pro": {
+      "version": "1.1.3",
+      "installedAt": 1773837846447
+    },
+    "workbuddy-add-memory": {
+      "version": "3.0.1",
+      "installedAt": 1773840212110
+    },
+    "memos-cli": {
+      "version": "0.1.0",
+      "installedAt": 1773840558558
+    },
+    "cli-anything": {
+      "version": "0.1.0",
+      "installedAt": 1773841096303
+    },
+    "multi-search-engine": {
+      "version": "2.0.1",
+      "installedAt": 1773841562931
+    },
+    "runesleo-systematic-debugging": {
+      "version": "3.0.0",
+      "installedAt": 1773842900303
+    },
+    "vibe-coding": {
+      "version": "1.0.0",
+      "installedAt": 1773843328040
+    },
+    "next-best-practices": {
+      "version": "0.1.0",
+      "installedAt": 1773844212770
+    },
+    "worldmonitor-intelligence-dashboard": {
+      "version": "1.0.0",
+      "installedAt": 1773844562660
+    },
+    "ui-ux-pro-max": {
+      "version": "0.1.0",
+      "installedAt": 1773844595541
+    },
+    "structure-thinking": {
+      "version": "1.0.0",
+      "installedAt": 1773844621468
+    },
+    "e2e-testing-patterns": {
+      "version": "1.0.0",
+      "installedAt": 1773847441150
+    },
+    "pls-audit-website": {
+      "version": "1.0.0",
+      "installedAt": 1773848044350
+    },
+    "social-insights": {
+      "version": "1.1.1",
+      "installedAt": 1773850681928
+    },
+    "stock-analysis": {
+      "version": "6.2.0",
+      "installedAt": 1773851344114
+    },
+    "akshare-stock": {
+      "version": "1.0.1",
+      "installedAt": 1773851541841
+    },
+    "stock-watcher": {
+      "version": "1.0.0",
+      "installedAt": 1773851595752
+    },
+    "stock-monitor": {
+      "version": "1.3.0",
+      "installedAt": 1773851701632
+    },
+    "tushare-stock-skill": {
+      "version": "1.0.3",
+      "installedAt": 1773851724110
+    },
+    "china-stock-analysis": {
+      "version": "1.0.0",
+      "installedAt": 1773851828840
+    },
+    "byterover": {
+      "version": "2.1.0",
+      "installedAt": 1773852433384
+    },
+    "mh-wacli": {
+      "version": "1.0.0",
+      "installedAt": 1773852507490
+    },
+    "ontology": {
+      "version": "1.0.4",
+      "installedAt": 1773852548795
+    },
+    "proactive-agent-skill": {
+      "version": "1.0.0",
+      "installedAt": 1773852607500
+    },
+    "aoms": {
+      "version": "1.1.0",
+      "installedAt": 1773852867670
+    },
+    "x-article-reader": {
+      "version": "0.1.1",
+      "installedAt": 1773853687676
+    },
+    "a2a-protocol": {
+      "version": "1.0.1",
+      "installedAt": 1773853872296
+    },
+    "pls-canvas-design": {
+      "version": "1.0.0",
+      "installedAt": 1773853943583
+    },
+    "exa-web-search-free": {
+      "version": "1.0.1",
+      "installedAt": 1773854664102
+    },
+    "easyclaw": {
+      "version": "0.0.2",
+      "installedAt": 1773854721772
+    },
+    "tldr": {
+      "version": "1.0.1",
+      "installedAt": 1773854724065
+    },
+    "git-essentials": {
+      "version": "1.0.0",
+      "installedAt": 1773854763751
+    },
+    "git-sync-daemon": {
+      "version": "1.0.0",
+      "installedAt": 1773854835602
+    },
+    "turix-cua": {
+      "version": "1.0.8",
+      "installedAt": 1773854836681
+    },
+    "docker-essentials": {
+      "version": "1.0.0",
+      "installedAt": 1773854897242
+    },
+    "github-pr-manager": {
+      "version": "1.0.0",
+      "installedAt": 1773854949876
+    },
+    "debug-pro": {
+      "version": "1.0.0",
+      "installedAt": 1773854963404
+    },
+    "nextjs": {
+      "version": "1.1.0",
+      "installedAt": 1773855002813
+    },
+    "kesslerio-stealth-browser": {
+      "version": "1.0.0",
+      "installedAt": 1773855018854
+    },
+    "public-apis-skill-creator": {
+      "version": "1.0.0",
+      "installedAt": 1773855074215
+    },
+    "git-crypt-backup": {
+      "version": "1.0.0",
+      "installedAt": 1773855076918
+    },
+    "autoresearch": {
+      "version": "1.0.2",
+      "installedAt": 1773855089262
+    },
+    "agency-agents": {
+      "version": "1.0.2",
+      "installedAt": 1773855187117
+    },
+    "self-improving": {
+      "version": "1.2.16",
+      "installedAt": 1773855860150
+    },
+    "self-improving-proactive-agent": {
+      "version": "1.0.0",
+      "installedAt": 1773855867221
+    },
+    "pua": {
+      "version": "1.1.3",
+      "installedAt": 1773879013324
     }
   }
 }

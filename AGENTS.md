@@ -210,3 +210,25 @@ The goal: Be helpful without being annoying. Check in a few times a day, do usef
 ## Make It Yours
 
 This is a starting point. Add your own conventions, style, and rules as you figure out what works.
+
+## 🪿 GO2SE CEO - 五条平行工作线
+
+### 工作线定义
+| 工作线 | 任务 | 资源 | Cron |
+|--------|------|------|------|
+| ① 系统健康 | 监控进程/端口/磁盘，确保不当机 | 10% | CEO管理时 |
+| ② 监控回复 | 实时响应用户消息 | 5% | 实时 |
+| ③ 调度准备 | 管理Cron任务迭代 | 10% | 每30分钟 |
+| ④ 执行工作 | 平台迭代开发 + 自动交易 | 70% | 平台迭代Cron |
+| ⑤ 社交学习 | 市场情报收集 + 合作伙伴 | 5% | 每60分钟 |
+
+### 执行原则
+- **主动性**: 不等不问，自己找事干
+- **开创性**: 创新思维，寻找最优解
+- **高质量**: 最高标准，不将就
+
+### 监督机制
+- CEO管理Cron每30分钟检查所有工作线状态
+- Capability-Evolver每2小时自动进化优化
+- GO2SE平台迭代Cron每30分钟推进平台开发
+- AceForge技能构建引擎持续观察和生成新技能

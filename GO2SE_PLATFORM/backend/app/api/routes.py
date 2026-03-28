@@ -3,12 +3,17 @@
 🪿 GO2SE API路由
 """
 
+import asyncio
+import logging
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from typing import List
+from sqlalchemy import text
+from typing import List, Optional
 from datetime import datetime
 
 from app.core.database import get_db
+
+logger = logging.getLogger("go2se")
 from app.core.config import settings
 from app.core.trading_engine import engine
 from app.models.models import Trade, Position, Signal, MarketData
@@ -16,11 +21,37 @@ from app.models.models import Trade, Position, Signal, MarketData
 router = APIRouter()
 
 
+@router.get("/ping")
+async def ping():
+    """轻量级健康检查 (负载均衡器用)"""
+    return {"pong": True, "ts": datetime.now().isoformat()}
+
+
 @router.get("/health")
-async def health_check():
-    """健康检查"""
+async def health_check(db: Session = Depends(get_db)):
+    """健康检查 - 轻量级（不调用外部API）"""
+    checks = {"database": "ok", "engine": "ok"}
+    
+    # 检查数据库
+    try:
+        db.execute(text("SELECT 1"))
+    except Exception as e:
+        checks["database"] = f"error: {str(e)}"
+    
+    # 检查引擎状态（不调用外部API）
+    try:
+        if engine.exchange is None:
+            checks["engine"] = "not_initialized"
+        else:
+            checks["engine"] = "ok"
+    except Exception as e:
+        checks["engine"] = f"error: {str(e)}"
+    
+    overall = "healthy" if all(v in ("ok", "not_initialized") for v in checks.values()) else "degraded"
+    
     return {
-        "status": "healthy",
+        "status": overall,
+        "checks": checks,
         "timestamp": datetime.now().isoformat(),
         "app": settings.APP_NAME,
         "version": settings.APP_VERSION,
@@ -30,13 +61,14 @@ async def health_check():
 
 @router.get("/market")
 async def get_market_data():
-    """获取市场数据"""
+    """获取市场数据 - 并发优化"""
     results = []
+    errors = []
     
-    for symbol in settings.TRADING_PAIRS[:10]:
+    async def fetch_one(symbol: str):
         try:
             tick = await engine.get_market_data(symbol)
-            results.append({
+            return {
                 "symbol": tick.symbol,
                 "price": tick.price,
                 "change_24h": tick.change_24h,
@@ -44,12 +76,27 @@ async def get_market_data():
                 "rsi": tick.rsi,
                 "bid": tick.bid,
                 "ask": tick.ask
-            })
+            }
         except Exception as e:
-            pass
+            logger.warning(f"获取 {symbol} 市场数据失败: {e}")
+            return {"symbol": symbol, "error": str(e)}
+    
+    # 并发获取所有市场数据
+    tasks = [fetch_one(s) for s in settings.TRADING_PAIRS[:10]]
+    responses = await asyncio.gather(*tasks, return_exceptions=True)
+    
+    for r in responses:
+        if isinstance(r, Exception):
+            errors.append({"error": str(r)})
+        elif "error" in r:
+            errors.append(r)
+        else:
+            results.append(r)
     
     return {
         "data": results,
+        "errors": errors,
+        "count": len(results),
         "timestamp": datetime.now().isoformat()
     }
 
@@ -73,13 +120,29 @@ async def get_symbol_data(symbol: str):
             }
         }
     except Exception as e:
+        logger.warning(f"获取 {symbol} 数据失败: {e}")
         raise HTTPException(status_code=404, detail=str(e))
 
 
 @router.get("/signals")
-async def get_signals(db: Session = Depends(get_db), limit: int = 50):
-    """获取信号列表"""
-    signals = db.query(Signal).order_by(Signal.created_at.desc()).limit(limit).all()
+async def get_signals(
+    db: Session = Depends(get_db),
+    limit: int = 50,
+    offset: int = 0,
+    strategy: Optional[str] = None,
+    signal: Optional[str] = None
+):
+    """获取信号列表 - 支持分页和过滤"""
+    query = db.query(Signal)
+    
+    if strategy:
+        query = query.filter(Signal.strategy == strategy)
+    if signal:
+        query = query.filter(Signal.signal == signal)
+    
+    total = query.count()
+    signals = query.order_by(Signal.created_at.desc()).offset(offset).limit(limit).all()
+    
     return {
         "data": [{
             "id": s.id,
@@ -90,18 +153,23 @@ async def get_signals(db: Session = Depends(get_db), limit: int = 50):
             "reason": s.reason,
             "executed": s.executed,
             "created_at": s.created_at.isoformat()
-        } for s in signals]
+        } for s in signals],
+        "pagination": {
+            "total": total,
+            "limit": limit,
+            "offset": offset,
+            "has_more": offset + limit < total
+        }
     }
 
 
 @router.post("/signals/{strategy}/run")
-async def run_strategy(strategy: str):
+async def run_strategy(strategy: str, db: Session = Depends(get_db)):
     """运行指定策略"""
     try:
         signals = await engine.run_strategy(strategy, settings.TRADING_PAIRS[:5])
         
         # 保存信号到数据库
-        db = next(get_db())
         for sig in signals:
             db_signal = Signal(
                 strategy=strategy,

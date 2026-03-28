@@ -1,0 +1,16 @@
+{
+  "timestamp": "2026-03-17T16:23:00Z",
+  "current_price": 74275.06,
+  "open_positions": 1,
+  "positions": [
+    {
+      "trade_id": 5,
+      "pair": "BTC/USDT",
+      "open_rate": 73635.68,
+      "current_price": 74275.06,
+      "profit_pct": 0.8683018884323533,
+      "stop_loss_pct": -0.1,
+      "triggered": false
+    }
+  ]
+}

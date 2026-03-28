@@ -49,14 +49,15 @@ class TradingEngine:
         logger.info("✅ 交易所连接初始化")
     
     async def get_market_data(self, symbol: str) -> MarketTick:
-        """获取市场数据"""
+        """获取市场数据 - 使用线程池避免阻塞"""
         if not self.exchange:
             self.init_exchange()
         
-        ticker = self.exchange.fetch_ticker(symbol)
+        # 在线程池中执行同步的 ccxt 调用，避免阻塞事件循环
+        ticker = await asyncio.to_thread(self.exchange.fetch_ticker, symbol)
         
         # 计算RSI
-        ohlcv = self.exchange.fetch_ohlcv(symbol, '1h', limit=50)
+        ohlcv = await asyncio.to_thread(self.exchange.fetch_ohlcv, symbol, '1h', limit=50)
         rsi = self._calculate_rsi([c[4] for c in ohlcv])
         
         return MarketTick(

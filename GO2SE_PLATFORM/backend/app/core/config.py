@@ -67,8 +67,15 @@ class Settings(BaseSettings):
     # 日志
     LOG_LEVEL: str = os.getenv("LOG_LEVEL", "INFO")
     
-    # CORS
-    CORS_ORIGINS: List[str] = ["http://localhost:3000", "http://localhost:5173"]
+    # CORS - 支持本地和生产环境
+    CORS_ORIGINS: List[str] = [
+        "http://localhost:3000",
+        "http://localhost:5173",
+        "http://localhost:8000",
+        "http://127.0.0.1:3000",
+        "http://127.0.0.1:5173",
+        # 生产环境 (根据环境变量添加)
+    ] + ([os.getenv("CORS_ORIGIN", "")] if os.getenv("CORS_ORIGIN") else [])
     
     class Config:
         env_file = ".env"

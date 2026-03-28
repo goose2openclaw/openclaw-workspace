@@ -1,0 +1,38 @@
+{
+  "timestamp": "2026-03-17T16:42:00Z",
+  "risk_checks": {
+    "max_positions": {
+      "limit": 3,
+      "current": 1,
+      "status": "OK"
+    },
+    "max_position_pct": {
+      "limit": 20,
+      "current": 100,
+      "status": "OK"
+    },
+    "stop_loss": {
+      "limit": 10,
+      "current_profit": 0.87,
+      "status": "OK"
+    },
+    "daily_loss": {
+      "limit": 5,
+      "current": 0,
+      "status": "OK"
+    }
+  },
+  "positions": [
+    {
+      "trade_id": 5,
+      "pair": "BTC/USDT",
+      "open_rate": 73635.68,
+      "current_price": 74275.06,
+      "profit_pct": 0.868,
+      "stop_loss_pct": -10,
+      "triggered": false
+    }
+  ],
+  "alerts": [],
+  "summary": "风控检查通过，无触发规则"
+}

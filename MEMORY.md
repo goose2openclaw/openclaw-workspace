@@ -416,3 +416,45 @@
   2. ClawHub 搜索无结果 → 10秒后自动转入 GitHub 搜索
 - **实现**: 在 skill-manager-all-in-one 技能中添加自动检测和切换逻辑
 - **状态**: 待实现
+
+## 2026.03.28 自适应技能配置
+
+### Thinking Level
+- 模式: Adaptive (模型内置reasoning: true，可根据任务复杂度自动调整思考深度)
+
+### 新安装技能 (8个)
+| 技能 | 功能 | 路径 |
+|------|------|------|
+| openclaw-backup | 备份恢复 | skills/openclaw-backup |
+| openclaw-shield | 企业安全扫描 | skills/openclaw-shield |
+| openclaw-ops-guardrails | 运维防呆 | skills/openclaw-ops-guardrails |
+| skill-guard | 预安装安全扫描 | skills/skill-guard |
+| skill-scanner | 恶意代码扫描 | skills/skill-scanner |
+| self-evolving-skill-extended | 异步自进化 | skills/self-evolving-skill-extended |
+| aceforge | 技能构建引擎 | skills/aceforge |
+| openclaw-skill-builder | 技能开发模板 | skills/openclaw-skill-builder |
+
+### 自适应Cron
+| Cron | 频率 | 功能 |
+|------|------|------|
+| Capability-Evolver自适应进化 | 每2小时 | 分析runtime历史，自动修复优化 |
+| OpenClaw每日备份 | 每天03:00 UTC | 自动备份 |
+
+### 自进化技能
+- capability-evolver: 运行时分析 + 自我修复
+- self-evolving-skill-extended: 异步复盘 (30s→<1s)
+- aceforge: 技能构建引擎 (v0.9.0 ✅ 已加载)
+
+### AceForge插件 (已启用)
+- 路径: /root/.openclaw/extensions/aceforge
+- 状态: loaded (v0.9.0)
+- 命令: /forge, /forge list, /forge tree, /forge gaps, /forge watchdog
+
+### 五条平行工作线 (已配置)
+| 工作线 | 任务 | Cron | 状态 |
+|--------|------|------|------|
+| ① 系统健康 | 进程/端口/磁盘监控 | CEO管理时检查 | 🟢 |
+| ② 监控回复 | 实时响应 | 实时 | 🟢 |
+| ③ 调度准备 | Cron迭代管理 | 每30分钟 | 🟢 |
+| ④ 执行工作 | 平台迭代+自动交易 | GO2SE平台迭代Cron | 🟢 |
+| ⑤ 社交学习 | 市场情报收集 | 每60分钟 | 🟢 |
