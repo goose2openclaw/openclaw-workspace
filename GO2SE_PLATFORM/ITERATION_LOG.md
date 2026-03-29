@@ -143,3 +143,35 @@ curl localhost:8000/api/stats  # cached:true, age_seconds:1.08
 
 ---
 *🪿 GO2SE CEO + MiroFish仿真 | 2026-03-29 05:22 UTC*
+
+## 2026-03-29 Cron Guardian优化 (12:02 UTC)
+
+### 问题
+- Cron Guardian被SIGKILL杀死
+- 原因: `openclaw crons list`耗时25秒 > cron timeout
+
+### 解决
+- `cron_guardian_fast.sh`: 重写为5个独立phase并行执行
+- 总运行时间: 30秒 → 1秒
+
+### 守护架构
+| Phase | 检查项 | 超时 |
+|-------|--------|------|
+| 1 | Backend :8005健康 | 10s |
+| 2 | 磁盘空间 | 5s |
+| 3 | 僵尸进程 | 5s |
+| 4 | Cron叠加窗口 | 3s |
+| 5 | ERROR日志 | 5s |
+
+### 实测结果
+```
+✅ Backend :8005 OK
+🔴 磁盘 98% (>95%)
+⚠️ 僵尸进程: 2 (已清理)
+✅ 无ERROR日志
+Guardian完成: 1秒
+```
+
+### 文件变更
+- `cron_guardian.sh` → 快速版(推荐)
+- `cron_guardian_full.sh` → 原版(慢, 保留参考)
