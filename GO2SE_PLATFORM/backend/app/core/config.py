@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     
     # 应用
     APP_NAME: str = "GO2SE量化交易平台"
-    APP_VERSION: str = "v6.3.0"
+    APP_VERSION: str = "v6.3.2"
     DEBUG: bool = os.getenv("DEBUG", "false").lower() == "true"
     
     # 数据库

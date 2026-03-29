@@ -44,9 +44,10 @@ class TradingEngine:
             'apiKey': settings.BINANCE_API_KEY,
             'secret': settings.BINANCE_SECRET_KEY,
             'enableRateLimit': True,
+            'timeout': 30000,  # 30秒超时 (Binance API有时很慢)
             'options': {'defaultType': 'spot'}
         })
-        logger.info("✅ 交易所连接初始化")
+        logger.info("✅ 交易所连接初始化 (timeout=30s)")
     
     async def get_market_data(self, symbol: str) -> MarketTick:
         """获取市场数据 - 使用线程池避免阻塞"""

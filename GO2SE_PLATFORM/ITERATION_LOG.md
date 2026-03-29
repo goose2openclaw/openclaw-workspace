@@ -78,6 +78,25 @@ curl localhost:8000/api/stats  # cached:true, age_seconds:1.08
 - `dda5e5f` feat: /stats & /portfolio cache, ErrorBoundary, LoadingSkeleton, RefreshButton
 - `95edde7` feat(backend): add 8-second cache to /market endpoint
 
+### MiroFish仿真 v6.3.2 最终结果 (11/11通过)
+
+| 测试项 | 状态 | 详情 |
+|--------|------|------|
+| API端点 | ✅ 9/9 | /ping/health/stats/portfolio/market/signals/strategies/trades/positions |
+| 缓存 | ✅ | stats/portfolio/market全部工作 |
+| Market SWR | ✅ | 首次30s内完成, 二次<1s, age=1.0s |
+| 延迟 | ✅ | stats=18ms, portfolio=16ms |
+| 并发 | ✅ | 10并发全部200 |
+| WebSocket | ✅ | 连接成功 |
+| 认证 | ✅ | 注册+/auth/me受保护端点 |
+| 回测 | ✅ | 1笔交易, -0.18%, 胜率0% |
+| 版本 | ✅ | v6.3.2 |
+
+**修复项**:
+- Binance timeout: 10s → 30s (防止首次超时)
+- Market TTL: 5s → 15s (应对Binance慢速)
+- Stale-While-Revalidate: 15-60s内返回过期缓存+后台刷新
+
 ### MiroFish仿真 v6.2.0 诊断
 
 | 测试项 | 结果 | 说明 |

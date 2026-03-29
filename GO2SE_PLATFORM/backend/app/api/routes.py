@@ -29,7 +29,8 @@ router = APIRouter()
 _cache: dict = {}
 _CACHE_TTL_STATS = 8   # /stats 缓存8秒
 _CACHE_TTL_PORTFOLIO = 10  # /portfolio 缓存10秒
-_CACHE_TTL_MARKET = 5   # /market 缓存5秒
+_CACHE_TTL_MARKET = 15   # /market 新鲜缓存15秒
+_CACHE_MAX_AGE_MARKET = 60  # /market 允许返回过期数据60秒 (stale-while-revalidate)
 
 def _cache_get(key: str) -> Optional[dict]:
     """取缓存，未过期返回数据，否则返回None"""
@@ -92,50 +93,117 @@ async def health_check(db: Session = Depends(get_db)):
 
 @router.get("/market")
 async def get_market_data():
-    """获取市场数据 - 5秒缓存"""
-    cached = _cache_get("/market")
-    if cached is not None:
-        return {"data": cached["data"], "cached": True}
+    """
+    获取市场数据 - Stale-While-Revalidate缓存策略
     
-    results = []
-    errors = []
+    缓存层级:
+    1. 新鲜缓存(<15s): 直接返回
+    2. 过期但可用缓存(15-60s): 立即返回 + 后台刷新
+    3. 无缓存或超期(>60s): 等待Binance API
+    """
+    cached_raw = _cache.get("/market")
+    now = time.time()
     
-    async def fetch_one(symbol: str):
-        try:
-            tick = await engine.get_market_data(symbol)
-            return {
-                "symbol": tick.symbol,
-                "price": tick.price,
-                "change_24h": tick.change_24h,
-                "volume_24h": tick.volume_24h,
-                "rsi": tick.rsi,
-                "bid": tick.bid,
-                "ask": tick.ask
-            }
-        except Exception as e:
-            logger.warning(f"获取 {symbol} 市场数据失败: {e}")
-            return {"symbol": symbol, "error": str(e)}
+    async def fetch_all():
+        """从Binance获取所有市场数据"""
+        results, errors = [], []
+        
+        async def fetch_one(symbol: str):
+            try:
+                tick = await engine.get_market_data(symbol)
+                return {
+                    "symbol": tick.symbol,
+                    "price": tick.price,
+                    "change_24h": tick.change_24h,
+                    "volume_24h": tick.volume_24h,
+                    "rsi": tick.rsi,
+                    "bid": tick.bid,
+                    "ask": tick.ask
+                }
+            except Exception as e:
+                logger.warning(f"获取 {symbol} 市场数据失败: {e}")
+                return {"symbol": symbol, "error": str(e)}
+        
+        tasks = [fetch_one(s) for s in settings.TRADING_PAIRS[:10]]
+        responses = await asyncio.gather(*tasks, return_exceptions=True)
+        
+        for r in responses:
+            if isinstance(r, Exception):
+                errors.append({"error": str(r)})
+            elif "error" in r:
+                errors.append(r)
+            else:
+                results.append(r)
+        
+        return {
+            "data": results,
+            "errors": errors,
+            "count": len(results),
+            "timestamp": datetime.now().isoformat()
+        }
     
-    # 并发获取所有市场数据
-    tasks = [fetch_one(s) for s in settings.TRADING_PAIRS[:10]]
-    responses = await asyncio.gather(*tasks, return_exceptions=True)
+    # Case 1: 新鲜缓存 → 直接返回
+    if cached_raw is not None:
+        cached_data, expire_ts = cached_raw
+        age = now - (expire_ts - _CACHE_TTL_MARKET)  # 数据年龄
+        
+        if age < _CACHE_TTL_MARKET:
+            return {"data": cached_data["data"], "cached": True, "age_seconds": round(age, 1)}
+        
+        # Case 2: 过期但可用(15-60s) → 立即返回 + 后台刷新
+        if age < _CACHE_MAX_AGE_MARKET:
+            logger.info(f"📦 /market stale返回 (age={age:.0f}s), 后台刷新...")
+            # 触发后台刷新(不等待)
+            asyncio.create_task(_do_market_refresh())
+            return {"data": cached_data["data"], "cached": True, "stale": True, "age_seconds": round(age, 1)}
     
-    for r in responses:
-        if isinstance(r, Exception):
-            errors.append({"error": str(r)})
-        elif "error" in r:
-            errors.append(r)
-        else:
-            results.append(r)
-    
-    payload = {
-        "data": results,
-        "errors": errors,
-        "count": len(results),
-        "timestamp": datetime.now().isoformat()
-    }
+    # Case 3: 无缓存或超期(>60s) → 等待API
+    payload = await fetch_all()
     _cache_set("/market", payload, _CACHE_TTL_MARKET)
-    return {"data": results, "cached": False, "count": len(results)}
+    return {"data": payload["data"], "cached": False, "count": payload["count"]}
+
+
+async def _do_market_refresh():
+    """后台刷新市场数据(不阻塞响应)"""
+    try:
+        results, errors = [], []
+        
+        async def fetch_one(symbol: str):
+            try:
+                tick = await engine.get_market_data(symbol)
+                return {
+                    "symbol": tick.symbol,
+                    "price": tick.price,
+                    "change_24h": tick.change_24h,
+                    "volume_24h": tick.volume_24h,
+                    "rsi": tick.rsi,
+                    "bid": tick.bid,
+                    "ask": tick.ask
+                }
+            except Exception as e:
+                return {"symbol": symbol, "error": str(e)}
+        
+        tasks = [fetch_one(s) for s in settings.TRADING_PAIRS[:10]]
+        responses = await asyncio.gather(*tasks, return_exceptions=True)
+        
+        for r in responses:
+            if isinstance(r, Exception):
+                errors.append({"error": str(r)})
+            elif "error" in r:
+                errors.append(r)
+            else:
+                results.append(r)
+        
+        payload = {
+            "data": results,
+            "errors": errors,
+            "count": len(results),
+            "timestamp": datetime.now().isoformat()
+        }
+        _cache_set("/market", payload, _CACHE_TTL_MARKET)
+        logger.info(f"✅ /market 后台刷新完成 ({len(results)}个交易对)")
+    except Exception as e:
+        logger.error(f"❌ /market 后台刷新失败: {e}")
 
 
 @router.get("/market/{symbol}")
