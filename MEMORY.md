@@ -458,3 +458,44 @@
 | ③ 调度准备 | Cron迭代管理 | 每30分钟 | 🟢 |
 | ④ 执行工作 | 平台迭代+自动交易 | GO2SE平台迭代Cron | 🟢 |
 | ⑤ 社交学习 | 市场情报收集 | 每60分钟 | 🟢 |
+
+---
+
+## 2026.03.29 系统崩溃事故 + 防崩溃四阶段机制
+
+### 崩溃事故
+- **时间**: 06:17 UTC
+- **原因**: `ImportError: MarketData` 类不存在但被 `routes.py` 导入 → 服务启动失败
+- **日志**: `go2se8003_v6.log`
+- **影响**: Backend完全崩溃，用户无法访问API
+- **根因**: Human Error — 迭代中先改import后补class定义
+
+### 防崩溃四阶段机制 (已写入CEO四个核心文件)
+
+| 阶段 | CEO动作 | 工具 |
+|------|---------|------|
+| 🛡️ 处理 | 5分钟内响应+自动重启 | `scripts/health_check.sh` (每5分钟Cron) |
+| 🔍 预防 | 部署前验证+常态化监控 | `scripts/validate_startup.sh`, `start_server.sh` |
+| 🔧 修复 | 根因分析不过夜，修复不过迭代 | `CRASH_ANALYSIS.md` |
+| 🔄 迭代 | 事故后更新规范纳入检查清单 | 事故→规范→脚本强化 |
+
+### 防崩溃关键脚本
+| 脚本 | 位置 | 功能 |
+|------|------|------|
+| validate_startup.sh | GO2SE_PLATFORM/scripts/ | 部署前验证（语法/导入/DB/端口/磁盘） |
+| start_server.sh | GO2SE_PLATFORM/scripts/ | 统一服务管理（防端口冲突） |
+| health_check.sh | GO2SE_PLATFORM/scripts/ | 健康检查+自动重启 |
+
+### 写入的四个CEO文件
+| 文件 | 更新内容 |
+|------|----------|
+| SOUL.md | 五条工作线增加防崩溃职责+防崩溃四阶段机制 |
+| IDENTITY.md | 领导风格+防崩溃职责, 五条工作线+四阶段 |
+| AGENTS.md | Session Startup防崩溃清单+Heartbeat检查 |
+| MEMORY.md | 事故记录+四阶段机制摘要 |
+
+### 教训
+- **部署前必须跑validate_startup.sh** — 禁止未验证代码直接部署
+- **先定义再导入** — Python规范: 先有class才能import
+- **多实例端口管理** — 统一使用start_server.sh
+- **Session Startup必须检查服务状态** — 预防胜于治疗

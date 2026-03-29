@@ -693,7 +693,7 @@ def health():
     """平台健康检查"""
     return jsonify({
         'status': 'ok',
-        'service': 'GO2SE Húshí v2.5',
+        'service': 'GO2SE Húshí v6.3.0',
         'uptime': 'operational',
         'backend_api': BACKEND_API,
         'timestamp': datetime.now().isoformat()

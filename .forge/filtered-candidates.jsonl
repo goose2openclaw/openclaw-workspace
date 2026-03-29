@@ -229,3 +229,335 @@
 {"ts":"2026-03-29T03:10:48.744Z","tool":"web_search","reason":"native_no_subpattern","detail":"21 entries but no qualifying domain clusters","occurrences":21}
 {"ts":"2026-03-29T03:10:48.789Z","tool":"exec→process→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,100,83]}
 {"ts":"2026-03-29T03:10:48.829Z","tool":"read→edit→exec","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[83,97,100]}
+{"ts":"2026-03-29T05:16:03.282Z","tool":"write","reason":"native_no_subpattern","detail":"16 entries but no qualifying domain clusters","occurrences":16}
+{"ts":"2026-03-29T05:16:03.313Z","tool":"cron","reason":"temporal_burst","detail":"1 session(s), 1 day(s), 1 hour(s)","occurrences":5,"sessions":1,"distinctDays":1,"distinctHours":1}
+{"ts":"2026-03-29T05:16:03.535Z","reason":"low_success_rate","detail":"0% < 40% minimum","occurrences":42,"successRate":0}
+{"ts":"2026-03-29T05:16:03.544Z","tool":"edit","reason":"native_no_subpattern","detail":"36 entries but no qualifying domain clusters","occurrences":36}
+{"ts":"2026-03-29T05:16:03.550Z","tool":"web_search","reason":"native_no_subpattern","detail":"21 entries but no qualifying domain clusters","occurrences":21}
+{"ts":"2026-03-29T05:16:03.589Z","tool":"exec→process→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,100,84]}
+{"ts":"2026-03-29T05:16:03.622Z","tool":"read→edit→exec","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[84,97,100]}
+{"ts":"2026-03-29T05:16:47.425Z","tool":"write","reason":"native_no_subpattern","detail":"16 entries but no qualifying domain clusters","occurrences":16}
+{"ts":"2026-03-29T05:16:47.468Z","tool":"cron","reason":"temporal_burst","detail":"1 session(s), 1 day(s), 1 hour(s)","occurrences":5,"sessions":1,"distinctDays":1,"distinctHours":1}
+{"ts":"2026-03-29T05:16:47.778Z","reason":"low_success_rate","detail":"0% < 40% minimum","occurrences":43,"successRate":0}
+{"ts":"2026-03-29T05:16:47.785Z","tool":"edit","reason":"native_no_subpattern","detail":"36 entries but no qualifying domain clusters","occurrences":36}
+{"ts":"2026-03-29T05:16:47.790Z","tool":"web_search","reason":"native_no_subpattern","detail":"21 entries but no qualifying domain clusters","occurrences":21}
+{"ts":"2026-03-29T05:16:47.822Z","tool":"exec→process→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,100,85]}
+{"ts":"2026-03-29T05:16:47.851Z","tool":"read→edit→exec","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[85,97,100]}
+{"ts":"2026-03-29T05:17:07.560Z","tool":"write","reason":"native_no_subpattern","detail":"16 entries but no qualifying domain clusters","occurrences":16}
+{"ts":"2026-03-29T05:17:07.614Z","tool":"cron","reason":"temporal_burst","detail":"1 session(s), 1 day(s), 1 hour(s)","occurrences":5,"sessions":1,"distinctDays":1,"distinctHours":1}
+{"ts":"2026-03-29T05:17:07.801Z","reason":"low_success_rate","detail":"0% < 40% minimum","occurrences":43,"successRate":0}
+{"ts":"2026-03-29T05:17:07.807Z","tool":"edit","reason":"native_no_subpattern","detail":"36 entries but no qualifying domain clusters","occurrences":36}
+{"ts":"2026-03-29T05:17:07.812Z","tool":"web_search","reason":"native_no_subpattern","detail":"21 entries but no qualifying domain clusters","occurrences":21}
+{"ts":"2026-03-29T05:17:07.847Z","tool":"exec→process→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,100,85]}
+{"ts":"2026-03-29T05:17:07.877Z","tool":"read→edit→exec","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[85,97,100]}
+{"ts":"2026-03-29T05:17:40.783Z","tool":"write","reason":"native_no_subpattern","detail":"16 entries but no qualifying domain clusters","occurrences":16}
+{"ts":"2026-03-29T05:17:40.813Z","tool":"cron","reason":"temporal_burst","detail":"1 session(s), 1 day(s), 1 hour(s)","occurrences":5,"sessions":1,"distinctDays":1,"distinctHours":1}
+{"ts":"2026-03-29T05:17:40.956Z","reason":"low_success_rate","detail":"0% < 40% minimum","occurrences":43,"successRate":0}
+{"ts":"2026-03-29T05:17:40.962Z","tool":"edit","reason":"native_no_subpattern","detail":"36 entries but no qualifying domain clusters","occurrences":36}
+{"ts":"2026-03-29T05:17:40.975Z","tool":"web_search","reason":"native_no_subpattern","detail":"21 entries but no qualifying domain clusters","occurrences":21}
+{"ts":"2026-03-29T05:17:41.007Z","tool":"exec→process→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,100,85]}
+{"ts":"2026-03-29T05:17:41.034Z","tool":"read→edit→exec","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[85,97,100]}
+{"ts":"2026-03-29T05:23:01.530Z","tool":"write","reason":"native_no_subpattern","detail":"17 entries but no qualifying domain clusters","occurrences":17}
+{"ts":"2026-03-29T05:23:01.786Z","tool":"cron","reason":"temporal_burst","detail":"1 session(s), 1 day(s), 1 hour(s)","occurrences":5,"sessions":1,"distinctDays":1,"distinctHours":1}
+{"ts":"2026-03-29T05:23:01.970Z","reason":"low_success_rate","detail":"0% < 40% minimum","occurrences":48,"successRate":0}
+{"ts":"2026-03-29T05:23:01.980Z","tool":"edit","reason":"native_no_subpattern","detail":"51 entries but no qualifying domain clusters","occurrences":51}
+{"ts":"2026-03-29T05:23:01.987Z","tool":"web_search","reason":"native_no_subpattern","detail":"21 entries but no qualifying domain clusters","occurrences":21}
+{"ts":"2026-03-29T05:23:02.028Z","tool":"exec→process→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,100,85]}
+{"ts":"2026-03-29T05:23:02.075Z","tool":"read→edit→exec","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[85,98,100]}
+{"ts":"2026-03-29T05:23:02.107Z","tool":"exec→read→edit","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,85,98]}
+{"ts":"2026-03-29T05:23:43.890Z","tool":"write","reason":"native_no_subpattern","detail":"17 entries but no qualifying domain clusters","occurrences":17}
+{"ts":"2026-03-29T05:23:43.943Z","tool":"cron","reason":"temporal_burst","detail":"1 session(s), 1 day(s), 1 hour(s)","occurrences":5,"sessions":1,"distinctDays":1,"distinctHours":1}
+{"ts":"2026-03-29T05:23:44.180Z","reason":"low_success_rate","detail":"0% < 40% minimum","occurrences":48,"successRate":0}
+{"ts":"2026-03-29T05:23:44.186Z","tool":"edit","reason":"native_no_subpattern","detail":"51 entries but no qualifying domain clusters","occurrences":51}
+{"ts":"2026-03-29T05:23:44.190Z","tool":"web_search","reason":"native_no_subpattern","detail":"21 entries but no qualifying domain clusters","occurrences":21}
+{"ts":"2026-03-29T05:23:44.244Z","tool":"exec→process→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,100,85]}
+{"ts":"2026-03-29T05:23:44.293Z","tool":"read→edit→exec","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[85,98,100]}
+{"ts":"2026-03-29T05:23:44.336Z","tool":"exec→read→edit","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,85,98]}
+{"ts":"2026-03-29T05:24:56.406Z","tool":"write","reason":"native_no_subpattern","detail":"17 entries but no qualifying domain clusters","occurrences":17}
+{"ts":"2026-03-29T05:24:56.534Z","tool":"cron","reason":"temporal_burst","detail":"1 session(s), 1 day(s), 1 hour(s)","occurrences":5,"sessions":1,"distinctDays":1,"distinctHours":1}
+{"ts":"2026-03-29T05:24:57.106Z","reason":"low_success_rate","detail":"0% < 40% minimum","occurrences":48,"successRate":0}
+{"ts":"2026-03-29T05:24:57.128Z","tool":"edit","reason":"native_no_subpattern","detail":"51 entries but no qualifying domain clusters","occurrences":51}
+{"ts":"2026-03-29T05:24:57.142Z","tool":"web_search","reason":"native_no_subpattern","detail":"21 entries but no qualifying domain clusters","occurrences":21}
+{"ts":"2026-03-29T05:24:57.293Z","tool":"exec→process→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,100,85]}
+{"ts":"2026-03-29T05:24:57.422Z","tool":"read→edit→exec","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[85,98,100]}
+{"ts":"2026-03-29T05:24:57.559Z","tool":"exec→read→edit","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,85,98]}
+{"ts":"2026-03-29T05:25:29.885Z","tool":"write","reason":"native_no_subpattern","detail":"17 entries but no qualifying domain clusters","occurrences":17}
+{"ts":"2026-03-29T05:25:29.991Z","tool":"cron","reason":"temporal_burst","detail":"1 session(s), 1 day(s), 1 hour(s)","occurrences":5,"sessions":1,"distinctDays":1,"distinctHours":1}
+{"ts":"2026-03-29T05:25:30.587Z","reason":"low_success_rate","detail":"0% < 40% minimum","occurrences":48,"successRate":0}
+{"ts":"2026-03-29T05:25:30.608Z","tool":"edit","reason":"native_no_subpattern","detail":"51 entries but no qualifying domain clusters","occurrences":51}
+{"ts":"2026-03-29T05:25:30.624Z","tool":"web_search","reason":"native_no_subpattern","detail":"21 entries but no qualifying domain clusters","occurrences":21}
+{"ts":"2026-03-29T05:25:30.772Z","tool":"exec→process→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,100,85]}
+{"ts":"2026-03-29T05:25:30.897Z","tool":"read→edit→exec","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[85,98,100]}
+{"ts":"2026-03-29T05:25:31.007Z","tool":"exec→read→edit","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,85,98]}
+{"ts":"2026-03-29T05:25:52.727Z","tool":"write","reason":"native_no_subpattern","detail":"17 entries but no qualifying domain clusters","occurrences":17}
+{"ts":"2026-03-29T05:25:52.836Z","tool":"cron","reason":"temporal_burst","detail":"1 session(s), 1 day(s), 1 hour(s)","occurrences":5,"sessions":1,"distinctDays":1,"distinctHours":1}
+{"ts":"2026-03-29T05:25:53.422Z","reason":"low_success_rate","detail":"0% < 40% minimum","occurrences":48,"successRate":0}
+{"ts":"2026-03-29T05:25:53.450Z","tool":"edit","reason":"native_no_subpattern","detail":"51 entries but no qualifying domain clusters","occurrences":51}
+{"ts":"2026-03-29T05:25:53.471Z","tool":"web_search","reason":"native_no_subpattern","detail":"21 entries but no qualifying domain clusters","occurrences":21}
+{"ts":"2026-03-29T05:25:53.607Z","tool":"exec→process→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,100,85]}
+{"ts":"2026-03-29T05:25:53.737Z","tool":"read→edit→exec","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[85,98,100]}
+{"ts":"2026-03-29T05:25:53.855Z","tool":"exec→read→edit","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,85,98]}
+{"ts":"2026-03-29T05:27:33.103Z","tool":"write","reason":"native_no_subpattern","detail":"17 entries but no qualifying domain clusters","occurrences":17}
+{"ts":"2026-03-29T05:27:33.234Z","tool":"cron","reason":"temporal_burst","detail":"1 session(s), 1 day(s), 1 hour(s)","occurrences":5,"sessions":1,"distinctDays":1,"distinctHours":1}
+{"ts":"2026-03-29T05:27:33.816Z","reason":"low_success_rate","detail":"0% < 40% minimum","occurrences":48,"successRate":0}
+{"ts":"2026-03-29T05:27:33.831Z","tool":"edit","reason":"native_no_subpattern","detail":"51 entries but no qualifying domain clusters","occurrences":51}
+{"ts":"2026-03-29T05:27:33.843Z","tool":"web_search","reason":"native_no_subpattern","detail":"21 entries but no qualifying domain clusters","occurrences":21}
+{"ts":"2026-03-29T05:27:33.968Z","tool":"exec→process→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,100,85]}
+{"ts":"2026-03-29T05:27:34.081Z","tool":"read→edit→exec","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[85,98,100]}
+{"ts":"2026-03-29T05:27:34.203Z","tool":"exec→read→edit","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,85,98]}
+{"ts":"2026-03-29T05:29:15.256Z","tool":"write","reason":"native_no_subpattern","detail":"18 entries but no qualifying domain clusters","occurrences":18}
+{"ts":"2026-03-29T05:29:15.288Z","tool":"cron","reason":"temporal_burst","detail":"1 session(s), 1 day(s), 1 hour(s)","occurrences":5,"sessions":1,"distinctDays":1,"distinctHours":1}
+{"ts":"2026-03-29T05:29:15.457Z","reason":"low_success_rate","detail":"0% < 40% minimum","occurrences":48,"successRate":0}
+{"ts":"2026-03-29T05:29:15.463Z","tool":"edit","reason":"native_no_subpattern","detail":"51 entries but no qualifying domain clusters","occurrences":51}
+{"ts":"2026-03-29T05:29:15.467Z","tool":"web_search","reason":"native_no_subpattern","detail":"21 entries but no qualifying domain clusters","occurrences":21}
+{"ts":"2026-03-29T05:29:15.503Z","tool":"exec→process→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,100,85]}
+{"ts":"2026-03-29T05:29:15.537Z","tool":"read→edit→exec","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[85,98,100]}
+{"ts":"2026-03-29T05:29:15.596Z","tool":"exec→read→edit","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,85,98]}
+{"ts":"2026-03-29T05:30:02.005Z","tool":"write","reason":"native_no_subpattern","detail":"18 entries but no qualifying domain clusters","occurrences":18}
+{"ts":"2026-03-29T05:30:02.145Z","tool":"cron","reason":"temporal_burst","detail":"1 session(s), 1 day(s), 1 hour(s)","occurrences":5,"sessions":1,"distinctDays":1,"distinctHours":1}
+{"ts":"2026-03-29T05:30:03.238Z","reason":"low_success_rate","detail":"0% < 40% minimum","occurrences":48,"successRate":0}
+{"ts":"2026-03-29T05:30:03.276Z","tool":"edit","reason":"native_no_subpattern","detail":"51 entries but no qualifying domain clusters","occurrences":51}
+{"ts":"2026-03-29T05:30:03.298Z","tool":"web_search","reason":"native_no_subpattern","detail":"21 entries but no qualifying domain clusters","occurrences":21}
+{"ts":"2026-03-29T05:30:03.380Z","tool":"exec→process→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,100,86]}
+{"ts":"2026-03-29T05:30:03.454Z","tool":"read→edit→exec","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[86,98,100]}
+{"ts":"2026-03-29T05:30:03.503Z","tool":"exec→read→edit","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,86,98]}
+{"ts":"2026-03-29T05:32:12.213Z","tool":"write","reason":"native_no_subpattern","detail":"18 entries but no qualifying domain clusters","occurrences":18}
+{"ts":"2026-03-29T05:32:12.342Z","tool":"cron","reason":"temporal_burst","detail":"1 session(s), 1 day(s), 1 hour(s)","occurrences":5,"sessions":1,"distinctDays":1,"distinctHours":1}
+{"ts":"2026-03-29T05:32:12.925Z","reason":"low_success_rate","detail":"0% < 40% minimum","occurrences":48,"successRate":0}
+{"ts":"2026-03-29T05:32:12.949Z","tool":"edit","reason":"native_no_subpattern","detail":"51 entries but no qualifying domain clusters","occurrences":51}
+{"ts":"2026-03-29T05:32:12.965Z","tool":"web_search","reason":"native_no_subpattern","detail":"21 entries but no qualifying domain clusters","occurrences":21}
+{"ts":"2026-03-29T05:32:13.103Z","tool":"exec→process→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,100,86]}
+{"ts":"2026-03-29T05:32:13.240Z","tool":"read→edit→exec","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[86,98,100]}
+{"ts":"2026-03-29T05:32:13.377Z","tool":"exec→read→edit","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,86,98]}
+{"ts":"2026-03-29T05:32:34.880Z","tool":"write","reason":"native_no_subpattern","detail":"18 entries but no qualifying domain clusters","occurrences":18}
+{"ts":"2026-03-29T05:32:34.978Z","tool":"cron","reason":"temporal_burst","detail":"1 session(s), 1 day(s), 1 hour(s)","occurrences":5,"sessions":1,"distinctDays":1,"distinctHours":1}
+{"ts":"2026-03-29T05:32:35.596Z","reason":"low_success_rate","detail":"0% < 40% minimum","occurrences":48,"successRate":0}
+{"ts":"2026-03-29T05:32:35.615Z","tool":"edit","reason":"native_no_subpattern","detail":"51 entries but no qualifying domain clusters","occurrences":51}
+{"ts":"2026-03-29T05:32:35.631Z","tool":"web_search","reason":"native_no_subpattern","detail":"21 entries but no qualifying domain clusters","occurrences":21}
+{"ts":"2026-03-29T05:32:35.774Z","tool":"exec→process→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,100,86]}
+{"ts":"2026-03-29T05:32:35.869Z","tool":"read→edit→exec","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[86,98,100]}
+{"ts":"2026-03-29T05:32:35.969Z","tool":"exec→read→edit","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,86,98]}
+{"ts":"2026-03-29T05:34:15.044Z","tool":"write","reason":"native_no_subpattern","detail":"18 entries but no qualifying domain clusters","occurrences":18}
+{"ts":"2026-03-29T05:34:15.169Z","tool":"cron","reason":"temporal_burst","detail":"1 session(s), 1 day(s), 1 hour(s)","occurrences":5,"sessions":1,"distinctDays":1,"distinctHours":1}
+{"ts":"2026-03-29T05:34:15.734Z","reason":"low_success_rate","detail":"0% < 40% minimum","occurrences":48,"successRate":0}
+{"ts":"2026-03-29T05:34:15.753Z","tool":"edit","reason":"native_no_subpattern","detail":"51 entries but no qualifying domain clusters","occurrences":51}
+{"ts":"2026-03-29T05:34:15.769Z","tool":"web_search","reason":"native_no_subpattern","detail":"21 entries but no qualifying domain clusters","occurrences":21}
+{"ts":"2026-03-29T05:34:15.878Z","tool":"exec→process→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,100,86]}
+{"ts":"2026-03-29T05:34:16.001Z","tool":"read→edit→exec","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[86,98,100]}
+{"ts":"2026-03-29T05:34:16.141Z","tool":"exec→read→edit","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,86,98]}
+{"ts":"2026-03-29T05:47:33.769Z","tool":"write","reason":"native_no_subpattern","detail":"18 entries but no qualifying domain clusters","occurrences":18}
+{"ts":"2026-03-29T05:47:33.888Z","tool":"cron","reason":"temporal_burst","detail":"1 session(s), 1 day(s), 1 hour(s)","occurrences":5,"sessions":1,"distinctDays":1,"distinctHours":1}
+{"ts":"2026-03-29T05:47:34.500Z","reason":"low_success_rate","detail":"0% < 40% minimum","occurrences":48,"successRate":0}
+{"ts":"2026-03-29T05:47:34.524Z","tool":"edit","reason":"native_no_subpattern","detail":"51 entries but no qualifying domain clusters","occurrences":51}
+{"ts":"2026-03-29T05:47:34.545Z","tool":"web_search","reason":"native_no_subpattern","detail":"21 entries but no qualifying domain clusters","occurrences":21}
+{"ts":"2026-03-29T05:47:34.688Z","tool":"exec→process→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,100,86]}
+{"ts":"2026-03-29T05:47:34.809Z","tool":"read→edit→exec","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[86,98,100]}
+{"ts":"2026-03-29T05:47:34.885Z","tool":"exec→read→edit","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,86,98]}
+{"ts":"2026-03-29T05:59:24.255Z","tool":"write","reason":"native_no_subpattern","detail":"19 entries but no qualifying domain clusters","occurrences":19}
+{"ts":"2026-03-29T05:59:24.312Z","tool":"cron","reason":"temporal_burst","detail":"1 session(s), 1 day(s), 1 hour(s)","occurrences":5,"sessions":1,"distinctDays":1,"distinctHours":1}
+{"ts":"2026-03-29T05:59:24.551Z","reason":"low_success_rate","detail":"0% < 40% minimum","occurrences":56,"successRate":0}
+{"ts":"2026-03-29T05:59:24.559Z","tool":"edit","reason":"native_no_subpattern","detail":"62 entries but no qualifying domain clusters","occurrences":62}
+{"ts":"2026-03-29T05:59:24.565Z","tool":"web_search","reason":"native_no_subpattern","detail":"21 entries but no qualifying domain clusters","occurrences":21}
+{"ts":"2026-03-29T05:59:24.609Z","tool":"edit→exec→process","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[98,100,100]}
+{"ts":"2026-03-29T05:59:24.647Z","tool":"exec→process→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,100,87]}
+{"ts":"2026-03-29T05:59:24.685Z","tool":"read→edit→exec","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[87,98,100]}
+{"ts":"2026-03-29T05:59:24.725Z","tool":"exec→read→edit","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,87,98]}
+{"ts":"2026-03-29T05:59:24.764Z","tool":"edit→exec→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[98,100,87]}
+{"ts":"2026-03-29T06:23:08.510Z","tool":"write","reason":"native_no_subpattern","detail":"20 entries but no qualifying domain clusters","occurrences":20}
+{"ts":"2026-03-29T06:23:08.631Z","tool":"cron","reason":"temporal_burst","detail":"1 session(s), 1 day(s), 1 hour(s)","occurrences":5,"sessions":1,"distinctDays":1,"distinctHours":1}
+{"ts":"2026-03-29T06:23:09.126Z","reason":"low_success_rate","detail":"0% < 40% minimum","occurrences":63,"successRate":0}
+{"ts":"2026-03-29T06:23:09.192Z","tool":"edit","reason":"native_no_subpattern","detail":"70 entries but no qualifying domain clusters","occurrences":70}
+{"ts":"2026-03-29T06:23:09.204Z","tool":"web_search","reason":"native_no_subpattern","detail":"21 entries but no qualifying domain clusters","occurrences":21}
+{"ts":"2026-03-29T06:23:09.272Z","tool":"edit→exec→process","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[99,100,100]}
+{"ts":"2026-03-29T06:23:09.346Z","tool":"exec→process→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,100,88]}
+{"ts":"2026-03-29T06:23:09.459Z","tool":"read→edit→exec","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[88,99,100]}
+{"ts":"2026-03-29T06:23:09.490Z","tool":"exec→read→edit","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,88,99]}
+{"ts":"2026-03-29T06:23:09.509Z","tool":"edit→exec→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[99,100,88]}
+{"ts":"2026-03-29T06:25:07.245Z","tool":"write","reason":"native_no_subpattern","detail":"20 entries but no qualifying domain clusters","occurrences":20}
+{"ts":"2026-03-29T06:25:07.364Z","tool":"cron","reason":"temporal_burst","detail":"1 session(s), 1 day(s), 1 hour(s)","occurrences":5,"sessions":1,"distinctDays":1,"distinctHours":1}
+{"ts":"2026-03-29T06:25:07.902Z","reason":"low_success_rate","detail":"0% < 40% minimum","occurrences":63,"successRate":0}
+{"ts":"2026-03-29T06:25:07.922Z","tool":"edit","reason":"native_no_subpattern","detail":"70 entries but no qualifying domain clusters","occurrences":70}
+{"ts":"2026-03-29T06:25:07.939Z","tool":"web_search","reason":"native_no_subpattern","detail":"21 entries but no qualifying domain clusters","occurrences":21}
+{"ts":"2026-03-29T06:25:08.065Z","tool":"edit→exec→process","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[99,100,100]}
+{"ts":"2026-03-29T06:25:08.204Z","tool":"exec→process→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,100,88]}
+{"ts":"2026-03-29T06:25:08.342Z","tool":"read→edit→exec","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[88,99,100]}
+{"ts":"2026-03-29T06:25:08.480Z","tool":"exec→read→edit","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,88,99]}
+{"ts":"2026-03-29T06:25:08.604Z","tool":"edit→exec→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[99,100,88]}
+{"ts":"2026-03-29T06:27:11.764Z","tool":"write","reason":"native_no_subpattern","detail":"20 entries but no qualifying domain clusters","occurrences":20}
+{"ts":"2026-03-29T06:27:11.874Z","tool":"cron","reason":"temporal_burst","detail":"1 session(s), 1 day(s), 1 hour(s)","occurrences":5,"sessions":1,"distinctDays":1,"distinctHours":1}
+{"ts":"2026-03-29T06:27:12.472Z","reason":"low_success_rate","detail":"0% < 40% minimum","occurrences":63,"successRate":0}
+{"ts":"2026-03-29T06:27:12.500Z","tool":"edit","reason":"native_no_subpattern","detail":"70 entries but no qualifying domain clusters","occurrences":70}
+{"ts":"2026-03-29T06:27:12.516Z","tool":"web_search","reason":"native_no_subpattern","detail":"21 entries but no qualifying domain clusters","occurrences":21}
+{"ts":"2026-03-29T06:27:12.655Z","tool":"edit→exec→process","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[99,100,100]}
+{"ts":"2026-03-29T06:27:12.786Z","tool":"exec→process→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,100,88]}
+{"ts":"2026-03-29T06:27:12.882Z","tool":"read→edit→exec","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[88,99,100]}
+{"ts":"2026-03-29T06:27:12.990Z","tool":"exec→read→edit","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,88,99]}
+{"ts":"2026-03-29T06:27:13.105Z","tool":"edit→exec→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[99,100,88]}
+{"ts":"2026-03-29T06:31:30.321Z","tool":"write","reason":"native_no_subpattern","detail":"20 entries but no qualifying domain clusters","occurrences":20}
+{"ts":"2026-03-29T06:31:30.453Z","tool":"cron","reason":"temporal_burst","detail":"1 session(s), 1 day(s), 1 hour(s)","occurrences":5,"sessions":1,"distinctDays":1,"distinctHours":1}
+{"ts":"2026-03-29T06:31:30.996Z","reason":"low_success_rate","detail":"0% < 40% minimum","occurrences":63,"successRate":0}
+{"ts":"2026-03-29T06:31:31.021Z","tool":"edit","reason":"native_no_subpattern","detail":"70 entries but no qualifying domain clusters","occurrences":70}
+{"ts":"2026-03-29T06:31:31.040Z","tool":"web_search","reason":"native_no_subpattern","detail":"21 entries but no qualifying domain clusters","occurrences":21}
+{"ts":"2026-03-29T06:31:31.173Z","tool":"edit→exec→process","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[99,100,100]}
+{"ts":"2026-03-29T06:31:31.295Z","tool":"exec→process→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,100,88]}
+{"ts":"2026-03-29T06:31:31.431Z","tool":"read→edit→exec","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[88,99,100]}
+{"ts":"2026-03-29T06:31:31.567Z","tool":"exec→read→edit","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,88,99]}
+{"ts":"2026-03-29T06:31:31.698Z","tool":"edit→exec→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[99,100,88]}
+{"ts":"2026-03-29T06:33:42.819Z","tool":"write","reason":"native_no_subpattern","detail":"21 entries but no qualifying domain clusters","occurrences":21}
+{"ts":"2026-03-29T06:33:42.858Z","tool":"cron","reason":"temporal_burst","detail":"1 session(s), 1 day(s), 1 hour(s)","occurrences":5,"sessions":1,"distinctDays":1,"distinctHours":1}
+{"ts":"2026-03-29T06:33:43.416Z","reason":"low_success_rate","detail":"0% < 40% minimum","occurrences":64,"successRate":0}
+{"ts":"2026-03-29T06:33:43.440Z","tool":"edit","reason":"native_no_subpattern","detail":"70 entries but no qualifying domain clusters","occurrences":70}
+{"ts":"2026-03-29T06:33:43.455Z","tool":"web_search","reason":"native_no_subpattern","detail":"23 entries but no qualifying domain clusters","occurrences":23}
+{"ts":"2026-03-29T06:33:43.593Z","tool":"edit→exec→process","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[99,100,100]}
+{"ts":"2026-03-29T06:33:43.723Z","tool":"exec→process→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,100,88]}
+{"ts":"2026-03-29T06:33:43.852Z","tool":"read→edit→exec","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[88,99,100]}
+{"ts":"2026-03-29T06:33:43.962Z","tool":"exec→read→edit","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,88,99]}
+{"ts":"2026-03-29T06:33:44.079Z","tool":"edit→exec→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[99,100,88]}
+{"ts":"2026-03-29T06:57:27.693Z","tool":"write","reason":"native_no_subpattern","detail":"24 entries but no qualifying domain clusters","occurrences":24}
+{"ts":"2026-03-29T06:57:27.717Z","tool":"cron","reason":"temporal_burst","detail":"1 session(s), 1 day(s), 1 hour(s)","occurrences":5,"sessions":1,"distinctDays":1,"distinctHours":1}
+{"ts":"2026-03-29T06:57:27.861Z","reason":"low_success_rate","detail":"0% < 40% minimum","occurrences":67,"successRate":0}
+{"ts":"2026-03-29T06:57:27.867Z","tool":"edit","reason":"native_no_subpattern","detail":"84 entries but no qualifying domain clusters","occurrences":84}
+{"ts":"2026-03-29T06:57:27.870Z","tool":"web_search","reason":"native_no_subpattern","detail":"23 entries but no qualifying domain clusters","occurrences":23}
+{"ts":"2026-03-29T06:57:27.893Z","tool":"edit→exec→process","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[99,100,100]}
+{"ts":"2026-03-29T06:57:27.915Z","tool":"exec→process→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,100,89]}
+{"ts":"2026-03-29T06:57:27.936Z","tool":"read→edit→exec","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[89,99,100]}
+{"ts":"2026-03-29T06:57:27.958Z","tool":"exec→read→edit","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,89,99]}
+{"ts":"2026-03-29T06:57:27.980Z","tool":"edit→exec→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[99,100,89]}
+{"ts":"2026-03-29T06:59:18.250Z","tool":"write","reason":"native_no_subpattern","detail":"24 entries but no qualifying domain clusters","occurrences":24}
+{"ts":"2026-03-29T06:59:18.383Z","tool":"cron","reason":"temporal_burst","detail":"1 session(s), 1 day(s), 1 hour(s)","occurrences":5,"sessions":1,"distinctDays":1,"distinctHours":1}
+{"ts":"2026-03-29T06:59:18.976Z","reason":"low_success_rate","detail":"0% < 40% minimum","occurrences":67,"successRate":0}
+{"ts":"2026-03-29T06:59:19.007Z","tool":"edit","reason":"native_no_subpattern","detail":"84 entries but no qualifying domain clusters","occurrences":84}
+{"ts":"2026-03-29T06:59:19.028Z","tool":"web_search","reason":"native_no_subpattern","detail":"23 entries but no qualifying domain clusters","occurrences":23}
+{"ts":"2026-03-29T06:59:19.179Z","tool":"edit→exec→process","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[99,100,100]}
+{"ts":"2026-03-29T06:59:19.322Z","tool":"exec→process→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,100,89]}
+{"ts":"2026-03-29T06:59:19.453Z","tool":"read→edit→exec","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[89,99,100]}
+{"ts":"2026-03-29T06:59:19.580Z","tool":"exec→read→edit","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,89,99]}
+{"ts":"2026-03-29T06:59:19.716Z","tool":"edit→exec→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[99,100,89]}
+{"ts":"2026-03-29T07:16:03.603Z","tool":"write","reason":"native_no_subpattern","detail":"24 entries but no qualifying domain clusters","occurrences":24}
+{"ts":"2026-03-29T07:16:03.738Z","tool":"cron","reason":"temporal_burst","detail":"1 session(s), 1 day(s), 1 hour(s)","occurrences":5,"sessions":1,"distinctDays":1,"distinctHours":1}
+{"ts":"2026-03-29T07:16:04.323Z","reason":"low_success_rate","detail":"0% < 40% minimum","occurrences":69,"successRate":0}
+{"ts":"2026-03-29T07:16:04.350Z","tool":"edit","reason":"native_no_subpattern","detail":"84 entries but no qualifying domain clusters","occurrences":84}
+{"ts":"2026-03-29T07:16:04.363Z","tool":"memory_search","reason":"native_no_subpattern","detail":"5 entries but no qualifying domain clusters","occurrences":5}
+{"ts":"2026-03-29T07:16:04.377Z","tool":"web_search","reason":"native_no_subpattern","detail":"23 entries but no qualifying domain clusters","occurrences":23}
+{"ts":"2026-03-29T07:16:04.521Z","tool":"edit→exec→process","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[99,100,100]}
+{"ts":"2026-03-29T07:16:04.657Z","tool":"exec→process→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,100,90]}
+{"ts":"2026-03-29T07:16:04.791Z","tool":"read→edit→exec","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[90,99,100]}
+{"ts":"2026-03-29T07:16:04.884Z","tool":"exec→read→edit","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,90,99]}
+{"ts":"2026-03-29T07:16:04.965Z","tool":"edit→exec→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[99,100,90]}
+{"ts":"2026-03-29T07:17:53.315Z","tool":"write","reason":"native_no_subpattern","detail":"24 entries but no qualifying domain clusters","occurrences":24}
+{"ts":"2026-03-29T07:17:53.417Z","tool":"cron","reason":"temporal_burst","detail":"1 session(s), 1 day(s), 1 hour(s)","occurrences":5,"sessions":1,"distinctDays":1,"distinctHours":1}
+{"ts":"2026-03-29T07:17:53.781Z","reason":"low_success_rate","detail":"0% < 40% minimum","occurrences":69,"successRate":0}
+{"ts":"2026-03-29T07:17:53.797Z","tool":"edit","reason":"native_no_subpattern","detail":"84 entries but no qualifying domain clusters","occurrences":84}
+{"ts":"2026-03-29T07:17:53.817Z","tool":"memory_search","reason":"native_no_subpattern","detail":"5 entries but no qualifying domain clusters","occurrences":5}
+{"ts":"2026-03-29T07:17:53.827Z","tool":"web_search","reason":"native_no_subpattern","detail":"23 entries but no qualifying domain clusters","occurrences":23}
+{"ts":"2026-03-29T07:17:53.926Z","tool":"edit→exec→process","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[99,100,100]}
+{"ts":"2026-03-29T07:17:54.049Z","tool":"exec→process→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,100,90]}
+{"ts":"2026-03-29T07:17:54.184Z","tool":"read→edit→exec","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[90,99,100]}
+{"ts":"2026-03-29T07:17:54.320Z","tool":"exec→read→edit","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,90,99]}
+{"ts":"2026-03-29T07:17:54.439Z","tool":"edit→exec→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[99,100,90]}
+{"ts":"2026-03-29T07:36:31.240Z","tool":"write","reason":"native_no_subpattern","detail":"24 entries but no qualifying domain clusters","occurrences":24}
+{"ts":"2026-03-29T07:36:31.308Z","tool":"cron","reason":"temporal_burst","detail":"1 session(s), 1 day(s), 1 hour(s)","occurrences":5,"sessions":1,"distinctDays":1,"distinctHours":1}
+{"ts":"2026-03-29T07:36:31.483Z","reason":"low_success_rate","detail":"0% < 40% minimum","occurrences":69,"successRate":0}
+{"ts":"2026-03-29T07:36:31.489Z","tool":"edit","reason":"native_no_subpattern","detail":"87 entries but no qualifying domain clusters","occurrences":87}
+{"ts":"2026-03-29T07:36:31.495Z","tool":"memory_search","reason":"native_no_subpattern","detail":"5 entries but no qualifying domain clusters","occurrences":5}
+{"ts":"2026-03-29T07:36:31.501Z","tool":"web_search","reason":"native_no_subpattern","detail":"23 entries but no qualifying domain clusters","occurrences":23}
+{"ts":"2026-03-29T07:36:31.534Z","tool":"edit→exec→process","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[99,100,100]}
+{"ts":"2026-03-29T07:36:31.564Z","tool":"exec→process→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,100,90]}
+{"ts":"2026-03-29T07:36:31.596Z","tool":"read→edit→exec","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[90,99,100]}
+{"ts":"2026-03-29T07:36:31.626Z","tool":"exec→read→edit","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,90,99]}
+{"ts":"2026-03-29T07:36:31.657Z","tool":"edit→exec→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[99,100,90]}
+{"ts":"2026-03-29T07:37:59.431Z","tool":"write","reason":"native_no_subpattern","detail":"24 entries but no qualifying domain clusters","occurrences":24}
+{"ts":"2026-03-29T07:37:59.452Z","tool":"cron","reason":"temporal_burst","detail":"1 session(s), 1 day(s), 1 hour(s)","occurrences":5,"sessions":1,"distinctDays":1,"distinctHours":1}
+{"ts":"2026-03-29T07:37:59.777Z","reason":"low_success_rate","detail":"0% < 40% minimum","occurrences":69,"successRate":0}
+{"ts":"2026-03-29T07:37:59.798Z","tool":"edit","reason":"native_no_subpattern","detail":"87 entries but no qualifying domain clusters","occurrences":87}
+{"ts":"2026-03-29T07:37:59.824Z","tool":"memory_search","reason":"native_no_subpattern","detail":"5 entries but no qualifying domain clusters","occurrences":5}
+{"ts":"2026-03-29T07:37:59.843Z","tool":"web_search","reason":"native_no_subpattern","detail":"26 entries but no qualifying domain clusters","occurrences":26}
+{"ts":"2026-03-29T07:37:59.955Z","tool":"edit→exec→process","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[99,100,100]}
+{"ts":"2026-03-29T07:38:00.069Z","tool":"exec→process→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,100,90]}
+{"ts":"2026-03-29T07:38:00.165Z","tool":"read→edit→exec","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[90,99,100]}
+{"ts":"2026-03-29T07:38:00.329Z","tool":"exec→read→edit","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,90,99]}
+{"ts":"2026-03-29T07:38:00.403Z","tool":"edit→exec→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[99,100,90]}
+{"ts":"2026-03-29T07:48:39.464Z","tool":"write","reason":"native_no_subpattern","detail":"24 entries but no qualifying domain clusters","occurrences":24}
+{"ts":"2026-03-29T07:48:39.601Z","tool":"cron","reason":"temporal_burst","detail":"1 session(s), 1 day(s), 1 hour(s)","occurrences":5,"sessions":1,"distinctDays":1,"distinctHours":1}
+{"ts":"2026-03-29T07:48:40.177Z","reason":"low_success_rate","detail":"0% < 40% minimum","occurrences":69,"successRate":0}
+{"ts":"2026-03-29T07:48:40.203Z","tool":"edit","reason":"native_no_subpattern","detail":"87 entries but no qualifying domain clusters","occurrences":87}
+{"ts":"2026-03-29T07:48:40.225Z","tool":"memory_search","reason":"native_no_subpattern","detail":"5 entries but no qualifying domain clusters","occurrences":5}
+{"ts":"2026-03-29T07:48:40.245Z","tool":"web_search","reason":"native_no_subpattern","detail":"26 entries but no qualifying domain clusters","occurrences":26}
+{"ts":"2026-03-29T07:48:40.398Z","tool":"edit→exec→process","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[99,100,100]}
+{"ts":"2026-03-29T07:48:40.538Z","tool":"exec→process→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,100,90]}
+{"ts":"2026-03-29T07:48:40.666Z","tool":"read→edit→exec","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[90,99,100]}
+{"ts":"2026-03-29T07:48:40.799Z","tool":"exec→read→edit","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,90,99]}
+{"ts":"2026-03-29T07:48:40.901Z","tool":"edit→exec→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[99,100,90]}
+{"ts":"2026-03-29T08:18:12.579Z","tool":"write","reason":"native_no_subpattern","detail":"24 entries but no qualifying domain clusters","occurrences":24}
+{"ts":"2026-03-29T08:18:12.723Z","tool":"cron","reason":"temporal_burst","detail":"1 session(s), 1 day(s), 1 hour(s)","occurrences":5,"sessions":1,"distinctDays":1,"distinctHours":1}
+{"ts":"2026-03-29T08:18:13.193Z","reason":"low_success_rate","detail":"0% < 40% minimum","occurrences":69,"successRate":0}
+{"ts":"2026-03-29T08:18:13.223Z","tool":"edit","reason":"native_no_subpattern","detail":"87 entries but no qualifying domain clusters","occurrences":87}
+{"ts":"2026-03-29T08:18:13.242Z","tool":"memory_search","reason":"native_no_subpattern","detail":"5 entries but no qualifying domain clusters","occurrences":5}
+{"ts":"2026-03-29T08:18:13.260Z","tool":"web_search","reason":"native_no_subpattern","detail":"26 entries but no qualifying domain clusters","occurrences":26}
+{"ts":"2026-03-29T08:18:13.412Z","tool":"edit→exec→process","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[99,100,100]}
+{"ts":"2026-03-29T08:18:13.555Z","tool":"exec→process→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,100,90]}
+{"ts":"2026-03-29T08:18:13.692Z","tool":"read→edit→exec","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[90,99,100]}
+{"ts":"2026-03-29T08:18:13.811Z","tool":"exec→read→edit","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,90,99]}
+{"ts":"2026-03-29T08:18:13.901Z","tool":"edit→exec→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[99,100,90]}
+{"ts":"2026-03-29T10:22:56.048Z","tool":"write","reason":"native_no_subpattern","detail":"25 entries but no qualifying domain clusters","occurrences":25}
+{"ts":"2026-03-29T10:22:56.089Z","tool":"cron","reason":"temporal_burst","detail":"1 session(s), 1 day(s), 1 hour(s)","occurrences":5,"sessions":1,"distinctDays":1,"distinctHours":1}
+{"ts":"2026-03-29T10:22:56.230Z","reason":"low_success_rate","detail":"0% < 40% minimum","occurrences":73,"successRate":0}
+{"ts":"2026-03-29T10:22:56.235Z","tool":"edit","reason":"native_no_subpattern","detail":"87 entries but no qualifying domain clusters","occurrences":87}
+{"ts":"2026-03-29T10:22:56.239Z","tool":"memory_search","reason":"native_no_subpattern","detail":"5 entries but no qualifying domain clusters","occurrences":5}
+{"ts":"2026-03-29T10:22:56.243Z","tool":"web_search","reason":"native_no_subpattern","detail":"29 entries but no qualifying domain clusters","occurrences":29}
+{"ts":"2026-03-29T10:22:56.266Z","tool":"edit→exec→process","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[99,100,100]}
+{"ts":"2026-03-29T10:22:56.289Z","tool":"exec→process→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,100,87]}
+{"ts":"2026-03-29T10:22:56.311Z","tool":"read→edit→exec","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[87,99,100]}
+{"ts":"2026-03-29T10:22:56.333Z","tool":"exec→read→edit","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,87,99]}
+{"ts":"2026-03-29T10:22:56.354Z","tool":"edit→exec→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[99,100,87]}
+{"ts":"2026-03-29T10:24:16.681Z","tool":"write","reason":"native_no_subpattern","detail":"25 entries but no qualifying domain clusters","occurrences":25}
+{"ts":"2026-03-29T10:24:16.707Z","tool":"cron","reason":"temporal_burst","detail":"1 session(s), 1 day(s), 1 hour(s)","occurrences":5,"sessions":1,"distinctDays":1,"distinctHours":1}
+{"ts":"2026-03-29T10:24:16.831Z","reason":"low_success_rate","detail":"0% < 40% minimum","occurrences":73,"successRate":0}
+{"ts":"2026-03-29T10:24:16.836Z","tool":"edit","reason":"native_no_subpattern","detail":"87 entries but no qualifying domain clusters","occurrences":87}
+{"ts":"2026-03-29T10:24:16.843Z","tool":"memory_search","reason":"native_no_subpattern","detail":"5 entries but no qualifying domain clusters","occurrences":5}
+{"ts":"2026-03-29T10:24:16.848Z","tool":"web_search","reason":"native_no_subpattern","detail":"29 entries but no qualifying domain clusters","occurrences":29}
+{"ts":"2026-03-29T10:24:16.880Z","tool":"edit→exec→process","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[99,100,100]}
+{"ts":"2026-03-29T10:24:16.907Z","tool":"exec→process→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,100,87]}
+{"ts":"2026-03-29T10:24:16.944Z","tool":"read→edit→exec","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[87,99,100]}
+{"ts":"2026-03-29T10:24:16.972Z","tool":"exec→read→edit","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,87,99]}
+{"ts":"2026-03-29T10:24:17.002Z","tool":"edit→exec→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[99,100,87]}
+{"ts":"2026-03-29T10:29:34.821Z","tool":"write","reason":"native_no_subpattern","detail":"26 entries but no qualifying domain clusters","occurrences":26}
+{"ts":"2026-03-29T10:29:40.503Z","reason":"low_success_rate","detail":"0% < 40% minimum","occurrences":78,"successRate":0}
+{"ts":"2026-03-29T10:29:40.511Z","tool":"edit","reason":"native_no_subpattern","detail":"87 entries but no qualifying domain clusters","occurrences":87}
+{"ts":"2026-03-29T10:29:40.520Z","tool":"memory_search","reason":"native_no_subpattern","detail":"5 entries but no qualifying domain clusters","occurrences":5}
+{"ts":"2026-03-29T10:29:40.525Z","tool":"web_search","reason":"native_no_subpattern","detail":"29 entries but no qualifying domain clusters","occurrences":29}
+{"ts":"2026-03-29T10:29:40.585Z","tool":"edit→exec→process","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[99,100,100]}
+{"ts":"2026-03-29T10:29:40.632Z","tool":"exec→process→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,100,88]}
+{"ts":"2026-03-29T10:29:40.683Z","tool":"read→edit→exec","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[88,99,100]}
+{"ts":"2026-03-29T10:29:40.731Z","tool":"exec→read→edit","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,88,99]}
+{"ts":"2026-03-29T10:29:40.780Z","tool":"edit→exec→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[99,100,88]}
+{"ts":"2026-03-29T10:39:21.454Z","tool":"write","reason":"native_no_subpattern","detail":"30 entries but no qualifying domain clusters","occurrences":30}
+{"ts":"2026-03-29T10:39:27.389Z","reason":"low_success_rate","detail":"0% < 40% minimum","occurrences":81,"successRate":0}
+{"ts":"2026-03-29T10:39:27.408Z","tool":"edit","reason":"native_no_subpattern","detail":"88 entries but no qualifying domain clusters","occurrences":88}
+{"ts":"2026-03-29T10:39:27.447Z","tool":"memory_search","reason":"native_no_subpattern","detail":"5 entries but no qualifying domain clusters","occurrences":5}
+{"ts":"2026-03-29T10:39:27.459Z","tool":"web_search","reason":"native_no_subpattern","detail":"29 entries but no qualifying domain clusters","occurrences":29}
+{"ts":"2026-03-29T10:39:27.585Z","tool":"edit→exec→process","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[99,100,100]}
+{"ts":"2026-03-29T10:39:27.724Z","tool":"exec→process→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,100,88]}
+{"ts":"2026-03-29T10:39:27.850Z","tool":"read→edit→exec","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[88,99,100]}
+{"ts":"2026-03-29T10:39:27.977Z","tool":"exec→read→edit","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,88,99]}
+{"ts":"2026-03-29T10:39:28.100Z","tool":"edit→exec→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[99,100,88]}
+{"ts":"2026-03-29T10:55:47.195Z","tool":"write","reason":"native_no_subpattern","detail":"30 entries but no qualifying domain clusters","occurrences":30}
+{"ts":"2026-03-29T10:55:53.230Z","reason":"low_success_rate","detail":"0% < 40% minimum","occurrences":81,"successRate":0}
+{"ts":"2026-03-29T10:55:53.238Z","tool":"edit","reason":"native_no_subpattern","detail":"88 entries but no qualifying domain clusters","occurrences":88}
+{"ts":"2026-03-29T10:55:53.242Z","tool":"memory_search","reason":"native_no_subpattern","detail":"5 entries but no qualifying domain clusters","occurrences":5}
+{"ts":"2026-03-29T10:55:53.245Z","tool":"web_search","reason":"native_no_subpattern","detail":"29 entries but no qualifying domain clusters","occurrences":29}
+{"ts":"2026-03-29T10:55:53.271Z","tool":"edit→exec→process","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[99,100,100]}
+{"ts":"2026-03-29T10:55:53.301Z","tool":"exec→process→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,100,88]}
+{"ts":"2026-03-29T10:55:53.350Z","tool":"read→edit→exec","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[88,99,100]}
+{"ts":"2026-03-29T10:55:53.379Z","tool":"exec→read→edit","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,88,99]}
+{"ts":"2026-03-29T10:55:53.408Z","tool":"edit→exec→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[99,100,88]}
+{"ts":"2026-03-29T10:57:17.232Z","tool":"write","reason":"native_no_subpattern","detail":"30 entries but no qualifying domain clusters","occurrences":30}
+{"ts":"2026-03-29T10:57:23.033Z","reason":"low_success_rate","detail":"0% < 40% minimum","occurrences":81,"successRate":0}
+{"ts":"2026-03-29T10:57:23.058Z","tool":"edit","reason":"native_no_subpattern","detail":"88 entries but no qualifying domain clusters","occurrences":88}
+{"ts":"2026-03-29T10:57:23.070Z","tool":"memory_search","reason":"native_no_subpattern","detail":"5 entries but no qualifying domain clusters","occurrences":5}
+{"ts":"2026-03-29T10:57:23.085Z","tool":"web_search","reason":"native_no_subpattern","detail":"29 entries but no qualifying domain clusters","occurrences":29}
+{"ts":"2026-03-29T10:57:23.244Z","tool":"edit→exec→process","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[99,100,100]}
+{"ts":"2026-03-29T10:57:23.371Z","tool":"exec→process→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,100,88]}
+{"ts":"2026-03-29T10:57:23.489Z","tool":"read→edit→exec","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[88,99,100]}
+{"ts":"2026-03-29T10:57:23.618Z","tool":"exec→read→edit","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[100,88,99]}
+{"ts":"2026-03-29T10:57:23.693Z","tool":"edit→exec→read","reason":"compositionality","detail":"all 3 tools individually >80% success — chain adds no value","toolSuccessRates":[99,100,88]}

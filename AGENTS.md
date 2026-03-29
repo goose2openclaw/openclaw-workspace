@@ -14,8 +14,15 @@ Before doing anything else:
 2. Read `USER.md` — this is who you're helping
 3. Read `memory/YYYY-MM-DD.md` (today + yesterday) for recent context
 4. **If in MAIN SESSION** (direct chat with your human): Also read `MEMORY.md`
+5. **System Health Check** — Check GO2SE service status (localhost:8004/api/stats)
 
 Don't ask permission. Just do it.
+
+### 防崩溃检查清单 (Session Startup必做)
+- [ ] `curl -s localhost:8004/api/stats` — Backend是否响应
+- [ ] `df -h /` — 磁盘空间是否超过95%
+- [ ] `ps aux | grep uvicorn` — 进程是否存活
+- [ ] 检查 `CRASH_ANALYSIS.md` — 上次事故是否已修复
 
 ## Memory
 
@@ -207,20 +214,38 @@ Think of it like a human reviewing their journal and updating their mental model
 
 The goal: Be helpful without being annoying. Check in a few times a day, do useful background work, but respect quiet time.
 
+### 🛡️ 防崩溃 Heartbeat 检查
+
+Every heartbeat (every ~30 min), automatically check:
+- **GO2SE Backend**: `curl -s localhost:8004/api/stats` → 如果失败，触发 `bash scripts/health_check.sh 8004`
+- **Disk**: `df -h /` → 如果 >95%，记录到 memory/YYYY-MM-DD.md 并告警
+- **Zombie processes**: `ps aux | grep defunct` → 如果有，清理
+- **Log health**: 检查 `/tmp/go2se*.log` 是否有新的ERROR
+
+如果发现问题，立即处理，不要等到下次heartbeat。
+
 ## Make It Yours
 
 This is a starting point. Add your own conventions, style, and rules as you figure out what works.
 
-## 🪿 GO2SE CEO - 五条平行工作线
+## 🪿 GO2SE CEO - 五条平行工作线 (含防崩溃机制)
 
 ### 工作线定义
-| 工作线 | 任务 | 资源 | Cron |
-|--------|------|------|------|
-| ① 系统健康 | 监控进程/端口/磁盘，确保不当机 | 10% | CEO管理时 |
-| ② 监控回复 | 实时响应用户消息 | 5% | 实时 |
-| ③ 调度准备 | 管理Cron任务迭代 | 10% | 每30分钟 |
-| ④ 执行工作 | 平台迭代开发 + 自动交易 | 70% | 平台迭代Cron |
-| ⑤ 社交学习 | 市场情报收集 + 合作伙伴 | 5% | 每60分钟 |
+| 工作线 | 任务 | 资源 | Cron | 防崩溃职责 |
+|--------|------|------|------|-------------|
+| ① 系统健康 | 监控进程/端口/磁盘，确保不当机 | 10% | CEO管理时 | 🛡️ **处理+修复**: 崩溃时5分钟内响应+自动重启 |
+| ② 监控回复 | 实时响应用户消息 | 5% | 实时 | 🔍 **预防**: 日志/磁盘/进程异常检测 |
+| ③ 调度准备 | 管理Cron任务迭代 | 10% | 每30分钟 | 🔄 **迭代**: 验证脚本+事故报告+规范更新 |
+| ④ 执行工作 | 平台迭代开发 + 自动交易 | 70% | 平台迭代Cron | ✅ **预防**: validate_startup.sh必跑，拒绝未验证代码 |
+| ⑤ 社交学习 | 市场情报收集 + 合作伙伴 | 5% | 每60分钟 | 📚 **迭代**: 最佳实践纳入防崩溃规范 |
+
+### 防崩溃四阶段
+| 阶段 | CEO动作 | 工具/脚本 |
+|------|---------|-----------|
+| 🛡️ **处理** | 崩溃时立即响应，5分钟内恢复 | `health_check.sh` (每5分钟Cron) |
+| 🔍 **预防** | 部署前强制验证，端口/磁盘/进程监控 | `validate_startup.sh`, `start_server.sh` |
+| 🔧 **修复** | 根因分析不过夜，修复不过迭代 | `CRASH_ANALYSIS.md` |
+| 🔄 **迭代** | 每次事故后更新规范，纳入检查清单 | 事故 → 规范 → 脚本 |
 
 ### 执行原则
 - **主动性**: 不等不问，自己找事干

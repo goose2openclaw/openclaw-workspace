@@ -1,37 +1,51 @@
 {
   "last_run": {
-    "run_id": "run_1774753897549",
-    "created_at": "2026-03-29T03:11:38.923Z",
-    "parent_event_id": null,
-    "selected_gene_id": null,
+    "run_id": "run_1774768495657",
+    "created_at": "2026-03-29T07:14:59.761Z",
+    "parent_event_id": "evt_1774761326617",
+    "selected_gene_id": "gene_gep_repair_from_errors",
     "selected_capsule_id": null,
     "selector": {
-      "selected": null,
+      "selected": "gene_gep_repair_from_errors",
       "reason": [
-        "no matching gene found; new gene may be required",
-        "signals: user_feature_request:**ASSISTANT**: --- **🪿 GO2SE 市场情报收集 — 2026-03-29 02:25 UTC** 已完成侦察，结果已追加至 `memory/2026-03-29.md`。 ### 📊 核心发现 | 指标 | 读数 | 信号 | |------|------|------| | BTC 价格区间 | $60K–$75K, repeated_tool_usage:exec",
-        "memory_graph: memory_prefer:gene_gep_repair_from_errors | gene_prior:0.500",
+        "signals match gene.signals_match",
+        "signals: log_error, errsig:**TOOLRESULT**: [mcporter] Unknown MCP server 'exa'. Error: Unknown MCP server 'exa'. at McpRuntime.connect (file:///usr/local/lib/node_modules/mcporter/dist/runtime.js:175:19) at McpRuntime.callTool (file:///usr/local/lib/node_modules/mcporter/dist/runtime.js, protocol_drift, user_feature_request:write the evolution log for today: [TOOL, high_tool_usage:exec, repeated_tool_usage:exec, high_failure_ratio, force_innovation_after_repair_loop",
+        "memory_graph: memory_prefer:gene_gep_repair_from_errors | memory_ban:gene_gep_repair_from_errors | gene_prior:0.286",
         "drift_intensity: 0.707"
       ],
-      "alternatives": []
+      "alternatives": [
+        "gene_gep_optimize_prompt_and_assets"
+      ]
     },
     "signals": [
-      "user_feature_request:**ASSISTANT**: --- **🪿 GO2SE 市场情报收集 — 2026-03-29 02:25 UTC** 已完成侦察，结果已追加至 `memory/2026-03-29.md`。 ### 📊 核心发现 | 指标 | 读数 | 信号 | |------|------|------| | BTC 价格区间 | $60K–$75K",
-      "repeated_tool_usage:exec"
+      "log_error",
+      "errsig:**TOOLRESULT**: [mcporter] Unknown MCP server 'exa'. Error: Unknown MCP server 'exa'. at McpRuntime.connect (file:///usr/local/lib/node_modules/mcporter/dist/runtime.js:175:19) at McpRuntime.callTool (file:///usr/local/lib/node_modules/mcporter/dist/runtime.js",
+      "protocol_drift",
+      "user_feature_request:write the evolution log for today: [TOOL",
+      "high_tool_usage:exec",
+      "repeated_tool_usage:exec",
+      "high_failure_ratio",
+      "force_innovation_after_repair_loop"
     ],
     "mutation": {
       "type": "Mutation",
-      "id": "mut_1774753897543",
-      "category": "innovate",
+      "id": "mut_1774768495628",
+      "category": "repair",
       "trigger_signals": [
-        "user_feature_request:**ASSISTANT**: --- **🪿 GO2SE 市场情报收集 — 2026-03-29 02:25 UTC** 已完成侦察，结果已追加至 `memory/2026-03-29.md`。 ### 📊 核心发现 | 指标 | 读数 | 信号 | |------|------|------| | BTC 价格区间 | $60K–$75K",
-        "repeated_tool_usage:exec"
+        "log_error",
+        "errsig:**TOOLRESULT**: [mcporter] Unknown MCP server 'exa'. Error: Unknown MCP server 'exa'. at McpRuntime.connect (file:///usr/local/lib/node_modules/mcporter/dist/runtime.js:175:19) at McpRuntime.callTool (file:///usr/local/lib/node_modules/mcporter/dist/runtime.js",
+        "protocol_drift",
+        "user_feature_request:write the evolution log for today: [TOOL",
+        "high_tool_usage:exec",
+        "repeated_tool_usage:exec",
+        "high_failure_ratio",
+        "force_innovation_after_repair_loop"
       ],
-      "target": "behavior:protocol",
-      "expected_effect": "explore new strategy combinations to escape local optimum",
-      "risk_level": "medium"
+      "target": "gene:gene_gep_repair_from_errors",
+      "expected_effect": "reduce runtime errors, increase stability, and lower failure rate",
+      "risk_level": "low"
     },
-    "mutation_id": "mut_1774753897543",
+    "mutation_id": "mut_1774768495628",
     "personality_state": {
       "type": "PersonalityState",
       "rigor": 0.7,
@@ -41,7 +55,7 @@
       "obedience": 0.85
     },
     "personality_key": "rigor=0.7|creativity=0.3|verbosity=0.3|risk_tolerance=0.4|obedience=0.9",
-    "personality_known": false,
+    "personality_known": true,
     "personality_mutations": [],
     "drift": false,
     "selected_by": "memory_graph+selector",
@@ -49,24 +63,8 @@
     "reused_asset_id": null,
     "reused_source_node": null,
     "reused_chain_id": null,
-    "baseline_untracked": [
-      "memory/2026-03-29.md",
-      "memory/evolution/evolution_state.json",
-      "memory/evolution/gep_prompt_Cycle_#0001_run_1774725217700.json",
-      "memory/evolution/gep_prompt_Cycle_#0001_run_1774725217700.txt",
-      "memory/evolution/gep_prompt_Cycle_#0002_run_1774732277356.json",
-      "memory/evolution/gep_prompt_Cycle_#0002_run_1774732277356.txt",
-      "memory/evolution/gep_prompt_Cycle_#0003_run_1774739433744.json",
-      "memory/evolution/gep_prompt_Cycle_#0003_run_1774739433744.txt",
-      "memory/evolution/gep_prompt_Cycle_#0004_run_1774739613994.json",
-      "memory/evolution/gep_prompt_Cycle_#0004_run_1774739613994.txt",
-      "memory/evolution/gep_prompt_Cycle_#0005_run_1774746745257.json",
-      "memory/evolution/gep_prompt_Cycle_#0005_run_1774746745257.txt",
-      "memory/evolution/question_generator_state.json",
-      "memory/evolution/reflection_log.jsonl",
-      "skills/ClawPanel/"
-    ],
-    "baseline_git_head": "624a29cd3da01ea254df2cdd683c19c942c9b25f",
+    "baseline_untracked": [],
+    "baseline_git_head": "adcdf2062f684c97f4ace64267bfa33216a304bf",
     "blast_radius_estimate": {
       "files": 12,
       "lines": 960
@@ -76,5 +74,15 @@
     "worker_assignment_id": null,
     "applied_lessons": [],
     "hub_lessons": []
+  },
+  "last_solidify": {
+    "run_id": "run_1774761168996",
+    "at": "2026-03-29T05:15:26.617Z",
+    "event_id": "evt_1774761326617",
+    "capsule_id": null,
+    "outcome": {
+      "status": "failed",
+      "score": 0.2
+    }
   }
 }

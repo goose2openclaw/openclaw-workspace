@@ -4,21 +4,47 @@
 """
 
 import asyncio
+import json
 import logging
-from fastapi import APIRouter, Depends, HTTPException
+import time
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from sqlalchemy import text
 from typing import List, Optional
 from datetime import datetime
-
 from app.core.database import get_db
+from app.core.websocket_manager import manager
+from app.core.auth import get_current_user, get_current_user_optional, generate_api_key, hash_key
+from app.core.backtest_engine import BacktestEngine, BacktestConfig
+from functools import lru_cache
 
 logger = logging.getLogger("go2se")
 from app.core.config import settings
 from app.core.trading_engine import engine
-from app.models.models import Trade, Position, Signal, MarketData
+from app.models.models import Trade, Position, Signal, MarketData, User, BacktestResult
 
 router = APIRouter()
+
+# 简单内存缓存 (key: (endpoint, hash), value: (data, expire_ts))
+_cache: dict = {}
+_CACHE_TTL_STATS = 8   # /stats 缓存8秒
+_CACHE_TTL_PORTFOLIO = 10  # /portfolio 缓存10秒
+_CACHE_TTL_MARKET = 5   # /market 缓存5秒
+
+def _cache_get(key: str) -> Optional[dict]:
+    """取缓存，未过期返回数据，否则返回None"""
+    item = _cache.get(key)
+    if item is None:
+        return None
+    data, expire_ts = item
+    if time.time() > expire_ts:
+        del _cache[key]
+        return None
+    return data
+
+def _cache_set(key: str, data: dict, ttl: int):
+    """设缓存"""
+    _cache[key] = (data, time.time() + ttl)
 
 
 @router.get("/ping")
@@ -66,7 +92,11 @@ async def health_check(db: Session = Depends(get_db)):
 
 @router.get("/market")
 async def get_market_data():
-    """获取市场数据 - 并发优化"""
+    """获取市场数据 - 5秒缓存"""
+    cached = _cache_get("/market")
+    if cached is not None:
+        return {"data": cached["data"], "cached": True}
+    
     results = []
     errors = []
     
@@ -98,12 +128,14 @@ async def get_market_data():
         else:
             results.append(r)
     
-    return {
+    payload = {
         "data": results,
         "errors": errors,
         "count": len(results),
         "timestamp": datetime.now().isoformat()
     }
+    _cache_set("/market", payload, _CACHE_TTL_MARKET)
+    return {"data": results, "cached": False, "count": len(results)}
 
 
 @router.get("/market/{symbol}")
@@ -285,29 +317,37 @@ async def execute_trade(signal: dict):
 
 @router.get("/stats")
 async def get_stats(db: Session = Depends(get_db)):
-    """获取统计信息"""
+    """获取统计信息 (8秒内存缓存)"""
+    cached = _cache_get("/stats")
+    if cached is not None:
+        return {"data": cached, "cached": True, "age_seconds": time.time() - (_cache.get("/stats")[1] - _CACHE_TTL_STATS)}
+    
     total_trades = db.query(Trade).count()
     open_trades = db.query(Trade).filter(Trade.status == "open").count()
     total_signals = db.query(Signal).count()
     executed_signals = db.query(Signal).filter(Signal.executed == True).count()
     
-    return {
-        "data": {
-            "total_trades": total_trades,
-            "open_trades": open_trades,
-            "total_signals": total_signals,
-            "executed_signals": executed_signals,
-            "trading_mode": settings.TRADING_MODE,
-            "max_position": settings.MAX_POSITION,
-            "stop_loss": settings.STOP_LOSS,
-            "take_profit": settings.TAKE_PROFIT
-        }
+    data = {
+        "total_trades": total_trades,
+        "open_trades": open_trades,
+        "total_signals": total_signals,
+        "executed_signals": executed_signals,
+        "trading_mode": settings.TRADING_MODE,
+        "max_position": settings.MAX_POSITION,
+        "stop_loss": settings.STOP_LOSS,
+        "take_profit": settings.TAKE_PROFIT
     }
+    _cache_set("/stats", data, _CACHE_TTL_STATS)
+    return {"data": data, "cached": False}
 
 
 @router.get("/portfolio")
 async def get_portfolio(db: Session = Depends(get_db)):
-    """获取组合数据 - 修复: 之前缺失此端点导致前端显示空白"""
+    """获取组合数据 (10秒内存缓存)"""
+    cached = _cache_get("/portfolio")
+    if cached is not None:
+        return {"data": cached, "cached": True}
+    
     from app.models.models import Trade, Position
     
     # 计算总盈亏
@@ -363,5 +403,178 @@ async def get_portfolio(db: Session = Depends(get_db)):
         data["pnl"] = round(data["pnl"], 2)
     
     portfolio["performance"]["portfolio"] = strategies_data
+    _cache_set("/portfolio", portfolio, _CACHE_TTL_PORTFOLIO)
+    return {"data": portfolio, "cached": False}
+
+
+# ── 认证端点 (公开) ───────────────────────────────────────────────
+
+@router.post("/auth/register")
+async def register(username: str = Query(...), db: Session = Depends(get_db)):
+    """注册用户并生成API密钥"""
+    # 检查是否已存在
+    existing = db.query(User).filter(User.username == username).first()
+    if existing:
+        raise HTTPException(status_code=400, detail="用户名已存在")
     
-    return {"data": portfolio}
+    api_key, prefix, hashed = generate_api_key()
+    user = User(
+        username=username,
+        api_key_prefix=prefix,
+        hashed_api_key=hashed,
+        tier="guest"
+    )
+    db.add(user)
+    db.commit()
+    
+    return {
+        "username": username,
+        "api_key": api_key,  # 仅在此返回，服务器不存储明文
+        "api_key_prefix": prefix,
+        "tier": user.tier,
+        "msg": "请妥善保存API密钥，仅显示一次"
+    }
+
+
+@router.post("/auth/login")
+async def login(username: str = Query(...), db: Session = Depends(get_db)):
+    """通过用户名登录，返回已有API密钥前缀"""
+    user = db.query(User).filter(User.username == username).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="用户不存在")
+    return {
+        "username": user.username,
+        "api_key_prefix": user.api_key_prefix,
+        "tier": user.tier,
+        "msg": "使用完整的API密钥访问受保护端点"
+    }
+
+
+# ── 用户信息 (需认证) ─────────────────────────────────────────────
+
+@router.get("/auth/me")
+async def get_me(user: User = Depends(get_current_user)):
+    """获取当前用户信息"""
+    return {
+        "username": user.username,
+        "tier": user.tier,
+        "api_key_prefix": user.api_key_prefix,
+        "created_at": user.created_at.isoformat()
+    }
+
+
+# ── 回测端点 (需认证) ─────────────────────────────────────────────
+
+@router.post("/backtest")
+async def run_backtest(
+    symbol: str = Query("BTC/USDT"),
+    start_date: str = Query("2025-01-01"),
+    end_date: str = Query("2025-12-31"),
+    initial_capital: float = Query(10000.0),
+    stop_loss: float = Query(0.05),
+    take_profit: float = Query(0.15),
+    position_size: float = Query(0.1),
+    strategy: str = Query("rsi_macross"),
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """运行回测 (需API认证)"""
+    config = BacktestConfig(
+        symbol=symbol,
+        start_date=start_date,
+        end_date=end_date,
+        initial_capital=initial_capital,
+        stop_loss=stop_loss,
+        take_profit=take_profit,
+        position_size=position_size,
+        strategy=strategy
+    )
+    
+    be = BacktestEngine(exchange=engine.exchange)
+    result = await be.run(config)
+    
+    if "error" in result:
+        raise HTTPException(status_code=400, detail=result["error"])
+    
+    # 保存结果
+    bt = BacktestResult(
+        name=f"{symbol}_{strategy}_{start_date}_{end_date}",
+        symbol=symbol,
+        start_date=start_date,
+        end_date=end_date,
+        initial_capital=initial_capital,
+        final_capital=result["final_capital"],
+        total_return=result["total_return"],
+        total_trades=result["total_trades"],
+        win_rate=result["win_rate"],
+        max_drawdown=result["max_drawdown"],
+        sharpe_ratio=result["sharpe_ratio"],
+        params={"strategy": strategy, "stop_loss": stop_loss, "take_profit": take_profit},
+        equity_curve=result.get("equity_curve", []),
+        trades_detail=result.get("trades", [])
+    )
+    db.add(bt)
+    db.commit()
+    
+    return {"data": result}
+
+
+@router.get("/backtest/history")
+async def get_backtest_history(
+    limit: int = Query(20),
+    user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """获取回测历史"""
+    results = db.query(BacktestResult).order_by(BacktestResult.created_at.desc()).limit(limit).all()
+    return {
+        "data": [{
+            "id": r.id,
+            "name": r.name,
+            "symbol": r.symbol,
+            "start_date": r.start_date,
+            "end_date": r.end_date,
+            "initial_capital": r.initial_capital,
+            "final_capital": r.final_capital,
+            "total_return": r.total_return,
+            "total_trades": r.total_trades,
+            "win_rate": r.win_rate,
+            "max_drawdown": r.max_drawdown,
+            "sharpe_ratio": r.sharpe_ratio,
+            "params": r.params,
+            "created_at": r.created_at.isoformat()
+        } for r in results]
+    }
+
+
+# ── WebSocket 端点 ──────────────────────────────────────────────────
+from fastapi import WebSocket
+
+@router.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    """WebSocket 实时推送 - 客户端连接后接收实时行情/信号/持仓更新"""
+    await manager.connect(websocket)
+    try:
+        # 发送欢迎消息
+        await websocket.send_json({
+            "type": "connected",
+            "msg": "🪿 GO2SE WebSocket已连接",
+            "ts": datetime.now().isoformat()
+        })
+        # 保持连接，监听客户端消息
+        while True:
+            data = await websocket.receive_text()
+            try:
+                msg = json.loads(data)
+                # 客户端可以发送 {"action": "ping"} 维持心跳
+                if msg.get("action") == "ping":
+                    await websocket.send_json({"type": "pong", "ts": datetime.now().isoformat()})
+                elif msg.get("action") == "subscribe":
+                    # 客户端订阅特定主题 (future)
+                    await websocket.send_json({"type": "subscribed", "topic": msg.get("topic")})
+            except json.JSONDecodeError:
+                await websocket.send_json({"type": "error", "msg": "Invalid JSON"})
+    except WebSocketDisconnect:
+        manager.disconnect(websocket)
+    except Exception:
+        manager.disconnect(websocket)

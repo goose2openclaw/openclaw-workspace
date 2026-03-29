@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Go2Se 护食 v2.5 | Crypto量化AI投资平台</title>
+    <title>Go2Se 护食 v6.3.0 | Crypto量化AI投资平台</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🪿</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.gstatic.com" crossorigin>
@@ -650,7 +650,7 @@
     <script>
         let markets=[],signals=[],strategies=[],sonarModels={},oracleEvents=[],ecosystem=[],scriptLogs=[];
         function hideLanding(){document.getElementById('landing').classList.add('hidden')}
-        setTimeout(()=>hideLanding(),3000);
+        setTimeout(()=>hideLanding(),1000);
         async function api(url,method='GET',data=null){
             try{const opt={method,headers:{'Content-Type':'application/json'}};if(data)opt.body=JSON.stringify(data);return await fetch(url,opt).then(r=>r.json())}catch{return{}}}
         async function init(){await Promise.all([loadDashboard(),loadMarkets(),loadSignals(),loadStrategies(),loadSonar(),loadOracle(),loadMiroFishMarkets(),loadMiroFishPredict(),loadEcosystem(),loadScripts(),loadPortfolio(),loadParams()]);renderGainersLosers();startAutoRefresh();renderPortfolio()}

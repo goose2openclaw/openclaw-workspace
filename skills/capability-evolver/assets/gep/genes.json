@@ -30,7 +30,8 @@
         ]
       },
       "validation": [
-        "cd skills/capability-evolver && node scripts/validate-modules.js ./src/evolve ./src/gep/solidify && node scripts/validate-modules.js ./src/gep/selector ./src/gep/memoryGraph"
+        "node /root/.openclaw/workspace/skills/capability-evolver/scripts/validate-modules.js /root/.openclaw/workspace/skills/capability-evolver/src/evolve /root/.openclaw/workspace/skills/capability-evolver/src/gep/solidify",
+        "node /root/.openclaw/workspace/skills/capability-evolver/scripts/validate-modules.js /root/.openclaw/workspace/skills/capability-evolver/src/gep/selector /root/.openclaw/workspace/skills/capability-evolver/src/gep/memoryGraph"
       ]
     },
     {
@@ -63,7 +64,7 @@
         ]
       },
       "validation": [
-        "cd skills/capability-evolver && node scripts/validate-modules.js ./src/evolve ./src/gep/prompt"
+        "node /root/.openclaw/workspace/skills/capability-evolver/scripts/validate-modules.js /root/.openclaw/workspace/skills/capability-evolver/src/evolve /root/.openclaw/workspace/skills/capability-evolver/src/gep/prompt"
       ]
     },
     {
@@ -99,7 +100,7 @@
         ]
       },
       "validation": [
-        "cd skills/capability-evolver && node scripts/validate-modules.js ./src/evolve ./src/gep/solidify"
+        "node /root/.openclaw/workspace/skills/capability-evolver/scripts/validate-modules.js /root/.openclaw/workspace/skills/capability-evolver/src/evolve /root/.openclaw/workspace/skills/capability-evolver/src/gep/solidify"
       ]
     }
   ]

@@ -1,71 +1,73 @@
 {
   "version": 1,
-  "updated": "2026-03-29T03:10:49.055Z",
+  "updated": "2026-03-29T10:57:24.165Z",
   "toolStats": {
     "exec": {
-      "totalAcrossSessions": 593,
-      "uniqueSessions": 5,
+      "totalAcrossSessions": 969,
+      "uniqueSessions": 7,
       "successRate": 1,
       "commonArgs": [
-        "front",
-        "pop",
-        "add",
-        "backend/app/core/config.py",
-        "fronte",
         "command",
-        "push",
-        "2>&1",
+        "/root/.openclaw/workspace/go2se_platform/backend/app/core/trading_engine.py",
+        "/root/.openclaw/workspace/go2se_platform/backend/app/core/config.py",
+        "*.html\\",
+        "2>/dev/null;",
+        ".env",
+        "curl",
+        "post",
+        "http",
+        "//localhost",
+        "8000/api",
+        "--max-time",
+        "8004/api/stats",
+        "2>/dev/null",
+        "head",
+        "echo",
         "tail",
-        "/root/.openclaw/workspace/go2se_platform/frontend/package.json",
-        "/root/.openclaw/workspace/go2se_platform/frontend/src/app.css",
-        "status",
-        "--shor",
-        "/root/.openclaw/workspace/go2se_platform/versions/",
-        "/root/.openclaw/workspace/go2se_platform/versions/readme.md",
-        "/root/.openclaw/workspace/go2se_platform",
-        "git",
-        "versions/",
-        "commit",
-        "docs"
+        "aux",
+        "grep",
+        "uvicorn|python3\\"
       ],
       "commonErrors": [],
-      "lastSeen": "2026-03-29T03:10:37.870Z",
+      "lastSeen": "2026-03-29T10:57:08.306Z",
       "sessionList": [
         "agent:main:main",
         "agent:main:cron:a84bb9a4-4dcd-456a-8d22-f24c94fe89ca",
         "agent:main:cron:fb92b8a8-3a42-469d-967d-f47c7ac9bff5",
         "agent:main:cron:0f2d9027-b6e8-4c46-989c-1ffffec11ebe",
-        "agent:main:cron:2370faa3-9cf3-4f0e-a6e6-92ed2c4d7004"
+        "agent:main:cron:2370faa3-9cf3-4f0e-a6e6-92ed2c4d7004",
+        "agent:main:subagent:8e750feb-616c-45ec-ac2e-164d31285e3e",
+        "agent:main:subagent:b8a4e079-b37a-42cc-b77e-b733c992f523"
       ]
     },
     "write": {
-      "totalAcrossSessions": 16,
+      "totalAcrossSessions": 30,
       "uniqueSessions": 4,
       "successRate": 1,
       "commonArgs": [
-        "迭代日志",
+        "#!/usr/bin/en",
+        "/root/.openclaw/workspace/go2se_platform/backend/app/core/backtest_engine.py",
+        "市场情报收集",
         "2026-03-29\\n\\n##",
-        "时间\\n2026-03-29",
-        "utc\\n\\n##",
-        "平台状态\\n-",
-        "localhost",
-        "5000",
-        "http",
+        "执行时间\\n2026-03-29",
+        "utc\\n\\n---\\n\\n##",
+        "btc",
+        "比特币\\n\\n###",
         "path",
-        "/root/.openclaw/workspace/skills/deer-flow/skills/public/go2se-ceo/skill.md",
+        "/root/.openclaw/workspace/memory/2026-03-29-capability-evolution.md",
         "content",
-        "---",
-        "/root/.openclaw/workspace/skills/deer-flow/skills/public/go2se-workflow/skill.md",
-        "/root/.openclaw/workspace/skills/go2se-deerflow/skill.md",
-        "---\\nname",
-        "go2se-deerf",
-        "/root/.openclaw/workspace/deerflow_integration.md",
+        "capabilit",
+        "/root/.openclaw/workspace/go2se_platform/scripts/health_check.sh",
+        "#!/bin/bash\\n#",
+        "/root/.openclaw/workspace/go2se_platform/scripts/validate_startup.sh",
+        "#!/bin/bas",
+        "/root/.openclaw/workspace/go2se_platform/scripts/start_server.sh",
+        "/root/.openclaw/workspace/go2se_platform/crash_analysis.md",
         "go2se",
-        "deerflow",
-        "集成指南\\n\\n##"
+        "崩溃分析报告\\n\\"
       ],
       "commonErrors": [],
-      "lastSeen": "2026-03-29T03:08:27.993Z",
+      "lastSeen": "2026-03-29T10:37:49.025Z",
       "sessionList": [
         "agent:main:cron:a84bb9a4-4dcd-456a-8d22-f24c94fe89ca",
         "agent:main:cron:0f2d9027-b6e8-4c46-989c-1ffffec11ebe",
@@ -74,14 +76,10 @@
       ]
     },
     "cron": {
-      "totalAcrossSessions": 5,
-      "uniqueSessions": 1,
+      "totalAcrossSessions": 6,
+      "uniqueSessions": 2,
       "successRate": 1,
       "commonArgs": [
-        "list",
-        "update",
-        "jobid",
-        "a84bb9a4-4dcd-456a-8d22-f24c94fe89ca",
         "patch",
         "delivery",
         "mode",
@@ -97,80 +95,88 @@
         "1800000",
         "go2se平台迭代",
         "市场情报收集",
-        "3600000"
+        "3600000",
+        "action",
+        "list",
+        "includedisabled",
+        "true"
       ],
       "commonErrors": [],
-      "lastSeen": "2026-03-28T15:20:43.443Z",
-      "sessionList": [
-        "agent:main:main"
-      ]
-    },
-    "read": {
-      "totalAcrossSessions": 35,
-      "uniqueSessions": 3,
-      "successRate": 0.83,
-      "commonArgs": [
-        "/root/.openclaw/workspace/go2se_platform/optimization_plan.md",
-        "/root/.openclaw/workspace/go2se_platform/backend/app/api/routes.py",
-        "/root/.openclaw/workspace/go2se_platform/backend/app/routes.py",
-        "/root/.openclaw/workspace/skills/capability-evolver/skill.md",
-        "/root/.openclaw/workspace/index.html",
-        "/root/.openclaw/workspace/server.py",
-        "120",
-        "/root/.openclaw/workspace/skills/go2se/web/server.py",
-        "/root/.openclaw/workspace/memory/2026-03-29.md",
-        "/root/.openclaw/workspace/frontend/dist/index.html",
-        "path",
-        "/root/.openclaw/workspace/backend/server.py",
-        "/root/.openclaw/workspace/go2se_platform/frontend/dist/index.html",
-        "/root/.openclaw/workspace/go2se_platform/docker-compose.yml",
-        "1549",
-        "limit",
-        "offset",
-        "/root/.openclaw/workspace/skills/go2se/web/start.sh",
-        "file",
-        "/root/.openclaw/workspace/go2se_platform/frontend/src/app.tsx"
-      ],
-      "commonErrors": [
-        "ENOENT: no such file or directory, access '/root/.openclaw/w"
-      ],
-      "lastSeen": "2026-03-29T02:38:34.214Z",
+      "lastSeen": "2026-03-29T10:25:25.965Z",
       "sessionList": [
         "agent:main:main",
-        "agent:main:cron:fb92b8a8-3a42-469d-967d-f47c7ac9bff5",
         "agent:main:cron:a84bb9a4-4dcd-456a-8d22-f24c94fe89ca"
       ]
     },
-    "edit": {
-      "totalAcrossSessions": 36,
-      "uniqueSessions": 4,
-      "successRate": 0.97,
+    "read": {
+      "totalAcrossSessions": 72,
+      "uniqueSessions": 5,
+      "successRate": 0.88,
       "commonArgs": [
-        "master\\nuntracked",
-        "/root/.openclaw/workspace/go2se_platform/frontend/src/app.tsx",
-        "/root/.openclaw/workspace/skills/go2se/web/server.py",
-        "old_text",
-        "====================",
-        "获取声纳趋势\\n",
-        "app",
-        "flask(__name__)\\n",
-        "from",
-        "flask",
-        "memory/2026-03-29.md",
-        "old_string",
-        "**下一步**",
-        "等待恐惧贪婪指数触底反弹确认，跟踪btc能否重新站上$70k",
-        "new_string",
+        "/root/.openclaw/workspace/go2se_platform/backend/app/core/trading_engine.py",
+        "418",
+        "limit",
+        "/root/.openclaw/workspace/skills/capability-evolver/skill.md",
+        "/root/.openclaw/workspace/memory/2026-03-29-capability-evolution.md",
+        "/root/.openclaw/workspace/memory/2026-03-28-capability-evolution.md",
+        "/root/.openclaw/workspace/memory/evolution/evolution_state.json",
+        "/root/.openclaw/workspace/memory/2026-03-29.md",
+        "/root/.openclaw/workspace/memory/evolution/evolution_solidify_state.json",
         "file",
+        "/root/.openclaw/workspace/go2se/public/index.html",
+        "/root/.openclaw/workspace/go2se/server.py",
+        "/root/.openclaw/workspace/go2se_platform/iteration_log.md",
+        "/root/.openclaw/workspace/go2se_platform/backend",
+        "/root/.openclaw/workspace/go2se_platform/backend/app/api/routes.py",
+        "offset",
+        "100",
+        "161",
+        "path",
+        "/root/.openclaw/workspace/go2se_platform/frontend/src/app.tsx"
+      ],
+      "commonErrors": [
+        "ENOENT: no such file or directory, access '/root/.openclaw/w",
+        "EISDIR: illegal operation on a directory, read"
+      ],
+      "lastSeen": "2026-03-29T10:55:30.114Z",
+      "sessionList": [
+        "agent:main:main",
+        "agent:main:cron:fb92b8a8-3a42-469d-967d-f47c7ac9bff5",
+        "agent:main:cron:a84bb9a4-4dcd-456a-8d22-f24c94fe89ca",
+        "agent:main:subagent:8e750feb-616c-45ec-ac2e-164d31285e3e",
+        "agent:main:cron:0f2d9027-b6e8-4c46-989c-1ffffec11ebe"
+      ]
+    },
+    "edit": {
+      "totalAcrossSessions": 88,
+      "uniqueSessions": 4,
+      "successRate": 0.99,
+      "commonArgs": [
+        "/root/.openclaw/workspace/go2se_platform/backend/app/models/models.py",
+        "class",
+        "path",
+        "###",
+        "mirofish下次迭代待办\\",
         "/root/.openclaw/workspace/go2se_platform/backend/app/core/config.py",
-        "<span>",
-        "const",
-        "activ"
+        "app_v",
+        "oldtext",
+        "<span>🪿",
+        "/root/.openclaw/workspace/skills/go2se/web/templates/index.html",
+        "newtext",
+        "<title>go2s",
+        "settime",
+        "/root/.openclaw/workspace/skills/go2se/web/server.py",
+        "'service'",
+        "'go2se",
+        "/root/.openclaw/workspace/go2se_platform/iteration_log.md",
+        "oldstring",
+        "go2se",
+        "平台迭代日志"
       ],
       "commonErrors": [
         "Could not find the exact text in /root/.openclaw/workspace/s"
       ],
-      "lastSeen": "2026-03-29T02:39:19.677Z",
+      "lastSeen": "2026-03-29T10:38:49.359Z",
       "sessionList": [
         "agent:main:main",
         "agent:main:cron:fb92b8a8-3a42-469d-967d-f47c7ac9bff5",
@@ -179,7 +185,7 @@
       ]
     },
     "memory_search": {
-      "totalAcrossSessions": 3,
+      "totalAcrossSessions": 5,
       "uniqueSessions": 2,
       "successRate": 1,
       "commonArgs": [
@@ -196,26 +202,24 @@
         "failures",
         "improvements",
         "intelligence",
-        "today"
+        "today",
+        "maxresults",
+        "self-improving",
+        "runtime",
+        "patterns"
       ],
       "commonErrors": [],
-      "lastSeen": "2026-03-29T01:27:25.426Z",
+      "lastSeen": "2026-03-29T07:12:34.872Z",
       "sessionList": [
         "agent:main:cron:0f2d9027-b6e8-4c46-989c-1ffffec11ebe",
         "agent:main:cron:a84bb9a4-4dcd-456a-8d22-f24c94fe89ca"
       ]
     },
     "web_search": {
-      "totalAcrossSessions": 21,
+      "totalAcrossSessions": 29,
       "uniqueSessions": 2,
       "successRate": 1,
       "commonArgs": [
-        "skill",
-        "clawhub",
-        "github",
-        "query",
-        "ai-website-cloner-template",
-        "ai-website-cloner\\",
         "deerflow",
         "open",
         "source",
@@ -229,49 +233,59 @@
         "count",
         "macro",
         "trend",
-        "outlook"
+        "outlook",
+        "cryptocurrency",
+        "latest",
+        "bitcoin",
+        "ethereum",
+        "query",
+        "trends"
       ],
       "commonErrors": [],
-      "lastSeen": "2026-03-29T02:26:26.510Z",
+      "lastSeen": "2026-03-29T10:22:12.702Z",
       "sessionList": [
         "agent:main:cron:0f2d9027-b6e8-4c46-989c-1ffffec11ebe",
         "agent:main:main"
       ]
     },
     "web_fetch": {
-      "totalAcrossSessions": 1,
-      "uniqueSessions": 1,
-      "successRate": 0,
+      "totalAcrossSessions": 3,
+      "uniqueSessions": 2,
+      "successRate": 0.33,
       "commonArgs": [
         "url",
         "https",
         "//github.com/bytedance-deerflow/deer-flow-installer",
         "maxchars",
-        "3000"
+        "3000",
+        "//coinedition.com/bitcoin-turns-positive-in-march-after-two-months-of-losses-in-2026/",
+        "//crypto.com/us/market-updates/march-2026-fomc-recap-btc-eth-price"
       ],
       "commonErrors": [
         "Web fetch failed (404): SECURITY NOTICE: The following conte"
       ],
-      "lastSeen": "2026-03-29T02:20:53.743Z",
+      "lastSeen": "2026-03-29T10:22:24.038Z",
       "sessionList": [
-        "agent:main:main"
+        "agent:main:main",
+        "agent:main:cron:0f2d9027-b6e8-4c46-989c-1ffffec11ebe"
       ]
     }
   },
   "correctionClusters": {},
   "crossSessionChains": {
     "edit→exec→process": {
-      "occurrences": 2,
+      "occurrences": 4,
       "sessions": [
         "agent:main:main",
         "agent:main:cron:fb92b8a8-3a42-469d-967d-f47c7ac9bff5"
       ]
     },
     "exec→process→read": {
-      "occurrences": 3,
+      "occurrences": 5,
       "sessions": [
         "agent:main:cron:fb92b8a8-3a42-469d-967d-f47c7ac9bff5",
-        "agent:main:cron:a84bb9a4-4dcd-456a-8d22-f24c94fe89ca"
+        "agent:main:cron:a84bb9a4-4dcd-456a-8d22-f24c94fe89ca",
+        "agent:main:subagent:8e750feb-616c-45ec-ac2e-164d31285e3e"
       ]
     },
     "process→read→edit": {
@@ -282,10 +296,46 @@
       ]
     },
     "read→edit→exec": {
-      "occurrences": 5,
+      "occurrences": 10,
       "sessions": [
         "agent:main:cron:fb92b8a8-3a42-469d-967d-f47c7ac9bff5",
-        "agent:main:cron:a84bb9a4-4dcd-456a-8d22-f24c94fe89ca"
+        "agent:main:cron:a84bb9a4-4dcd-456a-8d22-f24c94fe89ca",
+        "agent:main:main"
+      ]
+    },
+    "exec→process→edit": {
+      "occurrences": 2,
+      "sessions": [
+        "agent:main:cron:fb92b8a8-3a42-469d-967d-f47c7ac9bff5",
+        "agent:main:main"
+      ]
+    },
+    "exec→read→edit": {
+      "occurrences": 9,
+      "sessions": [
+        "agent:main:cron:fb92b8a8-3a42-469d-967d-f47c7ac9bff5",
+        "agent:main:main"
+      ]
+    },
+    "edit→exec→read": {
+      "occurrences": 4,
+      "sessions": [
+        "agent:main:cron:fb92b8a8-3a42-469d-967d-f47c7ac9bff5",
+        "agent:main:main"
+      ]
+    },
+    "exec→process→write": {
+      "occurrences": 2,
+      "sessions": [
+        "agent:main:cron:a84bb9a4-4dcd-456a-8d22-f24c94fe89ca",
+        "agent:main:main"
+      ]
+    },
+    "process→write→exec": {
+      "occurrences": 2,
+      "sessions": [
+        "agent:main:cron:a84bb9a4-4dcd-456a-8d22-f24c94fe89ca",
+        "agent:main:main"
       ]
     }
   }

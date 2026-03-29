@@ -42,3 +42,44 @@
 {"ts":"2026-03-29T03:02:03.440Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (28x)"}
 {"ts":"2026-03-29T03:09:00.746Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (28x)"}
 {"ts":"2026-03-29T03:10:49.310Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (29x)"}
+{"ts":"2026-03-29T05:16:04.005Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (29x)"}
+{"ts":"2026-03-29T05:16:48.805Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (29x)"}
+{"ts":"2026-03-29T05:17:08.477Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (29x)"}
+{"ts":"2026-03-29T05:17:41.365Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (29x)"}
+{"ts":"2026-03-29T05:23:02.517Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (31x)"}
+{"ts":"2026-03-29T05:23:44.793Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (31x)"}
+{"ts":"2026-03-29T05:24:58.615Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (31x)"}
+{"ts":"2026-03-29T05:25:32.201Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (31x)"}
+{"ts":"2026-03-29T05:25:55.081Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (31x)"}
+{"ts":"2026-03-29T05:27:35.465Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (31x)"}
+{"ts":"2026-03-29T05:29:16.686Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (31x)"}
+{"ts":"2026-03-29T05:30:04.042Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (31x)"}
+{"ts":"2026-03-29T05:32:14.642Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (31x)"}
+{"ts":"2026-03-29T05:32:38.116Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (31x)"}
+{"ts":"2026-03-29T05:34:17.307Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (31x)"}
+{"ts":"2026-03-29T05:47:36.026Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (31x)"}
+{"ts":"2026-03-29T05:59:25.315Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (31x)"}
+{"ts":"2026-03-29T06:23:10.187Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (31x)"}
+{"ts":"2026-03-29T06:25:09.757Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (31x)"}
+{"ts":"2026-03-29T06:27:14.363Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (31x)"}
+{"ts":"2026-03-29T06:31:33.566Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (31x)"}
+{"ts":"2026-03-29T06:33:45.353Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (31x)"}
+{"ts":"2026-03-29T06:57:28.249Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (31x)"}
+{"ts":"2026-03-29T06:59:20.995Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (31x)"}
+{"ts":"2026-03-29T07:16:06.644Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (31x)"}
+{"ts":"2026-03-29T07:17:55.706Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (31x)"}
+{"ts":"2026-03-29T07:36:32.231Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (34x)"}
+{"ts":"2026-03-29T07:38:00.922Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (34x)"}
+{"ts":"2026-03-29T07:48:42.163Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (34x)"}
+{"ts":"2026-03-29T08:18:15.199Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (34x)"}
+{"ts":"2026-03-29T10:21:59.505Z","type":"notification","message":"AceForge v0.9.0 Online\n📊 Skills: 130 active · 0 proposals · 0 retired\n📈 Patterns: 1220 traced · 0 candidates\n🔍 Threshold: 5x recurrences\n📋 Health: 0 entries\n✅ .forge/ writable\n⚠️ OpenViking not reachable (optional): http://127.0.0.1:1933\n✅ Telegram bot: @Xg1203Bot\n✅ Adversarial: 23/23 mutations caught"}
+{"ts":"2026-03-29T10:22:56.660Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (34x)"}
+{"ts":"2026-03-29T10:24:17.349Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (34x)"}
+{"ts":"2026-03-29T10:29:40.229Z","type":"notification","message":"New Skill Proposal\nauto-cron\nTool: cron\n6x, 100% success, 2 sessions\nSummary: Auto-crystallized skill triggered by 6x cron calls (100% success across 2 sessions). Pattern: \\\"{\\\"action\\\":\\\"list\\\",\\\"i\nUse: /forge approve auto-cron  or  /forge reject auto-cron"}
+{"ts":"2026-03-29T10:29:41.212Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (35x)"}
+{"ts":"2026-03-29T10:39:26.867Z","type":"notification","message":"New Skill Proposal\nauto-cron\nTool: cron\n6x, 100% success, 2 sessions\nSummary: Auto-crystallized skill triggered by 6x cron calls (100% success across 2 sessions). Pattern: \\\"{\\\"action\\\":\\\"list\\\",\\\"i\nUse: /forge approve auto-cron  or  /forge reject auto-cron"}
+{"ts":"2026-03-29T10:39:29.374Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (35x)"}
+{"ts":"2026-03-29T10:55:52.525Z","type":"notification","message":"New Skill Proposal\nauto-cron\nTool: cron\n6x, 100% success, 2 sessions\nSummary: Auto-crystallized skill triggered by 6x cron calls (100% success across 2 sessions). Pattern: \\\"{\\\"action\\\":\\\"list\\\",\\\"i\nUse: /forge approve auto-cron  or  /forge reject auto-cron"}
+{"ts":"2026-03-29T10:55:54.291Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (35x)"}
+{"ts":"2026-03-29T10:57:22.530Z","type":"notification","message":"New Skill Proposal\nauto-cron\nTool: cron\n6x, 100% success, 2 sessions\nSummary: Auto-crystallized skill triggered by 6x cron calls (100% success across 2 sessions). Pattern: \\\"{\\\"action\\\":\\\"list\\\",\\\"i\nUse: /forge approve auto-cron  or  /forge reject auto-cron"}
+{"ts":"2026-03-29T10:57:24.534Z","type":"notification","message":"Proactive Gap Alert\n1 critical behavior gap(s):\noperations: infrastructure (35x)"}

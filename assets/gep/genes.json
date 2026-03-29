@@ -32,7 +32,17 @@
       "validation": [
         "node scripts/validate-modules.js ./src/evolve ./src/gep/solidify",
         "node scripts/validate-modules.js ./src/gep/selector ./src/gep/memoryGraph"
-      ]
+      ],
+      "epigenetic_marks": [
+        {
+          "context": "linux/arm64/v22.22.1",
+          "boost": -0.1,
+          "reason": "failure_in_environment",
+          "created_at": "2026-03-29T05:15:46.776Z"
+        }
+      ],
+      "schema_version": "1.6.0",
+      "asset_id": "sha256:ec091c81c73684a2d9ad4901bfa34061ca039eb52dc4852a53705c27e346dba3"
     },
     {
       "type": "Gene",
