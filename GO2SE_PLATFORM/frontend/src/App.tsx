@@ -88,10 +88,44 @@ function App() {
     }
   }, [])
 
+  // Page Visibility API - 标签页隐藏时暂停/降低刷新频率
   useEffect(() => {
-    fetchData()
-    const interval = setInterval(fetchData, 15000) // 每15秒刷新
-    return () => clearInterval(interval)
+    let interval: ReturnType<typeof setInterval>
+    let hiddenInterval: ReturnType<typeof setInterval>
+
+    const startPolling = () => {
+      fetchData()
+      interval = setInterval(fetchData, 15000) // 活跃标签页: 15秒
+    }
+
+    const startBackgroundPolling = () => {
+      // 后台/隐藏: 60秒降频刷新（节省资源）
+      hiddenInterval = setInterval(fetchData, 60000)
+    }
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        // 标签页隐藏: 停止活跃轮询，切换到后台模式
+        clearInterval(interval)
+        clearInterval(hiddenInterval)
+        startBackgroundPolling()
+      } else {
+        // 标签页恢复: 立即刷新一次，再恢复活跃轮询
+        clearInterval(interval)
+        clearInterval(hiddenInterval)
+        fetchData()
+        startPolling()
+      }
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    startPolling()
+
+    return () => {
+      clearInterval(interval)
+      clearInterval(hiddenInterval)
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+    }
   }, [fetchData])
 
   const getSignalColor = (signal: string) => {
