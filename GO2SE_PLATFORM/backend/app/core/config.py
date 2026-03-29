@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     
     # 应用
     APP_NAME: str = "GO2SE量化交易平台"
-    APP_VERSION: str = "v1.0.0"
+    APP_VERSION: str = "v6.0.0"
     DEBUG: bool = os.getenv("DEBUG", "false").lower() == "true"
     
     # 数据库
@@ -74,8 +74,8 @@ class Settings(BaseSettings):
         "http://localhost:8000",
         "http://127.0.0.1:3000",
         "http://127.0.0.1:5173",
-        # 生产环境 (根据环境变量添加)
-    ] + ([os.getenv("CORS_ORIGIN", "")] if os.getenv("CORS_ORIGIN") else [])
+        # 生产环境 (根据环境变量添加，过滤空字符串)
+    ] + ([os.getenv("CORS_ORIGIN")] if os.getenv("CORS_ORIGIN") else [])
     
     class Config:
         env_file = ".env"

@@ -47,6 +47,7 @@ function App() {
   const [loading, setLoading] = useState(true)
   const [lastUpdate, setLastUpdate] = useState<Date>(new Date())
   const [activeTab, setActiveTab] = useState<'market' | 'signals' | 'trades' | 'portfolio'>('market')
+  type TabKey = typeof activeTab
   const [apiErrors, setApiErrors] = useState<string[]>([])
 
   const fetchData = useCallback(async () => {
@@ -138,7 +139,7 @@ function App() {
           <button
             key={tab.key}
             className={activeTab === tab.key ? 'active' : ''}
-            onClick={() => setActiveTab(tab.key as any)}
+            onClick={() => setActiveTab(tab.key as TabKey)}
           >
             {tab.label}
           </button>
@@ -161,6 +162,9 @@ function App() {
                   RSI: <span className={market.rsi > 70 ? 'overbought' : market.rsi < 30 ? 'oversold' : ''}>
                     {market.rsi?.toFixed(1)}
                   </span>
+                </div>
+                <div className="spread">
+                  差价: {((market as any).ask - (market as any).bid)?.toFixed(2) || '--'}
                 </div>
               </div>
             ))}
@@ -263,7 +267,7 @@ function App() {
       </main>
 
       <footer className="footer">
-        <span>🪿 GO2SE v2.5</span>
+        <span>🪿 GO2SE v6.0.0</span>
         <span>•</span>
         <span>更新: {lastUpdate.toLocaleTimeString()}</span>
         <span>•</span>
