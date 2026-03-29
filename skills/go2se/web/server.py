@@ -15,7 +15,7 @@ from typing import Dict, List, Any
 
 import requests
 from dataclasses import dataclass, asdict
-from flask import Flask, render_template, jsonify, request, session
+from flask import Flask, render_template, jsonify, request, session, make_response
 
 # ==================== 后台API配置 ====================
 BACKEND_API = "http://localhost:5001/api"
@@ -121,8 +121,6 @@ app = Flask(__name__)
 app.secret_key = 'Hushi_Pro_2026_Secure'
 
 # ==================== 优化5: 前端性能优化 ====================
-from flask import make_response
-
 @app.after_request
 def add_headers(response):
     """添加缓存和压缩 headers"""
@@ -133,10 +131,6 @@ def add_headers(response):
     if '/api/' in request.path:
         response.headers['Cache-Control'] = 'no-cache, no-store'
     return response
-
-# 启用GZIP压缩
-from flask import Flask, request, make_response
-import gzip
 
 @app.route('/')
 @app.route('/<path:filename>')
@@ -1550,23 +1544,34 @@ def sonar_apply_portfolio():
 @app.route('/api/sonar/full_cycle', methods=['GET'])
 def sonar_full_cycle():
     """声纳完整流程: 检测->选择策略->应用组合"""
-    # 1. 获取声纳趋势
-    trend = "bullish"
-    strength = 7
-    confidence = 60
+    # 1. 获取声纳趋势 (修复: 之前trend_resp未定义导致引用错误)
+    try:
+        trend_resp = requests.get('http://127.0.0.1:5000/api/sonar/trend_detection', timeout=5).json()
+        trend = trend_resp.get('trend', 'neutral')
+        strength = trend_resp.get('strength', 5)
+        confidence = trend_resp.get('analysis', {}).get('confidence', 50)
+    except Exception:
+        trend, strength, confidence = 'neutral', 5, 50
+        trend_resp = {}
     
     # 2. 选择策略
-    strategy_resp = requests.get('http://127.0.0.1:5000/api/sonar/select_strategy', timeout=5).json()
+    try:
+        strategy_resp = requests.get('http://127.0.0.1:5000/api/sonar/select_strategy', timeout=5).json()
+    except Exception:
+        strategy_resp = {}
     
     # 3. 应用组合
-    portfolio_resp = requests.get('http://127.0.0.1:5000/api/sonar/apply_portfolio', timeout=5).json()
+    try:
+        portfolio_resp = requests.get('http://127.0.0.1:5000/api/sonar/apply_portfolio', timeout=5).json()
+    except Exception:
+        portfolio_resp = {}
     
     return jsonify({
         'success': True,
         'sonar_analysis': {
-            'trend': trend_resp.get('trend'),
-            'strength': trend_resp.get('strength'),
-            'confidence': trend_resp.get('analysis', {}).get('confidence')
+            'trend': trend,
+            'strength': strength,
+            'confidence': confidence
         },
         'strategy_selection': {
             'primary': strategy_resp.get('selected_strategies'),
