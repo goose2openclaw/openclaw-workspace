@@ -499,3 +499,219 @@
 - **先定义再导入** — Python规范: 先有class才能import
 - **多实例端口管理** — 统一使用start_server.sh
 - **Session Startup必须检查服务状态** — 预防胜于治疗
+
+## 2026.03.29 - 北斗七鑫投资体系 + 25维度仿真V2
+
+### 重大架构更新
+
+#### 投资体系 (自顶向下)
+```
+北投七鑫投资组合 (可调参数 + 默认值)
+├── 投资工具 (5种)
+│   ├── 🐰 打兔子 - 前20主流加密货币 (仓位25%)
+│   ├── 🐹 打地鼠 - 其他加密货币，火控雷达锁定 (仓位20%)
+│   ├── 🔮 走着瞧 - 预测市场，高胜率预测 (仓位15%)
+│   ├── 👑 跟大哥 - 做市协作，MiroFish评估 (仓位15%)
+│   └── 🍀 搭便车 - 跟单分成，二级分包 (仓位10%)
+└── 打工工具 (2种)
+    ├── 💰 薅羊毛 - 空投猎手，杜绝授权 (仓位3%)
+    └── 👶 穷孩子 - 众包赚钱，EvoMap隔离 (仓位2%)
+```
+
+#### 趋势判断层
+- 声纳库趋势模型 - 多因子量化
+- 预言机 - 外部数据源
+- MiroFish - 100智能体共识预测
+- 市场情绪 - 情绪分析监控
+- 其他 - 补充数据源
+
+#### 闭环迭代 (自底向上)
+```
+数据与资金 → 逻辑 → 决策 → 操作 → (迭代)
+```
+
+### 25维度全向仿真V2
+
+| 层级 | 维度 | 评分 |
+|------|------|------|
+| A 投资组合 | A1-A3 | 82.0 |
+| B 投资工具 | B1-B7 | 89.1 |
+| C 趋势判断 | C1-C5 | 77.4 |
+| D 底层资源 | D1-D4 | 88.2 |
+| E 运营支撑 | E1-E6 | 94.9 |
+
+**综合评分: 87.6/100**
+
+### 关键文件
+- `mirofish_full_simulation_v2.py` - V2测试框架
+- `beidou_simulation_report.json` - 最新报告
+- `active_strategy.json` - 最优策略配置
+
+### CEO定期任务
+1. 每2小时: MiroFish 25维度评测
+2. 每周: 平台收益对比蒸馏
+3. 每月: 前后台全面评测
+4. 因子迭代: 监控退化度，更新参数
+
+### 平台自主运行
+- 回测矫正
+- 迭代参数
+- 监控市场异常和情绪
+- 预测
+- **杠杆率推荐** (专家模式)
+
+---
+
+## 2026.03.29 gstack 集成完成
+
+### Garry Tan gstack 安装
+- **来源**: github.com/garrytan/gstack (Y Combinator CEO)
+- **安装位置**: ~/.claude/skills/gstack
+- **复制到**: /root/.openclaw/workspace/skills/ (29个技能)
+- **功能**: 把AI agent变成虚拟工程团队
+
+### 29个 gstack 技能
+| 类别 | 技能 |
+|------|------|
+| 启动 | /office-hours (YC创业导师) |
+| CEO | /plan-ceo-review, /plan-eng-review, /plan-design-review |
+| 设计 | /design-consultation, /design-review, /design-shotgun |
+| 代码 | /review, /investigate, /cso (安全审计) |
+| QA | /qa, /qa-only, /browse, /benchmark |
+| 部署 | /ship, /land-and-deploy, /canary, /document-release |
+| 工具 | /retro, /autoplan, /codex, /careful, /freeze, /guard |
+| 浏览器 | /browse (真实Chromium), /connect-chrome |
+| 更新 | /gstack-upgrade |
+
+### gstack vs GO2SE CEO 对比
+| gstack | GO2SE | 状态 |
+|--------|-------|------|
+| /office-hours | MiroFish决策 | ✅ GO2SE更全面 |
+| /plan-ceo-review | 五条工作线 | ✅ GO2SE更主动 |
+| /review | 代码审查 | ⚠️ gstack更强 |
+| /qa | 浏览器测试 | ⚠️ gstack更强 |
+| /cso | 安全审计 | ✅ GO2SE独有 |
+| /canary | 监控 | ✅ GO2SE更主动 |
+
+### 集成方式
+- Skills: /root/.openclaw/workspace/skills/gstack-*
+- Binaries: ~/.claude/skills/gstack/bin/
+- Pre-built: ~/.claude/skills/gstack/browse/dist/, design/dist/
+
+### 关键洞察 (Garry Tan)
+- "AI让个人开发者能像20人团队一样快速交付"
+- gstack = 15个专家角色 × 8个工具 = 虚拟工程团队
+- 60天产出60万+行代码 (35%测试)
+
+---
+
+## 2026.03.29 GO2SE v7 — gstack集成版
+
+### 版本概述
+- **核心升级**: 5条工作线 → 15个专家角色 (29个gstack命令)
+- **集成来源**: github.com/garrytan/gstack (Y Combinator CEO)
+
+### v7组件
+| 文件 | 大小 | 功能 |
+|------|------|------|
+| gstack_manager.py | 16KB | 29个命令管理 + 3大流水线 |
+| routes_gstack.py | 9.7KB | REST API端点 |
+| gstack-panel.html | 18KB | UI侧边栏组件 |
+| deploy.sh | 4KB | 部署脚本 |
+| SPEC.md | 4.6KB | 规格文档 |
+
+### 29个gstack命令
+- startup: /office-hours (1)
+- ceo: /plan-ceo-review, /plan-eng-review, /plan-design-review (3)
+- design: /design-consultation, /design-review, /design-shotgun (3)
+- code: /review, /cso, /investigate (3)
+- qa: /qa, /qa-only, /benchmark, /browse (4)
+- deploy: /ship, /land-and-deploy, /document-release (3)
+- monitor: /canary (1)
+- tools: /retro, /autoplan, /codex (3)
+- safety: /careful, /freeze, /guard, /unfreeze (4)
+
+### 3大流水线
+1. **策略开发流**: idea → /office-hours → /plan-ceo-review → /plan-eng-review
+2. **代码审查流**: code → /review → /cso → /benchmark
+3. **交易监控流**: /canary → /retro → /browse
+
+### API端点
+- GET /api/gstack - 列出所有命令
+- POST /api/gstack/run - 运行命令
+- POST /api/gstack/strategy-flow - 策略开发流
+- GET /api/gstack/status - 状态检查
+
+### 部署位置
+- v7源码: /root/.openclaw/workspace/GO2SE_PLATFORM/versions/v7/
+- gstack技能: /root/.openclaw/workspace/skills/gstack-*
+- gstack源头: ~/.claude/skills/gstack
+
+---
+
+## 2026.03.29 gstack 15人团队评审报告
+
+### 评审结论 (15位gstack专家)
+
+| # | 角色 | 评分 | 核心建议 |
+|---|------|------|----------|
+| 1 | 🎯 YC创业导师 | ⭐⭐⭐⭐ | MVP优先:币圈信号→多策略→跨市场 |
+| 2 | 👔 CEO | ⭐⭐⭐⭐ | HOLD扩展，专注稳定性和验证 |
+| 3 | ⚙️ 工程经理 | ⭐⭐⭐ | 统一错误处理、请求超时30s上限 |
+| 4 | 🎨 设计师 | ⭐⭐⭐⭐ | 需onboarding flow、移动端适配 |
+| 5 | 🔍 代码审查员 | ⭐⭐⭐ | 异常被吞、魔法数字、asyncio混用 |
+| 6 | 🛡️ 安全官 | ⭐⭐⭐ | API key rotation、审计日志、限流 |
+| 7 | 🧪 QA负责人 | ⭐⭐ | 测试覆盖率>80%，需自动化pipeline |
+| 8 | 🚀 发布工程师 | ⭐⭐⭐ | 需staging、canary部署、自动rollback |
+| 9 | 📊 SRE | ⭐⭐⭐ | Golden Signals监控、Alertmanager |
+| 10 | ⚡ 性能工程师 | ⭐⭐⭐ | 策略并行、Redis缓存、数据库索引 |
+| 11 | 🔄 复盘工程师 | ⭐⭐⭐⭐ | 每周复盘ritual，每日standup |
+| 12 | 🌐 浏览器测试 | ⭐⭐ | 需扩展数据源:CoinGecko/CryptoPanic |
+| 13 | 🔒 冻结保护 | ⭐⭐⭐ | Panic Button、自动冻结规则 |
+| 14 | 🔗 Chrome连接 | ⭐⭐⭐ | 自动化登录、截图K线 |
+| 15 | 🤖 自动流水线 | ⭐⭐⭐ | 目标:零手动部署 |
+
+### TOP 5 改进项
+
+1. **系统稳定化** (SRE) - 崩溃恢复+监控
+2. **测试覆盖率** (QA) - >80%覆盖率
+3. **安全加固** (CSO) - API key rotation
+4. **性能优化** (性能工程师) - 并行+缓存
+5. **自动化流水线** (自动流水线) - 零手动部署
+
+### 高优先级改进清单
+
+```markdown
+### 系统稳定性
+- [x] health_check.sh (已有)
+- [ ] 自动崩溃恢复机制
+- [ ] 熔断规则 (8大风控)
+
+### 测试
+- [ ] 单元测试 >80%
+- [ ] E2E测试
+- [ ] 自动回归测试
+
+### 安全
+- [ ] API key rotation (90天)
+- [ ] 敏感配置加密
+- [ ] 审计日志
+
+### 性能
+- [ ] 策略并行扫描
+- [ ] Redis缓存
+- [ ] 数据库索引
+
+### 部署
+- [ ] staging环境
+- [ ] canary部署
+- [ ] 自动rollback
+```
+
+### 评审文档
+- 完整报告: `GO2SE_PLATFORM/versions/v7/gstack_15_personas_review.md`
+
+### Garry Tan的核心洞察
+- "AI让个人开发者能像20人团队一样快速交付"
+- gstack = 15个专家角色 × 8个工具 = 虚拟工程团队
+- 60天产出60万+行代码 (35%测试)
