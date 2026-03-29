@@ -24,7 +24,12 @@ router = APIRouter()
 @router.get("/ping")
 async def ping():
     """轻量级健康检查 (负载均衡器用)"""
-    return {"pong": True, "ts": datetime.now().isoformat()}
+    from fastapi import Response
+    return Response(
+        content='{"pong":true,"ts":"' + datetime.now().isoformat() + '"}',
+        media_type="application/json",
+        headers={"Cache-Control": "no-cache, no-store, must-revalidate", "X-Content-Type-Options": "nosniff"}
+    )
 
 
 @router.get("/health")

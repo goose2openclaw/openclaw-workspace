@@ -1,9 +1,10 @@
 {
   "version": 1,
-  "updated": "2026-03-28T18:59:25.386Z",
+  "updated": "2026-03-29T03:10:49.534Z",
   "domains": {
     "analysis": {
       "skills": [
+        "ClawPanel",
         "a2a-protocol",
         "aceforge",
         "agency-agents",
@@ -12,6 +13,7 @@
         "agent-retro",
         "ai-humanizer",
         "ai-web-automation",
+        "ai-website-cloner",
         "akshare-stock",
         "autoresearch",
         "awesome-openclaw-skills",
@@ -25,13 +27,16 @@
         "crypto-trading-bot",
         "data-analysis",
         "deep-research-pro",
+        "deer-flow",
         "defuddle",
         "evomap-tools",
         "frontend-design-pro",
         "frontend-performance",
         "go2se",
+        "go2se-deerflow",
         "go2se-skill",
         "gog",
+        "last30days-skill",
         "marketing-mode",
         "memos-cli",
         "mh-obsidian",
@@ -72,8 +77,8 @@
       "totalActivations": 0,
       "successRate": 0,
       "gapScore": 0.04,
-      "fallbackEvents": 2,
-      "totalEvents": 53
+      "fallbackEvents": 4,
+      "totalEvents": 94
     },
     "development": {
       "skills": [
@@ -111,9 +116,9 @@
       ],
       "totalActivations": 0,
       "successRate": 0,
-      "gapScore": 0,
-      "fallbackEvents": 0,
-      "totalEvents": 24
+      "gapScore": 0.02,
+      "fallbackEvents": 1,
+      "totalEvents": 57
     },
     "operations": {
       "skills": [
@@ -128,9 +133,9 @@
       ],
       "totalActivations": 0,
       "successRate": 0,
-      "gapScore": 0,
-      "fallbackEvents": 1,
-      "totalEvents": 305
+      "gapScore": 0.01,
+      "fallbackEvents": 3,
+      "totalEvents": 589
     },
     "monitoring": {
       "skills": [
