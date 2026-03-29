@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-03-29T11:22:14.697Z",
+  "updated": "2026-03-29T17:23:50.514Z",
   "domains": {
     "analysis": {
       "skills": [
@@ -76,9 +76,9 @@
       ],
       "totalActivations": 0,
       "successRate": 0,
-      "gapScore": 0.04,
+      "gapScore": 0.03,
       "fallbackEvents": 7,
-      "totalEvents": 187
+      "totalEvents": 273
     },
     "development": {
       "skills": [
@@ -116,9 +116,9 @@
       ],
       "totalActivations": 0,
       "successRate": 0,
-      "gapScore": 0.02,
-      "fallbackEvents": 3,
-      "totalEvents": 135
+      "gapScore": 0.04,
+      "fallbackEvents": 2,
+      "totalEvents": 51
     },
     "operations": {
       "skills": [
@@ -134,8 +134,8 @@
       "totalActivations": 0,
       "successRate": 0,
       "gapScore": 0,
-      "fallbackEvents": 4,
-      "totalEvents": 957
+      "fallbackEvents": 1,
+      "totalEvents": 856
     },
     "monitoring": {
       "skills": [
@@ -153,7 +153,7 @@
       "successRate": 0,
       "gapScore": 0,
       "fallbackEvents": 0,
-      "totalEvents": 1
+      "totalEvents": 5
     },
     "testing": {
       "skills": [
@@ -179,7 +179,7 @@
       "successRate": 0,
       "gapScore": 0,
       "fallbackEvents": 0,
-      "totalEvents": 20
+      "totalEvents": 2
     },
     "communication": {
       "skills": [

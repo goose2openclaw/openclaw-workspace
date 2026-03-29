@@ -1,5 +1,166 @@
 # Capability Evolution Log — 2026-03-29
 
+## Cycle #9 — 17:10 UTC
+
+---
+
+## 1. 分析结果
+
+### 1.1 系统健康状态
+
+| 指标 | 状态 | 详情 |
+|------|------|------|
+| GO2SE服务 | ✅ UP | :8004 v6.3.2 healthy, :8005 running |
+| 磁盘空间 | ⚠️ 95%满 | 210G/223G (持续高位) |
+| OpenClaw Gateway | ✅ 运行中 | v22.22.1 |
+| Git仓库 | ✅ 存在 | 10 commits, 正常工作 |
+| Skills追踪 | 🔴 失效 | 全部136个skills 0% successRate |
+
+### 1.2 Skills追踪系统Critical故障
+
+**症状**: forge_registry返回136个skills，全部0 activationCount, 0 successRate
+**证据**:
+- skill-health.jsonl: 0字节，未记录任何健康事件
+- patterns.jsonl: 1186行（正常）
+- candidates.jsonl: 0字节（无新候选）
+- capability-tree.json: 存在但gapScore基于fallback推算
+
+**根因**: forge/aceforge激活事件未正确记录到追踪系统
+
+### 1.3 Evolver执行结果
+
+| 阶段 | 结果 |
+|------|------|
+| Scan | 识别signals: recurring_error, server_busy, perf_bottleneck |
+| Gene Selection | gene_gep_repair_from_errors |
+| Bridge Spawn | executor启动 |
+| Solidify | 未产生patch |
+| 产出 | candidates.jsonl仍为空 |
+
+---
+
+## 2. 改进点
+
+### 2.1 P0 - Skills追踪修复
+
+**问题**: 136个skills激活事件未被记录
+**分析**:
+- forge_registry显示全部0激活，但实际skills正在被使用
+- skill-health.jsonl为0字节
+- 可能是事件发送管道断裂或追踪未启用
+
+**建议**:
+1. 检查OpenClaw配置中forge追踪是否启用
+2. 验证skill调用时是否触发activation事件
+3. 检查skill-health.jsonl写入权限
+
+### 2.2 P1 - Cron Timeout调整
+
+**问题**: 300s对复杂任务不足，导致GO2SE迭代等任务超时
+**证据**: Cycle #8中3个cron job连续超时
+**建议**: 评估各任务实际耗时，调整timeout参数
+
+### 2.3 P1 - 磁盘空间根本解决
+
+**问题**: 95%+持续高位，威胁系统稳定
+**上次清理**: 释放~1GB（npm-cache, pip-unpack等）
+**根本解决**: 需要删除旧venv备份，清理>30天文件
+
+---
+
+## 3. 已确认修复（对比Cycle #8）
+
+| 修复项 | Cycle #8 | Cycle #9 |
+|--------|----------|----------|
+| GO2SE服务 | DOWN | UP ✅ |
+| Git仓库 | 缺失 | 存在 ✅ |
+| 磁盘 | 97% | 95% (略改善) |
+| Cron超时 | 3 job超时 | 仍存在 (未修复) |
+| Skills追踪 | 0% | 0% (仍失效) |
+
+---
+
+## 4. 下一步行动
+
+### P0 (立即):
+- 调查forge追踪管道 - 为什么skill激活未被记录
+
+### P1 (24h内):
+- 调整cron timeout: 300s → 600s
+- 深度磁盘清理: 目标释放>20GB
+
+### P2 (本周):
+- 修复或重新初始化forge追踪系统
+- 建立磁盘空间自动监控+告警
+
+---
+
+## 5. AceForge Gap Analysis结果
+
+### 5.1 Tool Gaps (4个HIGH严重性)
+
+| Tool | 严重性 | 问题 | 证据 |
+|------|--------|------|------|
+| read | 🔴 HIGH | chain break | 12个工作流序列中作为链端点失败 |
+| edit | 🔴 HIGH | chain break | 10个工作流序列中作为链端点失败 |
+| exec | 🔴 HIGH | retry storm | 12次快速重试风暴（3+次连续调用） |
+| web_search | 🔴 HIGH | 45%成功率 | 11次追踪，Bot检测挑战 |
+
+### 5.2 Behavior Gaps
+
+| Gap | 频率 | 类型 |
+|-----|------|------|
+| operations: infrastructure | 6x | 行为模式 |
+
+### 5.3 Cross-Session Candidates (工具使用模式)
+
+| Tool | 次数 | 会话数 | 成功率 |
+|------|------|--------|--------|
+| exec | 787x | 10 | 100% |
+| read | 37x | 9 | 95% |
+| edit | 28x | 4 | 93% |
+| write | 12x | 5 | 100% |
+
+### 5.4 Gap根因分析
+
+1. **read/edit chain break**: 工作流中连续使用read→edit时，edit作为终点失败率较高，可能是文件状态不同步
+2. **exec retry storm**: Agent快速重复调用exec，表明对长时间操作缺乏预判
+3. **web_search bot检测**: DuckDuckGo反爬机制触发的频率较高
+
+---
+
+## 6. 进化引擎状态
+
+```json
+{
+  "cycle": 9,
+  "timestamp": "2026-03-29T17:10:00Z",
+  "evolver_version": "1.27.3",
+  "system_health": {
+    "go2se_8004": "healthy",
+    "go2se_8005": "running",
+    "disk": "95%",
+    "gateway": "ok",
+    "git": "ok"
+  },
+  "critical_issues": [
+    "forge skill tracking completely broken (0 activations across 136 skills)"
+  ],
+  "improvements_from_cycle_8": [
+    "GO2SE service restored",
+    "git repo initialized",
+    "disk slightly improved 97%->95%"
+  ],
+  "pending_fixes": [
+    "cron timeout insufficient",
+    "disk space root cause unresolved",
+    "skills tracking needs investigation"
+  ]
+}
+```
+
+---
+
 ## Cycle #8 — 10:24 UTC
 
 ---

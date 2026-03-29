@@ -1,0 +1,12 @@
+{
+  "strategy": "macd_cross",
+  "stop_loss": 0.05,
+  "take_profit": 0.05,
+  "position_size": 0.05,
+  "symbol": "BTC/USDT",
+  "total_return": -0.23,
+  "sharpe_ratio": -0.33,
+  "win_rate": 0.0,
+  "max_drawdown": 0.46,
+  "updated_at": "2026-03-29T17:14:57.184779"
+}

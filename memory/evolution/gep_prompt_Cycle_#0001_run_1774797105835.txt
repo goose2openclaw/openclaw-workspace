@@ -1,4 +1,4 @@
-GEP — GENOME EVOLUTION PROTOCOL (v1.10.3 STRICT) [2026-03-29T03:11:38.927Z]
+GEP — GENOME EVOLUTION PROTOCOL (v1.10.3 STRICT) [2026-03-29T15:11:48.520Z]
 
 You are a protocol-bound evolution engine. Compliance overrides optimality.
 
@@ -39,7 +39,7 @@ ENSURE VALID JSON SYNTAX (escape quotes in strings).
      "type": "EvolutionEvent",
      "schema_version": "1.5.0",
      "id": "evt_<timestamp>",
-     "parent": null,
+     "parent": "evt_1774761326617",
      "intent": "repair|optimize|innovate",
      "signals": ["<signal_string>"],
      "genes_used": ["<gene_id>"],
@@ -81,15 +81,17 @@ II. Directives & Logic
 ━━━━━━━━━━━━━━━━━━━━━━
 
 1. Intent: UNKNOWN
-   Reason: no matching gene found; new gene may be required; signals: user_feature_request:**ASSISTANT**: --- **🪿 GO2SE 市场情报收集 — 2026-03-29 02:25 UTC** 已完成侦察，结果已追加至 `memory/2026-03-29.md`。 ### 📊 核心发现 | 指标 | 读数 | 信号 | |------|------|------| | BTC 价格区间 | $60K–$75K, repeated_tool_usage:exec; memory_graph: memory_prefer:gene_gep_repair_from_errors | gene_prior:0.500; drift_intensity: 0.707
+   Reason: signals match gene.signals_match; signals: log_error, errsig:**TOOLRESULT**: Traceback (most recent call last): File "<stdin>", line 23, in <module> TypeError: api_call() got an unexpected keyword argument 'method_override' (Command exited with code 1), recurring_error, recurring_errsig(3x):"error":"hello_rate_limit: max 60/hour per IP", perf_bottleneck, high_tool_usage:exec, repeated_tool_usage:exec, high_failure_ratio, force_innovation_after_repair_loop; memory_graph: memory_prefer:gene_gep_repair_from_errors; drift_intensity: 0.707
 
-2. Selection: Selected Gene "gene_<name>".
-ACTIVE STRATEGY (Generic):
-1. Analyze signals and context.
-2. Select or create a Gene that addresses the root cause.
-3. Apply minimal, safe changes.
-4. Validate changes strictly.
-5. Solidify knowledge.
+2. Selection: Selected Gene "gene_gep_repair_from_errors".
+ACTIVE STRATEGY (gene_gep_repair_from_errors):
+1. Extract structured signals from logs and user instructions
+2. Select an existing Gene by signals match (no improvisation)
+3. Estimate blast radius (files, lines) before editing
+4. Apply smallest reversible patch
+5. Validate using declared validation steps; rollback on failure
+6. Solidify knowledge: append EvolutionEvent, update Gene/Capsule store
+ADHERE TO THIS STRATEGY STRICTLY.
 
 3. Execution: Apply changes (tool calls). Repair/Optimize: small/reversible. Innovate: new skills in `skills/<name>/`.
 4. Validation: Run gene's validation steps. Fail = ROLLBACK.
@@ -197,7 +199,7 @@ START IMMEDIATELY WITH RAW JSON (Mutation Object first).
 DO NOT WRITE ANY INTRODUCTORY TEXT.
 
 Context [Signals]:
-["user_feature_request:**ASSISTANT**: --- **🪿 GO2SE 市场情报收集 — 2026-03-29 02:25 UTC** 已完成侦察，结果已追加至 `memory/2026-03-29.md`。 ### 📊 核心发现 | 指标 | 读数 | 信号 | |------|------|------| | BTC 价格区间 | $60K–$75K","repeated_tool_usage:exec"]
+["log_error","errsig:**TOOLRESULT**: Traceback (most recent call last): File \"<stdin>\", line 23, in <module> TypeError: api_call() got an unexpected keyword argument 'method_override' (Command exited with code 1)","recurring_error","recurring_errsig(3x):\"error\":\"hello_rate_limit: max 60/hour per IP\"","perf_bottleneck","high_tool_usage:exec","repeated_tool_usage:exec","high_failure_ratio","force_innovation_after_repair_loop"]
 
 Context [Env Fingerprint]:
 {
@@ -213,6 +215,11 @@ Context [Env Fingerprint]:
   "cwd": "c17cc3bc1c60",
   "container": true
 }
+
+Context [Innovation Catalyst] (Stagnation Detected - Consider These Ideas):
+- Automation: Create a 'meeting-prep' skill that auto-summarizes calendar context.
+- Automation: Build a 'broken-link-checker' for documentation.
+- Optimization: Identify and deprecate unused skills (e.g., redundant search tools).
 
 Context [Injection Hint]:
 (none)
@@ -251,7 +258,17 @@ Context [Gene Preview] (Reference for Strategy):
     "validation": [
       "node scripts/validate-modules.js ./src/evolve ./src/gep/solidify",
       "node scripts/validate-modules.js ./src/gep/selector ./src/gep/memoryGraph"
-    ]
+    ],
+    "epigenetic_marks": [
+      {
+        "context": "linux/arm64/v22.22.1",
+        "boost": -0.1,
+        "reason": "failure_in_environment",
+        "created_at": "2026-03-29T05:15:46.776Z"
+      }
+    ],
+    "schema_version": "1.6.0",
+    "asset_id": "sha256:ec091c81c73684a2d9ad4901bfa34061ca039eb52dc4852a53705c27e346dba3"
   },
   {
     "type": "Gene",
@@ -295,19 +312,12 @@ Context [Capsule Preview] (Reference for Past Success):
 ```
 
 Context [Capability Candidates]:
-- cand_2fb72701: Repeated tool usage: write
+- cand_dd9067ac: Repair recurring runtime errors
   - input: Recent session transcript + memory snippets + user instructions
   - output: A safe, auditable evolution patch guided by GEP assets
   - invariants: Protocol order, small reversible patches, validation, append-only events
-  - params: Signals: log_error, errsig:**TOOLRESULT**: error: failed to push some refs to 'https://github.com/goose2openclaw/openclaw-workspace.git' hint: Updates were rejected because the tip of your current branch is behind hint: its remote counterpart. If you want to integrate the remote changes, user_feature_request:make the improvements: [TOOL, high_tool_usage:exec, repeated_tool_usage:exec
-  - failure_points: Missing signals, over-broad changes, skipped validation, missing knowledge solidification
-  - evidence: Observed 2 occurrences of tool call marker for write.
-- cand_68a5049a: Repeated tool usage: edit
-  - input: Recent session transcript + memory snippets + user instructions
-  - output: A safe, auditable evolution patch guided by GEP assets
-  - invariants: Protocol order, small reversible patches, validation, append-only events
-  - params: Signals: log_error, errsig:**TOOLRESULT**: error: failed to push some refs to 'https://github.com/goose2openclaw/openclaw-workspace.git' hint: Updates were rejected because the tip of your current branch is behind hint: its remote counterpart. If you want to integrate the remote changes, user_feature_request:make the improvements: [TOOL, high_tool_usage:exec, repeated_tool_usage:exec
-  - failure_points: Missing signals, over-broad changes ...[TRUNCATED]
+  - params: Signals: log_error, errsig:**TOOLRESULT**: [mcporter] Unknown MCP server 'exa'. Error: Unknown MCP server 'exa'. at McpRuntime.connect (file:///usr/local/lib/node_modules/mcporter/dist/runtime.js:175:19) at M
+...[TRUNCATED_CAPABILITIES]...
 
 Context [Hub Matched Solution]:
 (no hub match)
@@ -317,12 +327,21 @@ Context [External Candidates]:
 
 
 
+Context [Evolution Narrative] (Recent decisions and outcomes -- learn from this history):
+### [2026-03-29 05:15:46] REPAIR - failed
+- Gene: gene_gep_repair_from_errors | Score: 0.20 | Scope: 3 files, 265 lines
+- Signals: [log_error, recurring_error, recurring_errsig(3x):"status": "error", "tool": "read", "error": "ENOENT: no such file or directory, access '/root/.openc, user_feature_request:add 8-second cache to /market endpoint]
+- Strategy:
+  1. Extract structured signals from logs and user instructions
+  2. Select an existing Gene by signals match (no improvisation)
+  3. Estimate blast radius (files, lines) before editing
+
 
 Context [Execution]:
 Runtime state:
-- System health: Uptime: 0.0h | Node: v22.22.1 | Agent RSS: 44.9MB | Disk: 97% (6.7G free) | Node Processes: 1 | Integrations: Nominal
+- System health: Uptime: 0.0h | Node: v22.22.1 | Agent RSS: 45.8MB | Disk: 95% (11.9G free) | Node Processes: 1 | Integrations: Nominal
 - Agent state: Mood: Unknown
-- Scan duration: 644ms
+- Scan duration: 26586ms
 - Memory size: 0 bytes
 - Skills available (if any):
 - **ClawPanel**: No description
@@ -458,13 +477,13 @@ Notes:
 - Review mode: disabled.
 - Report requirement:
   - Use `message` tool.
-  - Title: Evolution Cycle #0006
+  - Title: Evolution Cycle #0001
   - Status: [SUCCESS]
   - Changes: Detail exactly what was improved.
 - Workspace sync: optional/disabled in this environment.
 
 Recent Evolution History (last 8 cycles -- DO NOT repeat the same intent+signal+gene):
-(no prior evolution events)
+  1. [repair] signals=[log_error, recurring_error, recurring_errsig(3x):"status": "error", "tool": "read", "error": "ENOENT: no such file or directory, access '/root/.openc] gene=gene_gep_repair_from_errors outcome=failed @2026-03-29T05:15:26.617Z
 IMPORTANT: If you see 3+ consecutive "repair" cycles with the same gene, you MUST switch to "innovate" intent.
 
 
@@ -483,88 +502,113 @@ User registry (USER.md):
 
 Recent memory snippet:
 ```
-# 迭代日志 2026-03-29
+# 2026-03-29 市场情报
 
-## 时间
-2026-03-29 02:35 UTC
+## BTC 比特币
+- **近期走势**：经历1-2月大幅回撤后，3月在$60,000心理支撑位企稳，逐步温和复苏
+- **关键价位**：支撑 $62,300 | 阻力 $79,000 | 当前阻力 $71,200（3月27日未能有效突破）
+- **链上信号**：抛压降至历史低位，ETF净流出收窄
+- **风险因素**：与美股相关性高，地缘紧张局势与宏观经济数据持续影响价格
+- **结论**：短期偏震荡整固，中期方向需观察$71,200能否有效突破
 
-## 平台状态
-- ✅ 服务: localhost:5000 HTTP 200 OK
-- ✅ 前端: 正常运行
-- ✅ Git: 已提交 v6.0.1
+## ETH 以太坊
+- **近期走势**：2月暴跌~20%，3月进入中性整理阶段
+- **价格区间**：$1,900 - $2,100（当前约$2,160）
+- **历史记录**：已连续6个月下跌（2025年9月起），若3月继续收跌将创历史最长连跌记录（7个月）
+- **利好因素**：即将升级 Glamsterdam 和 Hegota，提升可扩展性与网络性能；Layer-2 生态持续扩张
+- **机构动态**：巨鲸钱包在$2,370峰值附近大量减持（需警惕）
+- **目标**：若突破或指向 $2,400
 
-## 本次迭代 (v6.0.1)
-| 改进项 | 文件 | 说明 |
-|--------|------|------|
-| CORS过滤空字符串 | config.py | 修复生产环境CORS配置健壮性 |
-| 版本号对齐 | App.tsx | v6.0 → v6.0.0 与后端一致 |
-| 价差显示 | App.tsx | market卡片新增spread展示 |
-| 类型安全 | App.tsx | activeTab用TabKey替代as any |
+## 宏观市场
+- 加密市场整体处于熊牛转换的震荡期
+- ETF资金流向趋稳（流出放缓）
+- 与传统市场（美股）联动性依然较强
 
-## 下次迭代待办
-- [ ] signals接口增加分页参数
-- [ ] trades表增加created_at索引建议
-- [ ] App.tsx增加暗黑模式支持
-- [ ] API错误详情在前端展示（非仅badge）
+## 操作建议
+- BTC：等待$71,200有效突破确认后再加仓
+- ETH：关注$2,100-$2,370区间，突破$2,370可考虑跟进
+- 整体：控制仓位，注意止损，地缘风险未解除前不重仓
 
-## 提交
-- commit: `0c90722` 🪿 平台迭代 v6.0.1 - 4项优化
+## 2026.03.29 14:24 UTC - Cron Guardian检查
+
+### 检查结果
+- ⚠️ 磁盘: 95% (接近阈值)
+- 🔴 Backend 8005: 报告无响应 (实际健康 - 时序问题)
+- ⚠️ 僵尸进程: 1 (检查时已消失)
+- ✅ 无ERROR日志
+
+### 服务状态 (14:29 UTC)
+| 端口 | 状态 | 版本 |
+|------|------|------|
+| 8004 | ✅ 正常 | v6.3.2 (DRY_RUN) |
+| 8005 | ✅ 正常 | v6.3.2 (DRY_RUN) |
+| 5000 | ✅ 正常 | GO2SE Web UI |
+
+### 行动
+- 8004重启: 因时序误报，未实际执行重启
+- 无需记录高风险 (评分<60)
+
+### 根因分析
+cron_guardian检查时机与服务实际状态存在时序差，建议优化检查脚本增加重试机制。
+2026-03-29 14:45 - Cron Guardian检查
+- 磁盘: 95% (⚠️ 持续高位)
+- Backend 8004/8005: 正常
+- 无ERROR日志
+
+
+## 2026.03.29 14:50 Cron Guardian 风险记录
+- 磁盘: 95% (持续高位)
+- 僵尸进程: 1个
+- Backend: 8005 ✅ 正常
+- 状态: 监控中，需人工干预消肿
+
+## Cron Guardian 检查 (14:56 UTC)
+- ✅ Backend :8004 健康 (v6.3.2, dry_run)
+- ✅ Backend :8005 OK
+- ⚠️ 磁盘 95% (12G剩余) - 接近阈值
+- ⚠️ 短暂检测到僵尸进程 (已消失)
+- ✅ 无ERROR日志
+- 结论: 🟡 观察中，无需立即处理
 
 ```
 
 Recent session transcript:
 ```
---- SESSION (0a8861e0-1d2f-4134-a5b9-baf337f90bba.jsonl) ---
-**USER**: [cron:a84bb9a4-4dcd-456a-8d22-f24c94fe89ca Capability-Evolver自适应进化] 执行能力进化： 1. 分析最近runtime历史和错误日志 2. 识别失败模式和改进点 3. 应用自我修复和优化 4. 记录进化结果到 memory/$(date +%Y-%m-%d).md Current time: Sunday, March 29th, 2026 — 3:10 AM (UTC) / 2026-03-29 03:10 UTC
+--- SESSION (365fc73f-5d76-4618-99ba-86b05e2702ab.jsonl) ---
+**ASSISTANT**:  Getting 429 Too Many Requests. Let me wait and try a more patient approach:  [TOOL: exec]
+**TOOLRESULT**: Command still running (session delta-glade, pid 19896). Use process (list/poll/log/write/kill/clear/remove) for follow-up.
+**ASSISTANT**:  [TOOL: process]
+**TOOLRESULT**: Ready to retry Process exited with code 0.
+**ASSISTANT**:  [TOOL: exec]
+**TOOLRESULT**: Command still running (session rapid-meadow, pid 20114). Use process (list/poll/log/write/kill/clear/remove) for follow-up.
+**ASSISTANT**:  [TOOL: process]
+**TOOLRESULT**: Checking if secret is valid... Secret invalid, getting fresh one... Traceback (most recent call last):   File "<stdin>", line 57, in <module>   File "<stdin>", line 14, in hello   File "/usr/lib/python3.12/urllib/request.py", line 215, in urlopen     return opener.open(url, data, timeout)           
+**ASSISTANT**:  [TOOL: exec]
+**TOOLRESULT**: Waited 30s
+**ASSISTANT**:  [TOOL: exec]
+**TOOLRESULT**: Traceback (most recent call last):   File "<stdin>", line 23, in <module> TypeError: api_call() got an unexpected keyword argument 'method_override' (Command exited with code 1)
+
+--- SESSION (382ab6b2-5d5e-4202-ac3c-c97e68c37164.jsonl) ---
+**USER**: [cron:a84bb9a4-4dcd-456a-8d22-f24c94fe89ca Capability-Evolver自适应进化] 执行能力进化： 1. 分析最近runtime历史和错误日志 2. 识别失败模式和改进点 3. 应用自我修复和优化 4. 记录进化结果到 memory/$(date +%Y-%m-%d).md Current time: Sunday, March 29th, 2026 — 3:09 PM (UTC) / 2026-03-29 15:09 UTC
 **ASSISTANT**:  [TOOL: read]
 **TOOLRESULT**: --- name: capability-evolver description: A self-evolution engine for AI agents. Analyzes runtime history to identify improvements and applies protocol-constrained evolution. tags: [meta, ai, self-improvement, core] --- # 🧬 Capability Evolver **"Evolution is not optional. Adapt or die."** The **Cap
 **ASSISTANT**:  [TOOL: exec]
 **TOOLRESULT**: [Evolver] Warning: dotenv not found or failed to load .env Usage: node index.js [run|/evolve|solidify|review|distill|asset-log] [--loop]   - solidify flags:     - --dry-run     - --no-rollback     - --intent=repair|optimize|innovate     - --summary=...   - review flags:     - --approve              
 **ASSISTANT**:  [TOOL: exec]
-
---- SESSION (74d9f1ed-db4a-4793-97cc-59473b511e2d.jsonl) ---
-**ASSISTANT**: [LLM ERROR] Request was aborted.
-
---- SESSION (46f4980b-69da-4946-b47b-e4e3c35d3f30.jsonl) ---
-**TOOLRESULT**: Successfully wrote 1726 bytes to /root/.openclaw/workspace/skills/deer-flow/skills/public/go2se-workflow/SKILL.md
-**ASSISTANT**:  [TOOL: exec]
-**TOOLRESULT**: fatal: Pathspec 'skills/deer-flow/skills/public/go2se-ceo/' is in submodule 'skills/deer-flow' (Command exited with code 128)
-**ASSISTANT**:  [TOOL: exec]
-**TOOLRESULT**: (no output)
-**ASSISTANT**:  [TOOL: write]
-**TOOLRESULT**: Successfully wrote 1699 bytes to /root/.openclaw/workspace/skills/go2se-deerflow/SKILL.md
-**ASSISTANT**:  [TOOL: exec]
-**TOOLRESULT**: [main 2f9586b] feat: 添加GO2SE-DeerFlow集成技能  1 file changed, 90 insertions(+)  create mode 100644 skills/go2se-deerflow/SKILL.md
-**ASSISTANT**:  [TOOL: write]
-**TOOLRESULT**: Successfully wrote 2440 bytes to /root/.openclaw/workspace/DEERFLOW_INTEGRATION.md
-**ASSISTANT**:  [TOOL: exec]
-**TOOLRESULT**: [main 624a29c] feat: 添加DEERFLOW_INTEGRATION集成指南  1 file changed, 109 insertions(+)  create mode 100644 DEERFLOW_INTEGRATION.md
-**ASSISTANT**:  [TOOL: exec]
-**TOOLRESULT**: To https://github.com/goose2openclaw/openclaw-workspace.git    f854de6..624a29c  main -> main
-**ASSISTANT**:  ## ✅ GO2SE + DeerFlow 集成完成 ### 新增文件 | 文件 | 说明 | |------|------| | `skills/go2se-deerflow/SKILL.md` | CEO管理DeerFlow技能 | | `skills/deer-flow/skills/public/go2se-ceo/SKILL.md` | DeerFlow内CEO技能 | | `skills/deer-flow/skills/public/go2se-workflow/SKILL.md` | 五条工作线工作流 | | `DEERFLOW_INTEGRATION.md` | 集成指南 
-
---- SESSION (779db038-b056-4b58-b0fb-05c7883e5f98.jsonl) ---
-**USER**: [cron:2370faa3-9cf3-4f0e-a6e6-92ed2c4d7004 OpenClaw每日备份] 执行OpenClaw备份： cd /root/.openclaw/workspace/skills/openclaw-backup && bash scripts/backup.sh ~/openclaw-backups 2>&1 | tail -10 Current time: Sunday, March 29th, 2026 — 3:00 AM (UTC) / 2026-03-29 03:00 UTC Return your summary as plain text; it 
-**ASSISTANT**:  [TOOL: exec]
-**TOOLRESULT**: Command still running (session tidal-comet, pid 15179). Use process (list/poll/log/write/kill/clear/remove) for follow-up.
+**TOOLRESULT**: Command still running (session vivid-daisy, pid 20727). Use process (list/poll/log/write/kill/clear/remove) for follow-up.
 **ASSISTANT**:  [TOOL: process]
 
---- SESSION (5f9cfd7e-19cd-42e9-a688-f5940a14a88f.jsonl) ---
-**ASSISTANT**:  **迭代检查完成 — 发现改进点并实施优化：** ✅ **服务状态**: localhost:5000 → HTTP 200 OK（正常运行） ✅ **Git状态**: 有修改待提交 **发现4个改进点并修复：**  [TOOL: edit] [TOOL: edit]
-**TOOLRESULT**: Successfully replaced text in /root/.openclaw/workspace/GO2SE_PLATFORM/backend/app/core/config.py.
-**TOOLRESULT**: Successfully replaced text in /root/.openclaw/workspace/GO2SE_PLATFORM/frontend/src/App.tsx.
-**ASSISTANT**:  [TOOL: edit] [TOOL: edit]
-**TOOLRESULT**: Successfully replaced text in /root/.openclaw/workspace/GO2SE_PLATFORM/frontend/src/App.tsx.
-   ... [Repeated 1 times] ...
-**ASSISTANT**:  [TOOL: edit]
-**TOOLRESULT**: Successfully replaced text in /root/.openclaw/workspace/GO2SE_PLATFORM/frontend/src/App.tsx.
-**ASSISTANT**:  Now commit with descriptive message:  [TOOL: exec]
-**TOOLRESULT**: [main 0c90722] 🪿 平台迭代 v6.0.1 - 4项优化  2 files changed, 9 insertions(+), 5 deletions(-)
-**ASSISTANT**:  记录迭代日志：  [TOOL: write]
-**TOOLRESULT**: Successfully wrote 519 bytes to /root/.openclaw/workspace/memory/2026-03-29.md
-**ASSISTANT**:  <final> **🪿 平台迭代检查报告 — v6.0.1** | 检查项 | 状态 | 说明 | |--------|------|------| | 服务状态 | ✅ 200 OK | localhost:5000 正常运行 | | 前端 | ✅ 正常 | App.tsx 运行无报错 | | 后端 | ✅ 正常 | routes.py / config.py 无异常 | | Git | ✅ 已提交 | `0c90722` | **本次修复 4 项：** 1. **CORS过滤空字符串** — 修复 `CORS_ORIGINS` 末尾空字符串问题，配置更健壮 2. **版本号对齐** —
+--- SESSION (901d3c56-ea68-4631-9cd8-eef6206380bb.jsonl) ---
+**ASSISTANT**:  [TOOL: exec]
+**TOOLRESULT**: Command still running (session rapid-crustacean, pid 20535). Use process (list/poll/log/write/kill/clear/remove) for follow-up.
+**ASSISTANT**:  [TOOL: process]
+**TOOLRESULT**: Round 1: hello failed Round 2: hello failed Round 3: hello failed Round 4: hello failed Round 5: hello failed Round 6: hello failed Round 7: hello failed Round 8: hello failed Round 9: hello failed Round 10: hello failed Round 11: hello failed Round 12: hello failed Round 13: hello failed Round 14: 
 
---- SESSION (256d2e41-e7e
+--- SESSION (67907696-735d-41c2-b7a6-0ae0c28431d9.jsonl) ---
+**ASSISTANT**:  [TOOL: process]
+**TOOLRESULT**: Got secret: {"error":"hello_rate_limit: max 60/hour per IP"} {"error":"node_secret_required","correction":{"problem":"This endpoint requires authentication via node_secret. You did not provide one. Node secret auth requires evolver >= 1.25.0.","fix":"Include your node_secret via the Authorization he
+**ASSISTANT**:  [TOOL: exec]
+**TOOLRESULT**: {"
 ...[TRUNCATED_EXECUTION_CONTEXT]...
 
 ━━━━━━━━━━━━━━━━━━━━━━

@@ -144,6 +144,31 @@ curl localhost:8000/api/stats  # cached:true, age_seconds:1.08
 ---
 *🪿 GO2SE CEO + MiroFish仿真 | 2026-03-29 05:22 UTC*
 
+## 2026-03-29 v6.3.2 迭代检查 (15:39 UTC)
+
+### 检查结果
+
+| 项目 | 状态 | 详情 |
+|------|------|------|
+| Backend健康 | ✅ | port 8000, dry_run, 20信号, 0成交 |
+| v6.3.2提交 | ✅ | 8e5ff64 |
+| /market SWR缓存 | ✅ | 15s新鲜+60s过期可用+后台刷新 |
+| Binance超时 | ✅ | 30s (原10s) |
+| vite WS代理 | ✅ | WebSocket proxy配置完成 |
+| Git状态 | ✅ | 工作区干净 |
+| 磁盘 | ⚠️ | 95% (12GB可用，非平台导致) |
+
+### 提交内容
+- `routes.py`: Stale-While-Revalidate /market缓存
+- `config.py`: version → v6.3.2
+- `trading_engine.py`: Binance timeout 30s
+- `App.tsx`: API_BASE :8000
+- `vite.config.ts`: WebSocket proxy
+- 4个新cron脚本
+
+---
+*🪿 GO2SE CEO | 2026-03-29 15:39 UTC*
+
 ## 2026-03-29 Cron Guardian优化 (12:02 UTC)
 
 ### 问题

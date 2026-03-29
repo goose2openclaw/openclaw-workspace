@@ -10,6 +10,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.core.database import init_db
 from app.api import routes
+from app.api.strategies_extra import router as strategies_extra_router
+from app.api.oracle.mirofish import router as mirofish_router
 
 # 日志配置
 logging.basicConfig(
@@ -63,6 +65,8 @@ async def shutdown_event():
 
 # 注册路由
 app.include_router(routes.router, prefix="/api", tags=["API"])
+app.include_router(strategies_extra_router, prefix="/api", tags=["额外策略"])
+app.include_router(mirofish_router, tags=["MiroFish预言机"])
 
 
 @app.get("/")

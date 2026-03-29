@@ -1,7 +1,7 @@
 {
   "last_run": {
-    "run_id": "run_1774768495657",
-    "created_at": "2026-03-29T07:14:59.761Z",
+    "run_id": "run_1774804250014",
+    "created_at": "2026-03-29T17:10:50.689Z",
     "parent_event_id": "evt_1774761326617",
     "selected_gene_id": "gene_gep_repair_from_errors",
     "selected_capsule_id": null,
@@ -9,19 +9,16 @@
       "selected": "gene_gep_repair_from_errors",
       "reason": [
         "signals match gene.signals_match",
-        "signals: log_error, errsig:**TOOLRESULT**: [mcporter] Unknown MCP server 'exa'. Error: Unknown MCP server 'exa'. at McpRuntime.connect (file:///usr/local/lib/node_modules/mcporter/dist/runtime.js:175:19) at McpRuntime.callTool (file:///usr/local/lib/node_modules/mcporter/dist/runtime.js, protocol_drift, user_feature_request:write the evolution log for today: [TOOL, high_tool_usage:exec, repeated_tool_usage:exec, high_failure_ratio, force_innovation_after_repair_loop",
-        "memory_graph: memory_prefer:gene_gep_repair_from_errors | memory_ban:gene_gep_repair_from_errors | gene_prior:0.286",
+        "signals: recurring_error, recurring_errsig(4x):\"error\":\"server_busy\",\"retry_after_ms\":3000,\"tier\":\"free\",\"upgrade_hint\":\"Premium and Ultra plans ge, perf_bottleneck, high_tool_usage:exec, repeated_tool_usage:exec, high_failure_ratio, force_innovation_after_repair_loop",
+        "memory_graph: memory_prefer:gene_gep_repair_from_errors | gene_prior:0.667",
         "drift_intensity: 0.707"
       ],
-      "alternatives": [
-        "gene_gep_optimize_prompt_and_assets"
-      ]
+      "alternatives": []
     },
     "signals": [
-      "log_error",
-      "errsig:**TOOLRESULT**: [mcporter] Unknown MCP server 'exa'. Error: Unknown MCP server 'exa'. at McpRuntime.connect (file:///usr/local/lib/node_modules/mcporter/dist/runtime.js:175:19) at McpRuntime.callTool (file:///usr/local/lib/node_modules/mcporter/dist/runtime.js",
-      "protocol_drift",
-      "user_feature_request:write the evolution log for today: [TOOL",
+      "recurring_error",
+      "recurring_errsig(4x):\"error\":\"server_busy\",\"retry_after_ms\":3000,\"tier\":\"free\",\"upgrade_hint\":\"Premium and Ultra plans ge",
+      "perf_bottleneck",
       "high_tool_usage:exec",
       "repeated_tool_usage:exec",
       "high_failure_ratio",
@@ -29,23 +26,22 @@
     ],
     "mutation": {
       "type": "Mutation",
-      "id": "mut_1774768495628",
-      "category": "repair",
+      "id": "mut_1774804250007",
+      "category": "innovate",
       "trigger_signals": [
-        "log_error",
-        "errsig:**TOOLRESULT**: [mcporter] Unknown MCP server 'exa'. Error: Unknown MCP server 'exa'. at McpRuntime.connect (file:///usr/local/lib/node_modules/mcporter/dist/runtime.js:175:19) at McpRuntime.callTool (file:///usr/local/lib/node_modules/mcporter/dist/runtime.js",
-        "protocol_drift",
-        "user_feature_request:write the evolution log for today: [TOOL",
+        "recurring_error",
+        "recurring_errsig(4x):\"error\":\"server_busy\",\"retry_after_ms\":3000,\"tier\":\"free\",\"upgrade_hint\":\"Premium and Ultra plans ge",
+        "perf_bottleneck",
         "high_tool_usage:exec",
         "repeated_tool_usage:exec",
         "high_failure_ratio",
         "force_innovation_after_repair_loop"
       ],
       "target": "gene:gene_gep_repair_from_errors",
-      "expected_effect": "reduce runtime errors, increase stability, and lower failure rate",
-      "risk_level": "low"
+      "expected_effect": "explore new strategy combinations to escape local optimum",
+      "risk_level": "medium"
     },
-    "mutation_id": "mut_1774768495628",
+    "mutation_id": "mut_1774804250007",
     "personality_state": {
       "type": "PersonalityState",
       "rigor": 0.7,
@@ -55,7 +51,7 @@
       "obedience": 0.85
     },
     "personality_key": "rigor=0.7|creativity=0.3|verbosity=0.3|risk_tolerance=0.4|obedience=0.9",
-    "personality_known": true,
+    "personality_known": false,
     "personality_mutations": [],
     "drift": false,
     "selected_by": "memory_graph+selector",
@@ -63,8 +59,25 @@
     "reused_asset_id": null,
     "reused_source_node": null,
     "reused_chain_id": null,
-    "baseline_untracked": [],
-    "baseline_git_head": "adcdf2062f684c97f4ace64267bfa33216a304bf",
+    "baseline_untracked": [
+      "GO2SE_PLATFORM/backend/app/api/strategies_extra.py",
+      "GO2SE_PLATFORM/frontend/vite.config.ts",
+      "GO2SE_PLATFORM/scripts/cron_guardian_full.sh",
+      "GO2SE_PLATFORM/scripts/cron_guardian_light.sh",
+      "GO2SE_PLATFORM/scripts/deep_simulation.py",
+      "GO2SE_PLATFORM/versions/v6/backend/app/routes/__init__.py",
+      "GO2SE_PLATFORM/versions/v6/backend/app/routes/websocket_api.py",
+      "GO2SE_PLATFORM/versions/v6/backend/init_db.py",
+      "GO2SE_PLATFORM/versions/v6/frontend/src/components/ErrorBoundary.tsx",
+      "MEMORY.md.bak.20260329",
+      "config/mcporter.json",
+      "evomap_solution_api_upgrade.md",
+      "evomap_task2_solution.md",
+      "memory/2026-03-29.md.bak.20260329",
+      "memory/evolution/gep_prompt_Cycle_#0001_run_1774797105835.json",
+      "memory/evolution/gep_prompt_Cycle_#0001_run_1774797105835.txt"
+    ],
+    "baseline_git_head": "b9253dd3c93e3e750f00c2663d7791dd6f82cd79",
     "blast_radius_estimate": {
       "files": 12,
       "lines": 960
@@ -74,15 +87,5 @@
     "worker_assignment_id": null,
     "applied_lessons": [],
     "hub_lessons": []
-  },
-  "last_solidify": {
-    "run_id": "run_1774761168996",
-    "at": "2026-03-29T05:15:26.617Z",
-    "event_id": "evt_1774761326617",
-    "capsule_id": null,
-    "outcome": {
-      "status": "failed",
-      "score": 0.2
-    }
   }
 }

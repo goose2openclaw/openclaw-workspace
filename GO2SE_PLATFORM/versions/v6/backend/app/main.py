@@ -4,7 +4,8 @@
 """
 
 import logging
-from fastapi import FastAPI
+from datetime import datetime
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 
 # 简化配置
@@ -12,13 +13,14 @@ logging.basicConfig(level=logging.INFO)
 
 app = FastAPI(title="GO2SE", version="6.0.0")
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# CORS - 临时禁用以测试WebSocket
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=["*"],
+#     allow_credentials=False,
+#     allow_methods=["*"],
+#     allow_headers=["*"],
+# )
 
 @app.get("/")
 async def root():
@@ -27,6 +29,36 @@ async def root():
 @app.get("/health")
 async def health():
     return {"status": "healthy"}
+
+# WebSocket端点
+from app.core.websocket import manager as ws_manager
+
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    """WebSocket实时推送"""
+    await ws_manager.connect(websocket)
+    try:
+        await websocket.send_json({
+            "type": "connected",
+            "msg": "🪿 GO2SE WebSocket已连接",
+            "ts": datetime.now().isoformat()
+        })
+        while True:
+            data = await websocket.receive_text()
+            import json
+            try:
+                msg = json.loads(data)
+                if msg.get("action") == "ping":
+                    await websocket.send_json({"type": "pong", "ts": datetime.now().isoformat()})
+                elif msg.get("action") == "subscribe":
+                    await websocket.send_json({"type": "subscribed", "topic": msg.get("topic")})
+            except Exception:
+                await websocket.send_json({"type": "error", "msg": "Invalid JSON"})
+    except WebSocketDisconnect:
+        ws_manager.disconnect(websocket)
+    except Exception as e:
+        logging.error(f"❌ WebSocket错误: {e}")
+        ws_manager.disconnect(websocket)
 
 # 北斗七鑫路由
 from app.services.rabbit import api as rabbit_api

@@ -7,6 +7,7 @@ import { useState, useEffect, createContext, useContext } from 'react'
 import { useStore } from './stores/appStore'
 import { useAutoRefresh } from './hooks/useAPI'
 import { LoadingScreen } from './components/LoadingScreen'
+import { ErrorBoundary } from './components/ErrorBoundary'
 import { Dashboard } from './views/Dashboard'
 import { Market } from './views/Market'
 import { Strategies } from './views/Strategies'
@@ -63,14 +64,6 @@ function App() {
   }, [theme])
 
   useEffect(() => {
-    const init = async () => {
-      await refreshAll()
-      setTimeout(() => setIsLoading(false), 2000)
-    }
-    init()
-  }, [])
-
-  useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.target as HTMLElement).tagName === 'INPUT') return
       if (e.key >= '1' && e.key <= '8') {
@@ -107,6 +100,7 @@ function App() {
   )
 
   return (
+    <ErrorBoundary>
     <ThemeContext.Provider value={{ theme, setTheme }}>
       <div className="app">
         {/* Header - 简洁版 */}
@@ -189,6 +183,7 @@ function App() {
         </main>
       </div>
     </ThemeContext.Provider>
+    </ErrorBoundary>
   )
 }
 

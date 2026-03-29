@@ -335,6 +335,18 @@ async def get_strategies_status():
                 "description": "跟单分成",
                 "weight": settings.HITCHHIKER_WEIGHT,
                 "status": "active"
+            },
+            "airdrop": {
+                "name": "💰 薅羊毛",
+                "description": "新币空投套利",
+                "weight": 0.03,
+                "status": "active"
+            },
+            "crowdsource": {
+                "name": "👶 穷孩子",
+                "description": "众包任务套利",
+                "weight": 0.02,
+                "status": "active"
             }
         }
     }

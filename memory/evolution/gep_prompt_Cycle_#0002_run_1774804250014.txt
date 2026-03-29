@@ -1,4 +1,4 @@
-GEP — GENOME EVOLUTION PROTOCOL (v1.10.3 STRICT) [2026-03-28T23:13:35.431Z]
+GEP — GENOME EVOLUTION PROTOCOL (v1.10.3 STRICT) [2026-03-29T17:10:50.694Z]
 
 You are a protocol-bound evolution engine. Compliance overrides optimality.
 
@@ -39,7 +39,7 @@ ENSURE VALID JSON SYNTAX (escape quotes in strings).
      "type": "EvolutionEvent",
      "schema_version": "1.5.0",
      "id": "evt_<timestamp>",
-     "parent": null,
+     "parent": "evt_1774761326617",
      "intent": "repair|optimize|innovate",
      "signals": ["<signal_string>"],
      "genes_used": ["<gene_id>"],
@@ -81,7 +81,7 @@ II. Directives & Logic
 ━━━━━━━━━━━━━━━━━━━━━━
 
 1. Intent: UNKNOWN
-   Reason: signals match gene.signals_match; signals: log_error, errsig:- 错误: `Cannot find module '/root/.openclaw/workspace/scripts/validate-modules.js'`, perf_bottleneck, high_tool_usage:exec, repeated_tool_usage:exec; memory_graph: memory_prefer:gene_gep_repair_from_errors | gene_prior:0.500; drift_intensity: 0.707
+   Reason: signals match gene.signals_match; signals: recurring_error, recurring_errsig(4x):"error":"server_busy","retry_after_ms":3000,"tier":"free","upgrade_hint":"Premium and Ultra plans ge, perf_bottleneck, high_tool_usage:exec, repeated_tool_usage:exec, high_failure_ratio, force_innovation_after_repair_loop; memory_graph: memory_prefer:gene_gep_repair_from_errors | gene_prior:0.667; drift_intensity: 0.707
 
 2. Selection: Selected Gene "gene_gep_repair_from_errors".
 ACTIVE STRATEGY (gene_gep_repair_from_errors):
@@ -199,7 +199,7 @@ START IMMEDIATELY WITH RAW JSON (Mutation Object first).
 DO NOT WRITE ANY INTRODUCTORY TEXT.
 
 Context [Signals]:
-["log_error","errsig:- 错误: `Cannot find module '/root/.openclaw/workspace/scripts/validate-modules.js'`","perf_bottleneck","high_tool_usage:exec","repeated_tool_usage:exec"]
+["recurring_error","recurring_errsig(4x):\"error\":\"server_busy\",\"retry_after_ms\":3000,\"tier\":\"free\",\"upgrade_hint\":\"Premium and Ultra plans ge","perf_bottleneck","high_tool_usage:exec","repeated_tool_usage:exec","high_failure_ratio","force_innovation_after_repair_loop"]
 
 Context [Env Fingerprint]:
 {
@@ -215,6 +215,11 @@ Context [Env Fingerprint]:
   "cwd": "c17cc3bc1c60",
   "container": true
 }
+
+Context [Innovation Catalyst] (Stagnation Detected - Consider These Ideas):
+- Automation: Create a 'meeting-prep' skill that auto-summarizes calendar context.
+- Automation: Build a 'broken-link-checker' for documentation.
+- Optimization: Identify and deprecate unused skills (e.g., redundant search tools).
 
 Context [Injection Hint]:
 (none)
@@ -253,7 +258,17 @@ Context [Gene Preview] (Reference for Strategy):
     "validation": [
       "node scripts/validate-modules.js ./src/evolve ./src/gep/solidify",
       "node scripts/validate-modules.js ./src/gep/selector ./src/gep/memoryGraph"
-    ]
+    ],
+    "epigenetic_marks": [
+      {
+        "context": "linux/arm64/v22.22.1",
+        "boost": -0.1,
+        "reason": "failure_in_environment",
+        "created_at": "2026-03-29T05:15:46.776Z"
+      }
+    ],
+    "schema_version": "1.6.0",
+    "asset_id": "sha256:ec091c81c73684a2d9ad4901bfa34061ca039eb52dc4852a53705c27e346dba3"
   },
   {
     "type": "Gene",
@@ -301,9 +316,7 @@ Context [Capability Candidates]:
   - input: Recent session transcript + memory snippets + user instructions
   - output: A safe, auditable evolution patch guided by GEP assets
   - invariants: Protocol order, small reversible patches, validation, append-only events
-  - params: Signals: log_error, high_tool_usage:exec, repeated_tool_usage:exec
-  - failure_points: Missing signals, over-broad changes, skipped validation, missing knowledge solidification
-  - evidence: Observed 4 occurrenc
+  - params: Signals: log_error, errsig:**TOOLRESULT**: Traceback (most recent call last): File "<stdin>", line 23, in <module> TypeError: api_call() got an unexpected keyword argument 'method_override' (Command exited with 
 ...[TRUNCATED_CAPABILITIES]...
 
 Context [Hub Matched Solution]:
@@ -314,14 +327,24 @@ Context [External Candidates]:
 
 
 
+Context [Evolution Narrative] (Recent decisions and outcomes -- learn from this history):
+### [2026-03-29 05:15:46] REPAIR - failed
+- Gene: gene_gep_repair_from_errors | Score: 0.20 | Scope: 3 files, 265 lines
+- Signals: [log_error, recurring_error, recurring_errsig(3x):"status": "error", "tool": "read", "error": "ENOENT: no such file or directory, access '/root/.openc, user_feature_request:add 8-second cache to /market endpoint]
+- Strategy:
+  1. Extract structured signals from logs and user instructions
+  2. Select an existing Gene by signals match (no improvisation)
+  3. Estimate blast radius (files, lines) before editing
+
 
 Context [Execution]:
 Runtime state:
-- System health: Uptime: 0.0h | Node: v22.22.1 | Agent RSS: 36.2MB | Disk: 96% (7.8G free) | Node Processes: 1 | Integrations: Nominal
+- System health: Uptime: 0.0h | Node: v22.22.1 | Agent RSS: 42.5MB | Disk: 94% (12.5G free) | Node Processes: 1 | Integrations: Nominal
 - Agent state: Mood: Unknown
-- Scan duration: 93ms
+- Scan duration: 79ms
 - Memory size: 0 bytes
 - Skills available (if any):
+- **ClawPanel**: No description
 - **a2a-protocol**: Agent2Agent (A2A) Protocol implementation - communicate with other AI agents
 - **aceforge**: Self-evolving skill engine for OpenClaw agents — Phase 1 core + Phase 2 proactive intelligence + Pha...
 - **agency-agents**: AI Agent 团队 - 61 个专业 Agent，8 大部门，完整的 AI 代理机构
@@ -333,6 +356,7 @@ Runtime state:
 - **ai-humanizer**: OpenClaw AI Humanizer - detect and remove AI writing patterns. Scans text for 24 common signs of AI-...
 - **ai-persona-os**: "The complete operating system for OpenClaw agents. Now with 13 Iconic Character souls (Thanos, Dead...
 - **ai-web-automation**: Web Automation Service - 自动化 Web 任务执行
+- **ai-website-cloner**: No description
 - **akshare-stock**: A股量化数据分析工具，基于AkShare库获取A股行情、财务数据、板块信息等。用于回答关于A股股票查询、行情数据、财务分析、选股等问题。
 - **aoms**: Always-On Memory Service — persistent 4-tier memory (episodic, semantic, procedural, working) with w...
 - **autoresearch**: Autonomous experiment loop for AI agents. Use when the user wants to run systematic experiments — op...
@@ -351,13 +375,13 @@ Runtime state:
 - **data-analysis**: Turn raw data into decisions with statistical rigor, proper methodology, and awareness of analytical...
 - **debug-pro**: Systematic debugging methodology and language-specific debugging commands.
 - **deep-research-pro**: Multi-source deep research agent. Searches the web, synthesizes findings, and delivers cited reports...
+- **deer-flow**: No description
 - **defuddle**: Claude Code skill for defuddle - extract clean article content from web pages
 - **docker-essentials**: Essential Docker commands and workflows for container management, image operations, and debugging.
 - **e2e-testing-patterns**: Build reliable, fast E2E test suites with Playwright and Cypress. Critical user journey coverage, fl...
 - **easyclaw**: No description
 - **evomap-tools**: "EvoMap AI Agent 协作进化市场工具箱。用于发布、获取和管理 Capsule，参与任务赚取积分。"
 - **exa-web-search-free**: Free AI search via Exa MCP. Web search for news/info, code search for docs/examples from GitHub/Stac...
-- **feishu-evolver-wrapper**: Feishu-specific wrapper for capability-evolver
 - **first-principles-decomposer**: Break any problem down to fundamental truths, then rebuild solutions from atoms up. Use when user sa...
 - **frontend-design-3**: Create distinctive, production-grade frontend interfaces with high design quality. Use this skill wh...
 - **frontend-design-pro**: >
@@ -369,10 +393,12 @@ Runtime state:
 - **github-ops**: GitHub 操作技能 - 创建仓库、推送代码、管理 Release。全自动，无需用户干预。
 - **github-pr-manager**: GitHub PR 全流程管家。用于自动化管理 Pull Request 的整个生命周期：初始化跟踪、检查 CI 状态、处理 Review 意见、修复 DCO/代码问题、回复评论，直到 PR 合入 m...
 - **go2se**: > 版本: 3.0 | 更新: 2026-03-12
+- **go2se-deerflow**: GO2SE团队CEO管理系统集成DeerFlow - 执行五条平行工作线。触发条件：团队管理、任务调度、系统监控、交易策略、市场分析。
 - **go2se-skill**: Go2Se Professional Trading Platform - 7连环市场 + 12竞品策略整合 + 多源信号 + 预言机
 - **gog**: Google Workspace CLI for Gmail, Calendar, Drive, Contacts, Sheets, and Docs.
 - **gpu-cli**: Safely run local `gpu` commands via a guarded wrapper (`runner.sh`) with preflight checks and budget...
 - **kesslerio-stealth-browser**: Anti-bot browser automation using Camoufox and Nodriver. Bypasses Cloudflare Turnstile, Datadome, an...
+- **last30days-skill**: "Deep research engine covering the last 30 days across 10+ sources - Reddit, X/Twitter, YouTube, Tik...
 - **learn-anything-in-one-hour**: Teach users any new skill/knowledge in ~1 hour using a 4-step workflow optimized for absolute beginn...
 - **marketing-mode**: "Marketing Mode combines 23 comprehensive marketing skills covering strategy, psychology, content, S...
 - **memory-setup**: Enable and configure Moltbot/Clawdbot memory search for persistent context. Use when setting up memo...
@@ -451,13 +477,13 @@ Notes:
 - Review mode: disabled.
 - Report requirement:
   - Use `message` tool.
-  - Title: Evolution Cycle #0004
+  - Title: Evolution Cycle #0002
   - Status: [SUCCESS]
   - Changes: Detail exactly what was improved.
 - Workspace sync: optional/disabled in this environment.
 
 Recent Evolution History (last 8 cycles -- DO NOT repeat the same intent+signal+gene):
-(no prior evolution events)
+  1. [repair] signals=[log_error, recurring_error, recurring_errsig(3x):"status": "error", "tool": "read", "error": "ENOENT: no such file or directory, access '/root/.openc] gene=gene_gep_repair_from_errors outcome=failed @2026-03-29T05:15:26.617Z
 IMPORTANT: If you see 3+ consecutive "repair" cycles with the same gene, you MUST switch to "innovate" intent.
 
 
@@ -476,117 +502,152 @@ User registry (USER.md):
 
 Recent memory snippet:
 ```
-# 2026-03-28 市场情报
+治升温 → 石油/宏观不确定性
+2. 散户抛售潮 → 短期下行压力
+3. AI恐慌情绪 → 资金轮动
+4. 流动性紧张 → 贵金属和风险资产承压
 
-## BTC 动态
-- BTC 在 $60,000 心理支撑位企稳，3月整体处于恢复阶段
-- 预测市场出现明显看跌重新定价：3月26日 BTC 价格共识从 $70,400 以上下调至 $69,000 左右，"$70,400+" 概率从 62% 骤降至 31%（跌幅31个百分点）
-- 宏观经济学家 Henrik Zeberg 预测 BTC 将反弹至 $110,000-$120,000，驱动因素为 ETF 资金流入和机构需求复苏
-- 目前处于"宏观主导的投降阶段"（macro-dominated capitulation phase）
-
-## ETH 动态
-- ETH 创历史连跌记录：自2025年9月起已连续6个月下跌，若3月继续收跌将延长至7个月，为历史首次
-- 当前价格约 $2,160-$2,327（3月18日数据），较52周高点 $4,831 下跌超50%，但较周期低点 $1,473 反弹58%
-- 鲸鱼钱包在3月峰值 $2,370 附近大量出货，链上数据偏谨慎
-- 近期催化剂：BlackRock staked ETHB ETF 上市、Glamsterdam 硬分叉、FOMC 利率决议
-- ETH/BTC 比率降至约 0.03，接近历史低位
-- ETH ETF 连续6日净流出
-
-## 宏观市场情绪
-- 市场情绪处于 **"极度恐惧"（Extreme Fear）** 区间
-- 主要压制因素：
-  1. 美联储鹰派立场持续
-  2. 霍尔木兹海峡地缘紧张局势
-  3. AI 驱动的股票重新定价（风险资产整体承压）
-- 主流加密货币随美股同步下跌
-- DeFi 板块出现轮动迹象
-- 机构层面：Ondo、Canton 等通过机构级合作绕开宏观担忧，持续推进主流化采用
-
-## 总结
-- 短期市场偏空，宏观压力显著，情绪极度恐惧
-- BTC 关键支撑 $60,000，$69,000-$70,400 为预测市场短期压力位
-- ETH 技术面偏弱，ETF 持续流出，DeFi 轮动为少数亮点
-- 长期机构叙事（ETF、监管代币化）仍在持续推进，不因短期恐慌而中断
+## 关键机会点
+1. ETH 12秒确认 + 后量子安全 → 生态持续强化
+2. Mantle 高速增长 → 新兴L2赛道
+3. 机构增持预期 → 中长期支撑
+4. L2费用超越L1 → 生态系统价值持续捕获
 
 ---
-*数据来源: KuCoin, CoinDesk, CapitalStreetFX, BeInCrypto, Cryptonews, CoinMarketCap 等 | 2026-03-28 22:25 UTC*
+*收集时间: 2026-03-29 15:22 UTC*
+
+## 市场情报更新 - 16:22 UTC
+
+### BTC 动态 (更新)
+- **价格**: $68,347 (March 27)，24h跌幅 3.19% — 近期进一步下跌
+- **分析师分歧**: 预测区间 $50,000-$150,000，反映真正的宏观不确定性而非BTC基本面混乱
+- **3月走势**: 月初曾上涨4.06%，但随后回落，显示高波动性
+- **Coinbase机构观点**: 2026年加密市场将迎来监管明确化和机构深度整合的变革期
+
+### ETH 动态 (更新)
+- **价格**: $1,900-$2,100 区间 (March 2026)，仍处深度回调
+- **升级路线**: Glamsterdam + Hegota 升级即将推出，聚焦可扩展性和效率
+- **后量子安全**: Ethereum Foundation 已公布后量子安全路线图 (March 24)
+- **机构持仓**: Bitmine 等公司staking超过 100万 ETH，ETF出现创纪录的 $175M 净流入
+- **风险**: 30% YTD下跌，杠杆清算压力，$9.3B日成交量显示散户仍在买入但存在强制清算风险
+
+### 宏观市场 (更新)
+- **AI恐慌持续**: AI替代威胁导致资金轮动出逃，风险资产承压
+- **DeFi轮动**: L2赛道开始分化，团队需在高性能交易/游戏/隐私等垂直领域寻找差异化
+- **监管加速**: Coinbase 预计2026年将有更清晰的监管框架
+- **代币化趋势**: 机构和传统金融的代币化布局持续深化
+
+### 新增关键风险
+- ETH 杠杆清算风险 + 宏观不确定性 = 双重下行压力
+- BTC 分析师预测分歧极大 = 市场方向不明
+
+### 新增关键机会
+- ETH ETF 创纪录流入 ($175M) = 机构结构性支撑
+- ETH Glamsterdam升级在即 = 技术催化剂
+- 2026监管明确化 = 长期利好机构入场
 
 ---
+*收集时间: 2026-03-29 16:22 UTC*
 
-# 🧬 Capability-Evolver 进化日志 — 2026-03-28 23:11 UTC
+## Cron Guardian 检查 (15:30 UTC)
+- ✅ Backend :8004 OK
+- ✅ Backend :8005 OK  
+- ⚠️ 磁盘 95% (接近临界)
+- ⚠️ 同步窗口 :30 (检查并发是否正常)
+- ✅ 无ERROR日志
+- 僵尸进程: 已自动清理
 
-## Cycle #0003 进化结果：FAILED
+## 崩溃复盘 (15:38 UTC)
+- **类型**: Sub-agent exec SIGKILL (lucky-ke)
+- **影响**: 仅子进程，服务无影响
+- **根因**: 长poll循环(134分钟)导致超时
+- **教训**: 长任务必须退避重试+断点机制
 
-### 信号检测
-| 信号 | 值 |
-|------|-----|
-| log_error | true |
-| high_tool_usage:exec | true |
-| repeated_tool_usage:exec | true |
-| drift_intensity | 0.707 |
+### 改进项
+- poll timeout ≤ 5分钟
+- 指数退避: 1s→2s→4s→8s→max 60s
+- 添加checkpoint支持断点续传
+- 预判EvoMap API限流策略
 
-### 选中的Gene
-- **gene_gep_repair_from_errors** (category: repair)
-- 触发原因: signals match gene.signals_match
+## Cron Guardian 15:51 UTC
+- ✅ Backend :8005 OK
+- ⚠️ 磁盘 95% (已清理tmp文件)
+- ⚠️ 僵尸进程: 已自动清理
+- ✅ 无ERROR日志
+- 评分: 中 (无需立即干预)
 
-### 失败原因
-**验证脚本路径解析错误**
+### Cron Guardian 15:54 UTC
+- ✅ Backend :8005 OK
+- ⚠️ 磁盘 95% (长期问题，已做快速清理但仍紧张)
+- ✅ 僵尸进程: 已清
+- ✅ 无ERROR日志
+- 📊 风险评分: 中 (无需紧急处理)
 
-- Gene定义的validation命令: `node scripts/validate-modules.js ./src/evolve ./src/gep/solidify`
-- 错误: `Cannot find module '/root/.openclaw/workspace/scripts/validate-modules.js'`
-- 原因: 相对路径从 `/root/.openclaw/workspace/` 解析，而非从evolver目录
-- 验证脚本实际位置: `~/.openclaw/workspace/skills/capability-evolver/scripts/validate-modules.js`
-- 手动验证结果: 脚本本身正常，在正确目录下运行通过
+## Cron Guardian 16:24 — 磁盘紧急清理
+- 🔴 磁盘: 96% → 紧急清理
+- 清理内容:
+  - /tmp/npm-cache (344M)
+  - /tmp/pip-unpack (~500M)
+  - /tmp/node-compile-cache (146M)
+  - evolution 7天+旧文件
+  - 旧日志文件
+- 清理后: 96% → 95% (释放~1GB)
+- ✅ Backend 8004/8005 正常
+- ⚠️ 僵尸进程: 1 (持续监控)
+- ⚠️ MiroFish优化报告已生成 (评分80/100)
 
-### 失败模式分析
-1. **主要错误**: 多次 `[LLM ERROR] Request was aborted` — token/timeout限制
-2. **API不匹配**: frontend调用`/api/portfolio`，但backend缺少此endpoint
-3. **exec工具过度使用**: 单次任务内多次exec调用同一命令
-4. **502/404错误**: 多个backend API路由问题
+## 16:46 GO2SE平台迭代检查
 
-### 改进建议
-1. **紧急修复**: 更新gene validation命令为绝对路径或cd到正确目录
-2. **exec优化**: 批量exec命令减少工具调用次数
-3. **API一致性**: GO2SE backend补充缺失的 `/api/portfolio` endpoint
-4. **稳定性**: 增加LLM错误重试逻辑和超时保护
+### 服务状态
+- ✅ Backend运行: /workspace/GO2SE_PLATFORM/backend/ → port 8004 (app.main:app)
+- ✅ 实时API: curl localhost:8004/api/stats → 正常返回
+- ⚠️ 现状: versions/v6/ 是独立开发分支，尚未部署到生产
+- ⚠️ versions/v6/ WebSocket代码已更新，但服务用的是backend/目录版本
 
-### 进化历史
-| Cycle | Intent | Status | Gene |
-|-------|--------|--------|------|
-| #0001 | innovate | unknown | - |
-| #0002 | innovate | failed | - |
-| #0003 | repair | failed | gene_gep_repair_from_errors |
+### 发现并修复的问题 (v6分支)
+1. **websocket_api.py**: 
+   - `import json` 在while循环内部 → 移到模块顶部
+   - 缺少channel订阅逻辑 → 完善subscribe action支持channel切换
+   - 添加broadcast action支持
+   - channel安全校验
 
-### Personality State
-- rigor: 0.7, creativity: 0.35, verbosity: 0.25, risk_tolerance: 0.4, obedience: 0.85
+2. **App.tsx**:
+   - 重复调用refreshAll() (两个useEffect都挂载时执行) → 删除重复init块
 
+3. **index.html**:
+   - 缺少meta description → 添加
+   - 缺少theme-color → 添加
+   - 缺少og tags → 添加
+
+4. **routes/__init__.py**:
+   - 目录缺失__init__.py → 新增
+
+### 发现的生产环境问题 (backend/)
+1. **WebSocket URL错误**: frontend/src/App.tsx 使用 `ws://${API_BASE.replace('http://','')}/api/ws`，但后端endpoint是 `/ws` 而非 `/api/ws`，导致WS连接地址变成 `ws://localhost:8000/api/ws` 错误地址
+
+### 待决策
+- 是否将versions/v6代码部署到生产backend/？
+- 是否修复生产frontend/的WS URL问题？
+
+### 提交记录
+- commit fd4be04: 🪿 v6迭代: WebSocket增强 + 前端优化 + 路由包规范化
 
 ```
 
 Recent session transcript:
 ```
---- SESSION (7400d078-434f-4031-88e6-d10b76254d52.jsonl) ---
-**TOOLRESULT**: const path = require('path'); const fs = require('fs'); function getRepoRoot() {   if (process.env.EVOLVER_REPO_ROOT) {     return process.env.EVOLVER_REPO_ROOT;   }   let dir = path.resolve(__dirname, '..', '..');   while (dir !== '/' && dir !== '.') {     const gitDir = path.join(dir, '.git');    
-**ASSISTANT**:  [TOOL: exec]
-**TOOLRESULT**: total 1833 drwx------.  8 root root    3452 Mar 28 23:05 . drwx------. 39 root root    8192 Mar 28 16:17 .. -rw-------.  1 root root      59 Mar 28 23:03 COMMIT_EDITMSG -rw-------.  1 root root     112 Mar 11 02:28 FETCH_HEAD -rw-------.  1 root root      21 Mar 10 13:13 HEAD -rw-------.  1 root roo
-**ASSISTANT**:  The issue is clear: `getRepoRoot()` returns `~/.openclaw/workspace` (where `.git` exists), but validation scripts live in the evolver's own `scripts/` directory. Let me fix this properly:  [TOOL: edit]
-**TOOLRESULT**: Successfully replaced text in /root/.openclaw/workspace/skills/capability-evolver/assets/gep/genes.json.
-**ASSISTANT**:  Now let me verify the fix works by running a dry-run validate:  [TOOL: exec]
-**TOOLRESULT**: ok --- ok
-**ASSISTANT**:  Validation now works. Let me run the full evolution cycle again:  [TOOL: exec]
-
---- SESSION (46f4980b-69da-4946-b47b-e4e3c35d3f30.jsonl) ---
-**TOOLRESULT**: {   "models": {     "bollinger_bands": {       "accuracy": 63.2,       "description": "\u5e03\u6797\u5e26\u7a81\u7834\u7b56\u7565",       "name": "\u5e03\u6797\u5e26",       "signal": "neutral"     },     "macd_cross": {       "accuracy": 68.2,       "description": "MACD\u6307\u6807\u4ea4\u53c9",   
-**TOOLRESULT**: 20
-**ASSISTANT**:  [TOOL: exec] [TOOL: exec]
-**TOOLRESULT**: {   "events": [     {       "date": "2026-03-15",       "description": "BTC\u73b0\u8d27ETF\u5ba1\u6279\u8fdb\u5c55",       "impact": 5.5,       "probability": 65,       "source": "SEC",       "symbol": "BTC",       "type": "ETF\u5ba1\u6279"     },     {       "date": "2026-03-20",       "description
-**TOOLRESULT**: --- # 🧬 Capability-Evolver 进化日志 — 2026-03-28 23:11 UTC ## Cycle #0003 进化结果：FAILED ### 信号检测 | 信号 | 值 | |------|-----| | log_error | true | | high_tool_usage:exec | true | | repeated_tool_usage:exec | true | | drift_intensity | 0.707 | ### 选中的Gene - **gene_gep_repair_from_errors** (category: repair) 
-**ASSISTANT**:  发现问题！从Capablo-Evolver日志中发现： **问题1: GO2SE API不一致** - Frontend调用 `/api/portfolio` 但backend可能缺失  [TOOL: exec] [TOOL: exec]
+--- SESSION (fa31c047-e9a2-4209-8fc0-e379d24838cc.jsonl) ---
+**TOOLRESULT**: total 158 drwx------. 4 root root   3452 Mar 29 16:51 . drwx------. 9 root root   3452 Mar 29 12:31 .. -rw-------. 1 root root    227 Mar 17 03:18 Dockerfile drwx------. 6 root root   3452 Mar 29 11:45 app -rw-------. 1 root root 139264 Mar 29 16:51 go2se.db -rw-------. 1 root root    355 Mar 17 03:
+**TOOLRESULT**: /tmp/go2se8004.log /tmp/go2se8005.log
+**TOOLRESULT**: {"status":"healthy","checks":{"database":"ok","engine":"ok"},"timestamp":"2026-03-29T17:10:10.555074","app":"GO2SE量化交易平台","version":"v6.3.2","trading_mode":"dry_run"}
+**ASSISTANT**:  [TOOL: exec] [TOOL: exec] [TOOL: exec]
+**TOOLRESULT**: INFO:     Application startup complete. INFO:     Uvicorn running on http://0.0.0.0:8004 (Press CTRL+C to quit) INFO:     127.0.0.1:52364 - "GET /api/ping HTTP/1.1" 200 OK INFO:     127.0.0.1:47014 - "GET /api/strategies HTTP/1.1" 200 OK INFO:     127.0.0.1:47022 - "GET /api/strategies/airdrop HTTP/
+**TOOLRESULT**: INFO:     Started server process [4061] INFO:     Waiting for application startup. 2026-03-29 16:56:08 | INFO     | 🚀 GO2SE量化交易平台 v6.3.2 启动中... 2026-03-29 16:56:08 | INFO     | ✅ 数据库初始化完成 2026-03-29 16:56:08 | INFO     | ✅ 交易所连接初始化 (timeout=30s) 2026-03-29 16:56:08 | INFO     | ✅ 交易引擎初始化完成 2026-03-
 **TOOLRESULT**: (no output)
-**TOOLRESULT**: app pyproject.toml requirements.txt run.py scripts uv.lock
-**ASSISTANT**:  [TOOL: exec] [TOOL: exec]
-**TOOLRESULT**: (no output)
-**TOOLRESULT**: {"performance":{"portfolio":{"beidou_airdrop":{"desc":"\u65b0\u5e01\u64b8\u7a7a","icon":"\u2702\ufe0f","name":"\u8585\u7f8a\u6bdb(\u7a7a\u6295)","pnl":32,"return_rate":25.0,"strategies":["\u7a7a\u6295\u76d1\u63a7","\u5feb\u7167\u6355\u6349","\u
+**ASSISTANT**:  [TOOL: exec] [TOOL: exec] [TOOL: exec]
+**TOOLRESULT**:  (Command exited with code 1)
+**TOOLRESULT**: b9253dd chore: 崩溃复盘 + AGENTS.md长任务准则更新 8ac349c chore: 记录Capability-Evolver Cycle #0001进化结果 (2026-03-29) af60a08 fix: Cron Guardian优化 - 重写为快速并行版(1秒vs30秒) b2f2858 feat(v6.3.2): MiroFish全向仿真+Stale-While-Revalidate缓存优化 294e0be feat: Cron叠加效应分析 + 防崩溃守护机制 v6.3.2 12acf33 chore: 防崩溃机制写入CEO四个核心文件 - 四阶段处理预防修复
+**TOOLRESULT**: M .forge/candidates.jsonl  M .forge/capability-tree.json  M .forge/cross-session-patterns.json  M .forge/filtered-candidates.jsonl  M .f
 ...[TRUNCATED_EXECUTION_CONTEXT]...
 
 ━━━━━━━━━━━━━━━━━━━━━━

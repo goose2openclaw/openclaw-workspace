@@ -1,9 +1,7 @@
 {
-  "lastAskedAt": "2026-03-29T05:18:30.390Z",
+  "lastAskedAt": "2026-03-29T15:11:43.064Z",
   "recentQuestions": [
-    "User requested a feature that may benefit from community solutions: **TOOLRESULT**: e5defae init 1a60cd3 chore: add 2026-03-28 iteration log 54dc518 fix: restore XiamiStrategyV2 strategy name in freqtrade config 49b104 -- Are there existing implementations or best practices for this?",
-    "User requested a feature that may benefit from community solutions: **TOOLRESULT**: [master d586477] feat(v6): update version to v6.0.0, add /portfolio endpoint, optimize health checks with cache headers 5 files change -- Are there existing implementations or best practices for this?",
-    "Performance bottleneck detected: **TOOLRESULT**: 19:const { buildValidationReport } = require('./validationReport'); 64: const cwd = opts.cwd || getRepoRoot(); 66: return execSync(cmd -- What optimization strategies or architectural patterns address this?",
-    "User requested a feature that may benefit from community solutions: **TOOLRESULT**: [master 95edde7] feat(backend): add 8-second cache to /market endpoint - X-Cache header, reduce exchange API calls 1 file changed, 37  -- Are there existing implementations or best practices for this?"
+    "Recurring error in evolution cycle that auto-repair cannot resolve: \"error\":\"hello_rate_limit: max 60/hour per IP\" -- What approaches or patches have worked for similar issues?",
+    "Performance bottleneck detected: **TOOLRESULT**: Checking if secret is valid... Secret invalid, getting fresh one... Traceback (most recent call last): File \"<stdin>\", line 57, in <mo -- What optimization strategies or architectural patterns address this?"
   ]
 }

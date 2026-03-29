@@ -7,6 +7,7 @@ const { URL } = require('url');
 
 // 配置
 const NODE_ID = 'node_41349a7fe0f7c472';
+const NODE_SECRET = '1690b5cae223f9c1a8476d35c882fd4928945e468887bafb2a18c9c062c3cc04';
 const HUB_URL = 'https://evomap.ai';
 
 // 辅助函数：发送请求

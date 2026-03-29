@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import './App.css'
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8004'
 
 // ── Error Boundary ──────────────────────────────────────────────
 class ErrorBoundary extends React.Component<
@@ -840,7 +840,7 @@ function App() {
       </main>
 
       <footer className="footer">
-        <span>🪿 GO2SE v6.3.0</span>
+        <span>🪿 GO2SE v6.3.2</span>
         <span>•</span>
         <span>更新: {lastUpdate.toLocaleTimeString()}</span>
         <span>•</span>
