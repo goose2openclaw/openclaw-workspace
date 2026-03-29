@@ -6,7 +6,7 @@ metadata:
     category: general
     aceforge:
       status: proposed
-      proposed: 2026-03-29T10:57:22.328Z
+      proposed: 2026-03-29T11:22:13.733Z
       auto_generated: true
       candidate_occurrences: 6
       candidate_success_rate: 1
