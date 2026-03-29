@@ -23,6 +23,13 @@ Don't ask permission. Just do it.
 - [ ] `df -h /` — 磁盘空间是否超过95%
 - [ ] `ps aux | grep uvicorn` — 进程是否存活
 - [ ] 检查 `CRASH_ANALYSIS.md` — 上次事故是否已修复
+- [ ] 检查长任务exec是否超时 (poll timeout ≤ 5分钟，指数退避)
+
+### 长任务执行准则 (防SIGKILL)
+- poll timeout 上限: **5分钟**，禁止 ≥10分钟
+- 外部API调用: 先检查rate limit，再指数退避重试 (1s→2s→4s→max 60s)
+- 长任务必须checkpoint: 每轮保存状态，支持断点续传
+- 禁止同步无限轮询: 使用cron一次性任务替代
 
 ## Memory
 
