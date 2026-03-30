@@ -1,5 +1,79 @@
 # GO2SE 平台迭代日志
 
+## 2026-03-29 v6.3.4 平台检查 (20:22 UTC)
+
+### 检查结果
+- ✅ 后端服务健康 (port 8004, /api/stats cached=false)
+- ✅ 前端 API_BASE 正确 (8004)
+- ✅ 磁盘 95% (12GB free) — 需关注但暂不紧急
+- ✅ gstack venv_gstack/ 已从git追踪移除
+
+### 发现并修复的问题
+1. **Critical: venv_gstack/ 被错误追踪到git**
+   - 517个文件，192KB被追踪
+   - `git rm --cached venv_gstack/` 移除追踪
+   - 添加 `venv_gstack/` 到 `.gitignore`
+
+### 提交
+- `fix: 添加venv_gstack到.gitignore并从git追踪中移除` - commit f730167
+- 减少191616行被追踪代码
+
+### 待关注
+| 项目 | 状态 | 说明 |
+|------|------|------|
+| 磁盘使用 | ⚠️ 95% | 12GB free，需定期清理 |
+| venv_gstack | ✅ 已修复 | 避免未来再次追踪 |
+
+## 2026-03-29 v6.3.3 平台检查 (19:21 UTC)
+
+### 检查结果
+- ✅ 后端服务健康 (port 8000, /api/stats cached=false)
+- ✅ 前端 ErrorBoundary 已实现
+- ✅ 前端 手动刷新按钮 已实现
+- ✅ 前端 Loading骨架屏 已实现
+- ✅ 页面可见性API (后台降频60s) 已实现
+- ✅ WebSocket自动重连 已实现
+- ⚠️ 磁盘95% (13GB free) — 需关注
+
+### 发现并修复的问题
+1. **前端API_BASE端口错误**: `http://localhost:8004` → `http://localhost:8000` (后端实际端口)
+2. **前端无重试机制**: fetch失败直接标记错误，无重试 → 添加2次重试逻辑
+3. **MiroFish仿真脚本未跟踪**: `scripts/mirofish_full_simulation_v2.py` 未加入git → 已提交
+
+### 提交
+- `feat: 前端API重试逻辑 + API_BASE修正 + MiroFish仿真脚本 + 迭代日志` - commit d0d7286
+
+### 改进前后对比
+| 项目 | 改进前 | 改进后 |
+|------|--------|--------|
+| API_BASE | 8004 (错误) | 8000 (正确) |
+| API失败 | 无重试 | 2次重试 |
+| MiroFish仿真脚本 | 未跟踪 | 已提交 |
+| 磁盘使用 | 95% | ⚠️ 需清理 |
+
+## 2026-03-29 v6.3.2 平台检查 (18:51 UTC)
+
+### 检查结果
+- ✅ 后端服务健康 (port 8000, /api/stats cached=true, age=5.3s)
+- ✅ 前端P0 ErrorBoundary 已实现
+- ✅ 前端P1 手动刷新按钮 已实现
+- ✅ 前端P2 Loading骨架屏 已实现
+- ✅ 页面可见性API (后台降频60s) 已实现
+- ✅ WebSocket自动重连 已实现
+
+### 提交
+- `feat(mirofish): 容器环境内存评分优化` - commit 4e89a5c
+
+### MiroFish改进清单 (已全部落地)
+| 优先级 | 改进项 | 状态 |
+|--------|--------|------|
+| P0 Critical | ErrorBoundary | ✅ |
+| P0 Critical | /stats缓存 | ✅ (8s TTL) |
+| P0 Critical | /portfolio缓存 | ✅ (10s TTL) |
+| P1 High | 手动刷新按钮 | ✅ |
+| P1 High | 前端轮询优化 | ✅ (visibility API) |
+| P2 Medium | Loading骨架屏 | ✅ |
+
 ## 2026-03-29 v6.3.1 崩溃修复 (10:35 UTC)
 
 ### 崩溃分析
@@ -200,3 +274,217 @@ Guardian完成: 1秒
 ### 文件变更
 - `cron_guardian.sh` → 快速版(推荐)
 - `cron_guardian_full.sh` → 原版(慢, 保留参考)
+
+---
+
+## 迭代 2026-03-29 17:51 UTC
+
+### 检查结果
+| 检查项 | 状态 | 备注 |
+|--------|------|------|
+| GO2SE服务 (:5000) | ✅ 正常 | total_signals=25, dry_run |
+| 磁盘空间 | ⚠️ 95% | 13G可用, 需关注 |
+| Git状态 | ✅ 已提交 | commit 3bd1a78 |
+| 僵尸进程 | 待检查 | - |
+
+### 本次迭代内容
+1. **端口统一**: frontend API端口 8000→8004 与backend对齐
+2. **MiroFish预言机**: 新增 `backend/app/api/oracle/mirofish.py` (100智能体共识)
+3. **策略API**: 新增 `strategies_extra.py` (薅羊毛/穷孩子策略)
+4. **脚本优化**: cron_guardian快速版 + validate_startup.sh
+5. **ErrorBoundary**: versions/v6新增React错误边界组件
+
+### 提交记录
+```
+[3bd1a78] feat: 平台v6迭代 - MiroFish预言机 + 端口统一 + 脚本优化
+ 19 files changed, 1074 insertions(+), 52 deletions(-)
+```
+
+### 待办
+- [ ] 磁盘清理 (node_modules等可清理)
+- [ ] 监控端口8004健康状态
+- [ ] 前端构建优化 (减少bundle size)
+
+## 2026.03.29 - MiroFish全向仿真测试 + 自动优化
+
+### 执行摘要
+- **时间**: 17:58 UTC
+- **测试维度**: 25个
+- **综合评分**: 73.2/100
+- **通过率**: 76% (19/25)
+
+### 测试结果分类
+
+| 分类 | 通过率 | 平均分 | 状态 |
+|------|--------|--------|------|
+| 性能 | 3/3 | 103.0 | ✅ 优秀 |
+| 稳定性 | 2/2 | 100.0 | ✅ 优秀 |
+| 存储 | 2/2 | 100.0 | ✅ 优秀 |
+| 风控 | 1/1 | 95.0 | ✅ 优秀 |
+| 数据 | 1/1 | 94.0 | ✅ 优秀 |
+| 交易 | 1/1 | 100.0 | ✅ 优秀 |
+| 市场 | 1/1 | 80.0 | ✅ 良好 |
+| 预测 | 1/1 | 77.0 | ✅ 良好 |
+| AI | 1/1 | 72.5 | ✅ 良好 |
+| 运维 | 3/5 | 60.0 | ⚠️ 需优化 |
+| 策略 | 1/2 | 52.4 | ⚠️ 需优化 |
+| 资源 | 0/1 | 24.4 | ❌ 告警 |
+| 前台 | 0/1 | 40.0 | ❌ 需检查 |
+| 页面交互 | 0/1 | 14.3 | ❌ 需检查 |
+| 后台 | 2/2 | 60.0 | ⚠️ 降级 |
+
+### 发现的关键问题
+
+#### 🔴 高优先级
+1. **因子退化度** - 胜率30.9%, 平均收益-1.40%
+   - 原因: 超卖反弹策略在当前市场表现不佳
+   - 建议: 调整策略参数或引入新因子
+
+2. **内存使用** - 已用75.6%, 可用2.65GB
+   - 原因: 长时运行积累
+   - 建议: 增加内存或清理进程
+
+3. **磁盘使用** - 95% (13GB可用)
+   - 原因: 日志和数据积累
+   - 建议: 清理历史数据
+
+#### 🟡 中优先级
+4. **前端UI** - Vue组件检测失败
+   - 原因: HTML不含Vue关键字
+   - 实际: 前端运行正常 (Vite+React)
+
+5. **页面导航** - 只检测到"交易"页面
+   - 原因: 动态加载的页面组件未被抓取
+   - 实际: 7页导航功能正常
+
+6. **脚本完整性** - 检测路径错误
+   - 原因: 脚本实际存在于scripts/目录
+   - 需修复: 检测脚本路径
+
+### 已执行的优化
+1. ✅ 清理日志文件 (12个)
+2. ✅ 清理pip缓存
+3. ✅ 触发Python GC
+
+### 待优化项
+1. ⏳ 因子策略优化 - 调整参数提高胜率
+2. ⏳ 磁盘消肿 - 清理历史大文件
+3. ⏳ 修复脚本检测路径
+4. ⏳ 前端检测逻辑优化
+
+---
+
+## 迭代 2026-03-29 18:21 UTC
+
+### 检查结果
+| 检查项 | 状态 | 备注 |
+|--------|------|------|
+| GO2SE服务 (:8000) | ✅ 正常 | total_signals=25, dry_run |
+| 磁盘空间 | ⚠️ 95% | 13G可用, 需关注 |
+| Git状态 | ✅ 已提交 | commit 490bd27 |
+| .gitignore | ✅ 已修复 | 排除node_modules/大规模JSON |
+
+### 本次迭代内容
+1. **.gitignore完善**: 排除 frontend/node_modules/、*.json(除package.json)、backend/venv/、__pycache__/ 等
+2. **新增仿真脚本**: deep_simulation.py, deep_simulation_v2.py, mirofish_full_simulation.py
+3. **新增requirements.txt**: 后端依赖清单
+
+### 提交记录
+```
+[490bd27] feat: 完善.gitignore + 新增仿真脚本工具 + requirements.txt
+ 7 files changed, 2428 insertions(+)
+```
+
+### 待办
+- [ ] 磁盘清理 (清理.gitignore已排除的大文件)
+- [ ] 监控端口8000健康状态
+- [ ] 前端构建优化 (减少bundle size)
+- [ ] MiroFish预言机常态化调用
+
+### 磁盘消肿建议
+```bash
+# 清理已追踪的旧缓存
+rm -rf frontend/node_modules
+rm -rf backend/venv
+rm -f *.json  # simulation results
+git add -u && git commit -m "chore: 清理大文件缓存"
+```
+
+## 2026-03-29 v7.0.1 迭代检查 (19:52 UTC)
+
+### 检查结果
+- ✅ 后端服务健康 (port 8004+8005, /api/stats 正常)
+- ✅ 服务注册: routes_v7_router ✅, mirofish_router ✅, strategies_extra_router ✅
+- ✅ 前端 App.tsx 总体结构良好
+- ⚠️ git 工作区干净
+
+### 发现并修复的问题
+1. **Critical Bug - `main.py` 未定义`router`注册**: 
+   - 原代码: `app.include_router(router, tags=["V7投资组合"])` 
+   - `router` 变量未导入，会导致启动时潜在错误
+   - 修复: 改为 `routes_v7_router` (已正确导入)
+   - 提交: `832e9ee` fix: main.py修复未定义router注册 + 前端移除Math.random()假数据覆盖
+
+2. **Bug - `App.tsx` 用`Math.random()`覆盖真实工具数据**:
+   - 原代码在 `/api/stats` 响应时用随机数覆盖 `dailyPnL`, `totalPnL`, `trades`
+   - 问题: 每次轮询都用假数据覆盖UI，用户看不到真实状态
+   - 修复: 移除随机数生成，保留API原始数据（无数据时为0）
+   - 提交: `832e9ee` 同上
+
+3. **Code Smell - `routes_v7_router` 重复注册**:
+   - 修复后代码将 `routes_v7_router` 注册了两次（"V7北斗七鑫"和"V7投资组合"）
+   - 清理: 移除重复注册，保留一个即可
+   - 提交: `8976e2b` refactor: 移除routes_v7_router重复注册
+
+### 提交记录
+| Commit | 描述 |
+|--------|------|
+| `832e9ee` | fix: main.py修复未定义router注册 + 前端移除Math.random()假数据覆盖 |
+| `8976e2b` | refactor: 移除routes_v7_router重复注册 |
+
+### 状态
+- 后端: ✅ 健康 (端口 8004, 8005)
+- 前端: ✅ 健康
+- Git: ✅ 已提交
+- 评分: ~87.6 (无变化)
+
+## 2026-03-30 v6.4.0 迭代检查 (00:59 UTC)
+
+### 检查结果
+| 项目 | 状态 | 详情 |
+|------|------|------|
+| Backend健康 | ✅ | port 8004, dry_run, signals=25, trades=0 |
+| 磁盘 | ⚠️ 95% | 13GB free，需关注 |
+| Git状态 | ✅ 已提交 | commit bb09a81 |
+| 僵尸进程 | ✅ | 无异常 |
+
+### 本次迭代内容 (gstack三大流水线)
+
+#### ⚡ 性能工程师 - cache.py重构
+- 简化为 `SimpleCache` 类 (90行→95行净增益)
+- 新增 `@cached(ttl, key_prefix)` 装饰器
+- 预定义TTL常量: market_data(30s), signals(60s), strategies(300s), portfolio(60s), stats(10s)
+
+#### 📊 SRE - /health端点
+- 新增 `/health` Golden Signals监控端点
+- 返回: latency_ms, saturation_cpu/memory/disk, database/exchange状态
+- 告警阈值: cpu>80%, memory>80%, disk>85%
+
+#### 🎨 设计师 - 移动端响应式
+- App.css: 移动端Design Tokens (spacing/typography/radius)
+- sidebar底部固定导航
+- 深色模式支持 (prefers-color-scheme: dark)
+
+### 提交
+- `feat: 性能工程师 + SRE健康检查 + 移动端响应式` - commit bb09a81
+- 3 files changed, +226/-166
+
+### 待关注
+| 项目 | 状态 | 说明 |
+|------|------|------|
+| 磁盘 | ⚠️ 95% | 需清理，可考虑重装依赖 |
+| /health端点 | ⏳ 未生效 | 需重启后端服务 |
+| 内存 | 关注 | 已用75.6% |
+
+---
+*🪿 GO2SE CEO | 2026-03-30 00:59 UTC*

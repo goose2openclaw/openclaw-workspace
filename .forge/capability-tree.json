@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-03-29T17:23:50.514Z",
+  "updated": "2026-03-30T03:05:48.593Z",
   "domains": {
     "analysis": {
       "skills": [
@@ -36,6 +36,33 @@
         "go2se-deerflow",
         "go2se-skill",
         "gog",
+        "gstack",
+        "gstack-autoplan",
+        "gstack-benchmark",
+        "gstack-browse",
+        "gstack-canary",
+        "gstack-careful",
+        "gstack-connect-chrome",
+        "gstack-cso",
+        "gstack-design-consultation",
+        "gstack-design-review",
+        "gstack-design-shotgun",
+        "gstack-document-release",
+        "gstack-freeze",
+        "gstack-guard",
+        "gstack-investigate",
+        "gstack-office-hours",
+        "gstack-plan-ceo-review",
+        "gstack-plan-design-review",
+        "gstack-plan-eng-review",
+        "gstack-qa",
+        "gstack-qa-only",
+        "gstack-retro",
+        "gstack-review",
+        "gstack-setup-browser-cookies",
+        "gstack-ship",
+        "gstack-unfreeze",
+        "gstack-upgrade",
         "last30days-skill",
         "marketing-mode",
         "memos-cli",
@@ -77,8 +104,8 @@
       "totalActivations": 0,
       "successRate": 0,
       "gapScore": 0.03,
-      "fallbackEvents": 7,
-      "totalEvents": 273
+      "fallbackEvents": 12,
+      "totalEvents": 424
     },
     "development": {
       "skills": [
@@ -116,15 +143,17 @@
       ],
       "totalActivations": 0,
       "successRate": 0,
-      "gapScore": 0.04,
-      "fallbackEvents": 2,
-      "totalEvents": 51
+      "gapScore": 0.02,
+      "fallbackEvents": 3,
+      "totalEvents": 169
     },
     "operations": {
       "skills": [
         "agentic-mcp-server-builder",
         "aoms",
         "docker-essentials",
+        "gstack-land-and-deploy",
+        "gstack-setup-deploy",
         "nextjs",
         "openclaw-backup",
         "polymarket-arbitrage",
@@ -134,8 +163,8 @@
       "totalActivations": 0,
       "successRate": 0,
       "gapScore": 0,
-      "fallbackEvents": 1,
-      "totalEvents": 856
+      "fallbackEvents": 3,
+      "totalEvents": 1653
     },
     "monitoring": {
       "skills": [
@@ -153,7 +182,17 @@
       "successRate": 0,
       "gapScore": 0,
       "fallbackEvents": 0,
-      "totalEvents": 5
+      "totalEvents": 11
+    },
+    "general": {
+      "skills": [
+        "auto-cron"
+      ],
+      "totalActivations": 1,
+      "successRate": 1,
+      "gapScore": 0,
+      "fallbackEvents": 0,
+      "totalEvents": 1
     },
     "testing": {
       "skills": [
@@ -177,9 +216,9 @@
       ],
       "totalActivations": 0,
       "successRate": 0,
-      "gapScore": 0,
-      "fallbackEvents": 0,
-      "totalEvents": 2
+      "gapScore": 0.03,
+      "fallbackEvents": 1,
+      "totalEvents": 29
     },
     "communication": {
       "skills": [

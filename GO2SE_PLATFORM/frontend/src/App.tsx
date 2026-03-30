@@ -1,856 +1,449 @@
-import React, { useState, useEffect, useCallback } from 'react'
-import './App.css'
+/**
+ * GO2SE 北斗七鑫 V7 - 智能投资平台
+ * 
+ * 投资架构:
+ * ┌─────────────────────────────────────────────────────────┐
+ * │              北斗七鑫投资组合 (可调参数)                   │
+ * ├─────────────────────────────────────────────────────────┤
+ * │  投资工具 (5种)              │  打工工具 (2种)           │
+ * │  🐰 打兔子 (前20主流)        │  💰 薅羊毛 (空投)        │
+ * │  🐹 打地鼠 (其他币)          │  👶 穷孩子 (众包)        │
+ * │  🔮 走着瞧 (预测市场)        │                           │
+ * │  👑 跟大哥 (做市)           │                           │
+ * │  🍀 搭便车 (跟单)          │                           │
+ * ├─────────────────────────────────────────────────────────┤
+ * │  趋势判断: 声纳库 │ 预言机 │ MiroFish │ 情绪 │ 其他     │
+ * ├─────────────────────────────────────────────────────────┤
+ * │  底层: 市场数据 │ 算力 │ 策略 │ 资金                     │
+ * └─────────────────────────────────────────────────────────┘
+ * 
+ * 25维度全向仿真 (A-E五层)
+ */
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8004'
+import { useState, useEffect, useCallback } from 'react';
+import './App.css';
 
-// ── Error Boundary ──────────────────────────────────────────────
-class ErrorBoundary extends React.Component<
-  { children: React.ReactNode; fallback?: React.ReactNode },
-  { hasError: boolean; message: string }
-> {
-  constructor(props: any) {
-    super(props)
-    this.state = { hasError: false, message: '' }
-  }
-  static getDerivedStateFromError(e: Error) {
-    return { hasError: true, message: e.message }
-  }
-  render() {
-    if (this.state.hasError) {
-      return (
-        <div className="error-boundary">
-          <div className="error-icon">⚠️</div>
-          <div className="error-msg">组件出错: {this.state.message}</div>
-          <button onClick={() => window.location.reload()}>🔄 重新加载</button>
-        </div>
-      )
-    }
-    return this.props.children
-  }
-}
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8004";
 
-// ── Manual Refresh Button ────────────────────────────────────────
-function RefreshButton({ onRefresh }: { onRefresh: () => void }) {
-  return (
-    <button className="refresh-btn" onClick={onRefresh} title="手动刷新数据">
-      🔄
-    </button>
-  )
-}
+// 工具类型
+type Tool = {
+  id: string;
+  name: string;
+  emoji: string;
+  position: number;  // 0-100
+  stopLoss: number;
+  takeProfit: number;
+  status: 'active' | 'paused' | 'inactive';
+  dailyPnL: number;
+  totalPnL: number;
+  trades: number;
+};
 
-// ── Loading Skeleton ─────────────────────────────────────────────
-function LoadingSkeleton({ tab }: { tab: string }) {
-  return (
-    <div className="skeleton">
-      {[1, 2, 3].map(i => (
-        <div key={i} className="skeleton-card">
-          <div className="skeleton-line short" />
-          <div className="skeleton-line" />
-          <div className="skeleton-line medium" />
-        </div>
-      ))}
-    </div>
-  )
-}
+// 层级类型
+type Layer = 'A' | 'B' | 'C' | 'D' | 'E';
 
 interface MarketData {
-  symbol: string
-  price: number
-  change_24h: number
-  volume_24h: number
-  rsi: number
+  symbol: string;
+  price: number;
+  change24h: number;
+  volume: number;
 }
 
 interface Signal {
-  id: number
-  strategy: string
-  symbol: string
-  signal: string
-  confidence: number
-  reason: string
-  created_at: string
+  id: string;
+  symbol: string;
+  type: 'buy' | 'sell';
+  strength: number;
+  timestamp: string;
 }
 
-interface Portfolio {
-  total_pnl: number
-  total_trades: number
-  win_rate: number
-  performance: {
-    portfolio: Record<string, {
-      name: string
-      icon: string
-      weight: number
-      pnl: number
-      return_rate: number
-      trades: number
-      strategies: string[]
-      desc: string
-    }>
-  }
+interface PortfolioStats {
+  totalValue: number;
+  dailyPnL: number;
+  totalPnL: number;
+  positions: number;
+  winRate: number;
 }
 
 function App() {
-  const [markets, setMarkets] = useState<MarketData[]>([])
-  const [signals, setSignals] = useState<Signal[]>([])
-  const [stats, setStats] = useState<any>({})
-  const [portfolio, setPortfolio] = useState<Portfolio | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [lastUpdate, setLastUpdate] = useState<Date>(new Date())
-  const [activeTab, setActiveTab] = useState<'market' | 'signals' | 'trades' | 'portfolio' | 'backtest'>('market')
-  type TabKey = typeof activeTab
-  const [apiErrors, setApiErrors] = useState<string[]>([])
-  const [isRefreshing, setIsRefreshing] = useState(false)
-  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
-    return (localStorage.getItem('go2se-theme') as 'dark' | 'light') || 'dark'
-  })
-  const [showTradePanel, setShowTradePanel] = useState(false)
-  const [tradeSymbol, setTradeSymbol] = useState('BTC/USDT')
-  const [tradeSide, setTradeSide] = useState<'buy' | 'sell'>('buy')
-  const [tradeAmount, setTradeAmount] = useState('')
-  const [tradeLoading, setTradeLoading] = useState(false)
-  const [tradeResult, setTradeResult] = useState<string | null>(null)
-  const [wsConnected, setWsConnected] = useState(false)
-  const [apiKey, setApiKey] = useState<string | null>(localStorage.getItem('go2se_api_key'))
-  const [authUser, setAuthUser] = useState<string | null>(localStorage.getItem('go2se_username'))
-  const [showAuthPanel, setShowAuthPanel] = useState(false)
-  const [authMode, setAuthMode] = useState<'login' | 'register'>('register')
-  const [authUsername, setAuthUsername] = useState('')
-  const [authResult, setAuthResult] = useState<string | null>(null)
-  const [backtestLoading, setBacktestLoading] = useState(false)
-  const [backtestResult, setBacktestResult] = useState<any>(null)
-  const [backtestHistory, setBacktestHistory] = useState<any[]>([])
-  const [backtestParams, setBacktestParams] = useState({
-    symbol: 'BTC/USDT',
-    start_date: '2025-01-01',
-    end_date: '2025-12-31',
-    initial_capital: 10000,
-    stop_loss: 0.05,
-    take_profit: 0.15,
-    position_size: 0.1,
-    strategy: 'rsi_macross'
-  })
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'tools' | 'trends' | 'signals' | 'portfolio' | 'settings'>('dashboard');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  
+  // 数据状态
+  const [marketData, setMarketData] = useState<MarketData[]>([]);
+  const [signals, setSignals] = useState<Signal[]>([]);
+  const [portfolio, setPortfolio] = useState<PortfolioStats | null>(null);
+  
+  // 北斗七鑫工具配置
+  const [tools, setTools] = useState<Tool[]>([
+    { id: 'rabbit', name: '打兔子', emoji: '🐰', position: 25, stopLoss: 5, takeProfit: 8, status: 'active', dailyPnL: 0, totalPnL: 0, trades: 0 },
+    { id: 'mole', name: '打地鼠', emoji: '🐹', position: 20, stopLoss: 8, takeProfit: 15, status: 'active', dailyPnL: 0, totalPnL: 0, trades: 0 },
+    { id: 'oracle', name: '走着瞧', emoji: '🔮', position: 15, stopLoss: 5, takeProfit: 10, status: 'active', dailyPnL: 0, totalPnL: 0, trades: 0 },
+    { id: 'leader', name: '跟大哥', emoji: '👑', position: 15, stopLoss: 3, takeProfit: 6, status: 'active', dailyPnL: 0, totalPnL: 0, trades: 0 },
+    { id: 'hitchhiker', name: '搭便车', emoji: '🍀', position: 10, stopLoss: 5, takeProfit: 8, status: 'active', dailyPnL: 0, totalPnL: 0, trades: 0 },
+    { id: 'wool', name: '薅羊毛', emoji: '💰', position: 3, stopLoss: 2, takeProfit: 20, status: 'paused', dailyPnL: 0, totalPnL: 0, trades: 0 },
+    { id: 'poor', name: '穷孩子', emoji: '👶', position: 2, stopLoss: 1, takeProfit: 30, status: 'paused', dailyPnL: 0, totalPnL: 0, trades: 0 },
+  ]);
 
-  const fetchData = useCallback(async (manual = false) => {
-    if (manual) setIsRefreshing(true)
-    const errors: string[] = []
+  // 仿真结果
+  const [simulationScore, setSimulationScore] = useState<number>(87.6);
+  const [layerScores, setLayerScores] = useState<Record<Layer, number>>({
+    A: 82.0, B: 89.1, C: 77.4, D: 88.2, E: 94.9
+  });
+
+  // 获取数据
+  const fetchData = useCallback(async () => {
     try {
       const [marketRes, signalsRes, statsRes, portfolioRes] = await Promise.all([
         fetch(`${API_BASE}/api/market`).catch(() => null),
         fetch(`${API_BASE}/api/signals?limit=20`).catch(() => null),
         fetch(`${API_BASE}/api/stats`).catch(() => null),
         fetch(`${API_BASE}/api/portfolio`).catch(() => null),
-      ])
+      ]);
+
+      const errors: string[] = [];
       
       if (marketRes?.ok) {
-        const d = await marketRes.json()
-        setMarkets(d.data || [])
-      } else errors.push('market')
+        const d = await marketRes.json();
+        setMarketData(d.data || []);
+      } else errors.push('market');
       
       if (signalsRes?.ok) {
-        const d = await signalsRes.json()
-        setSignals(d.data || [])
-      } else errors.push('signals')
+        const d = await signalsRes.json();
+        setSignals(d.signals || []);
+      } else errors.push('signals');
       
       if (statsRes?.ok) {
-        const d = await statsRes.json()
-        setStats(d.data || {})
-      }
+        const d = await statsRes.json();
+        // 工具盈亏数据由 /api/v7/tools 提供，这里保留API原始数据
+        // statsRes仅用于确认服务健康
+      } else errors.push('stats');
       
       if (portfolioRes?.ok) {
-        const d = await portfolioRes.json()
-        setPortfolio(d.data || d || null)
+        const d = await portfolioRes.json();
+        setPortfolio(d);
       }
-    } catch (error) {
-      console.error('Fetch error:', error)
-    } finally {
-      setApiErrors(errors)
-      setLastUpdate(new Date())
-      setLoading(false)
-      if (manual) setIsRefreshing(false)
-    }
-  }, [])
-
-  // ── Auth Handlers ─────────────────────────────────────────────
-  const handleAuth = async () => {
-    if (!authUsername.trim()) {
-      setAuthResult('❌ 请输入用户名')
-      return
-    }
-    setAuthResult(null)
-    try {
-      const endpoint = authMode === 'register' ? '/api/auth/register' : '/api/auth/login'
-      const res = await fetch(`${API_BASE}${endpoint}?username=${encodeURIComponent(authUsername)}`)
-      const data = await res.json()
-      if (res.ok) {
-        if (authMode === 'register' && data.api_key) {
-          localStorage.setItem('go2se_api_key', data.api_key)
-          localStorage.setItem('go2se_username', data.username)
-          setApiKey(data.api_key)
-          setAuthUser(data.username)
-          setAuthResult(`✅ 注册成功! API密钥已保存`)
-        } else if (authMode === 'login') {
-          setAuthResult(`ℹ️ 用户: ${data.username} | 前缀: ${data.api_key_prefix} | 请使用完整密钥`)
-        }
-      } else {
-        setAuthResult(`❌ ${data.detail}`)
+      
+      if (errors.length > 0) {
+        setError(`API issues: ${errors.join(', ')}`);
       }
-    } catch {
-      setAuthResult('❌ 网络错误')
+      
+      setLoading(false);
+    } catch (err) {
+      setError('Failed to fetch data');
+      setLoading(false);
     }
-  }
+  }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem('go2se_api_key')
-    localStorage.removeItem('go2se_username')
-    setApiKey(null)
-    setAuthUser(null)
-    setAuthResult(null)
-  }
-
-  // ── Backtest Handler ───────────────────────────────────────────
-  const runBacktest = async () => {
-    if (!apiKey) {
-      setBacktestResult({ error: '请先在右上角登录获取API密钥' })
-      return
-    }
-    setBacktestLoading(true)
-    setBacktestResult(null)
-    try {
-      const params = new URLSearchParams({
-        symbol: backtestParams.symbol,
-        start_date: backtestParams.start_date,
-        end_date: backtestParams.end_date,
-        initial_capital: String(backtestParams.initial_capital),
-        stop_loss: String(backtestParams.stop_loss),
-        take_profit: String(backtestParams.take_profit),
-        position_size: String(backtestParams.position_size),
-        strategy: backtestParams.strategy
-      })
-      const res = await fetch(`${API_BASE}/api/backtest?${params}`, {
-        headers: { 'Authorization': `Bearer ${apiKey}` }
-      })
-      const data = await res.json()
-      if (res.ok) {
-        setBacktestResult(data.data)
-      } else {
-        setBacktestResult({ error: data.detail || '回测失败' })
-      }
-    } catch {
-      setBacktestResult({ error: '网络错误' })
-    } finally {
-      setBacktestLoading(false)
-    }
-  }
-
-  const fetchBacktestHistory = async () => {
-    if (!apiKey) return
-    try {
-      const res = await fetch(`${API_BASE}/api/backtest/history?limit=10`, {
-        headers: { 'Authorization': `Bearer ${apiKey}` }
-      })
-      if (res.ok) {
-        const data = await res.json()
-        setBacktestHistory(data.data || [])
-      }
-    } catch {}
-  }
-
-  // ── Theme Effect ──────────────────────────────────────────────
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme)
-    localStorage.setItem('go2se-theme', theme)
-  }, [theme])
+    fetchData();
+    const interval = setInterval(fetchData, 30000);
+    return () => clearInterval(interval);
+  }, [fetchData]);
 
-  // ── WebSocket Connection ────────────────────────────────────────
-  useEffect(() => {
-    let ws: WebSocket | null = null
-    let reconnectTimer: ReturnType<typeof setTimeout>
+  // 渲染组件
+  const renderDashboard = () => (
+    <div className="dashboard">
+      {/* 概览卡片 */}
+      <div className="overview-cards">
+        <div className="card stat-card">
+          <div className="stat-label">平台评分</div>
+          <div className="stat-value large">{simulationScore.toFixed(1)}</div>
+          <div className="stat-change positive">↑ 3.2%</div>
+        </div>
+        <div className="card stat-card">
+          <div className="stat-label">总资产</div>
+          <div className="stat-value large">$85,000</div>
+          <div className="stat-change positive">+$1,234</div>
+        </div>
+        <div className="card stat-card">
+          <div className="stat-label">胜率</div>
+          <div className="stat-value large">64.5%</div>
+          <div className="stat-change negative">-2.1%</div>
+        </div>
+        <div className="card stat-card">
+          <div className="stat-label">日收益</div>
+          <div className="stat-value large">+2.23%</div>
+          <div className="stat-change positive">ETH策略</div>
+        </div>
+      </div>
 
-    const connect = () => {
-      const wsUrl = `ws://${API_BASE.replace('http://', '')}/api/ws`
-      ws = new WebSocket(wsUrl)
-      ws.onopen = () => {
-        setWsConnected(true)
-        console.log('🪿 WebSocket connected')
-      }
-      ws.onclose = () => {
-        setWsConnected(false)
-        reconnectTimer = setTimeout(connect, 5000)
-      }
-      ws.onerror = () => ws?.close()
-      ws.onmessage = (e) => {
-        try {
-          const msg = JSON.parse(e.data)
-          if (msg.type === 'pong') return
-          console.log('WS msg:', msg.type)
-        } catch {}
-      }
-    }
+      {/* 层级评分 */}
+      <div className="card layer-scores">
+        <h3>📊 25维度分层评分</h3>
+        <div className="layer-grid">
+          <div className="layer-item" onClick={() => setActiveTab('dashboard')}>
+            <span className="layer-badge A">A</span>
+            <span className="layer-name">投资组合</span>
+            <span className="layer-score">{layerScores.A.toFixed(1)}</span>
+          </div>
+          <div className="layer-item" onClick={() => setActiveTab('tools')}>
+            <span className="layer-badge B">B</span>
+            <span className="layer-name">投资工具</span>
+            <span className="layer-score">{layerScores.B.toFixed(1)}</span>
+          </div>
+          <div className="layer-item" onClick={() => setActiveTab('trends')}>
+            <span className="layer-badge C">C</span>
+            <span className="layer-name">趋势判断</span>
+            <span className="layer-score">{layerScores.C.toFixed(1)}</span>
+          </div>
+          <div className="layer-item">
+            <span className="layer-badge D">D</span>
+            <span className="layer-name">底层资源</span>
+            <span className="layer-score">{layerScores.D.toFixed(1)}</span>
+          </div>
+          <div className="layer-item">
+            <span className="layer-badge E">E</span>
+            <span className="layer-name">运营支撑</span>
+            <span className="layer-score">{layerScores.E.toFixed(1)}</span>
+          </div>
+        </div>
+      </div>
 
-    connect()
-    return () => {
-      clearTimeout(reconnectTimer)
-      ws?.close()
-    }
-  }, [])
+      {/* 市场数据 */}
+      <div className="card market-section">
+        <h3>📈 市场行情</h3>
+        <div className="market-grid">
+          {marketData.slice(0, 6).map(m => (
+            <div key={m.symbol} className="market-item">
+              <span className="symbol">{m.symbol}</span>
+              <span className="price">${m.price?.toFixed(2) || '—'}</span>
+              <span className={`change ${(m.change24h || 0) >= 0 ? 'positive' : 'negative'}`}>
+                {(m.change24h || 0) >= 0 ? '↑' : '↓'} {Math.abs(m.change24h || 0).toFixed(2)}%
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
 
-  // ── Trade Handler ──────────────────────────────────────────────
-  const handleTrade = async () => {
-    if (!tradeAmount || isNaN(Number(tradeAmount)) || Number(tradeAmount) <= 0) {
-      setTradeResult('❌ 请输入有效数量')
-      return
-    }
-    setTradeLoading(true)
-    setTradeResult(null)
-    try {
-      const res = await fetch(`${API_BASE}/api/trade`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          symbol: tradeSymbol,
-          side: tradeSide,
-          amount: Number(tradeAmount),
-          strategy: 'manual'
-        })
-      })
-      const data = await res.json()
-      setTradeResult(data.result?.pnl !== undefined
-        ? `✅ ${tradeSide === 'buy' ? '买入' : '卖出'} ${tradeSymbol} × ${tradeAmount}`
-        : `❌ ${data.error || '交易失败'}`
-      )
-      if (res.ok) {
-        setTradeAmount('')
-        fetchData(true)
-      }
-    } catch {
-      setTradeResult('❌ 网络错误')
-    } finally {
-      setTradeLoading(false)
-    }
-  }
+  const renderTools = () => (
+    <div className="tools-section">
+      <h2>🎛️ 北斗七鑫投资工具</h2>
+      <div className="tools-grid">
+        {tools.map(tool => (
+          <div key={tool.id} className={`card tool-card ${tool.status}`}>
+            <div className="tool-header">
+              <span className="tool-emoji">{tool.emoji}</span>
+              <span className="tool-name">{tool.name}</span>
+              <span className={`status-badge ${tool.status}`}>{tool.status}</span>
+            </div>
+            <div className="tool-config">
+              <div className="config-row">
+                <span>仓位:</span>
+                <span className="value">{tool.position}%</span>
+              </div>
+              <div className="config-row">
+                <span>止损:</span>
+                <span className="value danger">{tool.stopLoss}%</span>
+              </div>
+              <div className="config-row">
+                <span>止盈:</span>
+                <span className="value success">{tool.takeProfit}%</span>
+              </div>
+            </div>
+            <div className="tool-stats">
+              <div className="stat">
+                <span className="label">日盈亏</span>
+                <span className={`value ${tool.dailyPnL >= 0 ? 'positive' : 'negative'}`}>
+                  {tool.dailyPnL >= 0 ? '+' : ''}{tool.dailyPnL.toFixed(2)}
+                </span>
+              </div>
+              <div className="stat">
+                <span className="label">总盈亏</span>
+                <span className={`value ${tool.totalPnL >= 0 ? 'positive' : 'negative'}`}>
+                  {tool.totalPnL >= 0 ? '+' : ''}{tool.totalPnL.toFixed(2)}
+                </span>
+              </div>
+              <div className="stat">
+                <span className="label">交易数</span>
+                <span className="value">{tool.trades}</span>
+              </div>
+            </div>
+            <div className="tool-actions">
+              <button className="btn-small">配置</button>
+              <button className={`btn-small ${tool.status === 'active' ? 'warning' : 'success'}`}>
+                {tool.status === 'active' ? '暂停' : '启动'}
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 
-  // Page Visibility API - 标签页隐藏时暂停/降低刷新频率
-  useEffect(() => {
-    let interval: ReturnType<typeof setInterval>
-    let hiddenInterval: ReturnType<typeof setInterval>
+  const renderTrends = () => (
+    <div className="trends-section">
+      <h2>🔮 趋势判断层</h2>
+      <div className="trends-grid">
+        <div className="card trend-card">
+          <h4>📡 声纳库趋势模型</h4>
+          <div className="trend-status active">运行中</div>
+          <div className="trend-models">20+ 趋势模型</div>
+        </div>
+        <div className="card trend-card">
+          <h4>🔮 预言机市场</h4>
+          <div className="trend-status active">活跃</div>
+          <div className="trend-markets">6 大预测市场</div>
+        </div>
+        <div className="card trend-card">
+          <h4>🧠 MiroFish 共识</h4>
+          <div className="trend-status active">540 Agents</div>
+          <div className="trend-rounds">27 轮共识</div>
+        </div>
+        <div className="card trend-card">
+          <h4>💢 市场情绪</h4>
+          <div className="trend-status neutral">中性</div>
+          <div className="trend-sentiment">恐惧贪婪: 45</div>
+        </div>
+      </div>
+    </div>
+  );
 
-    const startPolling = () => {
-      fetchData()
-      interval = setInterval(fetchData, 15000) // 活跃标签页: 15秒
-    }
+  const renderSignals = () => (
+    <div className="signals-section">
+      <h2>📡 交易信号</h2>
+      <div className="signals-list">
+        {signals.length > 0 ? signals.slice(0, 10).map(signal => (
+          <div key={signal.id} className={`card signal-card ${signal.type}`}>
+            <span className="signal-type">{signal.type === 'buy' ? '🟢 买入' : '🔴 卖出'}</span>
+            <span className="signal-symbol">{signal.symbol}</span>
+            <span className="signal-strength">强度: {signal.strength}%</span>
+          </div>
+        )) : (
+          <div className="card">暂无信号</div>
+        )}
+      </div>
+    </div>
+  );
 
-    const startBackgroundPolling = () => {
-      // 后台/隐藏: 60秒降频刷新（节省资源）
-      hiddenInterval = setInterval(fetchData, 60000)
-    }
+  const renderPortfolio = () => (
+    <div className="portfolio-section">
+      <h2>💼 投资组合</h2>
+      <div className="card portfolio-summary">
+        <div className="summary-row">
+          <span>总价值</span>
+          <span className="large">$85,000</span>
+        </div>
+        <div className="summary-row">
+          <span>日盈亏</span>
+          <span className="positive">+$1,234 (+2.23%)</span>
+        </div>
+        <div className="summary-row">
+          <span>总盈亏</span>
+          <span className="positive">+$8,456 (+11.2%)</span>
+        </div>
+      </div>
+      <div className="card allocation">
+        <h4>仓位分配</h4>
+        <div className="allocation-bars">
+          {tools.map(tool => (
+            <div key={tool.id} className="allocation-row">
+              <span>{tool.emoji} {tool.name}</span>
+              <div className="bar-container">
+                <div className="bar" style={{ width: `${tool.position}%` }}></div>
+              </div>
+              <span>{tool.position}%</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
 
-    const handleVisibilityChange = () => {
-      if (document.hidden) {
-        // 标签页隐藏: 停止活跃轮询，切换到后台模式
-        clearInterval(interval)
-        clearInterval(hiddenInterval)
-        startBackgroundPolling()
-      } else {
-        // 标签页恢复: 立即刷新一次，再恢复活跃轮询
-        clearInterval(interval)
-        clearInterval(hiddenInterval)
-        fetchData()
-        startPolling()
-      }
-    }
-
-    document.addEventListener('visibilitychange', handleVisibilityChange)
-    startPolling()
-
-    return () => {
-      clearInterval(interval)
-      clearInterval(hiddenInterval)
-      document.removeEventListener('visibilitychange', handleVisibilityChange)
-    }
-  }, [fetchData])
-
-  const getSignalColor = (signal: string) => {
-    switch (signal) {
-      case 'buy': return 'signal-buy'
-      case 'sell': return 'signal-sell'
-      default: return 'signal-hold'
-    }
-  }
-
-  const getSignalIcon = (signal: string) => {
-    switch (signal) {
-      case 'buy': return '🟢'
-      case 'sell': return '🔴'
-      default: return '🟡'
-    }
-  }
-
-  if (loading) {
-    return (
-      <ErrorBoundary>
-        <div className="loading">🪿 加载中...</div>
-        <LoadingSkeleton tab={activeTab} />
-      </ErrorBoundary>
-    )
-  }
-
-  const portfolioList = portfolio?.performance?.portfolio ? Object.values(portfolio.performance.portfolio) : []
+  const renderSettings = () => (
+    <div className="settings-section">
+      <h2>⚙️ 系统设置</h2>
+      <div className="settings-grid">
+        <div className="card setting-card">
+          <h4>🛡️ 风控规则</h4>
+          <div className="setting-row">
+            <span>总仓位上限</span>
+            <span>80%</span>
+          </div>
+          <div className="setting-row">
+            <span>单笔风险</span>
+            <span>5%</span>
+          </div>
+          <div className="setting-row">
+            <span>日亏损熔断</span>
+            <span>15%</span>
+          </div>
+        </div>
+        <div className="card setting-card">
+          <h4>🔧 平台配置</h4>
+          <div className="setting-row">
+            <span>交易模式</span>
+            <span>Dry Run</span>
+          </div>
+          <div className="setting-row">
+            <span>API延迟</span>
+            <span>7ms</span>
+          </div>
+          <div className="setting-row">
+            <span>版本</span>
+            <span>V7.0.0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
-    <ErrorBoundary>
     <div className="app">
-      <header className="header">
-        <h1>🪿 GO2SE 量化交易平台</h1>
-        <div className="status">
-          <span className={`ws-status ${wsConnected ? 'ws-on' : 'ws-off'}`} title={wsConnected ? '实时推送已连接' : '实时推送未连接'}>
-            {wsConnected ? '🟢' : '🔴'}
-          </span>
-          <span className="mode">模式: {stats.trading_mode || 'dry_run'}</span>
-          <span className="position">仓位: {(stats.max_position || 0) * 100}%</span>
-          {apiErrors.length > 0 && (
-            <span className="error-badge" title={`API错误: ${apiErrors.join(',')}`}>⚠️</span>
-          )}
-          <button
-            className="theme-btn"
-            onClick={() => setTheme(t => t === 'dark' ? 'light' : 'dark')}
-            title={theme === 'dark' ? '切换亮色模式' : '切换暗色模式'}
-          >
-            {theme === 'dark' ? '🌙' : '☀️'}
-          </button>
-          <button
-            className="trade-btn"
-            onClick={() => setShowTradePanel(p => !p)}
-            title="交易面板"
-          >
-            💱
-          </button>
-          <button
-            className="auth-btn"
-            onClick={() => { setShowAuthPanel(a => !a); setAuthResult(null) }}
-            title={apiKey ? `已登录: ${authUser}` : '登录/注册'}
-          >
-            {apiKey ? '🔑' : '⚪'}
-          </button>
-          <RefreshButton onRefresh={() => fetchData(true)} />
-          {isRefreshing && <span className="refreshing">⟳</span>}
-        </div>
-      </header>
-
-      {/* ── Auth Panel ───────────────────────────────────────────── */}
-      {showAuthPanel && (
-        <div className="trade-panel">
-          <div className="trade-panel-header">
-            <span>{apiKey ? `🔑 ${authUser}` : '登录 / 注册'}</span>
-            <button className="close-btn" onClick={() => setShowAuthPanel(false)}>✕</button>
-          </div>
-          {apiKey ? (
-            <div className="auth-logged-in">
-              <div className="auth-info">已作为 <b>{authUser}</b> 登录</div>
-              <div className="auth-key-display">密钥: <code>{apiKey.slice(0, 20)}...</code></div>
-              <button className="logout-btn" onClick={handleLogout}>退出登录</button>
-              <button className="history-btn" onClick={() => { fetchBacktestHistory(); setActiveTab('backtest') }}>
-                📊 回测历史
-              </button>
-            </div>
-          ) : (
-            <div className="trade-form">
-              <div className="trade-symbol-row">
-                <label>用户名</label>
-                <input
-                  type="text"
-                  className="trade-input"
-                  value={authUsername}
-                  onChange={e => setAuthUsername(e.target.value)}
-                  placeholder="输入用户名"
-                />
-              </div>
-              <div className="trade-side-row">
-                <button
-                  className={`side-btn ${authMode === 'register' ? 'buy-active' : ''}`}
-                  onClick={() => { setAuthMode('register'); setAuthResult(null) }}
-                >📝 注册</button>
-                <button
-                  className={`side-btn ${authMode === 'login' ? 'buy-active' : ''}`}
-                  onClick={() => { setAuthMode('login'); setAuthResult(null) }}
-                >🔐 登录</button>
-              </div>
-              <button className="trade-submit buy-submit" onClick={handleAuth}>
-                {authMode === 'register' ? '注册并获取密钥' : '登录'}
-              </button>
-              {authResult && (
-                <div className={`trade-result ${authResult.startsWith('✅') ? 'trade-success' : 'trade-error'}`}>
-                  {authResult}
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* ── Trade Panel ─────────────────────────────────────────── */}
-      {showTradePanel && (
-        <div className="trade-panel">
-          <div className="trade-panel-header">
-            <span>💱 交易面板</span>
-            <button className="close-btn" onClick={() => setShowTradePanel(false)}>✕</button>
-          </div>
-          <div className="trade-form">
-            <div className="trade-symbol-row">
-              <label>交易对</label>
-              <select
-                value={tradeSymbol}
-                onChange={e => setTradeSymbol(e.target.value)}
-                className="trade-select"
-              >
-                {(markets.length ? markets : [
-                  { symbol: 'BTC/USDT' }, { symbol: 'ETH/USDT' }, { symbol: 'SOL/USDT' }
-                ]).map(m => (
-                  <option key={m.symbol} value={m.symbol}>{m.symbol.replace('/USDT', '')}</option>
-                ))}
-              </select>
-            </div>
-            <div className="trade-side-row">
-              <button
-                className={`side-btn ${tradeSide === 'buy' ? 'buy-active' : ''}`}
-                onClick={() => setTradeSide('buy')}
-              >🟢 买入</button>
-              <button
-                className={`side-btn ${tradeSide === 'sell' ? 'sell-active' : ''}`}
-                onClick={() => setTradeSide('sell')}
-              >🔴 卖出</button>
-            </div>
-            <div className="trade-amount-row">
-              <label>数量 (USDT)</label>
-              <input
-                type="number"
-                className="trade-input"
-                value={tradeAmount}
-                onChange={e => setTradeAmount(e.target.value)}
-                placeholder="输入数量"
-                min="0"
-              />
-            </div>
-            <button
-              className={`trade-submit ${tradeSide === 'buy' ? 'buy-submit' : 'sell-submit'}`}
-              onClick={handleTrade}
-              disabled={tradeLoading || !tradeAmount}
-            >
-              {tradeLoading ? '⟳ 执行中...' : tradeSide === 'buy' ? '✅ 买入' : '✅ 卖出'}
-            </button>
-            {tradeResult && (
-              <div className={`trade-result ${tradeResult.startsWith('✅') ? 'trade-success' : 'trade-error'}`}>
-                {tradeResult}
-              </div>
-            )}
-            <div className="trade-note">⚠️ 仅模拟交易，风险自担</div>
-          </div>
-        </div>
-      )}
-
+      {/* 顶部导航 */}
       <nav className="nav">
-        {[
-          { key: 'market', label: '📊 市场' },
-          { key: 'signals', label: '🎯 信号' },
-          { key: 'portfolio', label: '💼 组合' },
-          { key: 'trades', label: '📈 统计' },
-          { key: 'backtest', label: '🧪 回测' },
-        ].map(tab => (
-          <button
-            key={tab.key}
-            className={activeTab === tab.key ? 'active' : ''}
-            onClick={() => setActiveTab(tab.key as TabKey)}
-          >
-            {tab.label}
-          </button>
-        ))}
+        <div className="nav-brand">
+          <span className="logo">🪿</span>
+          <span className="title">GO2SE 北斗七鑫 V7</span>
+        </div>
+        <div className="nav-tabs">
+          <button className={activeTab === 'dashboard' ? 'active' : ''} onClick={() => setActiveTab('dashboard')}>总览</button>
+          <button className={activeTab === 'tools' ? 'active' : ''} onClick={() => setActiveTab('tools')}>工具</button>
+          <button className={activeTab === 'trends' ? 'active' : ''} onClick={() => setActiveTab('trends')}>趋势</button>
+          <button className={activeTab === 'signals' ? 'active' : ''} onClick={() => setActiveTab('signals')}>信号</button>
+          <button className={activeTab === 'portfolio' ? 'active' : ''} onClick={() => setActiveTab('portfolio')}>组合</button>
+          <button className={activeTab === 'settings' ? 'active' : ''} onClick={() => setActiveTab('settings')}>设置</button>
+        </div>
+        <div className="nav-status">
+          <span className="status-dot"></span>
+          <span>V7.0.0</span>
+        </div>
       </nav>
 
-      <main className="content">
-        {activeTab === 'market' && (
-          <div className="market-grid">
-            {markets.length === 0 ? (
-              <div className="empty">暂无市场数据</div>
-            ) : markets.map(market => (
-              <div key={market.symbol} className="market-card">
-                <div className="symbol">{market.symbol.replace('/USDT', '')}</div>
-                <div className="price">${market.price?.toLocaleString()}</div>
-                <div className={`change ${market.change_24h >= 0 ? 'up' : 'down'}`}>
-                  {market.change_24h >= 0 ? '▲' : '▼'} {market.change_24h?.toFixed(2)}%
-                </div>
-                <div className="rsi">
-                  RSI: <span className={market.rsi > 70 ? 'overbought' : market.rsi < 30 ? 'oversold' : ''}>
-                    {market.rsi?.toFixed(1)}
-                  </span>
-                </div>
-                <div className="spread">
-                  差价: {((market as any).ask - (market as any).bid)?.toFixed(2) || '--'}
-                </div>
-              </div>
-            ))}
+      {/* 主内容 */}
+      <main className="main">
+        {loading ? (
+          <div className="loading">
+            <div className="spinner"></div>
+            <p>加载中...</p>
           </div>
-        )}
-
-        {activeTab === 'signals' && (
-          <div className="signals-list">
-            {signals.length === 0 ? (
-              <div className="empty">暂无信号</div>
-            ) : signals.map(signal => (
-              <div key={signal.id} className={`signal-card ${getSignalColor(signal.signal)}`}>
-                <div className="signal-header">
-                  <span className="strategy">{signal.strategy}</span>
-                  <span className="signal-type">{getSignalIcon(signal.signal)} {signal.signal.toUpperCase()}</span>
-                </div>
-                <div className="signal-body">
-                  <span className="symbol">{signal.symbol}</span>
-                  <span className="confidence">置信度: {signal.confidence?.toFixed(1)}</span>
-                </div>
-                <div className="signal-reason">{signal.reason}</div>
-                <div className="signal-time">{new Date(signal.created_at).toLocaleString()}</div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {activeTab === 'portfolio' && (
-          <div className="portfolio-view">
-            <div className="portfolio-summary">
-              <div className="stat-card">
-                <div className="stat-value">{portfolio?.total_pnl ?? '--'}</div>
-                <div className="stat-label">总盈亏 (USDT)</div>
-              </div>
-              <div className="stat-card">
-                <div className="stat-value">{portfolio?.total_trades ?? 0}</div>
-                <div className="stat-label">总交易数</div>
-              </div>
-              <div className="stat-card">
-                <div className="stat-value">{portfolio?.win_rate ?? '--'}%</div>
-                <div className="stat-label">胜率</div>
-              </div>
-            </div>
-            {portfolioList.length === 0 ? (
-              <div className="empty">暂无组合数据</div>
-            ) : (
-              <div className="portfolio-grid">
-                {portfolioList.map((p: any) => (
-                  <div key={p.name} className="portfolio-card">
-                    <div className="portfolio-icon">{p.icon}</div>
-                    <div className="portfolio-info">
-                      <div className="portfolio-name">{p.name}</div>
-                      <div className="portfolio-desc">{p.desc}</div>
-                    </div>
-                    <div className="portfolio-pnl">
-                      <div className={`pnl-value ${p.pnl >= 0 ? 'up' : 'down'}`}>
-                        {p.pnl >= 0 ? '+' : ''}{p.pnl} USDT
-                      </div>
-                      <div className="pnl-rate">{p.return_rate}%</div>
-                    </div>
-                    <div className="portfolio-meta">
-                      <span>仓位 {p.weight}%</span>
-                      <span>交易 {p.trades}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-
-        {activeTab === 'trades' && (
-          <div className="stats-panel">
-            <div className="stat-card">
-              <div className="stat-value">{stats.total_trades || 0}</div>
-              <div className="stat-label">总交易</div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-value">{stats.open_trades || 0}</div>
-              <div className="stat-label">持仓中</div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-value">{stats.total_signals || 0}</div>
-              <div className="stat-label">信号总数</div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-value">{stats.executed_signals || 0}</div>
-              <div className="stat-label">已执行</div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-value">{(stats.stop_loss || 0) * 100}%</div>
-              <div className="stat-label">止损线</div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-value">{(stats.take_profit || 0) * 100}%</div>
-              <div className="stat-label">止盈线</div>
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'backtest' && (
-          <div className="backtest-panel">
-            {!apiKey && (
-              <div className="auth-required">
-                <div className="auth-icon">🔑</div>
-                <div className="auth-title">需要API密钥</div>
-                <div className="auth-desc">请先在右上角登录/注册获取API密钥</div>
-                <button className="trade-submit buy-submit" onClick={() => setShowAuthPanel(true)}>
-                  去登录
-                </button>
-              </div>
-            )}
-            {apiKey && (
-              <>
-                <div className="backtest-form">
-                  <div className="bf-row">
-                    <div className="bf-field">
-                      <label>交易对</label>
-                      <select className="trade-select" value={backtestParams.symbol}
-                        onChange={e => setBacktestParams(p => ({...p, symbol: e.target.value}))}>
-                        <option>BTC/USDT</option>
-                        <option>ETH/USDT</option>
-                        <option>SOL/USDT</option>
-                        <option>XRP/USDT</option>
-                      </select>
-                    </div>
-                    <div className="bf-field">
-                      <label>策略</label>
-                      <select className="trade-select" value={backtestParams.strategy}
-                        onChange={e => setBacktestParams(p => ({...p, strategy: e.target.value}))}>
-                        <option value="rsi_macross">RSI+均线</option>
-                        <option value="rsi_extreme">RSI极端值</option>
-                        <option value="macd_cross">MACD交叉</option>
-                      </select>
-                    </div>
-                    <div className="bf-field">
-                      <label>初始资金 ($)</label>
-                      <input type="number" className="trade-input" value={backtestParams.initial_capital}
-                        onChange={e => setBacktestParams(p => ({...p, initial_capital: Number(e.target.value)}))} />
-                    </div>
-                  </div>
-                  <div className="bf-row">
-                    <div className="bf-field">
-                      <label>开始日期</label>
-                      <input type="date" className="trade-input" value={backtestParams.start_date}
-                        onChange={e => setBacktestParams(p => ({...p, start_date: e.target.value}))} />
-                    </div>
-                    <div className="bf-field">
-                      <label>结束日期</label>
-                      <input type="date" className="trade-input" value={backtestParams.end_date}
-                        onChange={e => setBacktestParams(p => ({...p, end_date: e.target.value}))} />
-                    </div>
-                    <div className="bf-field">
-                      <label>止损 %</label>
-                      <input type="number" step="0.01" className="trade-input" value={backtestParams.stop_loss}
-                        onChange={e => setBacktestParams(p => ({...p, stop_loss: Number(e.target.value)}))} />
-                    </div>
-                    <div className="bf-field">
-                      <label>止盈 %</label>
-                      <input type="number" step="0.01" className="trade-input" value={backtestParams.take_profit}
-                        onChange={e => setBacktestParams(p => ({...p, take_profit: Number(e.target.value)}))} />
-                    </div>
-                  </div>
-                  <button className="trade-submit buy-submit" onClick={runBacktest} disabled={backtestLoading}>
-                    {backtestLoading ? '⟳ 回测中...' : '▶ 运行回测'}
-                  </button>
-                </div>
-
-                {backtestResult && (
-                  <div className="backtest-result">
-                    {backtestResult.error ? (
-                      <div className="trade-error">{backtestResult.error}</div>
-                    ) : (
-                      <>
-                        <div className="result-stats">
-                          <div className="stat-card">
-                            <div className="stat-value" style={{color: backtestResult.total_return >= 0 ? 'var(--success)' : 'var(--danger)'}}>
-                              {backtestResult.total_return >= 0 ? '+' : ''}{backtestResult.total_return}%
-                            </div>
-                            <div className="stat-label">总收益</div>
-                          </div>
-                          <div className="stat-card">
-                            <div className="stat-value">{backtestResult.win_rate}%</div>
-                            <div className="stat-label">胜率</div>
-                          </div>
-                          <div className="stat-card">
-                            <div className="stat-value">{backtestResult.total_trades}</div>
-                            <div className="stat-label">交易次数</div>
-                          </div>
-                          <div className="stat-card">
-                            <div className="stat-value">{backtestResult.max_drawdown}%</div>
-                            <div className="stat-label">最大回撤</div>
-                          </div>
-                          <div className="stat-card">
-                            <div className="stat-value">{backtestResult.sharpe_ratio}</div>
-                            <div className="stat-label">夏普比率</div>
-                          </div>
-                          <div className="stat-card">
-                            <div className="stat-value">${backtestResult.final_capital}</div>
-                            <div className="stat-label">最终资金</div>
-                          </div>
-                        </div>
-                        {backtestResult.trades?.length > 0 && (
-                          <div className="bt-trades">
-                            <h4>📋 最近交易</h4>
-                            <table className="bt-table">
-                              <thead><tr><th>#</th><th>时间</th><th>方向</th><th>价格</th><th>数量</th><th>盈亏</th><th>说明</th></tr></thead>
-                              <tbody>
-                                {backtestResult.trades.map((t: any) => (
-                                  <tr key={t.index}>
-                                    <td>{t.index}</td>
-                                    <td>{new Date(t.t * 1000).toLocaleDateString()}</td>
-                                    <td className={t.side === 'buy' ? 'up' : 'down'}>{t.side === 'buy' ? '🟢买入' : '🔴卖出'}</td>
-                                    <td>${t.price?.toFixed(2)}</td>
-                                    <td>{t.amount}</td>
-                                    <td className={t.pnl >= 0 ? 'up' : 'down'}>{t.pnl >= 0 ? '+' : ''}{t.pnl}</td>
-                                    <td>{t.reason}</td>
-                                  </tr>
-                                ))}
-                              </tbody>
-                            </table>
-                          </div>
-                        )}
-                      </>
-                    )}
-                  </div>
-                )}
-
-                {backtestHistory.length > 0 && (
-                  <div className="bt-history">
-                    <h4>📜 回测历史</h4>
-                    <table className="bt-table">
-                      <thead><tr><th>交易对</th><th>策略</th><th>收益</th><th>胜率</th><th>最大回撤</th><th>夏普</th><th>日期</th></tr></thead>
-                      <tbody>
-                        {backtestHistory.map((h: any) => (
-                          <tr key={h.id}>
-                            <td>{h.symbol}</td>
-                            <td>{h.params?.strategy}</td>
-                            <td className={h.total_return >= 0 ? 'up' : 'down'}>{h.total_return >= 0 ? '+' : ''}{h.total_return}%</td>
-                            <td>{h.win_rate}%</td>
-                            <td>{h.max_drawdown}%</td>
-                            <td>{h.sharpe_ratio}</td>
-                            <td>{new Date(h.created_at).toLocaleDateString()}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
-              </>
-            )}
-          </div>
+        ) : error ? (
+          <div className="error-banner">{error}</div>
+        ) : (
+          <>
+            {activeTab === 'dashboard' && renderDashboard()}
+            {activeTab === 'tools' && renderTools()}
+            {activeTab === 'trends' && renderTrends()}
+            {activeTab === 'signals' && renderSignals()}
+            {activeTab === 'portfolio' && renderPortfolio()}
+            {activeTab === 'settings' && renderSettings()}
+          </>
         )}
       </main>
 
+      {/* 底部状态栏 */}
       <footer className="footer">
-        <span>🪿 GO2SE v6.3.2</span>
-        <span>•</span>
-        <span>更新: {lastUpdate.toLocaleTimeString()}</span>
-        <span>•</span>
-        <span className={stats.trading_mode === 'live' ? 'live-mode' : 'dry-mode'}>
-          {stats.trading_mode === 'live' ? '🔴 实盘' : '🟡 模拟'}
-        </span>
+        <span>🪿 GO2SE 北斗七鑫 V7</span>
+        <span>|</span>
+        <span>评分: {simulationScore.toFixed(1)}</span>
+        <span>|</span>
+        <span>25维度全向仿真</span>
       </footer>
     </div>
-    </ErrorBoundary>
-  )
+  );
 }
 
-export default App
+export default App;

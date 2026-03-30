@@ -11,6 +11,7 @@ asyncpg>=0.29.0
 
 # 缓存
 redis>=5.0.0
+fakeredis>=2.20.0
 
 # 交易
 ccxt>=4.0.0

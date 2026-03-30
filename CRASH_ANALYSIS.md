@@ -90,3 +90,23 @@ EvoMap API的rate limit是已知的，但代码中未做退避处理。这是hum
 ---
 
 *复盘时间: 2026-03-29 16:00 UTC*
+
+---
+
+## 补充：子Agent超时问题 (2026-03-30)
+
+### 新发现
+- 子Agent session `8e750feb` 和 `b8a4e079` 状态显示 aborted 和 401 auth error
+- 根本原因：子Agent运行时遇到401认证错误，导致任务无法完成
+
+### 根因
+1. 子Agent运行时API认证失败
+2. 长任务未设置正确超时机制
+3. EvoMap API rate limit导致频繁重试
+
+### 修复建议
+1. **P0**: 为所有sessions_spawn添加runTimeoutSeconds参数（≤300s）
+2. **P0**: 实现指数退避策略处理API限流
+3. **P1**: 添加API认证重试机制
+4. **P1**: 实现checkpoint支持断点续传
+

@@ -16,6 +16,7 @@ from app.api import routes
 from app.api.strategies_extra import router as strategies_extra_router
 from app.api.oracle.mirofish import router as mirofish_router
 from app.api.routes_v7 import router as routes_v7_router
+from app.api.routes_sonar import router as sonar_router
 
 # 日志配置
 logging.basicConfig(
@@ -72,6 +73,7 @@ app.include_router(routes.router, prefix="/api", tags=["API"])
 app.include_router(strategies_extra_router, prefix="/api", tags=["额外策略"])
 app.include_router(mirofish_router, tags=["MiroFish预言机"])
 app.include_router(routes_v7_router, tags=["V7北斗七鑫"])
+app.include_router(sonar_router, tags=["声纳库"])
 
 
 @app.get("/")

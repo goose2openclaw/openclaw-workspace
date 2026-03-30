@@ -32,6 +32,17 @@ _CACHE_TTL_PORTFOLIO = 10  # /portfolio 缓存10秒
 _CACHE_TTL_MARKET = 15   # /market 新鲜缓存15秒
 _CACHE_MAX_AGE_MARKET = 60  # /market 允许返回过期数据60秒 (stale-while-revalidate)
 
+# Redis缓存层
+try:
+    from app.core.cache import cache_get, cache_set, cache_delete, cache_stats, namespaced_cache
+    _use_redis = True
+except ImportError:
+    _use_redis = False
+
+# 命名空间缓存实例
+_market_cache = namespaced_cache("market", ttl=15) if _use_redis else None
+_stats_cache = namespaced_cache("stats", ttl=8) if _use_redis else None
+
 def _cache_get(key: str) -> Optional[dict]:
     """取缓存，未过期返回数据，否则返回None"""
     item = _cache.get(key)
@@ -48,6 +59,32 @@ def _cache_set(key: str, data: dict, ttl: int):
     _cache[key] = (data, time.time() + ttl)
 
 
+@router.get("/cache/stats")
+async def get_cache_stats():
+    """获取缓存统计信息"""
+    if not _use_redis:
+        return {"error": "Redis缓存未启用"}
+    
+    try:
+        stats = cache_stats()
+        return {"data": stats}
+    except Exception as e:
+        return {"error": str(e)}
+
+
+@router.post("/cache/clear")
+async def clear_cache():
+    """清空所有缓存 (谨慎使用)"""
+    if not _use_redis:
+        return {"error": "Redis缓存未启用"}
+    
+    try:
+        count = cache_clear()
+        return {"message": f"已清空 {count} 个缓存键"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @router.get("/ping")
 async def ping():
     """轻量级健康检查 (负载均衡器用)"""
@@ -62,7 +99,7 @@ async def ping():
 @router.get("/health")
 async def health_check(db: Session = Depends(get_db)):
     """健康检查 - 轻量级（不调用外部API）"""
-    checks = {"database": "ok", "engine": "ok"}
+    checks = {"database": "ok", "engine": "ok", "cache": "ok"}
     
     # 检查数据库
     try:
@@ -78,6 +115,14 @@ async def health_check(db: Session = Depends(get_db)):
             checks["engine"] = "ok"
     except Exception as e:
         checks["engine"] = f"error: {str(e)}"
+    
+    # 检查缓存
+    if _use_redis:
+        try:
+            cache_stats_data = cache_stats()
+            checks["cache"] = f"redis:{cache_stats_data.get('backend','unknown')}"
+        except Exception as e:
+            checks["cache"] = f"warn:{str(e)[:20]}"
     
     overall = "healthy" if all(v in ("ok", "not_initialized") for v in checks.values()) else "degraded"
     
@@ -95,12 +140,19 @@ async def health_check(db: Session = Depends(get_db)):
 async def get_market_data():
     """
     获取市场数据 - Stale-While-Revalidate缓存策略
+    支持Redis缓存层 (高性能)
     
     缓存层级:
     1. 新鲜缓存(<15s): 直接返回
     2. 过期但可用缓存(15-60s): 立即返回 + 后台刷新
     3. 无缓存或超期(>60s): 等待Binance API
     """
+    # 优先使用Redis缓存
+    if _use_redis and _market_cache:
+        cached_data = _market_cache.get("/market")
+        if cached_data is not None:
+            return {"data": cached_data["data"], "cached": True, "age_seconds": 0}
+    
     cached_raw = _cache.get("/market")
     now = time.time()
     
@@ -397,7 +449,13 @@ async def execute_trade(signal: dict):
 
 @router.get("/stats")
 async def get_stats(db: Session = Depends(get_db)):
-    """获取统计信息 (8秒内存缓存)"""
+    """获取统计信息 (8秒Redis/内存缓存)"""
+    # 优先使用Redis缓存
+    if _use_redis and _stats_cache:
+        cached = _stats_cache.get("/stats")
+        if cached is not None:
+            return {"data": cached, "cached": True}
+    
     cached = _cache_get("/stats")
     if cached is not None:
         return {"data": cached, "cached": True, "age_seconds": time.time() - (_cache.get("/stats")[1] - _CACHE_TTL_STATS)}
@@ -418,6 +476,11 @@ async def get_stats(db: Session = Depends(get_db)):
         "take_profit": settings.TAKE_PROFIT
     }
     _cache_set("/stats", data, _CACHE_TTL_STATS)
+    
+    # 同时写入Redis
+    if _use_redis and _stats_cache:
+        _stats_cache.set("/stats", data)
+    
     return {"data": data, "cached": False}
 
 
