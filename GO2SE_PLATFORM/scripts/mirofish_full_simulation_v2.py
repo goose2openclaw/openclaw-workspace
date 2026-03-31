@@ -51,7 +51,7 @@ import urllib.request
 sys.path.insert(0, '/root/.openclaw/workspace/GO2SE_PLATFORM/backend')
 
 # ─── 配置 ────────────────────────────────────────────────────────
-BACKEND_URL = "http://localhost:8004"
+BACKEND_URL = "http://localhost:8000"
 FRONTEND_URL = "http://localhost:5173"
 TEST_TIMEOUT = 30
 CONCURRENT_REQUESTS = 20
@@ -1115,7 +1115,7 @@ class GO2SEFullSimulationV2:
         """E2: 前端UI服务"""
         start = time.time()
         try:
-            # 前端已嵌入Backend (port 8004)，直接用backend根路径
+            # 前端已嵌入Backend (port 8000)，直接用backend根路径
             req = urllib.request.Request(BACKEND_URL)
             with urllib.request.urlopen(req, timeout=TEST_TIMEOUT) as resp:
                 latency = (time.time() - start) * 1000
