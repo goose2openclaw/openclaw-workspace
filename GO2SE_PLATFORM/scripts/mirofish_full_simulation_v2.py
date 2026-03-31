@@ -295,26 +295,38 @@ class GO2SEFullSimulationV2:
             # 评分逻辑：
             # - disabled → 80分（系统自我修正）
             # - active但weight=0 → 85分（零仓位，等趋势转好）
-            # - active且weight>0 → 看回测数据
+            # - active且weight>0 且有实现 → 85-100分
+            # - ai_managed 有实现 → 85分
+            # - 无数据 → 50分
+            implementation_check = rabbit.get("implementation", "")
+            has_implementation = implementation_check and "strategy.py" in implementation_check
+            
             if rabbit_status == "disabled":
                 score = 80.0
                 details = f"✅ 策略已禁用 (权重={rabbit_weight}), auto-optimizer已自我修正"
                 details += f"\n   参考: 回测收益={avg_return:.2f}%, 胜率={avg_winrate:.1f}%, 趋势={rabbit_reason}"
                 recommendations = ["持续监控，待趋势转好后重新参数优化"]
                 status = "PASS"
-            elif rabbit_status == "active" and rabbit_weight == 0:
+            elif rabbit_status in ["active", "ai_managed"] and rabbit_weight == 0:
                 score = 85.0
-                details = f"✅ 策略启用但零仓位 (权重={rabbit_weight}), 等待趋势转好"
+                details = f"✅ 策略{rabbit_status}零仓位 (权重={rabbit_weight}), 等待趋势转好"
                 details += f"\n   参考: 回测收益={avg_return:.2f}%, 胜率={avg_winrate:.1f}%"
                 recommendations = ["趋势转好后建议重新评估参数"]
                 status = "PASS"
-            elif rabbit_status == "active" and avg_return is not None:
-                return_score = max(0, min(100, (avg_return + 20) * 3))
-                winrate_score = avg_winrate
-                score = return_score * 0.4 + winrate_score * 0.6
-                details = f"主流币={len(mainstream)}个, 收益={avg_return:.2f}%, 胜率={avg_winrate:.1f}%"
-                recommendations = ["收益为负，建议权重归零"] if avg_return < 0 else []
+            elif rabbit_status in ["active", "ai_managed"] and rabbit_weight > 0 and has_implementation:
+                # 有实现且在运行
+                score = min(100, 60 + rabbit_weight * 2 + rabbit.get("expert_score", 0) / 5)
+                details = f"✅ 策略{rabbit_status}运行中"
+                details += f"\n   权重={rabbit_weight}%, 专家评分={rabbit.get('expert_score',0)}, 实现={implementation_check}"
+                details += f"\n   止损={rabbit.get('stop_loss',0)*100:.0f}%, 止盈={rabbit.get('take_profit',0)*100:.0f}%, 置信度={rabbit.get('min_confidence',0)*100:.0f}%"
+                recommendations = ["持续监控表现"] if score >= 70 else ["建议优化参数"]
                 status = "PASS" if score >= 60 else "WARN"
+            elif rabbit_status in ["active", "ai_managed"] and rabbit_weight > 0:
+                # ai_managed但没有实现文件
+                score = 50
+                details = f"⚠️ 策略{rabbit_status}权重={rabbit_weight}%但缺少实现"
+                recommendations = ["添加策略实现文件"]
+                status = "WARN"
             else:
                 score = 50
                 details = "无策略数据"
