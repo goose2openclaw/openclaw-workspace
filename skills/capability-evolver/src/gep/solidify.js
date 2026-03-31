@@ -952,7 +952,7 @@ function buildAutoGene({ signals, intent }) {
         'skills/git-sync',
       ],
     },
-    validation: ['cd skills/capability-evolver && node scripts/validate-modules.js ./src/gep/solidify'],
+    validation: ['node skills/capability-evolver/scripts/validate-modules.js ./src/gep/solidify'],
     epigenetic_marks: [], // Epigenetic marks: environment-specific expression modifiers
   };
   gene.asset_id = computeAssetId(gene);

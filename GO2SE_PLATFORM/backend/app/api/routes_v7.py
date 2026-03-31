@@ -27,6 +27,7 @@ from datetime import datetime, timedelta
 from typing import List, Optional
 from app.core.database import get_db
 from app.core.config import settings
+from app.api.routes_market import fetch_binance
 
 logger = logging.getLogger("go2se_v7")
 router = APIRouter(prefix="/api/v7")
@@ -422,5 +423,63 @@ async def validate_strategy(params: dict):
             }
         },
         "message": "策略验证完成",
+        "timestamp": datetime.now().isoformat()
+    }
+
+
+@router.get("/market-regime")
+async def get_market_regime():
+    """
+    检测市场状态，用于AI资金调配
+    返回: regime, volatility, trend_strength, volume, confidence
+    """
+    import asyncio
+    try:
+        btc = await asyncio.to_thread(fetch_binance, "/ticker/24hr?symbol=BTCUSDT")
+        eth = await asyncio.to_thread(fetch_binance, "/ticker/24hr?symbol=ETHUSDT")
+    except:
+        return {"regime": "unknown", "volatility": 50, "trend_strength": 50, "volume": 50, "confidence": 30}
+
+    if not btc or not eth:
+        return {"regime": "unknown", "volatility": 50, "trend_strength": 50, "volume": 50, "confidence": 30}
+
+    btc_vol = abs(float(btc.get("priceChangePercent", 0)))
+    eth_vol = abs(float(eth.get("priceChangePercent", 0)))
+    avg_vol = (btc_vol + eth_vol) / 2
+    volatility = min(100, avg_vol * 10)
+
+    btc_change = float(btc.get("priceChangePercent", 0))
+    eth_change = float(eth.get("priceChangePercent", 0))
+    avg_change = (btc_change + eth_change) / 2
+
+    if avg_change > 3:
+        trend = "trending_up"
+        trend_strength = min(100, avg_change * 15)
+    elif avg_change < -3:
+        trend = "trending_down"
+        trend_strength = min(100, abs(avg_change) * 15)
+    elif volatility > 60:
+        trend = "high_volatility"
+        trend_strength = 50
+    elif volatility < 30:
+        trend = "low_volatility"
+        trend_strength = 50
+    else:
+        trend = "range_bound"
+        trend_strength = 50
+
+    btc_vol_amt = float(btc.get("quoteVolume", 0))
+    volume = min(100, btc_vol_amt / 1e9) if btc_vol_amt else 50
+
+    confidence = min(95, 40 + (volatility if volatility > 50 else 100 - volatility) * 0.3)
+
+    return {
+        "regime": trend,
+        "volatility": round(volatility, 1),
+        "trend_strength": round(trend_strength, 1),
+        "volume": round(volume, 1),
+        "confidence": round(confidence, 1),
+        "btc_change_pct": round(btc_change, 2),
+        "eth_change_pct": round(eth_change, 2),
         "timestamp": datetime.now().isoformat()
     }

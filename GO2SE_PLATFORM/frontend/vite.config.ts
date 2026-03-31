@@ -7,7 +7,7 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        target: 'http://localhost:8000',
+        target: 'http://localhost:8004',
         changeOrigin: true,
         ws: true, // WebSocket proxy for real-time updates
       },

@@ -1,5 +1,84 @@
 # GO2SE 平台迭代日志
 
+## 2026-03-30 v7.1.1 平台迭代检查 (11:52 UTC)
+
+### 检查结果
+- ✅ 后端服务健康 (port 8004, status: healthy)
+- ✅ /health 端点正常 (latency: 120.65ms ✅)
+- ✅ /api/stats 正常 (25 signals, 0 trades, dry_run模式)
+- ✅ 数据库连接 ✅
+- ✅ 交易所连接 ✅
+- ✅ 内存 74.9% (安全区间)
+- ✅ 磁盘 42% (安全)
+- ✅ routes_expert.py 语法检查 OK (258行)
+- ✅ routes_market.py 语法检查 OK (193行)
+
+### 观察
+- 系统运行稳定，无明显问题
+- 新路由文件 routes_expert.py 和 routes_market.py 已就绪
+- 新路由已注册到 main.py (expert_router + market_router)
+- **⚠️ 版本不一致**:  config.py声明 v7.1.0，但运行中服务返回 v7.0.0 (服务器未重启)
+
+### 待修复项
+| 项目 | 状态 | 说明 |
+|------|------|------|
+| 版本不一致 | ⚠️ 待重启 | 服务器需要重启以加载 v7.1.0 |
+| 专家模式路由 | ✅ 已就绪 | routes_expert.py 已完成 |
+| 市场数据路由 | ✅ 已就绪 | routes_market.py 已完成 |
+
+### 无需修复项
+- 前端 index.html (标准Vite入口，无优化空间)
+- 后端 main.py (架构清晰，中间件完整)
+- 声纳库 V2 (运行正常)
+
+---
+
+## 2026-03-30 v7.0.2 平台迭代检查 (10:20 UTC)
+
+### 检查结果
+- ✅ 后端服务健康 (port 8004, status: healthy)
+- ✅ /health 端点正常 (latency: 102.52ms ✅)
+- ✅ /api/stats 正常 (25 signals, 0 trades, dry_run模式)
+- ✅ 数据库连接 ✅
+- ✅ 交易所连接 ✅
+- ✅ 内存 69% (从82.5%下降至安全区间)
+- ✅ 磁盘 41.3% (安全)
+- ✅ CPU 0% (空闲)
+
+### 观察
+- 系统运行稳定，无明显问题
+- 内存使用优化有效 (82.5% → 69%)
+- dry_run模式正常，无执行交易
+
+### 无需修复项
+- 前端 index.html (标准React入口，无优化空间)
+- 后端 main.py (已修复，架构清晰)
+- 声纳库 V2 (运行正常)
+
+## 2026-03-30 v7.0.1 健康检查修复 (04:36 UTC)
+
+### 检查结果
+- ✅ /health 端点修复 (500→200)
+- ✅ /api/health 正常
+- ✅ /api/stats 正常
+- ⚠️ 内存 82.5% (超过80%阈值)
+
+### 发现并修复的问题
+1. **Critical: /health端点500错误**
+   - **原因**: `db.execute("SELECT 1")` 缺少 `text()` 包裹
+   - **影响**: SQLAlchemy 2.0+ 要求文本SQL必须用text()包裹
+   - **修复**: 添加 `from sqlalchemy import text` 并改为 `db.execute(text("SELECT 1"))`
+   - **位置**: backend/app/main.py
+
+### 提交
+- `fix: /health端点SQLAlchemy text()包裹 - 修复500错误` - commit cd1c6a7
+
+### 待关注
+| 项目 | 状态 | 说明 |
+|------|------|------|
+| 内存使用 | ⚠️ 82.5% | 超过80%阈值，需监控 |
+| /health端点 | ✅ 已修复 | SQLAlchemy 2.0兼容性 |
+
 ## 2026-03-29 v6.3.4 平台检查 (20:22 UTC)
 
 ### 检查结果
@@ -488,3 +567,276 @@ git add -u && git commit -m "chore: 清理大文件缓存"
 
 ---
 *🪿 GO2SE CEO | 2026-03-30 00:59 UTC*
+
+---
+
+## 迭代记录 - 2026-03-30 05:03 UTC
+
+### 检查项
+
+| 检查项 | 状态 | 说明 |
+|--------|------|------|
+| GO2SE服务 | ✅ 健康 | localhost:8000 正常响应 |
+| 前端index.html | ✅ 标准 | React/Vite结构，无问题 |
+| 后端server.py | ✅ FastAPI | 架构清晰 |
+| Git状态 | ✅ 已提交 | market_data.py 新增 (446行) |
+
+### 改进内容
+
+**新增: `backend/app/core/market_data.py`**
+- 集成Binance实时行情
+- 趋势信号计算 (RSI, MACD, Bollinger Bands)
+- 市场状态识别 (MarketRegime)
+- 北斗七鑫工具信号生成
+- 446行代码，完整的MarketDataProvider + BeidouSevenTools类
+
+### 提交
+- `feat: 📊 北斗七鑫实时市场数据模块 - Binance行情+趋势计算+工具信号` - commit c844b91
+
+### 待关注
+| 项目 | 状态 | 说明 |
+|------|------|------|
+| market_data.py集成 | ⏳ 待办 | 需在main.py或routes中引用 |
+| 市场数据一致性 | 🔍 观察 | 需与market_data_fetcher.py协调 |
+
+---
+*🪿 GO2SE CEO | 2026-03-30 05:03 UTC*
+
+---
+
+## 迭代记录 - 2026-03-30 05:37 UTC
+
+### 检查项
+
+| 检查项 | 状态 | 说明 |
+|--------|------|------|
+| GO2SE服务 (8004) | ✅ 健康 | /api/ping ✅ /api/stats ✅ |
+| 前端index.html | ✅ 标准 | React/Vite结构，无问题 |
+| 后端server.py | ✅ FastAPI | 健康检查端点完善，SRE监控到位 |
+| Git状态 | ✅ Clean | 工作区无未提交变更 |
+| 内存 | ⚠️ 95% (9.5Gi/10Gi) | 系统内存紧张，但服务稳定 |
+| 磁盘 | ✅ 42% (93G/223G) | 空间充足 |
+
+### API健康检查
+
+```json
+GET /health
+{
+  "status": "healthy",
+  "signals": {
+    "latency_ms": 103.22,
+    "memory_alert": true (88.5% > 80%阈值)
+  },
+  "dependencies": { "database": "✅", "exchange": "✅" }
+}
+```
+
+### 25维度仿真评分
+
+| 层级 | 分数 | 状态 |
+|------|------|------|
+| A 投资组合 | 82.0 | ⚠️ 警告 (A1仓位60分) |
+| B 投资工具 | 89.1 | ✅ |
+| C 趋势判断 | 77.4 | ⚠️ 警告 (C1声纳库9.5分) |
+| D 底层资源 | 88.2 | ✅ |
+| E 运营支撑 | 94.9 | ✅ |
+| **总体** | **87.6** | ✅ |
+
+### 实时数据流验证
+
+- `/api/market` → BTC $67,618 +1.5%, ETH $2,053 +2.6%, RSI数据完整 ✅
+- `/api/v7/market/summary` → BTC主导52.3%，恐惧贪婪45(中立) ✅
+- `/api/oracle/mirofish/markets` → 6个市场，100智能体共识 ✅
+
+### 待关注
+
+| 项目 | 状态 | 说明 |
+|------|------|------|
+| 内存使用 | ⚠️ 95% | 需关注，长期95%+需考虑清理 |
+| A1仓位分配 | ⚠️ 60分 | dry-run模式无真实仓位，正常 |
+| C1声纳库 | ⚠️ 9.5分 | 趋势模型精度待实盘验证 |
+| market_data.py集成 | ✅ 已完成 | /api/market 正常输出 |
+
+### 结论
+
+平台运行稳定，无紧急改进点。服务已自动恢复（上次宕机后自动拉起）。
+
+---
+*🪿 GO2SE CEO | 2026-03-30 05:37 UTC*
+
+---
+
+## 2026-03-30 v7.1.0 防崩溃三大改进 (09:53 UTC)
+
+### 检查结果
+| 项目 | 状态 | 说明 |
+|------|------|------|
+| 后端服务 | ✅ 正常 | port 8000 (通过health_check感知) |
+| 磁盘 | ✅ 42% (131G free) | 充足 |
+| 内存 | ✅ 42% (6.4G available) | 充足 |
+| Git状态 | ✅ Clean | 上次提交后无变更 |
+
+### 实施改进
+
+#### 1. Git Pre-Push Hook (`scripts/pre-push-hook`)
+**问题**: 历史事故中，SQLAlchemy text() 缺失导致 /health 500错误
+**方案**: 推送前验证Python语法 + 导入检查
+```bash
+# 安装 (自动生效)
+cp scripts/pre-push-hook .git/hooks/pre-push
+```
+
+#### 2. Logrotate 配置 (`scripts/logrotate_go2se.conf`)
+**问题**: 日志文件无限增长，可能填满磁盘
+**方案**: 每日轮转，保留7天，最大50M
+```bash
+# 安装
+sudo cp scripts/logrotate_go2se.conf /etc/logrotate.d/go2se
+```
+
+#### 3. 健康检查增强 (`scripts/health_check.sh`)
+**改进**:
+- 磁盘监控: >90% 告警
+- 内存监控: >90% 告警
+- 资源告警与服务状态同时报告
+
+### CRASH_ANALYSIS 待办更新
+| 项目 | 之前 | 现在 |
+|------|------|------|
+| 日志轮转 | ❌ 未实施 | ✅ 已实施 |
+| 磁盘监控告警 | ❌ 未实施 | ✅ 已实施 |
+| Git pre-push hook | ❌ 未实施 | ✅ 已实施 |
+| 部署检查清单 | ❌ 未实施 | ⏳ 待下次 |
+
+### 提交
+- `feat: 🛡️ 防崩溃三大改进 - pre-push导入验证+logrotate+磁盘告警` - commit 509106f
+
+---
+*🪿 GO2SE CEO | 2026-03-30 09:53 UTC*
+
+---
+
+## 2026-03-30 v7.1.1 平台迭代检查 (11:21 UTC)
+
+### 检查结果
+| 项目 | 状态 | 说明 |
+|------|------|------|
+| GO2SE服务 | ✅ 运行中 | 端口8004, API响应正常 |
+| 前端index.html | ✅ OK | React SPA入口, 无需优化 |
+| 后台架构 | ✅ OK | FastAPI模块化结构(app/main.py) |
+| Git状态 | ⚠️ 待提交 | validate_startup.sh + compare_expert_normal.py |
+| exec poll超时 | ✅ 已检查 | CRASH_ANALYSIS 2026-03-29改进已落地 |
+
+### 发现并修复的问题
+
+#### 🔴 严重: Cron端口配置错误
+**问题**: 所有Cron健康检查默认检查 `localhost:5000`，但服务运行在 `localhost:8004`
+**影响**: 
+- `GO2SE平台迭代` cron (fb92b8a8) 超时: `lastDurationMs=300471, consecutiveErrors=1`
+- `GO2SE-CEO-管理` cron 误报OK (实际未检查正确端口)
+- `cron_guardian.sh` PORT=8000 硬编码 → false positive健康状态
+
+**修复**:
+1. ✅ 更新cron `fb92b8a8`: 5000 → 8004
+2. ✅ 更新cron `fcdcafd0`: 5000 → 8004 (CEO管理cron)
+3. ✅ `cron_guardian.sh`: PORT=8000 → 8004
+4. ✅ `health_check.sh`: 默认8000 → 8004
+
+#### ✅ validate_startup.sh poll超时检查
+**内容**: 新增第7步检查 - 检测代码中超过10分钟的exec poll timeout
+**依据**: CRASH_ANALYSIS 2026-03-29: SIGKILL根因为134分钟长poll
+**提交**: `ca383f7`
+
+#### ✅ compare_expert_normal.py 新文件
+**内容**: 专家模式 vs 普通模式对比评测脚本
+**数据**: 2026-02-28至2026-03-30期间回测
+- 普通模式: -3.46%, 68笔交易
+- 专家模式: -4.0%, 33笔交易
+- 结论: 熊市期间普通模式更稳健，但两者均亏损(市场整体下跌)
+**提交**: `ca383f7`
+
+### 提交记录
+| Hash | 描述 |
+|------|------|
+| `ca383f7` | feat: 🛡️ exec poll超时检查落地 + 专家vs普通模式对比脚本 |
+| `8e6c65a` | fix: 🐛 cron_guardian和health_check默认端口8000→8004 |
+
+### 待关注
+| 项目 | 优先级 | 说明 |
+|------|--------|------|
+| CronGuardian端口检查 | 🔴 高 | 修复后验证是否正常 |
+| CEO-管理cron超时 | 🟡 中 | consecutiveErrors已清零, 观察 |
+| 市场环境 | 🟡 中 | 专家/普通模式均亏损, 等待市场反弹 |
+
+### 防崩溃检查清单 (本次已确认)
+- [x] Backend端口正确 (8004)
+- [x] 磁盘空间 < 95%
+- [x] 进程存活
+- [x] API响应有效 (/api/ping ✅, /api/stats ✅)
+- [x] Cron健康检查端口正确
+- [x] validate_startup.sh已包含poll超时检查
+
+---
+*🪿 GO2SE CEO | 2026-03-30 11:21 UTC*
+
+---
+
+## v7.2.0 - 2026-03-30 12:53 UTC
+
+### 检查结果
+
+| 检查项 | 状态 | 备注 |
+|--------|------|------|
+| Backend服务 | ✅ 正常 | dry_run模式, total_signals:25 |
+| 前端index.html | ✅ 正常 | 简洁的Vite+React入口 |
+| 后台server.py | ✅ 已改进 | error_rate TODO已实现 |
+| Git状态 | ✅ 已提交 | 2个commit |
+
+### 本次改进
+
+1. **健康检查error_rate指标落地** (`backend/app/main.py`)
+   - 旧: `error_rate: 0.0  # TODO: 实现错误追踪`
+   - 新: `error_rate: risk_manager.api_errors / max(risk_manager.api_total, 1)`
+   - 利用risk_manager已统计的api_errors/api_total字段
+
+### Git历史
+- `7085e1b` feat: 实现健康检查error_rate指标
+- `a87be1b` docs: 更新2026-03-30内存日志
+
+### 风险评估
+- 🚀 **迭代风险**: 低
+- 📊 **平台健康**: 良好
+- 🔄 **下次检查**: 13:53 UTC (1小时后)
+
+
+---
+
+## v10.0 - 2026-03-31 07:21 UTC
+
+### 检查结果
+
+| 检查项 | 状态 | 备注 |
+|--------|------|------|
+| GO2SE服务 | ✅ 正常 | healthy, v7.1.0 |
+| MiroFish评测 | ✅ 90.6分 | 24/25通过 |
+| 前端/后端 | ✅ 正常 | 无需改进 |
+| Git状态 | ✅ 无阻塞 | 本地配置已同步 |
+| 跟大哥禁用 | ✅ 已确认 | weight=0, normal_mode/expert_mode已清理 |
+
+### 本次改进
+
+1. **active_strategy.json 一致性修复**
+   - 移除 normal_mode.investment_weights.leader (15.12→移除)
+   - 移除 expert_mode.investment_weights.leader (19.45→移除)
+   - 与V8禁用决策保持一致
+
+### MiroFish 25维度评分
+- A层: 90.3 | B层: 85.6 | C层: 90.9 | D层: 93.1 | E层: 95.4
+- **综合: 90.6/100** (优秀)
+- 失败: B4跟大哥(已禁用，预期0分)
+
+### 风险评估
+- 🚀 **迭代风险**: 低
+- 📊 **平台健康**: 优秀
+- 🔄 **下次检查**: 08:21 UTC
+

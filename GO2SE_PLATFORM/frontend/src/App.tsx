@@ -1,5 +1,5 @@
 /**
- * GO2SE 北斗七鑫 V7 - 智能投资平台
+ * GO2SE 北斗七鑫 V10 - 智能投资平台
  * 
  * 投资架构:
  * ┌─────────────────────────────────────────────────────────┐
@@ -74,6 +74,7 @@ function App() {
   const [marketData, setMarketData] = useState<MarketData[]>([]);
   const [signals, setSignals] = useState<Signal[]>([]);
   const [portfolio, setPortfolio] = useState<PortfolioStats | null>(null);
+  const [performance, setPerformance] = useState<any>(null);
   
   // 北斗七鑫工具配置
   const [tools, setTools] = useState<Tool[]>([
@@ -95,11 +96,12 @@ function App() {
   // 获取数据
   const fetchData = useCallback(async () => {
     try {
-      const [marketRes, signalsRes, statsRes, portfolioRes] = await Promise.all([
+      const [marketRes, signalsRes, statsRes, portfolioRes, perfRes] = await Promise.all([
         fetch(`${API_BASE}/api/market`).catch(() => null),
         fetch(`${API_BASE}/api/signals?limit=20`).catch(() => null),
         fetch(`${API_BASE}/api/stats`).catch(() => null),
         fetch(`${API_BASE}/api/portfolio`).catch(() => null),
+        fetch(`${API_BASE}/api/performance`).catch(() => null),
       ]);
 
       const errors: string[] = [];
@@ -123,6 +125,21 @@ function App() {
       if (portfolioRes?.ok) {
         const d = await portfolioRes.json();
         setPortfolio(d);
+      }
+
+      if (perfRes?.ok) {
+        const d = await perfRes.json();
+        setPerformance(d);
+        // 更新工具配置中的权重
+        if (d.investment_tools) {
+          setTools(prev => prev.map(t => {
+            const inv = d.investment_tools[t.id];
+            const work = d.work_tools?.[t.id];
+            if (inv) return { ...t, position: inv.weight || t.position, status: inv.status === 'disabled' ? 'inactive' : 'active' };
+            if (work) return { ...t, position: work.weight || t.position };
+            return t;
+          }));
+        }
       }
       
       if (errors.length > 0) {
@@ -321,33 +338,84 @@ function App() {
 
   const renderPortfolio = () => (
     <div className="portfolio-section">
-      <h2>💼 投资组合</h2>
+      <h2>💼 投资组合 V10</h2>
+
+      {/* 总览卡片 */}
       <div className="card portfolio-summary">
         <div className="summary-row">
-          <span>总价值</span>
-          <span className="large">$85,000</span>
+          <span>总资金</span>
+          <span className="large">${performance?.total_capital?.toLocaleString() || '100,000'}</span>
         </div>
         <div className="summary-row">
-          <span>日盈亏</span>
-          <span className="positive">+$1,234 (+2.23%)</span>
+          <span>投资池 (80%)</span>
+          <span className="positive">${performance?.investment_pool?.toLocaleString() || '80,000'}</span>
         </div>
         <div className="summary-row">
-          <span>总盈亏</span>
-          <span className="positive">+$8,456 (+11.2%)</span>
+          <span>打工池 (20%)</span>
+          <span className="positive">${performance?.work_pool?.toLocaleString() || '20,000'}</span>
         </div>
       </div>
+
+      {/* 投资工具分配 */}
       <div className="card allocation">
-        <h4>仓位分配</h4>
+        <h4>📊 投资工具分配 (5个)</h4>
         <div className="allocation-bars">
-          {tools.map(tool => (
-            <div key={tool.id} className="allocation-row">
-              <span>{tool.emoji} {tool.name}</span>
+          {Object.entries(performance?.investment_tools || {}).map(([id, tool]: [string, any]) => (
+            <div key={id} className="allocation-row">
+              <span>{tool.name}</span>
               <div className="bar-container">
-                <div className="bar" style={{ width: `${tool.position}%` }}></div>
+                <div className="bar" style={{
+                  width: `${tool.allocation / (performance?.investment_pool || 80000) * 100}%`,
+                  backgroundColor: tool.color,
+                  opacity: tool.status === 'disabled' ? 0.3 : 1
+                }}></div>
               </div>
-              <span>{tool.position}%</span>
+              <span className={tool.status === 'disabled' ? 'disabled' : ''}>
+                ${(tool.allocation || 0).toLocaleString()} ({tool.weight}%)
+              </span>
             </div>
           ))}
+        </div>
+        <div className="action-buttons">
+          <button className="btn-action replenish"
+            disabled={!performance?.actions?.replenish?.available}
+            title={performance?.actions?.replenish?.description}>
+            📥 补仓
+          </button>
+          <button className="btn-action cashout"
+            disabled={!performance?.actions?.cashout?.available}
+            title={performance?.actions?.cashout?.description}>
+            📤 套现
+          </button>
+        </div>
+      </div>
+
+      {/* 打工工具 + 现金流 */}
+      <div className="card allocation work-tools">
+        <h4>💰 打工工具 (2个) - 现金流收集</h4>
+        <div className="allocation-bars">
+          {Object.entries(performance?.work_tools || {}).map(([id, tool]: [string, any]) => (
+            <div key={id} className="allocation-row">
+              <span>{tool.name}</span>
+              <div className="bar-container">
+                <div className="bar" style={{
+                  width: `${tool.allocation / (performance?.work_pool || 20000) * 100}%`,
+                  backgroundColor: tool.color
+                }}></div>
+              </div>
+              <span>${(tool.allocation || 0).toLocaleString()} (现金流{tool.cashflow_rate * 100}%)</span>
+            </div>
+          ))}
+        </div>
+        <div className="cashflow-status">
+          <span>💵 现金流池: ${(performance?.cashflow_pool || 0).toLocaleString()}</span>
+        </div>
+        <div className="action-buttons">
+          <button className="btn-action work-to-invest"
+            disabled={!performance?.actions?.work_to_invest?.available}
+            title={performance?.actions?.work_to_invest?.description}>
+            🔄 打工→投资
+          </button>
         </div>
       </div>
     </div>
@@ -397,7 +465,7 @@ function App() {
       <nav className="nav">
         <div className="nav-brand">
           <span className="logo">🪿</span>
-          <span className="title">GO2SE 北斗七鑫 V7</span>
+          <span className="title">GO2SE 北斗七鑫 V10</span>
         </div>
         <div className="nav-tabs">
           <button className={activeTab === 'dashboard' ? 'active' : ''} onClick={() => setActiveTab('dashboard')}>总览</button>

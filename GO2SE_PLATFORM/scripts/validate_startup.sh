@@ -75,5 +75,15 @@ async def test():
 asyncio.run(test())
 " 2>&1 | tail -1 || echo "  ⚠️  交易所连接跳过 (API密钥或网络问题)"
 
+# 7. exec poll超时检查 (CRASH_ANALYSIS 2026-03-29: SIGKILL根因)
+echo "  🔍 检查exec poll超时配置..."
+POLL_TOUT=$(grep -r "poll.*timeout.*[0-9][0-9][0-9][0-9][0-9][0-9]\|\.poll.*600000\|\.poll.*1200000" /root/.openclaw/workspace/GO2SE_PLATFORM/ --include="*.py" --include="*.js" 2>/dev/null | grep -v ".pyc" | grep -v "node_modules" | head -5)
+if [ -n "$POLL_TOUT" ]; then
+    echo "  ⚠️  发现可能过长的poll timeout配置 (>10分钟):"
+    echo "$POLL_TOUT" | while read line; do echo "    $line"; done
+else
+    echo "  ✅ poll timeout配置检查通过 (未发现>10分钟配置)"
+fi
+
 echo ""
 echo "🪿 验证完成，所有检查通过！"

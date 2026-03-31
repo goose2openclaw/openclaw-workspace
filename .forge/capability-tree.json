@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-03-30T03:05:48.593Z",
+  "updated": "2026-03-31T04:36:55.925Z",
   "domains": {
     "analysis": {
       "skills": [
@@ -103,9 +103,9 @@
       ],
       "totalActivations": 0,
       "successRate": 0,
-      "gapScore": 0.03,
-      "fallbackEvents": 12,
-      "totalEvents": 424
+      "gapScore": 0.05,
+      "fallbackEvents": 31,
+      "totalEvents": 594
     },
     "development": {
       "skills": [
@@ -144,8 +144,8 @@
       "totalActivations": 0,
       "successRate": 0,
       "gapScore": 0.02,
-      "fallbackEvents": 3,
-      "totalEvents": 169
+      "fallbackEvents": 5,
+      "totalEvents": 254
     },
     "operations": {
       "skills": [
@@ -164,7 +164,7 @@
       "successRate": 0,
       "gapScore": 0,
       "fallbackEvents": 3,
-      "totalEvents": 1653
+      "totalEvents": 2943
     },
     "monitoring": {
       "skills": [
@@ -182,7 +182,7 @@
       "successRate": 0,
       "gapScore": 0,
       "fallbackEvents": 0,
-      "totalEvents": 11
+      "totalEvents": 32
     },
     "general": {
       "skills": [
@@ -218,7 +218,7 @@
       "successRate": 0,
       "gapScore": 0.03,
       "fallbackEvents": 1,
-      "totalEvents": 29
+      "totalEvents": 32
     },
     "communication": {
       "skills": [
@@ -230,9 +230,9 @@
       ],
       "totalActivations": 0,
       "successRate": 0,
-      "gapScore": 0,
-      "fallbackEvents": 0,
-      "totalEvents": 1
+      "gapScore": 0.5,
+      "fallbackEvents": 2,
+      "totalEvents": 4
     }
   }
 }

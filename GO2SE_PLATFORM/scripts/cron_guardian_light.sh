@@ -53,6 +53,6 @@ echo "[$(date '+%Y-%m-%d %H:%M:%S')] $LEVEL $RESULT"
 if [[ "$LEVEL" == "🔴" ]]; then
     if [[ "$RESULT" == *"Backend DOWN"* ]]; then
         echo "🔄 重启Backend..."
-        bash /root/.openclaw/workspace/GO2SE_PLATFORM/scripts/start_server.sh restart 8004
+        bash /root/.openclaw/workspace/GO2SE_PLATFORM/scripts/start_server.sh restart 8000
     fi
 fi

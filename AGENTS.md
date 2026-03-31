@@ -179,6 +179,43 @@ When you receive a heartbeat poll, check:
 
 ---
 
+## exec工具使用准则 (2026-03-30 进化)
+
+> 从CRASH_ANALYSIS 2026-03-29总结：20分钟单次poll导致134分钟子进程被SIGKILL
+
+### exec poll超时准则
+| 规则 | 要求 |
+|------|------|
+| 单次poll timeout | ≤ 5分钟 |
+| 超过5分钟任务 | 必须分段 + checkpoint |
+| API调用前 | 必须检查rate limit状态 |
+| 退避策略 | 1s→2s→4s→8s→max 60s |
+| 失败guard | `|| { echo "FAILED"; exit 1; }` |
+
+### EvoMap API降级策略
+1. 检测到 `server_busy` + `retry_after_ms` → 立即退避
+2. 指数退避不超过60s
+3. 最多重试3次，超后降级到缓存数据
+4. 永远不要用无限循环等待API恢复
+
+### 长任务检查清单
+- [ ] 是否有超过5分钟的exec？
+- [ ] 是否添加了checkpoint中间状态？
+- [ ] 是否有外部API调用？是否处理了rate limit？
+- [ ] 是否有 `|| exit 1` guard防止静默失败？
+
+### exec批量模式原则 (2026-03-31进化)
+| 场景 | ❌ 错误做法 | ✅ 正确做法 |
+|------|-----------|-----------|
+| 连续3+个小exec | 3次独立exec调用 | 合并为1个bash脚本 |
+| 多个文件检查 | `exec "ls a"; exec "ls b"; exec "ls c"` | `exec "ls a b c && echo done"` |
+| 多个进程检查 | `exec "ps aux | grep a"; exec "ps aux | grep b"` | `exec "ps aux | grep -E 'a|b|c'"` |
+| 端口/磁盘/进程 | 3次独立检查exec | 合并为1个健康检查脚本 |
+
+**原则**: 连续exec调用必须审查，能合并的一律合并。exec是重量级操作，每次调用有进程创建开销。
+
+---
+
 ## Make It Yours
 
 This is a starting point. Add your own conventions, style, and rules as you figure out what works.

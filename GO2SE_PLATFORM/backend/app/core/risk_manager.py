@@ -2,7 +2,7 @@
 风控系统 - 8条风控规则
 """
 
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 from dataclasses import dataclass
 from enum import Enum
 from datetime import datetime, timedelta

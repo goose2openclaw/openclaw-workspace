@@ -1,14 +1,14 @@
 ---
 name: auto-subagents
-description: "Auto-crystallized skill triggered by 5x subagents calls (100% success across 2 sessions). Pattern: \"{\"action\":\"list\"}...\""
+description: "Auto-crystallized skill triggered by 9x subagents calls (100% success across 2 sessions). Pattern: \"{\"action\":\"list\"}...\""
 metadata:
   openclaw:
     category: general
     aceforge:
       status: proposed
-      proposed: 2026-03-30T03:05:47.322Z
+      proposed: 2026-03-31T04:36:44.778Z
       auto_generated: true
-      candidate_occurrences: 5
+      candidate_occurrences: 9
       candidate_success_rate: 1
       first_seen: 2026-03-29T15:12:31.049Z
 ---
