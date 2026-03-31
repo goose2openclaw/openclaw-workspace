@@ -23,6 +23,7 @@ from app.api.routes_v7 import router as routes_v7_router
 from app.api.routes_sonar import router as sonar_router
 from app.api.routes_expert import router as expert_router
 from app.api.routes_market import router as market_router
+from app.api.routes_ai_portfolio import router as ai_portfolio_router
 
 # 日志配置
 logging.basicConfig(
@@ -121,6 +122,7 @@ app.include_router(routes_v7_router, tags=["V7北斗七鑫"])
 app.include_router(sonar_router, tags=["声纳库"])
 app.include_router(expert_router, tags=["专家模式"])
 app.include_router(market_router, tags=["实时市场"])
+app.include_router(ai_portfolio_router, tags=["AI策略组合"])
 
 
 @app.get("/")

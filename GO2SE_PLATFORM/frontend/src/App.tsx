@@ -73,6 +73,9 @@ function App() {
   // 数据状态
   const [marketData, setMarketData] = useState<MarketData[]>([]);
   const [signals, setSignals] = useState<Signal[]>([]);
+  // 系统信息
+  const [appVersion, setAppVersion] = useState<string>('v7.1.0');
+  
   const [portfolio, setPortfolio] = useState<PortfolioStats | null>(null);
   const [performance, setPerformance] = useState<any>(null);
   
@@ -118,6 +121,8 @@ function App() {
       
       if (statsRes?.ok) {
         const d = await statsRes.json();
+        // 提取版本信息
+        if (d.data?.version) setAppVersion(d.data.version);
         // 工具盈亏数据由 /api/v7/tools 提供，这里保留API原始数据
         // statsRes仅用于确认服务健康
       } else errors.push('stats');
@@ -452,7 +457,7 @@ function App() {
           </div>
           <div className="setting-row">
             <span>版本</span>
-            <span>V7.0.0</span>
+            <span>{appVersion}</span>
           </div>
         </div>
       </div>
@@ -465,7 +470,7 @@ function App() {
       <nav className="nav">
         <div className="nav-brand">
           <span className="logo">🪿</span>
-          <span className="title">GO2SE 北斗七鑫 V10</span>
+          <span className="title">GO2SE 北斗七鑫 {appVersion}</span>
         </div>
         <div className="nav-tabs">
           <button className={activeTab === 'dashboard' ? 'active' : ''} onClick={() => setActiveTab('dashboard')}>总览</button>
@@ -477,7 +482,7 @@ function App() {
         </div>
         <div className="nav-status">
           <span className="status-dot"></span>
-          <span>V7.0.0</span>
+          <span>{appVersion}</span>
         </div>
       </nav>
 
@@ -504,7 +509,7 @@ function App() {
 
       {/* 底部状态栏 */}
       <footer className="footer">
-        <span>🪿 GO2SE 北斗七鑫 V7</span>
+        <span>🪿 GO2SE 北斗七鑫 {appVersion}</span>
         <span>|</span>
         <span>评分: {simulationScore.toFixed(1)}</span>
         <span>|</span>
