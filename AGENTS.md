@@ -216,6 +216,65 @@ When you receive a heartbeat poll, check:
 
 ---
 
+## Subagent调用管理准则 (2026-03-31 进化)
+
+> 从Cycle #11-#17 6+周期Subagent Resume 401问题总结：根因是母session高context(>50K tokens)导致API调用失败
+
+### Subagent调用前强制检查清单
+启动`sessions_spawn`前，必须逐项确认:
+
+```
+1. [ ] 母session context是否超过50000 tokens?
+      → 是: 先调用 sessions_yield 释放
+      → 否: 继续
+
+2. [ ] 是否使用 runtime=isolated?
+      → 推荐: 隔离session避免context污染
+      → 必须用于长时间运行任务
+
+3. [ ] 是否设置合理的 runTimeoutSeconds?
+      → 建议: 300-600秒，避免无限运行
+      → 避免使用 timeout=0 (无限)
+
+4. [ ] 当前是否有其他活跃subagent?
+      → 避免多个subagent竞争母session context
+      → 必要时等待上一个完成再启动下一个
+
+5. [ ] 是否避免对有abort历史的session执行resume?
+      → aborted session resume更容易401
+      → 优先创建新session而非resume
+```
+
+### 首选调用模式
+```javascript
+// ✅ 正确: 隔离runtime + 有限timeout + context检查
+sessions_spawn({
+  task: "...",
+  runtime: "isolated",        // 隔离，避免context污染
+  runTimeoutSeconds: 300,    // 5分钟上限
+  mode: "run"                // 一次性任务
+})
+
+// ✅ 正确: 调用前检查并yield
+if (母session_context > 50000) {
+  sessions_yield()           // 释放context
+}
+// 然后再启动subagent
+
+// ❌ 错误: resume有abort历史的session
+sessions_spawn({ resumeSessionId: "已有abort历史的id" })
+
+// ❌ 错误: 无限timeout
+sessions_spawn({ timeoutSeconds: 0 })
+```
+
+### Subagent监控准则
+- Subagent运行期间: 母session避免调用需要认证的API
+- 超时处理: 到达timeout后自动终止，不等待
+- 错误隔离: subagent失败不影响母session
+
+---
+
 ## Make It Yours
 
 This is a starting point. Add your own conventions, style, and rules as you figure out what works.
