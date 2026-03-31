@@ -92,7 +92,7 @@ TOOLS_CONFIG = {
         "stop_loss": 0.02,
         "take_profit": 0.20,
         "symbols": [],
-        "status": "paused"
+        "status": "ai_managed"  # AI动态调整
     },
     "poor": {
         "name": "穷孩子",
@@ -102,7 +102,7 @@ TOOLS_CONFIG = {
         "stop_loss": 0.01,
         "take_profit": 0.30,
         "symbols": [],
-        "status": "paused"
+        "status": "ai_managed"  # AI动态调整
     }
 }
 

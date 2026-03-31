@@ -37,6 +37,9 @@ class Settings(BaseSettings):
         "ADA/USDT", "DOGE/USDT", "DOT/USDT", "AVAX/USDT", "LINK/USDT"
     ]
     
+    # 资金配置
+    TOTAL_CAPITAL: float = float(os.getenv("TOTAL_CAPITAL", "100000.0"))  # 总资金池
+    
     # 策略权重
     RABBIT_WEIGHT: float = 0.25      # 打兔子
     MOLE_WEIGHT: float = 0.20        # 打地鼠

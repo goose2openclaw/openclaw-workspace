@@ -53,15 +53,16 @@ class DynamicPositionManager:
     
     def __init__(self):
         # 基础配置 (默认权重)
-        # B1打兔子(rabbit)已禁用 - 评分40.8，负收益
+        # AI动态调整: 所有工具启用，权重由AI根据表现自动调度
+        # 工具评分低时自动降低权重，评分高时自动提高权重
         self.base_weights = {
-            "rabbit": {"weight": 0.00, "min": 0.00, "max": 0.00, "trend_lookback": 24, "enabled": False},
-            "mole": {"weight": 0.30, "min": 0.05, "max": 0.40, "trend_lookback": 12, "enabled": True},
-            "oracle": {"weight": 0.20, "min": 0.05, "max": 0.30, "trend_lookback": 48, "enabled": True},
-            "leader": {"weight": 0.20, "min": 0.05, "max": 0.25, "trend_lookback": 24, "enabled": True},
-            "hitchhiker": {"weight": 0.15, "min": 0.02, "max": 0.25, "trend_lookback": 48, "enabled": True},
-            "wool": {"weight": 0.08, "min": 0.0, "max": 0.15, "trend_lookback": 72, "enabled": True},
-            "poor": {"weight": 0.07, "min": 0.0, "max": 0.12, "trend_lookback": 72, "enabled": True},
+            "rabbit": {"weight": 0.25, "min": 0.00, "max": 0.40, "trend_lookback": 24, "enabled": True},  # 🐰 打兔子: 主流币，稳定收益
+            "mole": {"weight": 0.20, "min": 0.00, "max": 0.35, "trend_lookback": 12, "enabled": True},    # 🐹 打地鼠: 异动币，高波动
+            "oracle": {"weight": 0.15, "min": 0.00, "max": 0.25, "trend_lookback": 48, "enabled": True},  # 🔮 走着瞧: 预测市场
+            "leader": {"weight": 0.15, "min": 0.00, "max": 0.25, "trend_lookback": 24, "enabled": True},   # 👑 跟大哥: 做市协作
+            "hitchhiker": {"weight": 0.10, "min": 0.00, "max": 0.20, "trend_lookback": 48, "enabled": True}, # 🍀 搭便车: 跟单分成
+            "wool": {"weight": 0.03, "min": 0.00, "max": 0.10, "trend_lookback": 72, "enabled": True},    # 💰 薅羊毛: 空投猎手
+            "poor": {"weight": 0.02, "min": 0.00, "max": 0.08, "trend_lookback": 72, "enabled": True},    # 👶 穷孩子: 众包赚钱
         }
         
         # 趋势阈值

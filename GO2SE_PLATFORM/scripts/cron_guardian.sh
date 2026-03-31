@@ -13,7 +13,7 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m'
 LOG="/tmp/cron_guardian.log"
-PORT=8004  # 当前运行端口
+PORT=8000  # 当前运行端口
 
 log() { echo "[$(date '+%H:%M:%S')] $1" | tee -a "$LOG"; }
 alert() { echo -e "${RED}[ALERT] $1${NC}" | tee -a "$LOG"; }
@@ -28,7 +28,7 @@ log "🛡️ Cron Guardian FAST 启动"
         log "  ✅ Backend :${PORT} OK"
     else
         alert "  🔴 Backend :${PORT} 无响应"
-        bash /root/.openclaw/workspace/GO2SE_PLATFORM/scripts/start_server.sh restart 8004 >> "$LOG" 2>&1
+        bash /root/.openclaw/workspace/GO2SE_PLATFORM/scripts/start_server.sh restart 8000 >> "$LOG" 2>&1
     fi
 ) &
 PID1=$!

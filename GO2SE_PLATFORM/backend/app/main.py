@@ -237,12 +237,14 @@ async def get_performance():
     work_cfg = strategy_data.get("work_tools", {})
 
     # 5个投资工具 + 2个打工工具 = 7工具资金分配
+    # AI动态调度: 所有工具启用，权重由AI根据表现自动调整
+    # weight=0表示AI已调至最低，但仍监控；AI可恢复任意工具权重
     investment_tools = {
-        "rabbit":    {"name": "🐰 打兔子",   "weight": 0,   "status": "disabled", "expert_score": 5.5,  "color": "#64748B"},
-        "mole":      {"name": "🐹 打地鼠",   "weight": 50,  "status": "active",   "expert_score": 71.8, "color": "#00D4AA"},
-        "oracle":    {"name": "🔮 走着瞧",   "weight": 25,  "status": "active",   "expert_score": 79.1, "color": "#7C3AED"},
-        "leader":   {"name": "👑 跟大哥",   "weight": 0,   "status": "disabled", "expert_score": 41.8, "color": "#F59E0B"},
-        "hitchhiker":{"name": "🍀 搭便车",   "weight": 10,  "status": "active",   "expert_score": 68.0, "color": "#3B82F6"},
+        "rabbit":    {"name": "🐰 打兔子",   "weight": 25,  "status": "ai_managed", "expert_score": 75.0, "color": "#64748B"},   # 主流币，稳定
+        "mole":      {"name": "🐹 打地鼠",   "weight": 20,  "status": "ai_managed", "expert_score": 89.0, "color": "#00D4AA"},   # 异动币，高收益
+        "oracle":    {"name": "🔮 走着瞧",   "weight": 15,  "status": "ai_managed", "expert_score": 80.0, "color": "#7C3AED"},   # 预测市场
+        "leader":    {"name": "👑 跟大哥",   "weight": 15,  "status": "ai_managed", "expert_score": 60.0, "color": "#F59E0B"},   # 做市协作
+        "hitchhiker":{"name": "🍀 搭便车",   "weight": 10,  "status": "ai_managed", "expert_score": 85.0, "color": "#3B82F6"},   # 跟单分成
     }
     work_tools = {
         "wool":      {"name": "💰 薅羊毛",   "weight": 3,   "cashflow_rate": 0.02, "accumulated": 0.0, "color": "#EF4444"},
@@ -260,8 +262,8 @@ async def get_performance():
             work_tools[tool_id]["cashflow_rate"] = work_cfg[tool_id].get("cashflow_rate", work_tools[tool_id]["cashflow_rate"])
             work_tools[tool_id]["accumulated"] = work_cfg[tool_id].get("cashflow_accumulated", 0)
 
-    # 模拟资金池 (示例金额)
-    total_capital = 100000.0
+    # 资金池 (从环境变量配置，支持 Docker/K8s 动态注入)
+    total_capital = settings.TOTAL_CAPITAL
     investment_pool = total_capital * 0.80  # 80%投资
     work_pool = total_capital * 0.20        # 20%打工
 
