@@ -298,8 +298,13 @@ class GO2SEFullSimulationV2:
             # - active且weight>0 且有实现 → 85-100分
             # - ai_managed 有实现 → 85分
             # - 无数据 → 50分
-            implementation_check = rabbit.get("implementation", "")
-            has_implementation = implementation_check and "strategy.py" in implementation_check
+            # 检查实现文件 (支持多种命名)
+            impl = rabbit.get("implementation", "")
+            has_implementation = (
+                "strategy.py" in impl or 
+                "weighted_engine" in impl or
+                "rabbit" in impl.lower()
+            ) and impl
             
             if rabbit_status == "disabled":
                 score = 80.0
@@ -317,7 +322,7 @@ class GO2SEFullSimulationV2:
                 # 有实现且在运行
                 score = min(100, 60 + rabbit_weight * 2 + rabbit.get("expert_score", 0) / 5)
                 details = f"✅ 策略{rabbit_status}运行中"
-                details += f"\n   权重={rabbit_weight}%, 专家评分={rabbit.get('expert_score',0)}, 实现={implementation_check}"
+                details += f"\n   权重={rabbit_weight}%, 专家评分={rabbit.get('expert_score',0)}, 实现={impl}"
                 details += f"\n   止损={rabbit.get('stop_loss',0)*100:.0f}%, 止盈={rabbit.get('take_profit',0)*100:.0f}%, 置信度={rabbit.get('min_confidence',0)*100:.0f}%"
                 recommendations = ["持续监控表现"] if score >= 70 else ["建议优化参数"]
                 status = "PASS" if score >= 60 else "WARN"
