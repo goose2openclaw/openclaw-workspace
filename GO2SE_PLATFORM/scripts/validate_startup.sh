@@ -29,7 +29,6 @@ print('  ✅ 所有模型和工具类导入 OK')
 
 # 3. 数据库模型检查
 echo "  🗄️  检查数据库..."
-source ../venv/bin/activate
 python3 -c "
 from app.core.database import Base, engine, get_db
 from app.models.models import User, Trade, Position, Signal, BacktestResult
@@ -65,7 +64,6 @@ fi
 
 # 6. 交易所连接检查 (模拟)
 echo "  🌐 检查交易所连接..."
-source ../venv/bin/activate
 timeout 10 python3 -c "
 import asyncio
 from app.core.trading_engine import engine
