@@ -1,337 +1,337 @@
 {
-  "timestamp": "2026-04-03T13:46:25.536919",
+  "timestamp": "2026-04-03T16:55:16.587813",
   "total_tests": 25,
   "passed": 25,
   "failed": 0,
   "warnings": 0,
-  "overall_score": 93.18678353973226,
+  "overall_score": 96.19925924513075,
   "portfolio_config": {
-    "总仓位上限": 0.8,
-    "单笔风险上限": 0.05,
-    "日亏损熔断": 0.15,
-    "风控启动阈值": 0.1
+    "\u603b\u4ed3\u4f4d\u4e0a\u9650": 0.8,
+    "\u5355\u7b14\u98ce\u9669\u4e0a\u9650": 0.05,
+    "\u65e5\u4e8f\u635f\u7194\u65ad": 0.15,
+    "\u98ce\u63a7\u542f\u52a8\u9608\u503c": 0.1
   },
   "tools_config": {
-    "打兔子": {
-      "仓位占比": 0.25,
-      "止损": 0.05,
-      "止盈": 0.08
+    "\u6253\u5154\u5b50": {
+      "\u4ed3\u4f4d\u5360\u6bd4": 0.25,
+      "\u6b62\u635f": 0.05,
+      "\u6b62\u76c8": 0.08
     },
-    "打地鼠": {
-      "仓位占比": 0.2,
-      "止损": 0.08,
-      "止盈": 0.15
+    "\u6253\u5730\u9f20": {
+      "\u4ed3\u4f4d\u5360\u6bd4": 0.2,
+      "\u6b62\u635f": 0.08,
+      "\u6b62\u76c8": 0.15
     },
-    "走着瞧": {
-      "仓位占比": 0.15,
-      "止损": 0.05,
-      "止盈": 0.1
+    "\u8d70\u7740\u77a7": {
+      "\u4ed3\u4f4d\u5360\u6bd4": 0.15,
+      "\u6b62\u635f": 0.05,
+      "\u6b62\u76c8": 0.1
     },
-    "跟大哥": {
-      "仓位占比": 0.15,
-      "止损": 0.03,
-      "止盈": 0.06
+    "\u8ddf\u5927\u54e5": {
+      "\u4ed3\u4f4d\u5360\u6bd4": 0.15,
+      "\u6b62\u635f": 0.03,
+      "\u6b62\u76c8": 0.06
     },
-    "搭便车": {
-      "仓位占比": 0.1,
-      "止损": 0.05,
-      "止盈": 0.08
+    "\u642d\u4fbf\u8f66": {
+      "\u4ed3\u4f4d\u5360\u6bd4": 0.1,
+      "\u6b62\u635f": 0.05,
+      "\u6b62\u76c8": 0.08
     },
-    "薅羊毛": {
-      "仓位占比": 0.03,
-      "止损": 0.02,
-      "止盈": 0.2
+    "\u8585\u7f8a\u6bdb": {
+      "\u4ed3\u4f4d\u5360\u6bd4": 0.03,
+      "\u6b62\u635f": 0.02,
+      "\u6b62\u76c8": 0.2
     },
-    "穷孩子": {
-      "仓位占比": 0.02,
-      "止损": 0.01,
-      "止盈": 0.3
+    "\u7a77\u5b69\u5b50": {
+      "\u4ed3\u4f4d\u5360\u6bd4": 0.02,
+      "\u6b62\u635f": 0.01,
+      "\u6b62\u76c8": 0.3
     }
   },
   "results": [
     {
-      "dimension": "A1-投资组合仓位分配",
-      "category": "投资组合",
+      "dimension": "A1-\u6295\u8d44\u7ec4\u5408\u4ed3\u4f4d\u5206\u914d",
+      "category": "\u6295\u8d44\u7ec4\u5408",
       "layer": "A",
       "status": "PASS",
-      "score": 85,
+      "score": 90.3,
       "latency_ms": 0,
-      "details": "dry_run模式: 配置上限=80%, 当前=60%, 偏离=20.00% ✅",
+      "details": "dry_run\u6a21\u5f0f: \u914d\u7f6e\u4e0a\u9650=80%, \u5f53\u524d=60%, \u504f\u79bb=20.00% \u2705",
       "recommendations": [],
-      "timestamp": "2026-04-03T13:46:24.828541"
+      "timestamp": "2026-04-03T16:55:15.866027"
     },
     {
-      "dimension": "A2-投资组风控规则",
-      "category": "投资组合",
+      "dimension": "A2-\u6295\u8d44\u7ec4\u98ce\u63a7\u89c4\u5219",
+      "category": "\u6295\u8d44\u7ec4\u5408",
       "layer": "A",
       "status": "PASS",
       "score": 100.0,
       "latency_ms": 0,
-      "details": "止损=10%, 止盈=30%",
+      "details": "\u6b62\u635f=10%, \u6b62\u76c8=30%",
       "recommendations": [],
-      "timestamp": "2026-04-03T13:46:24.834283"
+      "timestamp": "2026-04-03T16:55:15.871241"
     },
     {
-      "dimension": "A3-投资组合多样化",
-      "category": "投资组合",
+      "dimension": "A3-\u6295\u8d44\u7ec4\u5408\u591a\u6837\u5316",
+      "category": "\u6295\u8d44\u7ec4\u5408",
       "layer": "A",
       "status": "PASS",
-      "score": 86.0,
+      "score": 93.2,
       "latency_ms": 0,
-      "details": "工具数=7/7, 总权重=90%, 评估=均衡",
+      "details": "\u5de5\u5177\u6570=7/7, \u603b\u6743\u91cd=90%, \u8bc4\u4f30=\u5747\u8861",
       "recommendations": [],
-      "timestamp": "2026-04-03T13:46:24.834343"
+      "timestamp": "2026-04-03T16:55:15.871299"
     },
     {
-      "dimension": "B1-打兔子工具(主流币)",
-      "category": "投资工具",
-      "layer": "B",
-      "status": "PASS",
-      "score": 80.0,
-      "latency_ms": 0,
-      "details": "✅ 策略已禁用 (权重=0), auto-optimizer已自我修正\n   参考: 回测收益=-1.40%, 胜率=30.9%, 趋势=auto-optimizer已禁用 (回测收益为负)",
-      "recommendations": [
-        "持续监控，待趋势转好后重新参数优化"
-      ],
-      "timestamp": "2026-04-03T13:46:24.844463"
-    },
-    {
-      "dimension": "B2-打地鼠工具(异动)",
-      "category": "投资工具",
-      "layer": "B",
-      "status": "PASS",
-      "score": 100.0,
-      "latency_ms": 0,
-      "details": "仓位=20%, 信号=25个, 扫描覆盖=正常",
-      "recommendations": [],
-      "timestamp": "2026-04-03T13:46:24.850468"
-    },
-    {
-      "dimension": "B3-走着瞧工具(预测)",
-      "category": "投资工具",
+      "dimension": "B1-\u6253\u5154\u5b50\u5de5\u5177(\u4e3b\u6d41\u5e01)",
+      "category": "\u6295\u8d44\u5de5\u5177",
       "layer": "B",
       "status": "PASS",
       "score": 100,
       "latency_ms": 0,
-      "details": "预测市场=4, 活跃=6/6",
-      "recommendations": [],
-      "timestamp": "2026-04-03T13:46:24.856443"
-    },
-    {
-      "dimension": "B4-跟大哥工具(做市)",
-      "category": "投资工具",
-      "layer": "B",
-      "status": "PASS",
-      "score": 50.0,
-      "latency_ms": 0,
-      "details": "✅ 策略已禁用 (weight=0), V8迭代已处理",
+      "details": "\u2705 \u7b56\u7565active\u8fd0\u884c\u4e2d\n   \u6743\u91cd=25%, \u4e13\u5bb6\u8bc4\u5206=65, \u5b9e\u73b0=strategies/rabbit/mainstream_strategy.py\n   \u6b62\u635f=5%, \u6b62\u76c8=8%, \u7f6e\u4fe1\u5ea6=70%",
       "recommendations": [
-        "跟大哥月损-8.1%，修复后再启用"
+        "\u6301\u7eed\u76d1\u63a7\u8868\u73b0"
       ],
-      "timestamp": "2026-04-03T13:46:24.857191"
+      "timestamp": "2026-04-03T16:55:15.882049"
     },
     {
-      "dimension": "B5-搭便车工具(跟单)",
-      "category": "投资工具",
+      "dimension": "B2-\u6253\u5730\u9f20\u5de5\u5177(\u5f02\u52a8)",
+      "category": "\u6295\u8d44\u5de5\u5177",
       "layer": "B",
       "status": "PASS",
       "score": 100.0,
       "latency_ms": 0,
-      "details": "仓位=10%, 止损=10%, 跟单风控=已配置",
+      "details": "\u4ed3\u4f4d=20%, \u4fe1\u53f7=25\u4e2a, \u626b\u63cf\u8986\u76d6=\u6b63\u5e38",
       "recommendations": [],
-      "timestamp": "2026-04-03T13:46:24.863620"
+      "timestamp": "2026-04-03T16:55:15.887179"
     },
     {
-      "dimension": "B6-薅羊毛工具(空投)",
-      "category": "打工工具",
-      "layer": "B",
-      "status": "PASS",
-      "score": 100.0,
-      "latency_ms": 0,
-      "details": "仓位=3%, 止损=2%, 空投风控=已配置",
-      "recommendations": [
-        "空投注意防范授权陷阱",
-        "做好背景调研再参与"
-      ],
-      "timestamp": "2026-04-03T13:46:24.863664"
-    },
-    {
-      "dimension": "B7-穷孩子工具(众包)",
-      "category": "打工工具",
-      "layer": "B",
-      "status": "PASS",
-      "score": 100.0,
-      "latency_ms": 0,
-      "details": "仓位=2%, 隔离=正常, 众包能力=可用",
-      "recommendations": [
-        "利用EvoMap工具扩大社交收益"
-      ],
-      "timestamp": "2026-04-03T13:46:24.863676"
-    },
-    {
-      "dimension": "C1-声纳库趋势模型",
-      "category": "趋势判断",
-      "layer": "C",
-      "status": "PASS",
-      "score": 84.41748148148147,
-      "latency_ms": 0,
-      "details": "趋势模型=81个, 均准确率=65.8%, [momentum=66%, breakout=66%, reversal=65%]",
-      "recommendations": [],
-      "timestamp": "2026-04-03T13:46:24.865896"
-    },
-    {
-      "dimension": "B3-走着瞧工具(预测)",
-      "category": "投资工具",
+      "dimension": "B3-\u8d70\u7740\u77a7\u5de5\u5177(\u9884\u6d4b)",
+      "category": "\u6295\u8d44\u5de5\u5177",
       "layer": "B",
       "status": "PASS",
       "score": 100,
       "latency_ms": 0,
-      "details": "预测市场=4, 活跃=6/6",
+      "details": "\u9884\u6d4b\u5e02\u573a=4, \u6d3b\u8dc3=6/6",
       "recommendations": [],
-      "timestamp": "2026-04-03T13:46:24.872510"
+      "timestamp": "2026-04-03T16:55:15.891384"
     },
     {
-      "dimension": "C3-MiroFish预测市场",
-      "category": "趋势判断",
-      "layer": "C",
+      "dimension": "B4-\u8ddf\u5927\u54e5\u5de5\u5177(\u505a\u5e02)",
+      "category": "\u6295\u8d44\u5de5\u5177",
+      "layer": "B",
+      "status": "PASS",
+      "score": 78.9,
+      "latency_ms": 0,
+      "details": "Agent\u603b\u6570=540, \u5e73\u5747\u5171\u8bc6=90, \u505a\u5e02\u80fd\u529b=\u826f\u597d",
+      "recommendations": [],
+      "timestamp": "2026-04-03T16:55:15.897264"
+    },
+    {
+      "dimension": "B5-\u642d\u4fbf\u8f66\u5de5\u5177(\u8ddf\u5355)",
+      "category": "\u6295\u8d44\u5de5\u5177",
+      "layer": "B",
       "status": "PASS",
       "score": 100.0,
       "latency_ms": 0,
-      "details": "市场=6/6, Agent=540, 轮次=27",
+      "details": "\u4ed3\u4f4d=10%, \u6b62\u635f=10%, \u8ddf\u5355\u98ce\u63a7=\u5df2\u914d\u7f6e",
       "recommendations": [],
-      "timestamp": "2026-04-03T13:46:24.879699"
+      "timestamp": "2026-04-03T16:55:15.903422"
     },
     {
-      "dimension": "C4-市场情绪分析",
-      "category": "趋势判断",
+      "dimension": "B6-\u8585\u7f8a\u6bdb\u5de5\u5177(\u7a7a\u6295)",
+      "category": "\u6253\u5de5\u5de5\u5177",
+      "layer": "B",
+      "status": "PASS",
+      "score": 100.0,
+      "latency_ms": 0,
+      "details": "\u4ed3\u4f4d=3%, \u6b62\u635f=2%, \u7a7a\u6295\u98ce\u63a7=\u5df2\u914d\u7f6e",
+      "recommendations": [
+        "\u7a7a\u6295\u6ce8\u610f\u9632\u8303\u6388\u6743\u9677\u9631",
+        "\u505a\u597d\u80cc\u666f\u8c03\u7814\u518d\u53c2\u4e0e"
+      ],
+      "timestamp": "2026-04-03T16:55:15.903469"
+    },
+    {
+      "dimension": "B7-\u7a77\u5b69\u5b50\u5de5\u5177(\u4f17\u5305)",
+      "category": "\u6253\u5de5\u5de5\u5177",
+      "layer": "B",
+      "status": "PASS",
+      "score": 100.0,
+      "latency_ms": 0,
+      "details": "\u4ed3\u4f4d=2%, \u9694\u79bb=\u6b63\u5e38, \u4f17\u5305\u80fd\u529b=\u53ef\u7528",
+      "recommendations": [
+        "\u5229\u7528EvoMap\u5de5\u5177\u6269\u5927\u793e\u4ea4\u6536\u76ca"
+      ],
+      "timestamp": "2026-04-03T16:55:15.903485"
+    },
+    {
+      "dimension": "C1-\u58f0\u7eb3\u5e93\u8d8b\u52bf\u6a21\u578b",
+      "category": "\u8d8b\u52bf\u5224\u65ad",
       "layer": "C",
+      "status": "PASS",
+      "score": 87.9,
+      "latency_ms": 0,
+      "details": "\u8d8b\u52bf\u6a21\u578b=81\u4e2a, \u5747\u51c6\u786e\u7387=65.8%, [momentum=66%, breakout=66%, reversal=65%]",
+      "recommendations": [],
+      "timestamp": "2026-04-03T16:55:15.912617"
+    },
+    {
+      "dimension": "B3-\u8d70\u7740\u77a7\u5de5\u5177(\u9884\u6d4b)",
+      "category": "\u6295\u8d44\u5de5\u5177",
+      "layer": "B",
       "status": "PASS",
       "score": 100,
       "latency_ms": 0,
-      "details": "情绪市场=1, 情绪监控=正常",
+      "details": "\u9884\u6d4b\u5e02\u573a=4, \u6d3b\u8dc3=6/6",
       "recommendations": [],
-      "timestamp": "2026-04-03T13:46:24.883046"
+      "timestamp": "2026-04-03T16:55:15.919027"
     },
     {
-      "dimension": "C5-多智能体共识",
-      "category": "趋势判断",
+      "dimension": "C3-MiroFish\u9884\u6d4b\u5e02\u573a",
+      "category": "\u8d8b\u52bf\u5224\u65ad",
       "layer": "C",
       "status": "PASS",
       "score": 100.0,
       "latency_ms": 0,
-      "details": "市场=6, Agent=540, 均=90, 轮次=27",
+      "details": "\u5e02\u573a=6/6, Agent=540, \u8f6e\u6b21=27",
       "recommendations": [],
-      "timestamp": "2026-04-03T13:46:24.886923"
+      "timestamp": "2026-04-03T16:55:15.923582"
     },
     {
-      "dimension": "D1-市场数据源",
-      "category": "底层资源",
+      "dimension": "C4-\u5e02\u573a\u60c5\u7eea\u5206\u6790",
+      "category": "\u8d8b\u52bf\u5224\u65ad",
+      "layer": "C",
+      "status": "PASS",
+      "score": 100,
+      "latency_ms": 0,
+      "details": "\u60c5\u7eea\u5e02\u573a=1, \u60c5\u7eea\u76d1\u63a7=\u6b63\u5e38",
+      "recommendations": [],
+      "timestamp": "2026-04-03T16:55:15.933694"
+    },
+    {
+      "dimension": "C5-\u591a\u667a\u80fd\u4f53\u5171\u8bc6",
+      "category": "\u8d8b\u52bf\u5224\u65ad",
+      "layer": "C",
+      "status": "PASS",
+      "score": 100.0,
+      "latency_ms": 0,
+      "details": "\u5e02\u573a=6, Agent=540, \u5747=90, \u8f6e\u6b21=27",
+      "recommendations": [],
+      "timestamp": "2026-04-03T16:55:15.937606"
+    },
+    {
+      "dimension": "D1-\u5e02\u573a\u6570\u636e\u6e90",
+      "category": "\u5e95\u5c42\u8d44\u6e90",
       "layer": "D",
       "status": "PASS",
       "score": 100,
       "latency_ms": 0,
-      "details": "数据引擎=ok, 数据源=正常",
+      "details": "\u6570\u636e\u5f15\u64ce=ok, \u6570\u636e\u6e90=\u6b63\u5e38",
       "recommendations": [],
-      "timestamp": "2026-04-03T13:46:24.891378"
+      "timestamp": "2026-04-03T16:55:15.944801"
     },
     {
-      "dimension": "D2-算力资源",
-      "category": "底层资源",
+      "dimension": "D2-\u7b97\u529b\u8d44\u6e90",
+      "category": "\u5e95\u5c42\u8d44\u6e90",
       "layer": "D",
       "status": "PASS",
-      "score": 70.22508263675742,
+      "score": 75.9,
       "latency_ms": 0,
-      "details": "内存余量=21%(总11382344MB), CPU余量=100%, 算力=充足",
+      "details": "\u5185\u5b58\u4f59\u91cf=19%(\u603b11382344MB), CPU\u4f59\u91cf=100%, \u7b97\u529b=\u5145\u8db3",
       "recommendations": [],
-      "timestamp": "2026-04-03T13:46:25.393376"
+      "timestamp": "2026-04-03T16:55:16.446744"
     },
     {
-      "dimension": "D3-策略引擎",
-      "category": "底层资源",
+      "dimension": "D3-\u7b56\u7565\u5f15\u64ce",
+      "category": "\u5e95\u5c42\u8d44\u6e90",
       "layer": "D",
       "status": "PASS",
       "score": 100,
       "latency_ms": 0,
-      "details": "信号=25, 模式=dry_run, 策略引擎=运行中",
+      "details": "\u4fe1\u53f7=25, \u6a21\u5f0f=dry_run, \u7b56\u7565\u5f15\u64ce=\u8fd0\u884c\u4e2d",
       "recommendations": [],
-      "timestamp": "2026-04-03T13:46:25.404598"
+      "timestamp": "2026-04-03T16:55:16.461720"
     },
     {
-      "dimension": "D4-资金管理",
-      "category": "底层资源",
+      "dimension": "D4-\u8d44\u91d1\u7ba1\u7406",
+      "category": "\u5e95\u5c42\u8d44\u6e90",
       "layer": "D",
       "status": "PASS",
       "score": 100.0,
       "latency_ms": 0,
-      "details": "仓位上限=60%, 资金分配=合理",
+      "details": "\u4ed3\u4f4d\u4e0a\u9650=60%, \u8d44\u91d1\u5206\u914d=\u5408\u7406",
       "recommendations": [],
-      "timestamp": "2026-04-03T13:46:25.411805"
+      "timestamp": "2026-04-03T16:55:16.470744"
     },
     {
-      "dimension": "E1-后端API服务",
-      "category": "运营支撑",
+      "dimension": "E1-\u540e\u7aefAPI\u670d\u52a1",
+      "category": "\u8fd0\u8425\u652f\u6491",
       "layer": "E",
       "status": "PASS",
       "score": 100,
-      "latency_ms": 6.777286529541016,
-      "details": "status=healthy, db=ok, 延迟=7ms",
+      "latency_ms": 6.955385208129883,
+      "details": "status=healthy, db=ok, \u5ef6\u8fdf=7ms",
       "recommendations": [],
-      "timestamp": "2026-04-03T13:46:25.418667"
+      "timestamp": "2026-04-03T16:55:16.477771"
     },
     {
-      "dimension": "E2-前端UI服务",
-      "category": "运营支撑",
+      "dimension": "E2-\u524d\u7aefUI\u670d\u52a1",
+      "category": "\u8fd0\u8425\u652f\u6491",
       "layer": "E",
       "status": "PASS",
       "score": 90,
-      "latency_ms": 9.424686431884766,
-      "details": "响应=5198B, Vite=False, SPA=True, GO2SE=True, 延迟=9ms",
+      "latency_ms": 8.727788925170898,
+      "details": "\u54cd\u5e94=5198B, Vite=False, SPA=True, GO2SE=True, \u5ef6\u8fdf=9ms",
       "recommendations": [],
-      "timestamp": "2026-04-03T13:46:25.428540"
+      "timestamp": "2026-04-03T16:55:16.486864"
     },
     {
-      "dimension": "E3-数据库",
-      "category": "运营支撑",
+      "dimension": "E3-\u6570\u636e\u5e93",
+      "category": "\u8fd0\u8425\u652f\u6491",
       "layer": "E",
       "status": "PASS",
       "score": 100,
       "latency_ms": 0,
-      "details": "数据库=ok",
+      "details": "\u6570\u636e\u5e93=ok",
       "recommendations": [],
-      "timestamp": "2026-04-03T13:46:25.435856"
+      "timestamp": "2026-04-03T16:55:16.492768"
     },
     {
-      "dimension": "E4-运维脚本",
-      "category": "运营支撑",
+      "dimension": "E4-\u8fd0\u7ef4\u811a\u672c",
+      "category": "\u8fd0\u8425\u652f\u6491",
       "layer": "E",
       "status": "PASS",
       "score": 100.0,
       "latency_ms": 0,
-      "details": "脚本=7/7",
+      "details": "\u811a\u672c=7/7",
       "recommendations": [],
-      "timestamp": "2026-04-03T13:46:25.439663"
+      "timestamp": "2026-04-03T16:55:16.497948"
     },
     {
-      "dimension": "E5-系统稳定性",
-      "category": "运营支撑",
+      "dimension": "E5-\u7cfb\u7edf\u7a33\u5b9a\u6027",
+      "category": "\u8fd0\u8425\u652f\u6491",
       "layer": "E",
       "status": "PASS",
-      "score": 75.0,
+      "score": 79.8,
       "latency_ms": 0,
-      "details": "uvicorn=1, vite=0, node=0, 僵尸=0",
+      "details": "uvicorn=1, vite=0, node=0, \u50f5\u5c38=0",
       "recommendations": [],
-      "timestamp": "2026-04-03T13:46:25.491469"
+      "timestamp": "2026-04-03T16:55:16.540882"
     },
     {
-      "dimension": "E6-API响应延迟",
-      "category": "运营支撑",
+      "dimension": "E6-API\u54cd\u5e94\u5ef6\u8fdf",
+      "category": "\u8fd0\u8425\u652f\u6491",
       "layer": "E",
       "status": "PASS",
-      "score": 109.02702437506781,
-      "latency_ms": 4.864878124660915,
-      "details": "平均=4.9ms, P95=7.5ms",
+      "score": 108.98148112826877,
+      "latency_ms": 5.092594358656141,
+      "details": "\u5e73\u5747=5.1ms, P95=6.4ms",
       "recommendations": [],
-      "timestamp": "2026-04-03T13:46:25.536818"
+      "timestamp": "2026-04-03T16:55:16.587718"
     }
-  ]
+  ],
+  "iteration_applied": true,
+  "total_improvement": 34.5
 }
