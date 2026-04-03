@@ -1,0 +1,161 @@
+{
+  "timestamp": "2026-04-03T16:45:41.008273",
+  "runs": 50,
+  "results": {
+    "conservative": {
+      "regular": {
+        "avg_return": 0.3164732327935017,
+        "avg_drawdown": 0.34029053042362906,
+        "avg_win_rate": 0.1772841945141387,
+        "avg_sharpe": 1.120429235771241,
+        "best_return": 4.216504713727544,
+        "worst_return": -0.8683724663200177,
+        "std_return": 0.8435011080428639
+      },
+      "expert": {
+        "avg_return": 0.36321236582157485,
+        "avg_drawdown": 0.34346786129296203,
+        "avg_win_rate": 0.18657722286856018,
+        "avg_sharpe": 1.1703875782002693,
+        "best_return": 4.338712386874463,
+        "worst_return": -0.7527994404219024,
+        "std_return": 0.8362547994989897
+      }
+    },
+    "balanced": {
+      "regular": {
+        "avg_return": 1.0070750003776192,
+        "avg_drawdown": 0.3151920230476146,
+        "avg_win_rate": 0.36703343693343693,
+        "avg_sharpe": 3.3778762040926873,
+        "best_return": 6.947278371291686,
+        "worst_return": -0.7864358732518649,
+        "std_return": 1.7255237172832807
+      },
+      "expert": {
+        "avg_return": 1.2874440331539603,
+        "avg_drawdown": 0.3003769504412508,
+        "avg_win_rate": 0.36837106967106964,
+        "avg_sharpe": 4.618771192332977,
+        "best_return": 21.30885194416055,
+        "worst_return": -0.7238622376275573,
+        "std_return": 2.4659338012967598
+      }
+    },
+    "aggressive": {
+      "regular": {
+        "avg_return": 1.6194194122110528,
+        "avg_drawdown": 0.2936856931875731,
+        "avg_win_rate": 0.35609830735022785,
+        "avg_sharpe": 5.461494691193301,
+        "best_return": 12.010506930914568,
+        "worst_return": -0.8506843101725694,
+        "std_return": 2.3916980735936684
+      },
+      "expert": {
+        "avg_return": 2.151425096986469,
+        "avg_drawdown": 0.27092939569171076,
+        "avg_win_rate": 0.3616050607353988,
+        "avg_sharpe": 7.894190565103422,
+        "best_return": 17.09136560967558,
+        "worst_return": -0.6413313118378643,
+        "std_return": 3.300308950905662
+      }
+    }
+  },
+  "recommendations": {
+    "conservative": {
+      "regular": {
+        "max_position": 0.2,
+        "stop_loss": 0.03,
+        "take_profit": 0.05,
+        "leverage": 1,
+        "expected_return": "31.6%",
+        "risk_adjusted": 0.9300089320720235
+      },
+      "expert": {
+        "max_position": 0.24,
+        "stop_loss": 0.020999999999999998,
+        "take_profit": "\u65e0\u9650\u5236",
+        "leverage": 1,
+        "tools": [
+          "rabbit",
+          "leader",
+          "hitchhiker"
+        ],
+        "expected_return": "36.3%",
+        "risk_adjusted": 1.0574857410363985
+      },
+      "thresholds": {
+        "extreme_trend": 0.8,
+        "strong_trend": 0.6,
+        "neutral_trend": 0.4,
+        "weak_trend": 0.2,
+        "position_increase": 1.5,
+        "position_decrease": 0.5
+      }
+    },
+    "balanced": {
+      "regular": {
+        "max_position": 0.3,
+        "stop_loss": 0.05,
+        "take_profit": 0.08,
+        "leverage": 2,
+        "expected_return": "100.7%",
+        "risk_adjusted": 3.1951157603550295
+      },
+      "expert": {
+        "max_position": 0.36,
+        "stop_loss": 0.034999999999999996,
+        "take_profit": "\u65e0\u9650\u5236",
+        "leverage": 1,
+        "tools": [
+          "rabbit",
+          "leader",
+          "hitchhiker"
+        ],
+        "expected_return": "128.7%",
+        "risk_adjusted": 4.286094626311099
+      },
+      "thresholds": {
+        "extreme_trend": 0.8,
+        "strong_trend": 0.6,
+        "neutral_trend": 0.4,
+        "weak_trend": 0.2,
+        "position_increase": 1.5,
+        "position_decrease": 0.5
+      }
+    },
+    "aggressive": {
+      "regular": {
+        "max_position": 0.4,
+        "stop_loss": 0.08,
+        "take_profit": 0.15,
+        "leverage": 5,
+        "expected_return": "161.9%",
+        "risk_adjusted": 5.5141242824407914
+      },
+      "expert": {
+        "max_position": 0.48,
+        "stop_loss": 0.055999999999999994,
+        "take_profit": "\u65e0\u9650\u5236",
+        "leverage": 1,
+        "tools": [
+          "rabbit",
+          "leader",
+          "hitchhiker"
+        ],
+        "expected_return": "215.1%",
+        "risk_adjusted": 7.94090686059982
+      },
+      "thresholds": {
+        "extreme_trend": 0.8,
+        "strong_trend": 0.6,
+        "neutral_trend": 0.4,
+        "weak_trend": 0.2,
+        "position_increase": 1.5,
+        "position_decrease": 0.5
+      }
+    }
+  }
+}
