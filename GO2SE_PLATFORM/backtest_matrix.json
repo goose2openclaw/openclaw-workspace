@@ -1,0 +1,196 @@
+{
+  "period": 7,
+  "initial_capital": 10000.0,
+  "generated_at": "2026-04-03T17:01:51.010791",
+  "tools": [
+    {
+      "tool_id": "rabbit",
+      "tool_name": "\u6253\u5154\u5b50",
+      "regular": {
+        "trades": 161,
+        "wins": 100,
+        "win_rate": 0.6211180124223602,
+        "return": 0.24255734206336216,
+        "sharpe": 85.63673158391863,
+        "max_drawdown": 0.05831438095102787
+      },
+      "expert": {
+        "trades": 126,
+        "wins": 95,
+        "win_rate": 0.753968253968254,
+        "return": 0.2884573769726882,
+        "sharpe": 129.19011840893128,
+        "max_drawdown": 0.08076463106182247
+      },
+      "improvement": {
+        "return_pct": 18.92337478588291,
+        "win_rate_pct": 13.285024154589376,
+        "sharpe_improvement": 43.55338682501265
+      }
+    },
+    {
+      "tool_id": "mole",
+      "tool_name": "\u6253\u5730\u9f20",
+      "regular": {
+        "trades": 140,
+        "wins": 72,
+        "win_rate": 0.5142857142857142,
+        "return": 0.3174190125149913,
+        "sharpe": 61.33991714518431,
+        "max_drawdown": 0.09060164373853148
+      },
+      "expert": {
+        "trades": 196,
+        "wins": 68,
+        "win_rate": 0.3469387755102041,
+        "return": 0.42922363495598814,
+        "sharpe": 39.151884010398255,
+        "max_drawdown": 0.05550203795304431
+      },
+      "improvement": {
+        "return_pct": 35.22303895886401,
+        "win_rate_pct": -16.734693877551017,
+        "sharpe_improvement": -22.188033134786053
+      }
+    },
+    {
+      "tool_id": "oracle",
+      "tool_name": "\u8d70\u7740\u77a7",
+      "regular": {
+        "trades": 203,
+        "wins": 79,
+        "win_rate": 0.3891625615763547,
+        "return": 0.2988669395357063,
+        "sharpe": 51.863938777931324,
+        "max_drawdown": 0.08017508923258082
+      },
+      "expert": {
+        "trades": 91,
+        "wins": 73,
+        "win_rate": 0.8021978021978022,
+        "return": 0.27672938193722807,
+        "sharpe": 44.536734669652176,
+        "max_drawdown": 0.08915403227492542
+      },
+      "improvement": {
+        "return_pct": -7.407161739893087,
+        "win_rate_pct": 41.30352406214475,
+        "sharpe_improvement": -7.3272041082791475
+      }
+    },
+    {
+      "tool_id": "leader",
+      "tool_name": "\u8ddf\u5927\u54e5",
+      "regular": {
+        "trades": 77,
+        "wins": 85,
+        "win_rate": 1.103896103896104,
+        "return": 0.1894624922747693,
+        "sharpe": 63.295049752586635,
+        "max_drawdown": 0.07776136926532555
+      },
+      "expert": {
+        "trades": 105,
+        "wins": 97,
+        "win_rate": 0.9238095238095239,
+        "return": 0.23777880880576285,
+        "sharpe": 59.8042650091152,
+        "max_drawdown": 0.06607843217650784
+      },
+      "improvement": {
+        "return_pct": 25.50178452256528,
+        "win_rate_pct": -18.008658008658006,
+        "sharpe_improvement": -3.490784743471437
+      }
+    },
+    {
+      "tool_id": "hitchhiker",
+      "tool_name": "\u642d\u4fbf\u8f66",
+      "regular": {
+        "trades": 70,
+        "wins": 83,
+        "win_rate": 1.1857142857142857,
+        "return": 0.16458877258698013,
+        "sharpe": 102.95301360617967,
+        "max_drawdown": 0.07784801481892595
+      },
+      "expert": {
+        "trades": 182,
+        "wins": 102,
+        "win_rate": 0.5604395604395604,
+        "return": 0.18400923833812355,
+        "sharpe": 68.92281144232734,
+        "max_drawdown": 0.08814299293680086
+      },
+      "improvement": {
+        "return_pct": 11.799386705360053,
+        "win_rate_pct": -62.527472527472526,
+        "sharpe_improvement": -34.03020216385232
+      }
+    },
+    {
+      "tool_id": "wool",
+      "tool_name": "\u8585\u7f8a\u6bdb",
+      "regular": {
+        "trades": 182,
+        "wins": 120,
+        "win_rate": 0.6593406593406593,
+        "return": 0.5554137125416594,
+        "sharpe": 56.024012642232265,
+        "max_drawdown": 0.08900135911534991
+      },
+      "expert": {
+        "trades": 105,
+        "wins": 94,
+        "win_rate": 0.8952380952380953,
+        "return": 0.6382639812424472,
+        "sharpe": 68.79850853710828,
+        "max_drawdown": 0.08350250747744448
+      },
+      "improvement": {
+        "return_pct": 14.916856899634713,
+        "win_rate_pct": 23.589743589743595,
+        "sharpe_improvement": 12.774495894876011
+      }
+    },
+    {
+      "tool_id": "poor_kid",
+      "tool_name": "\u7a77\u5b69\u5b50",
+      "regular": {
+        "trades": 140,
+        "wins": 132,
+        "win_rate": 0.9428571428571428,
+        "return": 0.3134282303595756,
+        "sharpe": 63.0909913046587,
+        "max_drawdown": 0.09368647029293013
+      },
+      "expert": {
+        "trades": 112,
+        "wins": 115,
+        "win_rate": 1.0267857142857142,
+        "return": 0.45375388129015204,
+        "sharpe": 116.10005599512695,
+        "max_drawdown": 0.09375923308210272
+      },
+      "improvement": {
+        "return_pct": 44.77122267180273,
+        "win_rate_pct": 8.392857142857135,
+        "sharpe_improvement": 53.00906469046825
+      }
+    }
+  ],
+  "overall": {
+    "regular": {
+      "return": 0.29739092883957774,
+      "win_rate": 0.7737677828703744,
+      "sharpe": 69.17195068752736
+    },
+    "expert": {
+      "return": 0.35831661479176996,
+      "win_rate": 0.758482532207022,
+      "sharpe": 75.21491115323707
+    },
+    "return_improvement": 20.48673313268997,
+    "win_rate_improvement": -1.52852506633524
+  }
+}
