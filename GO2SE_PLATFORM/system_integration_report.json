@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-04-03T17:23:19.910336",
+  "timestamp": "2026-04-03T17:41:38.430703",
   "total": 12,
   "passed": 12,
   "failed": 0,
@@ -9,7 +9,7 @@
     {
       "name": "Backend Health",
       "status": "PASS",
-      "latency_ms": 32.02557563781738,
+      "latency_ms": 144.28305625915527,
       "details": "Version: None, Signals: None"
     },
     {
@@ -21,61 +21,61 @@
     {
       "name": "API /api/stats",
       "status": "PASS",
-      "latency_ms": 7.652044296264648,
+      "latency_ms": 19.28567886352539,
       "details": "Status: 200"
     },
     {
       "name": "API /api/backtest/params",
       "status": "PASS",
-      "latency_ms": 7.315874099731445,
+      "latency_ms": 32.68313407897949,
       "details": "Status: 404"
     },
     {
       "name": "API /api/backtest/sources",
       "status": "PASS",
-      "latency_ms": 6.400585174560547,
+      "latency_ms": 20.60532569885254,
       "details": "Status: 404"
     },
     {
       "name": "API /api/paper/user_types",
       "status": "PASS",
-      "latency_ms": 12.416601181030273,
+      "latency_ms": 26.11231803894043,
       "details": "Status: 200"
     },
     {
       "name": "API /api/expert/leverage_levels",
       "status": "PASS",
-      "latency_ms": 11.74163818359375,
+      "latency_ms": 22.343873977661133,
       "details": "Status: 200"
     },
     {
       "name": "API /api/factor/status",
       "status": "PASS",
-      "latency_ms": 9.063720703125,
+      "latency_ms": 17.383337020874023,
       "details": "Status: 200"
     },
     {
       "name": "MiroFish Simulation",
       "status": "PASS",
-      "latency_ms": 0.003337860107421875,
+      "latency_ms": 0.0050067901611328125,
       "details": "Consensus: BUY, Confidence: 0.09"
     },
     {
       "name": "Signal Fusion Simulation",
       "status": "PASS",
-      "latency_ms": 0.008106231689453125,
+      "latency_ms": 0.0133514404296875,
       "details": "Fused Score: 0.651"
     },
     {
       "name": "Backtest Simulation",
       "status": "PASS",
-      "latency_ms": 0.0019073486328125,
+      "latency_ms": 0.0021457672119140625,
       "details": "7-day return: 12.0%"
     },
     {
       "name": "Paper Trading Simulation",
       "status": "PASS",
-      "latency_ms": 0.0011920928955078125,
+      "latency_ms": 0.0016689300537109375,
       "details": "Account: test_123, Position: $1000"
     }
   ]
