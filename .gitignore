@@ -3,3 +3,7 @@
 OMX_SOURCE/
 NANO_CC/
 __pycache__/
+-e 
+# External clones (use submodules or reinstall)
+open-qveris-skills/
+claude-trading-skills/
