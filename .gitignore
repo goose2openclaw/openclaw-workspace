@@ -1,0 +1,5 @@
+-e 
+# OMX/NanoClaude clones (too large for repo)
+OMX_SOURCE/
+NANO_CC/
+__pycache__/
