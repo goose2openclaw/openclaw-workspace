@@ -1,0 +1,218 @@
+{
+  "timestamp": "2026-04-03T17:08:08.516022",
+  "api_status": {
+    "binance_ticker": true,
+    "coingecko_market": true,
+    "twitter_sentiment": true,
+    "whale_alert": true,
+    "polymarket_api": true,
+    "fear_greed": true,
+    "mm_tracking": true,
+    "trader_signals": true,
+    "airdrop_scanner": true,
+    "crowdsource_api": true
+  },
+  "tool_signals": {
+    "rabbit": [
+      {
+        "source": "binance",
+        "score": 0.586473821111355,
+        "action": "SELL"
+      },
+      {
+        "source": "coingecko",
+        "score": 0.7674059619365412,
+        "action": "HOLD"
+      },
+      {
+        "source": "sentiment",
+        "score": 0.7228634867344245,
+        "action": "HOLD"
+      }
+    ],
+    "mole": [
+      {
+        "source": "binance",
+        "score": 0.696325150263084,
+        "action": "SELL"
+      },
+      {
+        "source": "whale_alert",
+        "score": 0.7387913320540372,
+        "action": "HOLD"
+      },
+      {
+        "source": "sentiment",
+        "score": 0.5429257843068283,
+        "action": "BUY"
+      }
+    ],
+    "oracle": [
+      {
+        "source": "polymarket",
+        "score": 0.7867897730687259,
+        "action": "BUY"
+      },
+      {
+        "source": "sentiment",
+        "score": 0.694862004665947,
+        "action": "SELL"
+      },
+      {
+        "source": "coingecko",
+        "score": 0.8279638419905175,
+        "action": "HOLD"
+      }
+    ],
+    "leader": [
+      {
+        "source": "market_makers",
+        "score": 0.6695079220250324,
+        "action": "HOLD"
+      },
+      {
+        "source": "sentiment",
+        "score": 0.6220340532449423,
+        "action": "SELL"
+      }
+    ],
+    "hitchhiker": [
+      {
+        "source": "traders",
+        "score": 0.7225115876334998,
+        "action": "HOLD"
+      },
+      {
+        "source": "sentiment",
+        "score": 0.5405989302342665,
+        "action": "SELL"
+      }
+    ],
+    "wool": [
+      {
+        "source": "evomap",
+        "score": 0.43544133626493803,
+        "action": "BUY"
+      },
+      {
+        "source": "clawjob",
+        "score": 0.3693614840514704,
+        "action": "HOLD"
+      }
+    ],
+    "poor_kid": [
+      {
+        "source": "evomap",
+        "score": 0.559905557492376,
+        "action": "HOLD"
+      },
+      {
+        "source": "clawjob",
+        "score": 0.43734848503780116,
+        "action": "HOLD"
+      }
+    ]
+  },
+  "tool_optimizations": {
+    "rabbit": {
+      "original_return": 0.014727311370927124,
+      "optimized_return": 0.015510643618215306,
+      "improvement": 0.05318908710211303,
+      "optimized_params": {
+        "position_size": 0.3,
+        "stop_loss": 0.04952504265756522,
+        "take_profit": 0.08379177291240439,
+        "leverage": 3,
+        "confidence_threshold": 0.4676092337146646
+      }
+    },
+    "mole": {
+      "original_return": 0.007845110712911954,
+      "optimized_return": 0.01768078062303608,
+      "improvement": 1.2537324545255928,
+      "optimized_params": {
+        "position_size": 0.24,
+        "stop_loss": 0.04381217620869458,
+        "take_profit": 0.09031662039835682,
+        "leverage": 2,
+        "confidence_threshold": 0.4070011894590655
+      }
+    },
+    "oracle": {
+      "original_return": 0.017388583968690502,
+      "optimized_return": 0.012035934984147956,
+      "improvement": -0.30782546722495674,
+      "optimized_params": {
+        "position_size": 0.18,
+        "stop_loss": 0.047948120093593255,
+        "take_profit": 0.10003870116203391,
+        "leverage": 1,
+        "confidence_threshold": 0.5494257716205521
+      }
+    },
+    "leader": {
+      "original_return": 0.012556453913878707,
+      "optimized_return": 0.010832613441897393,
+      "improvement": -0.13728720575129458,
+      "optimized_params": {
+        "position_size": 0.18,
+        "stop_loss": 0.04302651823709855,
+        "take_profit": 0.09812848595305682,
+        "leverage": 1,
+        "confidence_threshold": 0.36460079178794336
+      }
+    },
+    "hitchhiker": {
+      "original_return": 0.01281075571328689,
+      "optimized_return": 0.017895897494157386,
+      "improvement": 0.3969431542275337,
+      "optimized_params": {
+        "position_size": 0.12,
+        "stop_loss": 0.0423010526137138,
+        "take_profit": 0.08334004363769608,
+        "leverage": 3,
+        "confidence_threshold": 0.4170721065733907
+      }
+    },
+    "wool": {
+      "original_return": -0.0015455528996697822,
+      "optimized_return": -0.0010569025978949683,
+      "improvement": 0.4886503017748139,
+      "optimized_params": {
+        "position_size": 0.036,
+        "stop_loss": 0.04609706582120776,
+        "take_profit": 0.08214343303928079,
+        "leverage": 2,
+        "confidence_threshold": 0.18140627905453321
+      }
+    },
+    "poor_kid": {
+      "original_return": -0.0007426219950109427,
+      "optimized_return": 0.0,
+      "improvement": 0.7426219950109427,
+      "optimized_params": {
+        "position_size": 0.024,
+        "stop_loss": 0.042593161026073335,
+        "take_profit": 0.08390591996586974,
+        "leverage": 1,
+        "confidence_threshold": 0.27807586728668304
+      }
+    }
+  },
+  "portfolio_optimization": {
+    "original_return": 0.01096246221213793,
+    "optimized_return": 0.012601981964546734,
+    "original_risk": 0.31264242108204465,
+    "optimized_risk": 0.2582426592582111,
+    "optimal_allocation": {
+      "rabbit": 0.2724841955250325,
+      "mole": 0.23891807481265842,
+      "oracle": 0.15876997107489588,
+      "leader": 0.1609998915569033,
+      "hitchhiker": 0.11199024616855567,
+      "wool": 0.03383690231474245,
+      "poor_kid": 0.02300071854721182
+    },
+    "sharpe_improvement": 0.3917161415897818
+  }
+}
