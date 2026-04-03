@@ -1,0 +1,41 @@
+{
+  "timestamp": "2026-04-03T17:24:18.276298",
+  "iterations": 50,
+  "total_pnl": 0.16566962176637642,
+  "avg_pnl": 0.0033133924353275284,
+  "win_rate": 0.18,
+  "wins": 9,
+  "losses": 41,
+  "tool_stats": {
+    "rabbit": {
+      "trades": 10,
+      "wins": 1,
+      "win_rate": 0.1,
+      "avg_pnl": -0.0005237922528126725
+    },
+    "leader": {
+      "trades": 8,
+      "wins": 1,
+      "win_rate": 0.125,
+      "avg_pnl": 3.165688287077662e-05
+    },
+    "hitchhiker": {
+      "trades": 5,
+      "wins": 2,
+      "win_rate": 0.4,
+      "avg_pnl": 0.01915682300972337
+    },
+    "oracle": {
+      "trades": 11,
+      "wins": 4,
+      "win_rate": 0.36363636363636365,
+      "avg_pnl": 0.012786061020050784
+    },
+    "mole": {
+      "trades": 16,
+      "wins": 1,
+      "win_rate": 0.0625,
+      "avg_pnl": -0.004111031064852411
+    }
+  }
+}

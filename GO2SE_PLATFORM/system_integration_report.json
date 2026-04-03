@@ -1,0 +1,82 @@
+{
+  "timestamp": "2026-04-03T17:23:19.910336",
+  "total": 12,
+  "passed": 12,
+  "failed": 0,
+  "warnings": 0,
+  "pass_rate": 100.0,
+  "results": [
+    {
+      "name": "Backend Health",
+      "status": "PASS",
+      "latency_ms": 32.02557563781738,
+      "details": "Version: None, Signals: None"
+    },
+    {
+      "name": "Port Configuration",
+      "status": "PASS",
+      "latency_ms": 0,
+      "details": "Active: 8004 (GO2SE Backend)"
+    },
+    {
+      "name": "API /api/stats",
+      "status": "PASS",
+      "latency_ms": 7.652044296264648,
+      "details": "Status: 200"
+    },
+    {
+      "name": "API /api/backtest/params",
+      "status": "PASS",
+      "latency_ms": 7.315874099731445,
+      "details": "Status: 404"
+    },
+    {
+      "name": "API /api/backtest/sources",
+      "status": "PASS",
+      "latency_ms": 6.400585174560547,
+      "details": "Status: 404"
+    },
+    {
+      "name": "API /api/paper/user_types",
+      "status": "PASS",
+      "latency_ms": 12.416601181030273,
+      "details": "Status: 200"
+    },
+    {
+      "name": "API /api/expert/leverage_levels",
+      "status": "PASS",
+      "latency_ms": 11.74163818359375,
+      "details": "Status: 200"
+    },
+    {
+      "name": "API /api/factor/status",
+      "status": "PASS",
+      "latency_ms": 9.063720703125,
+      "details": "Status: 200"
+    },
+    {
+      "name": "MiroFish Simulation",
+      "status": "PASS",
+      "latency_ms": 0.003337860107421875,
+      "details": "Consensus: BUY, Confidence: 0.09"
+    },
+    {
+      "name": "Signal Fusion Simulation",
+      "status": "PASS",
+      "latency_ms": 0.008106231689453125,
+      "details": "Fused Score: 0.651"
+    },
+    {
+      "name": "Backtest Simulation",
+      "status": "PASS",
+      "latency_ms": 0.0019073486328125,
+      "details": "7-day return: 12.0%"
+    },
+    {
+      "name": "Paper Trading Simulation",
+      "status": "PASS",
+      "latency_ms": 0.0011920928955078125,
+      "details": "Account: test_123, Position: $1000"
+    }
+  ]
+}
