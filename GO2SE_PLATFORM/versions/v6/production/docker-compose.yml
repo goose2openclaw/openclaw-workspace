@@ -1,0 +1,231 @@
+version: '3.8'
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# 🪿 GO2SE 生产环境部署配置
+# 高频量化交易系统 - 支持7×24小时运行
+# ═══════════════════════════════════════════════════════════════════════════════
+
+services:
+  # ─────────────────────────────────────────────────────────────────────────────
+  # PostgreSQL 数据库 (主数据库)
+  # ─────────────────────────────────────────────────────────────────────────────
+  postgres:
+    image: postgres:15-alpine
+    container_name: go2se_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-go2se}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change_me_in_production}
+      POSTGRES_DB: ${POSTGRES_DB:-go2se_trading}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-go2se}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - go2se_network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Redis (缓存 + 实时数据)
+  # ─────────────────────────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: go2se_redis
+    restart: unless-stopped
+    command: >
+      redis-server
+      --appendonly yes
+      --maxmemory 512mb
+      --maxmemory-policy allkeys-lru
+      --save 900 1
+      --save 300 10
+      --save 60 10000
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - go2se_network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "3"
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Grafana + Prometheus (监控)
+  # ─────────────────────────────────────────────────────────────────────────────
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: go2se_prometheus
+    restart: unless-stopped
+    volumes:
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    networks:
+      - go2se_network
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: go2se_grafana
+    restart: unless-stopped
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-admin123}
+      GF_INSTALL_PLUGINS: grafana-clock-panel
+    volumes:
+      - grafana_data:/var/lib/grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - go2se_network
+    depends_on:
+      - prometheus
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # GO2SE 交易引擎 (核心服务)
+  # ─────────────────────────────────────────────────────────────────────────────
+  trading_engine:
+    build:
+      context: .
+      dockerfile: Dockerfile.trading
+    container_name: go2se_trading_engine
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      # 数据库
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-go2se}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-go2se_trading}
+      REDIS_URL: redis://redis:6379/0
+      
+      # 交易配置
+      TRADING_MODE: ${TRADING_MODE:-dry_run}
+      MAX_POSITION: ${MAX_POSITION:-0.6}
+      STOP_LOSS: ${STOP_LOSS:-0.10}
+      TAKE_PROFIT: ${TAKE_PROFIT:-0.30}
+      
+      # API配置
+      BINANCE_API_KEY: ${BINANCE_API_KEY}
+      BINANCE_SECRET_KEY: ${BINANCE_SECRET_KEY}
+      
+      # 日志
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      PYTHONUNBUFFERED: "1"
+      
+    volumes:
+      - ./strategies:/app/strategies
+      - ./logs:/app/logs
+      - ./data:/app/data
+    ports:
+      - "8000:8000"
+      - "8001:8001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - go2se_network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "10"
+    # 资源限制
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+        reservations:
+          cpus: '1'
+          memory: 2G"
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # 定时任务调度器
+  # ─────────────────────────────────────────────────────────────────────────────
+  scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile.scheduler
+    container_name: go2se_scheduler
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-go2se}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-go2se_trading}
+      REDIS_URL: redis://redis:6379/0
+    volumes:
+      - ./scripts:/app/scripts
+      - ./logs:/app/logs
+    networks:
+      - go2se_network
+    depends_on:
+      - postgres
+      - redis
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Nginx (反向代理 + WebSocket)
+  # ─────────────────────────────────────────────────────────────────────────────
+  nginx:
+    image: nginx:alpine
+    container_name: go2se_nginx
+    restart: unless-stopped
+    volumes:
+      - ./config/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./config/ssl:/etc/nginx/ssl:ro
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    networks:
+      - go2se_network
+    depends_on:
+      - trading_engine
+      - grafana
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# 网络配置
+# ═══════════════════════════════════════════════════════════════════════════════
+networks:
+  go2se_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# 存储卷
+# ═══════════════════════════════════════════════════════════════════════════════
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local

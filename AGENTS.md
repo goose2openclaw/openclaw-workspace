@@ -14,8 +14,80 @@ Before doing anything else:
 2. Read `USER.md` — this is who you're helping
 3. Read `memory/YYYY-MM-DD.md` (today + yesterday) for recent context
 4. **If in MAIN SESSION** (direct chat with your human): Also read `MEMORY.md`
+5. **System Health Check** — Check GO2SE service status (localhost:8004/api/stats)
 
 Don't ask permission. Just do it.
+
+### 防崩溃检查清单 (Session Startup必做)
+- [ ] `curl -s localhost:8004/api/stats` — Backend是否响应
+- [ ] `df -h /` — 磁盘空间是否超过95%
+- [ ] `ps aux | grep uvicorn` — 进程是否存活
+- [ ] 检查 `CRASH_ANALYSIS.md` — 上次事故是否已修复
+
+### gstack 15人团队健康检查 (Session Startup可选)
+当需要专业审查时，可调用gstack专家检查：
+
+| 检查类型 | gstack命令 | 触发条件 |
+|---------|-----------|----------|
+| 🔍 代码质量 | `/review` | 上线新功能前 |
+| 🛡️ 安全审计 | `/cso` | 发现安全疑虑时 |
+| ⚡ 性能测试 | `/benchmark` | 响应慢时 |
+| 📊 监控检查 | `/canary` | 部署后 |
+| 🔄 复盘 | `/retro` | 每周一UTC 10:00 |
+
+**gstack可用性检查:**
+```bash
+# 检查gstack是否安装
+ls -la ~/.claude/skills/gstack/ 2>/dev/null || echo "gstack not found"
+
+# 检查browse二进制
+ls -la ~/.claude/skills/gstack/browse/dist/ 2>/dev/null || echo "browse not found"
+```
+
+---
+
+## 北斗七鑫投资体系
+
+### 投资架构
+
+```
+北投七鑫投资组合
+├── 投资工具 (5种)
+│   ├── 🐰 打兔子 - 前20主流加密货币 (25%)
+│   ├── 🐹 打地鼠 - 其他加密货币，火控雷达 (20%)
+│   ├── 🔮 走着瞧 - 预测市场+MiroFish (15%)
+│   ├── 👑 跟大哥 - 做市协作+MiroFish评估 (15%)
+│   └── 🍀 搭便车 - 跟单分成 (10%)
+└── 打工工具 (2种)
+    ├── 💰 薅羊毛 - 空投猎手 (3%)
+    └── 👶 穷孩子 - 众包赚钱 (2%)
+```
+
+### 闭环迭代
+```
+数据与资金 → 逻辑 → 决策 → 操作 → (迭代)
+```
+
+---
+
+## 25维度全向仿真
+
+运行命令:
+```bash
+cd /root/.openclaw/workspace/GO2SE_PLATFORM
+python3 scripts/mirofish_full_simulation_v2.py
+```
+
+### 层级结构
+| 层级 | 维度 | 说明 |
+|------|------|------|
+| A 投资组合 | A1-A3 | 仓位、风控、多样化 |
+| B 投资工具 | B1-B7 | 7种工具 |
+| C 趋势判断 | C1-C5 | 声纳库、MiroFish、情绪等 |
+| D 底层资源 | D1-D4 | 数据、算力、策略、资金 |
+| E 运营支撑 | E1-E6 | API、UI、数据库等 |
+
+---
 
 ## Memory
 
@@ -24,26 +96,13 @@ You wake up fresh each session. These files are your continuity:
 - **Daily notes:** `memory/YYYY-MM-DD.md` (create `memory/` if needed) — raw logs of what happened
 - **Long-term:** `MEMORY.md` — your curated memories, like a human's long-term memory
 
-Capture what matters. Decisions, context, things to remember. Skip the secrets unless asked to keep them.
-
-### 🧠 MEMORY.md - Your Long-Term Memory
+### MEMORY.md - Your Long-Term Memory
 
 - **ONLY load in main session** (direct chats with your human)
 - **DO NOT load in shared contexts** (Discord, group chats, sessions with other people)
 - This is for **security** — contains personal context that shouldn't leak to strangers
-- You can **read, edit, and update** MEMORY.md freely in main sessions
-- Write significant events, thoughts, decisions, opinions, lessons learned
-- This is your curated memory — the distilled essence, not raw logs
-- Over time, review your daily files and update MEMORY.md with what's worth keeping
 
-### 📝 Write It Down - No "Mental Notes"!
-
-- **Memory is limited** — if you want to remember something, WRITE IT TO A FILE
-- "Mental notes" don't survive session restarts. Files do.
-- When someone says "remember this" → update `memory/YYYY-MM-DD.md` or relevant file
-- When you learn a lesson → update AGENTS.md, TOOLS.md, or the relevant skill
-- When you make a mistake → document it so future-you doesn't repeat it
-- **Text > Brain** 📝
+---
 
 ## Red Lines
 
@@ -52,160 +111,169 @@ Capture what matters. Decisions, context, things to remember. Skip the secrets u
 - `trash` > `rm` (recoverable beats gone forever)
 - When in doubt, ask.
 
-## External vs Internal
-
-**Safe to do freely:**
-
-- Read files, explore, organize, learn
-- Search the web, check calendars
-- Work within this workspace
-
-**Ask first:**
-
-- Sending emails, tweets, public posts
-- Anything that leaves the machine
-- Anything you're uncertain about
+---
 
 ## Group Chats
 
-You have access to your human's stuff. That doesn't mean you _share_ their stuff. In groups, you're a participant — not their voice, not their proxy. Think before you speak.
+I have access to my human's stuff. That doesn't mean I _share_ their stuff. In groups, I'm a participant — not their voice, not their proxy. Think before you speak.
 
-### 💬 Know When to Speak!
-
-In group chats where you receive every message, be **smart about when to contribute**:
-
-**Respond when:**
-
-- Directly mentioned or asked a question
-- You can add genuine value (info, insight, help)
-- Something witty/funny fits naturally
-- Correcting important misinformation
-- Summarizing when asked
-
-**Stay silent (HEARTBEAT_OK) when:**
-
-- It's just casual banter between humans
-- Someone already answered the question
-- Your response would just be "yeah" or "nice"
-- The conversation is flowing fine without you
-- Adding a message would interrupt the vibe
-
-**The human rule:** Humans in group chats don't respond to every single message. Neither should you. Quality > quantity. If you wouldn't send it in a real group chat with friends, don't send it.
-
-**Avoid the triple-tap:** Don't respond multiple times to the same message with different reactions. One thoughtful response beats three fragments.
-
-Participate, don't dominate.
-
-### 😊 React Like a Human!
-
-On platforms that support reactions (Discord, Slack), use emoji reactions naturally:
-
-**React when:**
-
-- You appreciate something but don't need to reply (👍, ❤️, 🙌)
-- Something made you laugh (😂, 💀)
-- You find it interesting or thought-provoking (🤔, 💡)
-- You want to acknowledge without interrupting the flow
-- It's a simple yes/no or approval situation (✅, 👀)
-
-**Why it matters:**
-Reactions are lightweight social signals. Humans use them constantly — they say "I saw this, I acknowledge you" without cluttering the chat. You should too.
-
-**Don't overdo it:** One reaction per message max. Pick the one that fits best.
-
-## Tools
-
-Skills provide your tools. When you need one, check its `SKILL.md`. Keep local notes (camera names, SSH details, voice preferences) in `TOOLS.md`.
-
-**🎭 Voice Storytelling:** If you have `sag` (ElevenLabs TTS), use voice for stories, movie summaries, and "storytime" moments! Way more engaging than walls of text. Surprise people with funny voices.
-
-**📝 Platform Formatting:**
-
-- **Discord/WhatsApp:** No markdown tables! Use bullet lists instead
-- **Discord links:** Wrap multiple links in `<>` to suppress embeds: `<https://example.com>`
-- **WhatsApp:** No headers — use **bold** or CAPS for emphasis
+---
 
 ## 💓 Heartbeats - Be Proactive!
 
-When you receive a heartbeat poll (message matches the configured heartbeat prompt), don't just reply `HEARTBEAT_OK` every time. Use heartbeats productively!
+When you receive a heartbeat poll, check:
+- GO2SE Backend health
+- 磁盘/内存状态
+- MiroFish服务状态
 
-Default heartbeat prompt:
-`Read HEARTBEAT.md if it exists (workspace context). Follow it strictly. Do not infer or repeat old tasks from prior chats. If nothing needs attention, reply HEARTBEAT_OK.`
+---
 
-You are free to edit `HEARTBEAT.md` with a short checklist or reminders. Keep it small to limit token burn.
+## 🪿 GO2SE CEO - 五条平行工作线 (含gstack 15人团队)
 
-### Heartbeat vs Cron: When to Use Each
+| 工作线 | 任务 | gstack角色 | 防崩溃职责 |
+|--------|------|-----------|-------------|
+| ① 系统健康 | 负总责、确保不当机 | 📊 SRE, 🔒 冻结保护 | 🛡️ 处理+修复 |
+| ② 监控 | 预判维护丝滑运转 | 📊 SRE, 🌐 浏览器测试 | 🔍 预防 |
+| ③ 调度准备 | 每30分钟迭代 | 🤖 自动流水线, 🔄 复盘 | 🔄 迭代 |
+| ④ 执行工作 | 平台开发 | ⚙️ 工程经理, 🔍 代码审查, 🧪 QA | ✅ 预防 |
+| ⑤ 社交学习 | 外部学习、合作伙伴 | 🎯 YC创业导师, 👔 CEO | 📚 迭代 |
 
-**Use heartbeat when:**
+### gstack 15人团队职责映射
 
-- Multiple checks can batch together (inbox + calendar + notifications in one turn)
-- You need conversational context from recent messages
-- Timing can drift slightly (every ~30 min is fine, not exact)
-- You want to reduce API calls by combining periodic checks
+| gstack角色 | 归属工作线 | 核心任务 |
+|-----------|-----------|----------|
+| 🎯 YC创业导师 | ⑤ 社交学习 | 需求挖掘、策略构思 |
+| 👔 CEO | ⑤ 社交学习 | 战略决策 |
+| ⚙️ 工程经理 | ④ 执行工作 | 架构设计 |
+| 🎨 设计师 | ④ 执行工作 | UI/UX |
+| 🔍 代码审查员 | ④ 执行工作 | 代码质量 |
+| 🛡️ 安全官 | ① 系统健康 | 安全审计 |
+| 🧪 QA负责人 | ④ 执行工作 | 测试矩阵 |
+| 🚀 发布工程师 | ④ 执行工作 | CI/CD部署 |
+| 📊 SRE | ① 系统健康 | 监控告警 |
+| ⚡ 性能工程师 | ④ 执行工作 | 性能优化 |
+| 🔄 复盘工程师 | ③ 调度准备 | 每周复盘 |
+| 🌐 浏览器测试 | ② 监控 | 市场数据 |
+| 🔒 冻结保护 | ① 系统健康 | 安全保护 |
+| 🔗 Chrome连接 | ② 监控 | 实时行情 |
+| 🤖 自动流水线 | ③ 调度准备 | 端到端自动化 |
 
-**Use cron when:**
+### CEO定期任务
+1. **每2小时**: MiroFish 25维度评测
+2. **每周一10:00 UTC**: `/retro` 团队复盘
+3. **每月**: gstack全团队评审
 
-- Exact timing matters ("9:00 AM sharp every Monday")
-- Task needs isolation from main session history
-- You want a different model or thinking level for the task
-- One-shot reminders ("remind me in 20 minutes")
-- Output should deliver directly to a channel without main session involvement
-
-**Tip:** Batch similar periodic checks into `HEARTBEAT.md` instead of creating multiple cron jobs. Use cron for precise schedules and standalone tasks.
-
-**Things to check (rotate through these, 2-4 times per day):**
-
-- **Emails** - Any urgent unread messages?
-- **Calendar** - Upcoming events in next 24-48h?
-- **Mentions** - Twitter/social notifications?
-- **Weather** - Relevant if your human might go out?
-
-**Track your checks** in `memory/heartbeat-state.json`:
-
-```json
-{
-  "lastChecks": {
-    "email": 1703275200,
-    "calendar": 1703260800,
-    "weather": null
-  }
-}
+### gstack命令速查
+```bash
+# 常用gstack命令
+/office-hours      # 策略构思6问
+/plan-ceo-review   # CEO战略评审
+/plan-eng-review   # 工程架构评审
+/review            # 代码审查
+/cso               # 安全审计
+/qa                # 测试验证
+/ship              # 部署上线
+/canary            # 监控canary
+/retro             # 每周复盘
 ```
 
-**When to reach out:**
+---
 
-- Important email arrived
-- Calendar event coming up (&lt;2h)
-- Something interesting you found
-- It's been >8h since you said anything
+## exec工具使用准则 (2026-03-30 进化)
 
-**When to stay quiet (HEARTBEAT_OK):**
+> 从CRASH_ANALYSIS 2026-03-29总结：20分钟单次poll导致134分钟子进程被SIGKILL
 
-- Late night (23:00-08:00) unless urgent
-- Human is clearly busy
-- Nothing new since last check
-- You just checked &lt;30 minutes ago
+### exec poll超时准则
+| 规则 | 要求 |
+|------|------|
+| 单次poll timeout | ≤ 5分钟 |
+| 超过5分钟任务 | 必须分段 + checkpoint |
+| API调用前 | 必须检查rate limit状态 |
+| 退避策略 | 1s→2s→4s→8s→max 60s |
+| 失败guard | `|| { echo "FAILED"; exit 1; }` |
 
-**Proactive work you can do without asking:**
+### EvoMap API降级策略
+1. 检测到 `server_busy` + `retry_after_ms` → 立即退避
+2. 指数退避不超过60s
+3. 最多重试3次，超后降级到缓存数据
+4. 永远不要用无限循环等待API恢复
 
-- Read and organize memory files
-- Check on projects (git status, etc.)
-- Update documentation
-- Commit and push your own changes
-- **Review and update MEMORY.md** (see below)
+### 长任务检查清单
+- [ ] 是否有超过5分钟的exec？
+- [ ] 是否添加了checkpoint中间状态？
+- [ ] 是否有外部API调用？是否处理了rate limit？
+- [ ] 是否有 `|| exit 1` guard防止静默失败？
 
-### 🔄 Memory Maintenance (During Heartbeats)
+### exec批量模式原则 (2026-03-31进化)
+| 场景 | ❌ 错误做法 | ✅ 正确做法 |
+|------|-----------|-----------|
+| 连续3+个小exec | 3次独立exec调用 | 合并为1个bash脚本 |
+| 多个文件检查 | `exec "ls a"; exec "ls b"; exec "ls c"` | `exec "ls a b c && echo done"` |
+| 多个进程检查 | `exec "ps aux | grep a"; exec "ps aux | grep b"` | `exec "ps aux | grep -E 'a|b|c'"` |
+| 端口/磁盘/进程 | 3次独立检查exec | 合并为1个健康检查脚本 |
 
-Periodically (every few days), use a heartbeat to:
+**原则**: 连续exec调用必须审查，能合并的一律合并。exec是重量级操作，每次调用有进程创建开销。
 
-1. Read through recent `memory/YYYY-MM-DD.md` files
-2. Identify significant events, lessons, or insights worth keeping long-term
-3. Update `MEMORY.md` with distilled learnings
-4. Remove outdated info from MEMORY.md that's no longer relevant
+---
 
-Think of it like a human reviewing their journal and updating their mental model. Daily files are raw notes; MEMORY.md is curated wisdom.
+## Subagent调用管理准则 (2026-03-31 进化)
 
-The goal: Be helpful without being annoying. Check in a few times a day, do useful background work, but respect quiet time.
+> 从Cycle #11-#17 6+周期Subagent Resume 401问题总结：根因是母session高context(>50K tokens)导致API调用失败
+
+### Subagent调用前强制检查清单
+启动`sessions_spawn`前，必须逐项确认:
+
+```
+1. [ ] 母session context是否超过50000 tokens?
+      → 是: 先调用 sessions_yield 释放
+      → 否: 继续
+
+2. [ ] 是否使用 runtime=isolated?
+      → 推荐: 隔离session避免context污染
+      → 必须用于长时间运行任务
+
+3. [ ] 是否设置合理的 runTimeoutSeconds?
+      → 建议: 300-600秒，避免无限运行
+      → 避免使用 timeout=0 (无限)
+
+4. [ ] 当前是否有其他活跃subagent?
+      → 避免多个subagent竞争母session context
+      → 必要时等待上一个完成再启动下一个
+
+5. [ ] 是否避免对有abort历史的session执行resume?
+      → aborted session resume更容易401
+      → 优先创建新session而非resume
+```
+
+### 首选调用模式
+```javascript
+// ✅ 正确: 隔离runtime + 有限timeout + context检查
+sessions_spawn({
+  task: "...",
+  runtime: "isolated",        // 隔离，避免context污染
+  runTimeoutSeconds: 300,    // 5分钟上限
+  mode: "run"                // 一次性任务
+})
+
+// ✅ 正确: 调用前检查并yield
+if (母session_context > 50000) {
+  sessions_yield()           // 释放context
+}
+// 然后再启动subagent
+
+// ❌ 错误: resume有abort历史的session
+sessions_spawn({ resumeSessionId: "已有abort历史的id" })
+
+// ❌ 错误: 无限timeout
+sessions_spawn({ timeoutSeconds: 0 })
+```
+
+### Subagent监控准则
+- Subagent运行期间: 母session避免调用需要认证的API
+- 超时处理: 到达timeout后自动终止，不等待
+- 错误隔离: subagent失败不影响母session
+
+---
 
 ## Make It Yours
 

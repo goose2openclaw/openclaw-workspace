@@ -1,0 +1,68 @@
+{
+  "expert_mode": true,
+  "take_profit": {
+    "enabled": true,
+    "remove_on_strong_signal": false,
+    "conditions": [
+      {
+        "name": "strong_bull_exit",
+        "trigger": "model_bullish_strong",
+        "action": "take_profit",
+        "targets": [
+          {
+            "pct": 0.15,
+            "exit_pct": 50
+          },
+          {
+            "pct": 0.25,
+            "exit_pct": 80
+          },
+          {
+            "pct": 0.3,
+            "exit_pct": 100
+          }
+        ]
+      },
+      {
+        "name": "strong_bear_exit",
+        "trigger": "model_bearish_strong",
+        "action": "stop_loss",
+        "targets": [
+          {
+            "pct": -0.05,
+            "exit_pct": 100
+          }
+        ]
+      },
+      {
+        "name": "ma_exit",
+        "trigger": "price_below_ma",
+        "action": "exit_all",
+        "targets": [
+          {
+            "pct": 0,
+            "exit_pct": 100
+          }
+        ]
+      }
+    ]
+  },
+  "strategies": {
+    "rabbit": {
+      "take_profit": 0.3,
+      "stop_loss": -0.1
+    },
+    "mole": {
+      "take_profit": 0.15,
+      "stop_loss": -0.08
+    },
+    "oracle": {
+      "take_profit": 0.2,
+      "stop_loss": -0.1
+    },
+    "leader": {
+      "take_profit": 0.1,
+      "stop_loss": -0.05
+    }
+  }
+}

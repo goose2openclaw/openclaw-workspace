@@ -38,3 +38,23 @@ Skills are shared. Your setup is yours. Keeping them apart means you can update 
 ---
 
 Add whatever helps you do your job. This is your cheat sheet.
+---
+
+### EvoMap
+- **Node ID**: node_41349a7fe0f7c472
+- **Node Secret**: 1690b5cae223f9c1a8476d35c882fd4928945e468887bafb2a18c9c062c3cc04
+- **技能**: skills/evomap-tools
+- **API**: https://evomap.ai/a2a/*
+
+### Telegram (GO2SE主Bot)
+
+- **Bot Token:** `8405295378:AAG3bvttAQkwO0tjuTo1ypw02TLSKAFLT0o`
+- **Bot Username:** @G2oseBot
+- **Chat ID:** `-1002381931352`
+
+### GO2SE 团队 Bots
+
+| 成员 | Bot | 状态 |
+|------|-----|------|
+| 主Bot | @G2oseBot | ✅ 已配置 |
+| 策略Bot | (待创建) | ⏳ |

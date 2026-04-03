@@ -1,0 +1,544 @@
+{
+  "target_win_rate": 0.67,
+  "current_win_rate": 0.525,
+  "improvement": 0.145,
+  "report_timestamp": "2026-03-30T02:40:00Z",
+  "data_sources": [
+    "beidou_simulation_report.json",
+    "mirofish_review.json",
+    "strategy_distillation_results.json",
+    "optimal_config_v4.json",
+    "comprehensive_review.json",
+    "active_strategy.json"
+  ],
+
+  "executive_summary": {
+    "current_state": "dry_run模式，25个信号，0执行，B1已禁用",
+    "target": "65-70%胜率",
+    "gap": "当前评估50-55%，需提升10-15个百分点",
+    "key_bottleneck": "C1声纳库(9.5分)趋势判断准确率严重不足，B1已禁用导致权重重新分配",
+    "top_opportunity": "B2-B7五个工具均100分，优化空间在于C1声纳库和入场时机"
+  },
+
+  "25_dimension_analysis": {
+    "A_investment_portfolio": {
+      "score": 82.0,
+      "dimensions": {
+        "A1仓位分配": {
+          "score": 60.0,
+          "status": "WARN",
+          "issue": "配置上限80%，当前60%，偏离20%",
+          "optimization": "动态调整到70-75%更优"
+        },
+        "A2风控规则": {
+          "score": 100.0,
+          "status": "PASS",
+          "current": "止损10%，止盈30%",
+          "optimization": "保持不变"
+        },
+        "A3多样化分布": {
+          "score": 86.0,
+          "status": "PASS",
+          "current": "7工具激活，总权重90%",
+          "optimization": "B1禁用后重新分配已执行"
+        }
+      }
+    },
+
+    "B_investment_tools": {
+      "score": 89.1,
+      "dimensions": {
+        "B1_打兔子": {
+          "score": 40.8,
+          "status": "DISABLED",
+          "action": "已禁用，仓位重分配到B2-B5",
+          "expected_improvement": "+5%组合胜率"
+        },
+        "B2_打地鼠": {
+          "score": 100.0,
+          "status": "EXCELLENT",
+          "weight": 0.30,
+          "theoretical_win_rate": "55-60%",
+          "optimization": [
+            "优化入场点选择",
+            "火控雷达锁定异动币种",
+            "结合C1声纳库过滤假信号"
+          ],
+          "entry_optimization": {
+            "rsi_oversold_threshold": 25,
+            "volume_confirmation": true,
+            "trend_alignment": "1H+4H共振"
+          }
+        },
+        "B3_走着瞧": {
+          "score": 100.0,
+          "status": "EXCELLENT",
+          "weight": 0.20,
+          "theoretical_win_rate": "60-65%",
+          "optimization": [
+            "结合预测市场高胜率事件",
+            "MiroFish评估>85分才入场",
+            "波动率过滤VIX>25时减仓"
+          ]
+        },
+        "B4_跟大哥": {
+          "score": 72.0,
+          "status": "GOOD",
+          "weight": 0.20,
+          "theoretical_win_rate": "55-60%",
+          "optimization": [
+            "跟单信号过滤：仅跟共识>90的信号",
+            "延迟优化：从当前3-5秒降到<1秒",
+            "MiroFish评估，综合判断操作"
+          ]
+        },
+        "B5_搭便车": {
+          "score": 100.0,
+          "status": "EXCELLENT",
+          "weight": 0.15,
+          "theoretical_win_rate": "50-55%",
+          "optimization": [
+            "延迟从当前2-3秒优化到<0.5秒",
+            "选择Top3做市商信号",
+            "设置最大跟单延迟告警"
+          ]
+        },
+        "B6_薅羊毛": {
+          "score": 100.0,
+          "status": "EXCELLENT",
+          "weight": 0.08,
+          "theoretical_win_rate": "70-80%",
+          "optimization": [
+            "扩大空投猎手覆盖范围",
+            "杜绝授权链接",
+            "做好背景调研"
+          ]
+        },
+        "B7_穷孩子": {
+          "score": 100.0,
+          "status": "EXCELLENT",
+          "weight": 0.07,
+          "theoretical_win_rate": "60-65%",
+          "optimization": [
+            "利用EvoMap工具扩大社交收益",
+            "做好隔离"
+          ]
+        }
+      }
+    },
+
+    "C_trend_judgment": {
+      "score": 77.4,
+      "dimensions": {
+        "C1_声纳库": {
+          "score": 9.5,
+          "status": "CRITICAL",
+          "issue": "趋势模型准确率约12%，严重不足",
+          "optimization": [
+            "增加趋势模型数量(当前3个)",
+            "优化模型参数",
+            "引入RSI背离+成交量确认",
+            "多周期共振过滤(1H+4H+1D)"
+          ],
+          "expected_improvement": "+8-10%胜率"
+        },
+        "C2_预言机": {
+          "score": 100.0,
+          "status": "EXCELLENT",
+          "optimization": "多数据源验证，保持"
+        },
+        "C3_MiroFish": {
+          "score": 100.0,
+          "status": "EXCELLENT",
+          "details": "540 agents, 27轮, 平均共识90",
+          "optimization": [
+            "提高共识阈值到92",
+            "增加预测频率到每15分钟"
+          ]
+        },
+        "C4_情绪分析": {
+          "score": 100.0,
+          "status": "EXCELLENT",
+          "details": "情绪指数48.77(中性)",
+          "optimization": [
+            "恐惧<30时加大仓位",
+            "贪婪>70时减仓",
+            "VIX>25时减少仓位50%"
+          ]
+        },
+        "C5_多智能体共识": {
+          "score": 100.0,
+          "status": "EXCELLENT",
+          "optimization": "多策略交叉验证，保持"
+        }
+      }
+    },
+
+    "D_底层_resources": {
+      "score": 88.2,
+      "dimensions": {
+        "D1_市场数据": {
+          "score": 100.0,
+          "status": "EXCELLENT",
+          "latency_ms": 18,
+          "optimization": "目标<10ms"
+        },
+        "D2_算力资源": {
+          "score": 54.64,
+          "status": "WARN",
+          "issue": "内存余量24%偏低",
+          "optimization": "增加并行策略扫描能力"
+        },
+        "D3_策略引擎": {
+          "score": 100.0,
+          "status": "EXCELLENT"
+        },
+        "D4_资金管理": {
+          "score": 100.0,
+          "status": "EXCELLENT",
+          "kelly_formula": {
+            "enabled": true,
+            "formula": "f = (bp - q) / b",
+            "current_allocation": "60%",
+            "optimization": "动态凯利，根据信心调整"
+          }
+        }
+      }
+    },
+
+    "E_运营_支撑": {
+      "score": 94.7,
+      "dimensions": {
+        "E1_API稳定性": {
+          "score": 70.0,
+          "status": "DEGRADED",
+          "issue": "Redis连接问题",
+          "latency_ms": 18
+        },
+        "E2_UI体验": {
+          "score": 90.0,
+          "status": "GOOD",
+          "latency_ms": 23
+        },
+        "E3_数据库": {
+          "score": 100.0,
+          "status": "EXCELLENT"
+        },
+        "E4_运维脚本": {
+          "score": 100.0,
+          "status": "EXCELLENT",
+          "scripts": "7/7"
+        },
+        "E5_系统稳定性": {
+          "score": 100.0,
+          "status": "EXCELLENT",
+          "processes": "uvicorn=2, vite=1, node=1"
+        },
+        "E6_延迟": {
+          "score": 106.34,
+          "status": "EXCELLENT",
+          "latency_ms": 18.3,
+          "p95_ms": 20.7,
+          "target": "<50ms"
+        }
+      }
+    }
+  },
+
+  "win_rate_improvement_strategies": {
+    "tier1_critical": [
+      {
+        "strategy_id": "C1_声纳库_趋势优化",
+        "priority": "P0",
+        "current_score": 9.5,
+        "target_score": 50,
+        "actions": [
+          "引入多周期共振：1H+4H+1D方向一致时入场",
+          "增加RSI背离检测：RSI超卖+价格新低=买入信号",
+          "成交量确认：放量突破才是真突破",
+          "波动率过滤：VIX>25时减少仓位50%",
+          "跨市场验证：BTC与ETH走势背离时不入场"
+        ],
+        "expected_improvement": "+8-10%",
+        "effort": "high",
+        "timeline": "1-2周"
+      },
+      {
+        "strategy_id": "B2_打地鼠_入场优化",
+        "priority": "P0",
+        "current_score": 100.0,
+        "target": "维持100分+提升实际胜率",
+        "actions": [
+          "RSI<25时入场(当前20过严)",
+          "5%止损+15%止盈(当前3%+10%过紧)",
+          "趋势确认：EMA20>EMA50",
+          "成交量放大2x确认"
+        ],
+        "expected_improvement": "+3-5%",
+        "effort": "medium",
+        "timeline": "3-5天"
+      },
+      {
+        "strategy_id": "B4_跟大哥_信号过滤",
+        "priority": "P1",
+        "current_score": 72.0,
+        "target_score": 85,
+        "actions": [
+          "共识阈值从90提升到92",
+          "信号延迟>2秒过滤",
+          "MiroFish评估>85分才跟",
+          "单一信号仓位上限5%"
+        ],
+        "expected_improvement": "+2-3%",
+        "effort": "low",
+        "timeline": "2-3天"
+      }
+    ],
+
+    "tier2_important": [
+      {
+        "strategy_id": "仓位动态调整",
+        "priority": "P1",
+        "actions": [
+          "凯利公式动态计算：f=(bp-q)/b",
+          "高信心时仓位提高到25%",
+          "低信心时仓位降到10%",
+          "日亏损熔断15%触发后自动减仓50%"
+        ],
+        "expected_improvement": "+2-3%"
+      },
+      {
+        "strategy_id": "B5_搭便车_延迟优化",
+        "priority": "P1",
+        "current_latency_ms": 3000,
+        "target_latency_ms": 500,
+        "actions": [
+          "选择Top3做市商",
+          "建立专用低延迟通道",
+          "设置延迟告警阈值"
+        ],
+        "expected_improvement": "+1-2%"
+      },
+      {
+        "strategy_id": "分批止盈策略",
+        "priority": "P2",
+        "actions": [
+          "50%仓位在1:1.5盈亏比时止盈",
+          "50%仓位在1:3盈亏比时止盈",
+          "保留50%仓位追踪趋势"
+        ],
+        "expected_improvement": "+1-2%"
+      }
+    ],
+
+    "tier3_nice_to_have": [
+      {
+        "strategy_id": "市场情绪择时",
+        "priority": "P2",
+        "actions": [
+          "恐惧指数<30：增加仓位20%",
+          "贪婪指数>70：减少仓位30%",
+          "VIX>25：减少所有仓位50%"
+        ],
+        "expected_improvement": "+1%"
+      },
+      {
+        "strategy_id": "动态止损ATR",
+        "priority": "P2",
+        "actions": [
+          "ATR 2x动态止损",
+          "趋势行情使用追踪止损",
+          "盘整市场使用固定止损"
+        ],
+        "expected_improvement": "+0.5-1%"
+      }
+    ]
+  },
+
+  "risk_management": {
+    "stop_loss": {
+      "type": "dynamic",
+      "atr_multiplier": 2,
+      "fixed_fallback": "3-5%",
+      "per_tool": {
+        "B2_打地鼠": "5%",
+        "B3_走着瞧": "5%",
+        "B4_跟大哥": "3%",
+        "B5_搭便车": "5%"
+      }
+    },
+    "take_profit": {
+      "strategy": "分批止盈",
+      "tier1": {
+        "percentage": 0.50,
+        "ratio": "1:1.5"
+      },
+      "tier2": {
+        "percentage": 0.50,
+        "ratio": "1:3"
+      }
+    },
+    "position_sizing": {
+      "kelly_formula": {
+        "enabled": true,
+        "formula": "f = (bp - q) / b",
+        "max_fraction": 0.25,
+        "description": "b=赔率, p=胜率, q=1-p"
+      },
+      "per_trade_risk": "2%",
+      "max_total_risk": "10%"
+    },
+    "circuit_breakers": {
+      "daily_loss熔断": 0.15,
+      "max_drawdown_熔断": 0.20,
+      "consecutive_losses_熔断": 5,
+      "action_on_trigger": "暂停交易30分钟+人工审核"
+    }
+  },
+
+  "implementation_priority": [
+    {
+      "priority": 1,
+      "action": "优化C1声纳库趋势模型",
+      "impact": "+8-10%胜率",
+      "effort": "high",
+      "timeline": "1-2周",
+      "details": "引入多周期共振+RSI背离+成交量确认"
+    },
+    {
+      "priority": 2,
+      "action": "优化B2打地鼠入场点",
+      "impact": "+3-5%胜率",
+      "effort": "medium",
+      "timeline": "3-5天",
+      "details": "RSI阈值调整+趋势确认+量能确认"
+    },
+    {
+      "priority": 3,
+      "action": "B4跟大哥信号过滤",
+      "impact": "+2-3%胜率",
+      "effort": "low",
+      "timeline": "2-3天",
+      "details": "共识阈值92+延迟<2秒+MiroFish>85"
+    },
+    {
+      "priority": 4,
+      "action": "仓位动态凯利调整",
+      "impact": "+2-3%胜率",
+      "effort": "medium",
+      "timeline": "1周",
+      "details": "根据信心动态调整仓位"
+    },
+    {
+      "priority": 5,
+      "action": "B5搭便车延迟优化",
+      "impact": "+1-2%胜率",
+      "effort": "medium",
+      "timeline": "1周",
+      "details": "从3秒降到0.5秒"
+    },
+    {
+      "priority": 6,
+      "action": "分批止盈策略",
+      "impact": "+1-2%胜率",
+      "effort": "low",
+      "timeline": "2-3天",
+      "details": "50%@1:1.5 + 50%@1:3"
+    },
+    {
+      "priority": 7,
+      "action": "市场情绪择时",
+      "impact": "+1%胜率",
+      "effort": "low",
+      "timeline": "1-2天",
+      "details": "恐惧贪婪+VIX联动"
+    },
+    {
+      "priority": 8,
+      "action": "动态止损ATR",
+      "impact": "+0.5-1%胜率",
+      "effort": "low",
+      "timeline": "1-2天",
+      "details": "ATR 2x动态跟踪"
+    }
+  ],
+
+  "expected_results": {
+    "timeline_2weeks": {
+      "win_rate": "58-62%",
+      "actions_completed": ["C1优化", "B2优化", "B4过滤", "仓位动态"],
+      "confidence": 0.75
+    },
+    "timeline_1month": {
+      "win_rate": "63-67%",
+      "actions_completed": ["全部优化"],
+      "confidence": 0.80
+    },
+    "timeline_2months": {
+      "win_rate": "67-72%",
+      "actions_completed": ["完整迭代", "因子更新"],
+      "confidence": 0.75
+    }
+  },
+
+  "key_metrics_to_track": [
+    "胜率 (周度)",
+    "平均盈亏比",
+    "最大回撤",
+    "日收益率标准差",
+    "信号执行延迟",
+    "C1声纳库准确率",
+    "各工具贡献度"
+  ],
+
+  "monitoring_alerts": [
+    {
+      "metric": "日亏损",
+      "threshold": 0.10,
+      "action": "降低仓位50%"
+    },
+    {
+      "metric": "最大回撤",
+      "threshold": 0.20,
+      "action": "暂停交易+人工审核"
+    },
+    {
+      "metric": "连续亏损",
+      "threshold": 5,
+      "action": "暂停交易30分钟"
+    },
+    {
+      "metric": "C1准确率",
+      "threshold": "<0.30",
+      "action": "触发C1优化流程"
+    },
+    {
+      "metric": "执行延迟",
+      "threshold": ">5秒",
+      "action": "降级到观察模式"
+    }
+  ],
+
+  "success_criteria": {
+    "target_win_rate": 0.67,
+    "min_acceptable_win_rate": 0.65,
+    "max_drawdown": 0.15,
+    "min_sharpe_ratio": 1.5,
+    "min_calmar_ratio": 2.0
+  },
+
+  "contingency_if_not_achieving_target": [
+    {
+      "condition": "胜率<60%持续2周",
+      "action": "扩大模拟交易周期，暂停实盘"
+    },
+    {
+      "condition": "胜率<55%",
+      "action": "回滚到上一个稳定版本"
+    },
+    {
+      "condition": "回撤>20%",
+      "action": "立即停止所有交易，人工复盘"
+    }
+  ]
+}

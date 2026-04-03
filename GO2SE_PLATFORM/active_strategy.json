@@ -1,0 +1,60 @@
+{
+  "version": "v7.1.0",
+  "timestamp": "2026-04-03T13:45:00Z",
+  "tools": {
+    "rabbit": {
+      "status": "disabled",
+      "weight": 0,
+      "reason": "auto-optimizer已禁用 (回测收益为负)",
+      "stop_loss": 0.05,
+      "take_profit": 0.08,
+      "min_confidence": 0.7,
+      "implementation": "strategies/rabbit/mainstream_strategy.py",
+      "expert_score": 65
+    },
+    "mole": {
+      "status": "active",
+      "weight": 20,
+      "stop_loss": 0.08,
+      "take_profit": 0.15,
+      "min_confidence": 0.6
+    },
+    "oracle": {
+      "status": "active",
+      "weight": 15,
+      "stop_loss": 0.05,
+      "take_profit": 0.10,
+      "min_confidence": 0.65
+    },
+    "leader": {
+      "status": "disabled",
+      "weight": 0,
+      "reason": "月损-8.1%，V8迭代已禁用"
+    },
+    "hitchhiker": {
+      "status": "active",
+      "weight": 10,
+      "stop_loss": 0.05,
+      "take_profit": 0.08
+    },
+    "wool": {
+      "status": "active",
+      "weight": 3,
+      "stop_loss": 0.02,
+      "take_profit": 0.20
+    },
+    "poor_kid": {
+      "status": "active",
+      "weight": 2,
+      "stop_loss": 0.01,
+      "take_profit": 0.30
+    }
+  },
+  "portfolio": {
+    "总仓位上限": 0.8,
+    "单笔风险上限": 0.05,
+    "日亏损熔断": 0.15,
+    "风控启动阈值": 0.10,
+    "当前仓位": 0.6
+  }
+}

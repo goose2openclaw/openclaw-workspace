@@ -1,0 +1,337 @@
+{
+  "timestamp": "2026-04-03T13:46:25.536919",
+  "total_tests": 25,
+  "passed": 25,
+  "failed": 0,
+  "warnings": 0,
+  "overall_score": 93.18678353973226,
+  "portfolio_config": {
+    "总仓位上限": 0.8,
+    "单笔风险上限": 0.05,
+    "日亏损熔断": 0.15,
+    "风控启动阈值": 0.1
+  },
+  "tools_config": {
+    "打兔子": {
+      "仓位占比": 0.25,
+      "止损": 0.05,
+      "止盈": 0.08
+    },
+    "打地鼠": {
+      "仓位占比": 0.2,
+      "止损": 0.08,
+      "止盈": 0.15
+    },
+    "走着瞧": {
+      "仓位占比": 0.15,
+      "止损": 0.05,
+      "止盈": 0.1
+    },
+    "跟大哥": {
+      "仓位占比": 0.15,
+      "止损": 0.03,
+      "止盈": 0.06
+    },
+    "搭便车": {
+      "仓位占比": 0.1,
+      "止损": 0.05,
+      "止盈": 0.08
+    },
+    "薅羊毛": {
+      "仓位占比": 0.03,
+      "止损": 0.02,
+      "止盈": 0.2
+    },
+    "穷孩子": {
+      "仓位占比": 0.02,
+      "止损": 0.01,
+      "止盈": 0.3
+    }
+  },
+  "results": [
+    {
+      "dimension": "A1-投资组合仓位分配",
+      "category": "投资组合",
+      "layer": "A",
+      "status": "PASS",
+      "score": 85,
+      "latency_ms": 0,
+      "details": "dry_run模式: 配置上限=80%, 当前=60%, 偏离=20.00% ✅",
+      "recommendations": [],
+      "timestamp": "2026-04-03T13:46:24.828541"
+    },
+    {
+      "dimension": "A2-投资组风控规则",
+      "category": "投资组合",
+      "layer": "A",
+      "status": "PASS",
+      "score": 100.0,
+      "latency_ms": 0,
+      "details": "止损=10%, 止盈=30%",
+      "recommendations": [],
+      "timestamp": "2026-04-03T13:46:24.834283"
+    },
+    {
+      "dimension": "A3-投资组合多样化",
+      "category": "投资组合",
+      "layer": "A",
+      "status": "PASS",
+      "score": 86.0,
+      "latency_ms": 0,
+      "details": "工具数=7/7, 总权重=90%, 评估=均衡",
+      "recommendations": [],
+      "timestamp": "2026-04-03T13:46:24.834343"
+    },
+    {
+      "dimension": "B1-打兔子工具(主流币)",
+      "category": "投资工具",
+      "layer": "B",
+      "status": "PASS",
+      "score": 80.0,
+      "latency_ms": 0,
+      "details": "✅ 策略已禁用 (权重=0), auto-optimizer已自我修正\n   参考: 回测收益=-1.40%, 胜率=30.9%, 趋势=auto-optimizer已禁用 (回测收益为负)",
+      "recommendations": [
+        "持续监控，待趋势转好后重新参数优化"
+      ],
+      "timestamp": "2026-04-03T13:46:24.844463"
+    },
+    {
+      "dimension": "B2-打地鼠工具(异动)",
+      "category": "投资工具",
+      "layer": "B",
+      "status": "PASS",
+      "score": 100.0,
+      "latency_ms": 0,
+      "details": "仓位=20%, 信号=25个, 扫描覆盖=正常",
+      "recommendations": [],
+      "timestamp": "2026-04-03T13:46:24.850468"
+    },
+    {
+      "dimension": "B3-走着瞧工具(预测)",
+      "category": "投资工具",
+      "layer": "B",
+      "status": "PASS",
+      "score": 100,
+      "latency_ms": 0,
+      "details": "预测市场=4, 活跃=6/6",
+      "recommendations": [],
+      "timestamp": "2026-04-03T13:46:24.856443"
+    },
+    {
+      "dimension": "B4-跟大哥工具(做市)",
+      "category": "投资工具",
+      "layer": "B",
+      "status": "PASS",
+      "score": 50.0,
+      "latency_ms": 0,
+      "details": "✅ 策略已禁用 (weight=0), V8迭代已处理",
+      "recommendations": [
+        "跟大哥月损-8.1%，修复后再启用"
+      ],
+      "timestamp": "2026-04-03T13:46:24.857191"
+    },
+    {
+      "dimension": "B5-搭便车工具(跟单)",
+      "category": "投资工具",
+      "layer": "B",
+      "status": "PASS",
+      "score": 100.0,
+      "latency_ms": 0,
+      "details": "仓位=10%, 止损=10%, 跟单风控=已配置",
+      "recommendations": [],
+      "timestamp": "2026-04-03T13:46:24.863620"
+    },
+    {
+      "dimension": "B6-薅羊毛工具(空投)",
+      "category": "打工工具",
+      "layer": "B",
+      "status": "PASS",
+      "score": 100.0,
+      "latency_ms": 0,
+      "details": "仓位=3%, 止损=2%, 空投风控=已配置",
+      "recommendations": [
+        "空投注意防范授权陷阱",
+        "做好背景调研再参与"
+      ],
+      "timestamp": "2026-04-03T13:46:24.863664"
+    },
+    {
+      "dimension": "B7-穷孩子工具(众包)",
+      "category": "打工工具",
+      "layer": "B",
+      "status": "PASS",
+      "score": 100.0,
+      "latency_ms": 0,
+      "details": "仓位=2%, 隔离=正常, 众包能力=可用",
+      "recommendations": [
+        "利用EvoMap工具扩大社交收益"
+      ],
+      "timestamp": "2026-04-03T13:46:24.863676"
+    },
+    {
+      "dimension": "C1-声纳库趋势模型",
+      "category": "趋势判断",
+      "layer": "C",
+      "status": "PASS",
+      "score": 84.41748148148147,
+      "latency_ms": 0,
+      "details": "趋势模型=81个, 均准确率=65.8%, [momentum=66%, breakout=66%, reversal=65%]",
+      "recommendations": [],
+      "timestamp": "2026-04-03T13:46:24.865896"
+    },
+    {
+      "dimension": "B3-走着瞧工具(预测)",
+      "category": "投资工具",
+      "layer": "B",
+      "status": "PASS",
+      "score": 100,
+      "latency_ms": 0,
+      "details": "预测市场=4, 活跃=6/6",
+      "recommendations": [],
+      "timestamp": "2026-04-03T13:46:24.872510"
+    },
+    {
+      "dimension": "C3-MiroFish预测市场",
+      "category": "趋势判断",
+      "layer": "C",
+      "status": "PASS",
+      "score": 100.0,
+      "latency_ms": 0,
+      "details": "市场=6/6, Agent=540, 轮次=27",
+      "recommendations": [],
+      "timestamp": "2026-04-03T13:46:24.879699"
+    },
+    {
+      "dimension": "C4-市场情绪分析",
+      "category": "趋势判断",
+      "layer": "C",
+      "status": "PASS",
+      "score": 100,
+      "latency_ms": 0,
+      "details": "情绪市场=1, 情绪监控=正常",
+      "recommendations": [],
+      "timestamp": "2026-04-03T13:46:24.883046"
+    },
+    {
+      "dimension": "C5-多智能体共识",
+      "category": "趋势判断",
+      "layer": "C",
+      "status": "PASS",
+      "score": 100.0,
+      "latency_ms": 0,
+      "details": "市场=6, Agent=540, 均=90, 轮次=27",
+      "recommendations": [],
+      "timestamp": "2026-04-03T13:46:24.886923"
+    },
+    {
+      "dimension": "D1-市场数据源",
+      "category": "底层资源",
+      "layer": "D",
+      "status": "PASS",
+      "score": 100,
+      "latency_ms": 0,
+      "details": "数据引擎=ok, 数据源=正常",
+      "recommendations": [],
+      "timestamp": "2026-04-03T13:46:24.891378"
+    },
+    {
+      "dimension": "D2-算力资源",
+      "category": "底层资源",
+      "layer": "D",
+      "status": "PASS",
+      "score": 70.22508263675742,
+      "latency_ms": 0,
+      "details": "内存余量=21%(总11382344MB), CPU余量=100%, 算力=充足",
+      "recommendations": [],
+      "timestamp": "2026-04-03T13:46:25.393376"
+    },
+    {
+      "dimension": "D3-策略引擎",
+      "category": "底层资源",
+      "layer": "D",
+      "status": "PASS",
+      "score": 100,
+      "latency_ms": 0,
+      "details": "信号=25, 模式=dry_run, 策略引擎=运行中",
+      "recommendations": [],
+      "timestamp": "2026-04-03T13:46:25.404598"
+    },
+    {
+      "dimension": "D4-资金管理",
+      "category": "底层资源",
+      "layer": "D",
+      "status": "PASS",
+      "score": 100.0,
+      "latency_ms": 0,
+      "details": "仓位上限=60%, 资金分配=合理",
+      "recommendations": [],
+      "timestamp": "2026-04-03T13:46:25.411805"
+    },
+    {
+      "dimension": "E1-后端API服务",
+      "category": "运营支撑",
+      "layer": "E",
+      "status": "PASS",
+      "score": 100,
+      "latency_ms": 6.777286529541016,
+      "details": "status=healthy, db=ok, 延迟=7ms",
+      "recommendations": [],
+      "timestamp": "2026-04-03T13:46:25.418667"
+    },
+    {
+      "dimension": "E2-前端UI服务",
+      "category": "运营支撑",
+      "layer": "E",
+      "status": "PASS",
+      "score": 90,
+      "latency_ms": 9.424686431884766,
+      "details": "响应=5198B, Vite=False, SPA=True, GO2SE=True, 延迟=9ms",
+      "recommendations": [],
+      "timestamp": "2026-04-03T13:46:25.428540"
+    },
+    {
+      "dimension": "E3-数据库",
+      "category": "运营支撑",
+      "layer": "E",
+      "status": "PASS",
+      "score": 100,
+      "latency_ms": 0,
+      "details": "数据库=ok",
+      "recommendations": [],
+      "timestamp": "2026-04-03T13:46:25.435856"
+    },
+    {
+      "dimension": "E4-运维脚本",
+      "category": "运营支撑",
+      "layer": "E",
+      "status": "PASS",
+      "score": 100.0,
+      "latency_ms": 0,
+      "details": "脚本=7/7",
+      "recommendations": [],
+      "timestamp": "2026-04-03T13:46:25.439663"
+    },
+    {
+      "dimension": "E5-系统稳定性",
+      "category": "运营支撑",
+      "layer": "E",
+      "status": "PASS",
+      "score": 75.0,
+      "latency_ms": 0,
+      "details": "uvicorn=1, vite=0, node=0, 僵尸=0",
+      "recommendations": [],
+      "timestamp": "2026-04-03T13:46:25.491469"
+    },
+    {
+      "dimension": "E6-API响应延迟",
+      "category": "运营支撑",
+      "layer": "E",
+      "status": "PASS",
+      "score": 109.02702437506781,
+      "latency_ms": 4.864878124660915,
+      "details": "平均=4.9ms, P95=7.5ms",
+      "recommendations": [],
+      "timestamp": "2026-04-03T13:46:25.536818"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "strategy_weights": {
+    "rabbit": 0.3,
+    "mole": 0.25,
+    "oracle": 0.15,
+    "leader": 0.1,
+    "hitchhiker": 0.08,
+    "airdrop": 0.02,
+    "crowdsource": 0.02
+  },
+  "mole_take_profit_removed": true,
+  "rabbit_take_profit": 0.3,
+  "mole_take_profit": 0.0,
+  "oracle_take_profit": 0.2,
+  "leader_take_profit": 0.1
+}
