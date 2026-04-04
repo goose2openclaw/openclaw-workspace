@@ -767,6 +767,7 @@
     document.addEventListener('DOMContentLoaded', init);
   } else {
     init();
+initSidebarSubmenu();
   }
 
 })();
@@ -818,3 +819,64 @@ function initExpertMode() {
 
 // Add to init
 document.addEventListener('DOMContentLoaded', initExpertMode);
+// Sidebar 子菜单功能
+function initSidebarSubmenu() {
+  const sidebarItems = document.querySelectorAll('.sidebar-item[data-section]');
+  const contentArea = document.getElementById('contentArea');
+  
+  sidebarItems.forEach(item => {
+    item.addEventListener('click', (e) => {
+      const sectionId = item.dataset.section;
+      
+      // 如果有子菜单，则切换展开状态
+      if (item.dataset.hasChildren) {
+        e.preventDefault();
+        const submenu = document.getElementById(`submenu-${sectionId}`);
+        if (submenu) {
+          submenu.classList.toggle('expanded');
+          item.classList.toggle('expanded');
+        }
+        // 仍然滚动到主section
+        scrollToSection(sectionId);
+      } else {
+        scrollToSection(sectionId);
+      }
+      
+      // 更新激活状态
+      sidebarItems.forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+    });
+  });
+  
+  // 滚动时更新高亮
+  const sections = document.querySelectorAll('.content-section[id]');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        sidebarItems.forEach(item => {
+          item.classList.toggle('active', item.dataset.section === id);
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+  
+  sections.forEach(section => observer.observe(section));
+}
+
+function scrollToSection(sectionId) {
+  const section = document.getElementById(sectionId);
+  if (section) {
+    const offset = 80;
+    const elementPosition = section.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + window.pageYOffset - offset;
+    
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth'
+    });
+  }
+}
+
+// 导出供主JS调用
+window.initSidebarSubmenu = initSidebarSubmenu;

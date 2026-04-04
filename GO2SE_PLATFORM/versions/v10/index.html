@@ -95,34 +95,64 @@
       <!-- 侧边栏 - 8个精简入口 -->
       <nav class="sidebar" id="sidebar">
         <div class="sidebar-items">
-          <a href="#attention" class="sidebar-item active" data-section="attention">
-            <span class="item-icon">📌</span>
-            <span class="item-text">注意力</span>
+          <!-- 🏠 首页 -->
+          <a href="#heroSection" class="sidebar-item active" data-section="heroSection">
+            <span class="item-icon">🏠</span>
+            <span class="item-text">首页</span>
           </a>
-          <a href="#asset" class="sidebar-item" data-section="asset">
+          
+          <!-- 💰 资产中心 (带子菜单) -->
+          <a href="#asset" class="sidebar-item has-submenu" data-section="asset" data-has-children="true">
             <span class="item-icon">💰</span>
-            <span class="item-text">资产看板</span>
+            <span class="item-text">资产中心</span>
           </a>
-          <a href="#beidou" class="sidebar-item" data-section="beidou">
+          <div id="submenu-asset" class="sidebar-submenu">
+            <div class="sidebar-submenu-item" data-section="asset"><span>📊</span> 资产总览</div>
+            <div class="sidebar-submenu-item" data-section="asset-earnings"><span>💹</span> 投资收益</div>
+            <div class="sidebar-submenu-item" data-section="asset-wallet"><span>💳</span> 钱包架构</div>
+            <div class="sidebar-submenu-item" data-section="asset-risk"><span>🛡️</span> 风险状态</div>
+          </div>
+          
+          <!-- 🎯 交易引擎 (带子菜单) -->
+          <a href="#beidou" class="sidebar-item has-submenu" data-section="beidou" data-has-children="true">
             <span class="item-icon">🎯</span>
-            <span class="item-text">北斗七鑫</span>
+            <span class="item-text">交易引擎</span>
           </a>
-          <a href="#engineer" class="sidebar-item" data-section="engineer">
+          <div id="submenu-beidou" class="sidebar-submenu">
+            <div class="sidebar-submenu-item" data-section="beidou-invest"><span>🐰</span> 打兔子</div>
+            <div class="sidebar-submenu-item" data-section="beidou-mole"><span>🐹</span> 打地鼠</div>
+            <div class="sidebar-submenu-item" data-section="beidou-oracle"><span>🔮</span> 走着瞧</div>
+            <div class="sidebar-submenu-item" data-section="beidou-leader"><span>👑</span> 跟大哥</div>
+            <div class="sidebar-submenu-item" data-section="beidou-hitchhike"><span>🍀</span> 搭便车</div>
+            <div class="sidebar-submenu-item" data-section="beidou-airdrop"><span>💰</span> 薅羊毛</div>
+            <div class="sidebar-submenu-item" data-section="beidou-crowd"><span>👶</span> 穷孩子</div>
+          </div>
+          
+          <!-- 📡 信号策略 (带子菜单) -->
+          <a href="#engineer" class="sidebar-item has-submenu" data-section="engineer" data-has-children="true">
+            <span class="item-icon">📡</span>
+            <span class="item-text">信号策略</span>
+          </a>
+          <div id="submenu-engineer" class="sidebar-submenu">
+            <div class="sidebar-submenu-item" data-section="engineer-signal"><span>📡</span> 市场信号</div>
+            <div class="sidebar-submenu-item" data-section="engineer-strategy"><span>🏆</span> 策略中心</div>
+            <div class="sidebar-submenu-item" data-section="engineer-sim"><span>🔄</span> 仿真引擎</div>
+            <div class="sidebar-submenu-item" data-section="engineer-sonar"><span>📉</span> 声纳库</div>
+          </div>
+          
+          <!-- 🔧 平台 (带子菜单) -->
+          <a href="#settings" class="sidebar-item has-submenu" data-section="settings" data-has-children="true">
             <span class="item-icon">⚙️</span>
-            <span class="item-text">工善其事</span>
+            <span class="item-text">平台</span>
           </a>
-          <a href="#customize" class="sidebar-item" data-section="customize">
-            <span class="item-icon">🔧</span>
-            <span class="item-text">可迭代定制</span>
-          </a>
-          <a href="#security" class="sidebar-item" data-section="security">
-            <span class="item-icon">🛡️</span>
-            <span class="item-text">安全</span>
-          </a>
-          <a href="#settings" class="sidebar-item" data-section="settings">
-            <span class="item-icon">⚙️</span>
-            <span class="item-text">设置</span>
-          </a>
+          <div id="submenu-settings" class="sidebar-submenu">
+            <div class="sidebar-submenu-item" data-section="customize"><span>🔧</span> 可迭代定制</div>
+            <div class="sidebar-submenu-item" data-section="security"><span>🛡️</span> 安全中心</div>
+            <div class="sidebar-submenu-item" data-section="settings-lp"><span>📈</span> 私募LP</div>
+            <div class="sidebar-submenu-item" data-section="settings-sys"><span>📋</span> 系统版本</div>
+            <div class="sidebar-submenu-item" data-section="contact"><span>📞</span> 联系转发</div>
+          </div>
+          
           <!-- 🥷 工程模式: 仅专家模式可见 -->
           <a href="#ninja" class="sidebar-item ninja-only" data-section="ninja" style="display:none;">
             <span class="item-icon">🥷</span>
