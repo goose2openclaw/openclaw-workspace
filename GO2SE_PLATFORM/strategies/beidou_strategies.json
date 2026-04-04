@@ -8,14 +8,39 @@
       "position_pct": 25,
       "stop_loss": 5,
       "take_profit": 8,
-      "max_position": 0.6,
-      "coins": ["BTC", "ETH", "BNB", "XRP", "ADA", "DOGE", "SOL", "DOT", "MATIC", "SHIB", "LTC", "AVAX", "LINK", "UNI", "ATOM", "XLM", "ALGO", "VET", "ICP", "FIL"],
+      "max_position": 0.05,
+      "coins": [
+        "BTC",
+        "ETH",
+        "BNB",
+        "XRP",
+        "ADA",
+        "DOGE",
+        "SOL",
+        "DOT",
+        "MATIC",
+        "SHIB",
+        "LTC",
+        "AVAX",
+        "LINK",
+        "UNI",
+        "ATOM",
+        "XLM",
+        "ALGO",
+        "VET",
+        "ICP",
+        "FIL"
+      ],
       "strategies": [
         {
           "id": "ema_cross",
           "name": "EMA交叉策略",
           "type": "trend",
-          "indicators": ["EMA20", "EMA50", "EMA200"],
+          "indicators": [
+            "EMA20",
+            "EMA50",
+            "EMA200"
+          ],
           "signal": "EMA20上穿EMA50看涨，下穿看跌",
           "weight": 0.35,
           "winrate": 74.5
@@ -24,7 +49,11 @@
           "id": "macd",
           "name": "MACD策略",
           "type": "momentum",
-          "indicators": ["MACD", "Signal", "Histogram"],
+          "indicators": [
+            "MACD",
+            "Signal",
+            "Histogram"
+          ],
           "signal": "MACD上穿Signal看涨",
           "weight": 0.25,
           "winrate": 71.8
@@ -33,18 +62,25 @@
           "id": "bollinger",
           "name": "布林带策略",
           "type": "volatility",
-          "indicators": ["BB_upper", "BB_middle", "BB_lower"],
+          "indicators": [
+            "BB_upper",
+            "BB_middle",
+            "BB_lower"
+          ],
           "signal": "价格触及下轨反弹看涨",
-          "weight": 0.20,
+          "weight": 0.2,
           "winrate": 68.2
         },
         {
           "id": "rsi_ma",
           "name": "RSI均值回归",
           "type": "mean_reversion",
-          "indicators": ["RSI", "SMA20"],
+          "indicators": [
+            "RSI",
+            "SMA20"
+          ],
           "signal": "RSI<30且价格<SMA20超卖",
-          "weight": 0.20,
+          "weight": 0.2,
           "winrate": 72.1
         }
       ],
@@ -52,7 +88,8 @@
         "auto_adjust": true,
         "confidence_threshold": 70,
         "rebalance_interval": "1h"
-      }
+      },
+      "max_concurrent_positions": 5
     },
     "mole": {
       "name": "打地鼠",
@@ -61,23 +98,34 @@
       "stop_loss": 8,
       "take_profit": 15,
       "max_position": 0.3,
-      "coins": ["*"],
-      "excluded_coins": ["BTC", "ETH", "BNB"],
+      "coins": [
+        "*"
+      ],
+      "excluded_coins": [
+        "BTC",
+        "ETH",
+        "BNB"
+      ],
       "strategies": [
         {
           "id": "rsi_extreme",
           "name": "RSI超卖策略",
           "type": "momentum",
-          "indicators": ["RSI"],
+          "indicators": [
+            "RSI"
+          ],
           "signal": "RSI<30超卖反弹",
-          "weight": 0.30,
+          "weight": 0.3,
           "winrate": 65.5
         },
         {
           "id": "volume_spike",
           "name": "成交量突刺",
           "type": "volume",
-          "indicators": ["Volume", "MA20"],
+          "indicators": [
+            "Volume",
+            "MA20"
+          ],
           "signal": "成交量>3倍MA20",
           "weight": 0.25,
           "winrate": 62.3
@@ -86,7 +134,10 @@
           "id": "volatility_break",
           "name": "波动率突破",
           "type": "breakout",
-          "indicators": ["ATR", "BB"],
+          "indicators": [
+            "ATR",
+            "BB"
+          ],
           "signal": "价格突破BB上轨+ATR放大",
           "weight": 0.25,
           "winrate": 58.7
@@ -95,9 +146,12 @@
           "id": "whale_tracking",
           "name": "大户追踪",
           "type": "onchain",
-          "indicators": ["WhaleAlert", "FundingRate"],
+          "indicators": [
+            "WhaleAlert",
+            "FundingRate"
+          ],
           "signal": "检测到大户转入+资金费率异常",
-          "weight": 0.20,
+          "weight": 0.2,
           "winrate": 70.2
         }
       ],
@@ -114,33 +168,48 @@
       "stop_loss": 5,
       "take_profit": 10,
       "max_position": 0.2,
-      "markets": ["polymarket", "ket", "azuro", "polymarkets"],
+      "markets": [
+        "polymarket",
+        "ket",
+        "azuro",
+        "polymarkets"
+      ],
       "strategies": [
         {
           "id": "mirofish",
           "name": "MiroFish预测",
           "type": "prediction",
-          "indicators": ["OracleSignal", "Confidence"],
+          "indicators": [
+            "OracleSignal",
+            "Confidence"
+          ],
           "signal": "置信度>65%时跟随",
-          "weight": 0.50,
+          "weight": 0.5,
           "winrate": 72.0
         },
         {
           "id": "sentiment",
           "name": "情绪分析",
           "type": "sentiment",
-          "indicators": ["FearGreed", "TwitterKOL", "CryptoPanic"],
+          "indicators": [
+            "FearGreed",
+            "TwitterKOL",
+            "CryptoPanic"
+          ],
           "signal": "情绪极度恐惧时买入",
-          "weight": 0.30,
+          "weight": 0.3,
           "winrate": 68.5
         },
         {
           "id": "consensus",
           "name": "共识预测",
           "type": "crowdsignal",
-          "indicators": ["PredictionMarket", "BetVolume"],
+          "indicators": [
+            "PredictionMarket",
+            "BetVolume"
+          ],
           "signal": "预测市场共识>70%",
-          "weight": 0.20,
+          "weight": 0.2,
           "winrate": 65.0
         }
       ],
@@ -162,18 +231,24 @@
           "id": "copy_trade",
           "name": "跟单策略",
           "type": "copy",
-          "indicators": ["LeaderSignal", "Drawdown"],
+          "indicators": [
+            "LeaderSignal",
+            "Drawdown"
+          ],
           "signal": "跟随优质KOL信号",
-          "weight": 0.60,
+          "weight": 0.6,
           "winrate": 60.0
         },
         {
           "id": "mirofish_eval",
           "name": "MiroFish评估",
           "type": "evaluation",
-          "indicators": ["StrategyScore", "RiskLevel"],
+          "indicators": [
+            "StrategyScore",
+            "RiskLevel"
+          ],
           "signal": "MiroFish评分>75分",
-          "weight": 0.40,
+          "weight": 0.4,
           "winrate": 70.0
         }
       ],
@@ -195,18 +270,24 @@
           "id": "signal_share",
           "name": "信号跟单",
           "type": "signal",
-          "indicators": ["SignalQuality", "TrustScore"],
+          "indicators": [
+            "SignalQuality",
+            "TrustScore"
+          ],
           "signal": "信任评分>80分",
-          "weight": 0.50,
+          "weight": 0.5,
           "winrate": 58.0
         },
         {
           "id": "tier2_share",
           "name": "二级分包",
           "type": "subpackage",
-          "indicators": ["PrimarySignal", "Delay"],
+          "indicators": [
+            "PrimarySignal",
+            "Delay"
+          ],
           "signal": "一级信号延迟<5秒",
-          "weight": 0.50,
+          "weight": 0.5,
           "winrate": 55.0
         }
       ],
@@ -228,18 +309,24 @@
           "id": "evomap_search",
           "name": "EvoMap自寻",
           "type": "airdrop",
-          "indicators": ["EvoMapOpportunity", "SafetyScore"],
+          "indicators": [
+            "EvoMapOpportunity",
+            "SafetyScore"
+          ],
           "signal": "安全评分>85分的空投",
-          "weight": 0.60,
+          "weight": 0.6,
           "winrate": 45.0
         },
         {
           "id": "twitter_monitor",
           "name": "Twitter监控",
           "type": "social",
-          "indicators": ["TwitterAlert", "DiscordSignal"],
+          "indicators": [
+            "TwitterAlert",
+            "DiscordSignal"
+          ],
           "signal": "官方宣布空投",
-          "weight": 0.40,
+          "weight": 0.4,
           "winrate": 40.0
         }
       ],
@@ -262,18 +349,24 @@
           "id": "evomap_social",
           "name": "EvoMap社交",
           "type": "crowdsource",
-          "indicators": ["TaskAvailability", "PaymentRate"],
+          "indicators": [
+            "TaskAvailability",
+            "PaymentRate"
+          ],
           "signal": "任务可用+付款率>90%",
-          "weight": 0.70,
+          "weight": 0.7,
           "winrate": 80.0
         },
         {
           "id": "compute_utilization",
           "name": "算力利用",
           "type": "compute",
-          "indicators": ["IdleCompute", "TaskMatch"],
+          "indicators": [
+            "IdleCompute",
+            "TaskMatch"
+          ],
           "signal": "闲置算力匹配任务",
-          "weight": 0.30,
+          "weight": 0.3,
           "winrate": 75.0
         }
       ],
@@ -282,6 +375,19 @@
         "idle_compute_threshold": 50,
         "isolation_mode": true
       }
+    }
+  },
+  "signal_fusion": {
+    "enabled": true,
+    "confidence_threshold": 0.7,
+    "tools_weights": {
+      "rabbit": 0.25,
+      "mole": 0.2,
+      "oracle": 0.15,
+      "leader": 0.15,
+      "hitchhiker": 0.1,
+      "airdrop": 0.03,
+      "crowdsource": 0.02
     }
   }
 }
