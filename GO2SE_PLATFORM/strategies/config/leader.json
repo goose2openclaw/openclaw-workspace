@@ -1,0 +1,70 @@
+{
+  "id": "tool_leader",
+  "name": "👑 跟大哥",
+  "description": "做市协作+MiroFish评估+综合判断",
+  "version": "11.0.0",
+  "enabled": true,
+  "priority": 4,
+  "allocation": {
+    "target": 0.15,
+    "min": 0.08,
+    "max": 0.20
+  },
+  "risk": {
+    "stop_loss": 0.03,
+    "take_profit": 0.06,
+    "max_position_size": 0.05,
+    "daily_loss_limit": 0.08
+  },
+  "mirofish": {
+    "enabled": true,
+    "simulation_before_entry": true,
+    "decision_weight": 0.30,
+    "required_score": 70,
+    "simulation_dimensions": ["A1", "A2", "B4", "C1", "D1"],
+    "monte_carlo_runs": 1000,
+    "confidence_threshold": 0.75,
+    "provider_verification": true
+  },
+  "market_making": {
+    "enabled": true,
+    "spread_min": 0.001,
+    "spread_max": 0.01,
+    "inventory_target": 0.50,
+    "rebalance_threshold": 0.10
+  },
+  "providers": {
+    "selection_criteria": {
+      "min_win_rate": 0.55,
+      "min_trades": 100,
+      "max_drawdown": 0.20,
+      "min_roi_30d": 0.10
+    },
+    "max_followed": 10,
+    "allocation_per_provider": 0.33,
+    "min_providers": 3
+  },
+  "indicators": {
+    "primary": ["provider_performance", "spread_analysis", "inventory_delta"],
+    "secondary": ["order_book_imbalance", "funding_rate", "basis_spread"],
+    "filters": ["liquidity_check", "slippage_estimate"]
+  },
+  "entry_rules": {
+    "provider_score_min": 70,
+    "spread_value_check": true,
+    "mirofish_verification": true,
+    "max_correlation": 0.6
+  },
+  "exit_rules": {
+    "performance_drop_threshold": 0.15,
+    "roi_vs_benchmark_negative": true,
+    "provider_exit_signal": true,
+    "time_based_review_hours": 168
+  },
+  "position_management": {
+    "auto_scale": false,
+    "max_total_exposure": 0.30,
+    "emergency_exit_threshold": 0.25,
+    "hedge_required": true
+  }
+}
