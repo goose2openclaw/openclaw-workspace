@@ -3,18 +3,35 @@
 ====================
 
 包含:
-- sonar_v2: 分层扫描声纳库
+- sonar/: 新模块化声纳库 (base, models, scanner)
+- sonar_v2_legacy: 旧版 (已废弃，保留备查)
 - market_data_fetcher: 市场数据获取器
 """
 
-from .sonar_v2 import (
+# 新模块化声纳库 (v2.0)
+from .sonar import (
+    SonarScanner,
+    SonarLibrary,
+    ScanResult,
+    Signal,
+    TrendModel,
+    TrendCategory,
+    calculate_ema,
+    calculate_rsi,
+    calculate_macd,
+    calculate_bollinger_bands,
+    calculate_volatility,
+    ModelFactory,
+)
+
+# 兼容旧接口 (指向旧版保留备查)
+from .sonar_v2_legacy import (
     SonarLibraryV2,
     TrendModelLibrary,
     HierarchicalScanner,
     MarketIndicators,
-    TrendModel,
     MatchResult,
-    ScanResult,
+    ScanResult as LegacyScanResult,
     SignalType,
     TrendDirection,
     MarketRegime,
@@ -30,6 +47,19 @@ from .market_data_fetcher import (
     create_market_fetcher,
     create_sonar_integration,
     get_binance_symbols,
+)
+
+# 打地鼠策略 V4 (双引擎)
+from .mole_v4_strategy import (
+    MoleV4Strategy,
+    MoleV4Config,
+    CombinedSignal,
+)
+
+# 跨市场套利
+from .cross_market_arbitrage import (
+    CrossMarketArbitrage,
+    ArbitrageOpportunity,
 )
 
 __all__ = [

@@ -1,85 +1,109 @@
 {
-  "version": "7.0",
+  "version": "8.0",
   "updated": "2026-04-04",
   "tools": {
     "rabbit": {
-      "name": "\u6253\u5154\u5b50",
+      "name": "打兔子",
       "allocation": 28,
       "enabled": true,
       "max_position": 0.05,
-      "strategies": [
-        "ema_cross"
-      ],
-      "apis": [
-        "binance"
-      ]
+      "strategies": ["ema_cross"],
+      "apis": ["binance"]
     },
     "mole": {
-      "name": "\u6253\u5730\u9f20",
+      "name": "打地鼠",
       "allocation": 22,
       "enabled": true,
       "max_position": 0.04,
-      "strategies": [
-        "volatility"
-      ],
-      "apis": [
-        "binance",
-        "bybit"
-      ]
+      "version": "v4.0-dual-engine",
+      "engines": {
+        "hft": {
+          "enabled": true,
+          "weight": 0.6,
+          "min_spread": 0.001,
+          "min_volume": 1000000,
+          "max_position": 0.04
+        },
+        "cross_market": {
+          "enabled": true,
+          "weight": 0.4,
+          "min_spread": 0.0015,
+          "min_volume": 500000,
+          "max_position": 0.05,
+          "types": ["exchange", "triangle", "calendar"]
+        }
+      },
+      "strategies": ["hft_arbitrage", "cross_market_arbitrage"],
+      "apis": ["binance", "bybit", "okx", "huobi"]
     },
     "oracle": {
-      "name": "\u8d70\u7740\u77a7",
+      "name": "走着瞧",
       "allocation": 17,
       "enabled": true,
       "max_position": 0.05,
-      "strategies": [
-        "prediction"
-      ],
-      "apis": [
-        "polymarket"
-      ]
+      "strategies": ["prediction"],
+      "apis": ["polymarket"]
     },
     "leader": {
-      "name": "\u8ddf\u5927\u54e5",
+      "name": "跟大哥",
       "allocation": 17,
       "enabled": true,
       "max_position": 0.05,
-      "strategies": [
-        "spread"
-      ],
-      "apis": [
-        "binance"
-      ]
+      "strategies": ["spread"],
+      "apis": ["binance"]
     },
     "hitchhiker": {
-      "name": "\u642d\u4fbf\u8f66",
+      "name": "搭便车",
       "allocation": 11,
       "enabled": true,
       "max_position": 0.05,
-      "strategies": [
-        "follow"
-      ],
+      "strategies": ["follow"],
       "apis": []
     },
     "airdrop": {
-      "name": "\u8585\u7f8a\u6bdb",
+      "name": "薅羊毛",
       "allocation": 3,
       "enabled": true,
       "max_position": 0.03,
-      "strategies": [
-        "airdrop"
-      ],
+      "strategies": ["airdrop"],
       "apis": []
     },
     "crowdsource": {
-      "name": "\u7a77\u5b69\u5b50",
+      "name": "穷孩子",
       "allocation": 2,
       "enabled": true,
       "max_position": 0.02,
-      "strategies": [
-        "crowdsource"
-      ],
+      "strategies": ["crowdsource"],
       "apis": []
+    }
+  },
+  "mole_v4": {
+    "version": "v4.0-dual-engine",
+    "engines": {
+      "hft": {
+        "name": "高频套利",
+        "weight": 0.6,
+        "min_spread": 0.001,
+        "min_volume": 1000000,
+        "max_position": 0.04,
+        "api_timeout": 1.0,
+        "max_concurrent_requests": 10,
+        "connection_pool_size": 20
+      },
+      "cross_market": {
+        "name": "跨市场套利",
+        "weight": 0.4,
+        "min_spread": 0.0015,
+        "min_volume": 500000,
+        "max_position": 0.05,
+        "types": ["exchange", "triangle", "calendar"],
+        "exchanges": ["binance", "bybit", "okx", "huobi"]
+      }
+    },
+    "performance": {
+      "expected_win_rate": 0.73,
+      "expected_return_monthly": 0.50,
+      "max_drawdown": 0.05
     }
   },
   "mirofish": {
@@ -91,21 +115,27 @@
   "risk_rules": [
     {
       "id": "R001",
-      "name": "\u4ed3\u4f4d\u9650\u5236",
+      "name": "仓位限制",
       "condition": "position > 80%",
-      "action": "\u7981\u6b62\u5f00\u4ed3"
+      "action": "禁止开仓"
     },
     {
       "id": "R002",
-      "name": "\u65e5\u5185\u7194\u65ad",
+      "name": "日内熔断",
       "condition": "loss > 30%",
-      "action": "\u5168\u90e8\u5e73\u4ed3"
+      "action": "全部平仓"
     },
     {
       "id": "R003",
-      "name": "\u5355\u7b14\u98ce\u9669",
+      "name": "单笔风险",
       "condition": "risk > 5%",
-      "action": "\u964d\u4f4e\u4ed3\u4f4d"
+      "action": "降低仓位"
+    },
+    {
+      "id": "R004",
+      "name": "波动率熔断",
+      "condition": "volatility > 15%",
+      "action": "暂停交易"
     }
   ]
 }
