@@ -1,0 +1,158 @@
+/**
+ * GO2SE Tailwind CSS
+ * ==================
+ * Custom CSS Variables + Tailwind Directives
+ */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CSS Variables */
+:root {
+  --bg-primary: #07080c;
+  --bg-secondary: #0c0f14;
+  --bg-card: #10141c;
+  --bg-elevated: #161c26;
+  --accent-primary: #00f5d4;
+  --accent-secondary: #00bbf9;
+  --accent-purple: #9d4edd;
+  --text-primary: #f0f2f5;
+  --text-secondary: #8b8d94;
+  --text-muted: #4a4c56;
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-active: rgba(0, 245, 212, 0.3);
+  --success: #00f5a0;
+  --danger: #ff4757;
+  --warning: #ffd43b;
+  --gold: #ffd700;
+}
+
+/* Base Styles */
+body {
+  @apply bg-[var(--bg-primary)] text-[var(--text-primary)] font-['Outfit',sans-serif];
+  font-family: 'Outfit', sans-serif;
+  min-height: 100vh;
+}
+
+/* Card Component */
+@layer components {
+  .card {
+    @apply bg-[var(--bg-card)] border border-[var(--border-subtle)] rounded-xl p-4 mb-3;
+    @apply transition-all duration-300;
+  }
+  
+  .card:hover {
+    @apply border-[var(--border-active)];
+  }
+  
+  .card-header {
+    @apply flex justify-between items-center mb-3;
+  }
+  
+  .card-title {
+    @apply text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-wider;
+  }
+
+  /* Button Components */
+  .btn {
+    @apply px-4 py-2 rounded-lg font-semibold cursor-pointer transition-all duration-200;
+    @apply inline-flex items-center gap-2 border-none;
+  }
+  
+  .btn-primary {
+    @apply bg-gradient-to-r from-[var(--accent-primary)] to-[#00b8a3] text-[var(--bg-primary)];
+  }
+  
+  .btn-primary:hover {
+    @apply transform -translate-y-0.5 shadow-lg;
+  }
+  
+  .btn-outline {
+    @apply bg-transparent border border-[var(--border-subtle)] text-[var(--text-secondary)];
+  }
+  
+  .btn-outline:hover {
+    @apply border-[var(--accent-primary)] text-[var(--accent-primary)];
+  }
+  
+  .btn-buy {
+    @apply bg-gradient-to-r from-[var(--success)] to-[#00c896] text-[var(--bg-primary)] font-bold;
+    @apply px-5 py-2 rounded-lg min-w-[70px];
+  }
+  
+  .btn-sell {
+    @apply bg-gradient-to-r from-[var(--danger)] to-[#ff6b7a] text-white font-bold;
+    @apply px-5 py-2 rounded-lg min-w-[70px];
+  }
+
+  /* Input Components */
+  .input {
+    @apply w-full px-3 py-2 bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-lg;
+    @apply text-[var(--text-primary)] text-sm;
+  }
+  
+  .input:focus {
+    @apply outline-none border-[var(--accent-primary)];
+  }
+
+  /* Badge Components */
+  .badge {
+    @apply px-2 py-1 rounded-full text-xs font-bold;
+  }
+  
+  .badge-success {
+    @apply bg-[rgba(0,245,160,0.15)] text-[var(--success)];
+  }
+  
+  .badge-danger {
+    @apply bg-[rgba(255,71,87,0.15)] text-[var(--danger)];
+  }
+  
+  .badge-warning {
+    @apply bg-[rgba(255,212,59,0.15)] text-[var(--warning)];
+  }
+
+  /* Status Dot */
+  .status-dot {
+    @apply w-1.5 h-1.5 rounded-full inline-block mr-1;
+  }
+  
+  .status-running { @apply bg-[var(--success)]; }
+  .status-active { @apply bg-[var(--accent-primary)]; }
+  .status-ready { @apply bg-[var(--warning)]; }
+  .status-scheduled { @apply bg-[var(--text-muted)]; }
+}
+
+/* Chart Container */
+.chart-container {
+  @apply relative rounded-lg overflow-hidden;
+  background: var(--bg-elevated);
+}
+
+.chart-controls {
+  @apply absolute top-3 left-3 z-10 flex gap-1;
+}
+
+.chart-tf {
+  @apply px-2 py-1 text-xs rounded border bg-[var(--bg-elevated)] border-[var(--border-subtle)];
+  @apply text-[var(--text-muted)] cursor-pointer transition-all duration-200;
+}
+
+.chart-tf:hover,
+.chart-tf.active {
+  @apply bg-[var(--accent-primary)] text-[var(--bg-primary)] border-[var(--accent-primary)];
+}
+
+/* Animations */
+@keyframes flashUp {
+  0% { background-color: rgba(0, 245, 160, 0.3); }
+  100% { background-color: transparent; }
+}
+
+@keyframes flashDown {
+  0% { background-color: rgba(255, 71, 87, 0.3); }
+  100% { background-color: transparent; }
+}
+
+.flash-up { animation: flashUp 0.5s; }
+.flash-down { animation: flashDown 0.5s; }

@@ -1,8 +1,15 @@
 <template>
   <AppLayout>
-    <div class="page-placeholder">
-      <h2>{{ pageName }}</h2>
-      <p>页面开发中...</p>
+    <div class="page-container">
+      <div class="page-header">
+        <h1 class="page-title">{{ pageTitle }}</h1>
+      </div>
+      <div class="page-content">
+        <div class="placeholder-card">
+          <span class="placeholder-icon">{{ pageIcon }}</span>
+          <p>页面开发中...</p>
+        </div>
+      </div>
     </div>
   </AppLayout>
 </template>
@@ -14,20 +21,21 @@ export default {
   name: 'PageName',
   components: { AppLayout },
   computed: {
-    pageName() {
-      return this.$route.name || 'Page'
+    pageTitle() {
+      return this.$route.meta.title || 'Page'
+    },
+    pageIcon() {
+      const icons = { K线:'📊', Signal:'📡', Trading:'💹', Wallet:'💰', Settings:'⚡', Strategy:'⚙️' }
+      return icons[this.$route.meta.parent] || '📄'
     }
   }
 }
 </script>
 
 <style scoped>
-.page-placeholder {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 60vh;
-  color: var(--text-secondary);
-}
+.page-container { @apply pb-8; }
+.page-header { @apply mb-6; }
+.page-title { @apply text-2xl font-bold; }
+.placeholder-card { @apply flex flex-col items-center justify-center py-20 text-[var(--text-secondary)]; }
+.placeholder-icon { @apply text-6xl mb-4; }
 </style>

@@ -102,9 +102,9 @@
         </div>
       </div>
 
-      <!-- 页面内容 -->
+      <!-- 页面内容 (支持嵌套路由) -->
       <div class="page-content">
-        <slot></slot>
+        <router-view />
       </div>
     </main>
   </div>
