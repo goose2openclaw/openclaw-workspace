@@ -1,0 +1,470 @@
+{
+  "binance_spot": {
+    "name": "Binance\u73b0\u8d27",
+    "path": "skills/binance-spot-trading",
+    "type": "exchange",
+    "enabled": true,
+    "base_weight": 0.12,
+    "current_weight": 0.04991135960725487,
+    "last_updated": "2026-04-04T09:12:46.784507",
+    "metrics": {
+      "latency_ms": 50,
+      "error_rate": 0.001
+    }
+  },
+  "binance_grid": {
+    "name": "Binance\u7f51\u683c",
+    "path": "skills/binance-grid-trading",
+    "type": "exchange",
+    "enabled": true,
+    "base_weight": 0.08,
+    "current_weight": 0.027273966998499922,
+    "last_updated": "2026-04-04T09:12:46.784507",
+    "metrics": {
+      "grid_count": 10,
+      "profit": 0.05
+    }
+  },
+  "okx_spot": {
+    "name": "OKX\u73b0\u8d27",
+    "path": "skills/okx-spot-trading",
+    "type": "exchange",
+    "enabled": true,
+    "base_weight": 0.08,
+    "current_weight": 0.027273966998499922,
+    "last_updated": "2026-04-04T09:12:46.784507",
+    "metrics": {
+      "latency_ms": 60,
+      "error_rate": 0.002
+    }
+  },
+  "bybit_spot": {
+    "name": "Bybit\u73b0\u8d27",
+    "path": "skills/bybit-spot-trading",
+    "type": "exchange",
+    "enabled": true,
+    "base_weight": 0.05,
+    "current_weight": 0.01704622937406245,
+    "last_updated": "2026-04-04T09:12:46.784507",
+    "metrics": {
+      "latency_ms": 70,
+      "error_rate": 0.002
+    }
+  },
+  "trading_brain": {
+    "name": "Trading Brain",
+    "path": "skills/trading-brain",
+    "type": "ai",
+    "enabled": true,
+    "base_weight": 0.15,
+    "current_weight": 0.06341197327151232,
+    "last_updated": "2026-04-04T09:12:46.784507",
+    "metrics": {
+      "decisions": 500,
+      "accuracy": 0.72
+    }
+  },
+  "quant_system": {
+    "name": "Quant\u7cfb\u7edf",
+    "path": "skills/quant-trading-system",
+    "type": "ai",
+    "enabled": true,
+    "base_weight": 0.12,
+    "current_weight": 0.04091095049774988,
+    "last_updated": "2026-04-04T09:12:46.784507",
+    "metrics": {
+      "signals": 200,
+      "win_rate": 0.68
+    }
+  },
+  "trading_agents": {
+    "name": "Trading Agents",
+    "path": "skills/trading-agents",
+    "type": "ai",
+    "enabled": true,
+    "base_weight": 0.1,
+    "current_weight": 0.0340924587481249,
+    "last_updated": "2026-04-04T09:12:46.784507",
+    "metrics": {
+      "agents": 5,
+      "accuracy": 0.7
+    }
+  },
+  "crypto_trading_bot": {
+    "name": "Crypto\u4ea4\u6613Bot",
+    "path": "skills/crypto-trading-bot",
+    "type": "ai",
+    "enabled": true,
+    "base_weight": 0.08,
+    "current_weight": 0.027273966998499922,
+    "last_updated": "2026-04-04T09:12:46.784507",
+    "metrics": {
+      "trades": 100,
+      "win_rate": 0.65
+    }
+  },
+  "rho_signals": {
+    "name": "Rho\u4fe1\u53f7",
+    "path": "skills/rho-signals",
+    "type": "ai",
+    "enabled": true,
+    "base_weight": 0.08,
+    "current_weight": 0.027273966998499922,
+    "last_updated": "2026-04-04T09:12:46.784507",
+    "metrics": {
+      "signals": 150,
+      "accuracy": 0.68
+    }
+  },
+  "trading_assistant": {
+    "name": "\u4ea4\u6613\u52a9\u624b",
+    "path": "skills/trading-assistant",
+    "type": "ai",
+    "enabled": true,
+    "base_weight": 0.06,
+    "current_weight": 0.02045547524887494,
+    "last_updated": "2026-04-04T09:12:46.784507",
+    "metrics": {
+      "queries": 300,
+      "accuracy": 0.75
+    }
+  },
+  "trading_devbox": {
+    "name": "\u4ea4\u6613\u5f00\u53d1\u7bb1",
+    "path": "skills/trading-devbox",
+    "type": "ai",
+    "enabled": true,
+    "base_weight": 0.05,
+    "current_weight": 0.01704622937406245,
+    "last_updated": "2026-04-04T09:12:46.784507",
+    "metrics": {
+      "backtests": 50,
+      "accuracy": 0.72
+    }
+  },
+  "polymarket": {
+    "name": "Polymarket",
+    "path": "skills/polymarket-bot",
+    "type": "prediction",
+    "enabled": true,
+    "base_weight": 0.12,
+    "current_weight": 0.048684031092322354,
+    "last_updated": "2026-04-04T09:12:46.784507",
+    "metrics": {
+      "markets": 6,
+      "volume": 10000
+    }
+  },
+  "polymarket_arbitrage": {
+    "name": "Polymarket\u5957\u5229",
+    "path": "skills/polymarket-arbitrage",
+    "type": "prediction",
+    "enabled": true,
+    "base_weight": 0.08,
+    "current_weight": 0.027273966998499922,
+    "last_updated": "2026-04-04T09:12:46.784507",
+    "metrics": {
+      "arb_opportunities": 20,
+      "profit": 0.03
+    }
+  },
+  "moneyclaw": {
+    "name": "MoneyClaw",
+    "path": "skills/moneyclaw",
+    "type": "external",
+    "enabled": true,
+    "base_weight": 0.15,
+    "current_weight": 0.0675030683212873,
+    "last_updated": "2026-04-04T09:12:46.784507",
+    "metrics": {
+      "strategies": 4,
+      "profit": 0.08
+    }
+  },
+  "agentbrain": {
+    "name": "AgentBrain",
+    "path": "skills/agentbrain",
+    "type": "memory",
+    "enabled": true,
+    "base_weight": 0.08,
+    "current_weight": 0.027273966998499922,
+    "last_updated": "2026-04-04T09:12:46.784507",
+    "metrics": {
+      "memory_hits": 100,
+      "accuracy": 0.85
+    }
+  },
+  "hermes": {
+    "name": "Hermes Agent",
+    "path": "hermes-agent",
+    "type": "agent",
+    "enabled": true,
+    "base_weight": 0.1,
+    "current_weight": 0.0340924587481249,
+    "last_updated": "2026-04-04T09:12:46.784507",
+    "metrics": {
+      "skills_created": 5,
+      "improvements": 20
+    }
+  },
+  "agent_stock": {
+    "name": "\u80a1\u7968Agent",
+    "path": "skills/agent-stock",
+    "type": "stock",
+    "enabled": true,
+    "base_weight": 0.05,
+    "current_weight": 0.01704622937406245,
+    "last_updated": "2026-04-04T09:12:46.784507",
+    "metrics": {
+      "stocks": 50,
+      "accuracy": 0.65
+    }
+  },
+  "akshare_stock": {
+    "name": "AKShare A\u80a1",
+    "path": "skills/akshare-stock",
+    "type": "stock",
+    "enabled": true,
+    "base_weight": 0.04,
+    "current_weight": 0.013636983499249961,
+    "last_updated": "2026-04-04T09:12:46.784507",
+    "metrics": {
+      "symbols": 5000,
+      "latency_ms": 100
+    }
+  },
+  "china_stock_analysis": {
+    "name": "A\u80a1\u5206\u6790",
+    "path": "skills/china-stock-analysis",
+    "type": "stock",
+    "enabled": true,
+    "base_weight": 0.04,
+    "current_weight": 0.013636983499249961,
+    "last_updated": "2026-04-04T09:12:46.784507",
+    "metrics": {
+      "analyses": 100,
+      "accuracy": 0.62
+    }
+  },
+  "stock_analysis": {
+    "name": "\u80a1\u7968\u5206\u6790",
+    "path": "skills/stock-analysis",
+    "type": "stock",
+    "enabled": true,
+    "base_weight": 0.04,
+    "current_weight": 0.013636983499249961,
+    "last_updated": "2026-04-04T09:12:46.784507",
+    "metrics": {
+      "analyses": 100,
+      "accuracy": 0.63
+    }
+  },
+  "stock_watcher": {
+    "name": "\u80a1\u7968\u76d1\u89c6",
+    "path": "skills/stock-watcher",
+    "type": "stock",
+    "enabled": true,
+    "base_weight": 0.03,
+    "current_weight": 0.01022773762443747,
+    "last_updated": "2026-04-04T09:12:46.784507",
+    "metrics": {
+      "watched": 100,
+      "alerts": 50
+    }
+  },
+  "rag": {
+    "name": "RAG\u5f15\u64ce",
+    "path": "backend/app/core/rag_engine.py",
+    "type": "memory",
+    "enabled": true,
+    "base_weight": 0.08,
+    "current_weight": 0.027273966998499922,
+    "last_updated": "2026-04-04T09:12:46.784507",
+    "metrics": {
+      "retrievals": 1000,
+      "accuracy": 0.82
+    }
+  },
+  "evomap": {
+    "name": "EvoMap\u4f17\u5305",
+    "path": "skills/evomap-tools",
+    "type": "crowdsource",
+    "enabled": true,
+    "base_weight": 0.06,
+    "current_weight": 0.02045547524887494,
+    "last_updated": "2026-04-04T09:12:46.784507",
+    "metrics": {
+      "tasks": 50,
+      "earnings": 0.02
+    }
+  },
+  "data_analysis": {
+    "name": "\u6570\u636e\u5206\u6790",
+    "path": "skills/data-analysis",
+    "type": "data",
+    "enabled": true,
+    "base_weight": 0.05,
+    "current_weight": 0.01704622937406245,
+    "last_updated": "2026-04-04T09:12:46.784507",
+    "metrics": {
+      "datasets": 20,
+      "accuracy": 0.78
+    }
+  },
+  "gstack_browse": {
+    "name": "gstack\u6d4f\u89c8",
+    "path": "skills/gstack-browse",
+    "type": "tool",
+    "enabled": true,
+    "base_weight": 0.05,
+    "current_weight": 0.01704622937406245,
+    "last_updated": "2026-04-04T09:12:46.784507",
+    "metrics": {
+      "pages": 500,
+      "accuracy": 0.9
+    }
+  },
+  "gstack_investigate": {
+    "name": "gstack\u8c03\u67e5",
+    "path": "skills/gstack-investigate",
+    "type": "tool",
+    "enabled": true,
+    "base_weight": 0.04,
+    "current_weight": 0.013636983499249961,
+    "last_updated": "2026-04-04T09:12:46.784507",
+    "metrics": {
+      "investigations": 50,
+      "accuracy": 0.85
+    }
+  },
+  "gstack_retro": {
+    "name": "gstack\u590d\u76d8",
+    "path": "skills/gstack-retro",
+    "type": "tool",
+    "enabled": true,
+    "base_weight": 0.04,
+    "current_weight": 0.013636983499249961,
+    "last_updated": "2026-04-04T09:12:46.784507",
+    "metrics": {
+      "retrospectives": 20,
+      "improvements": 100
+    }
+  },
+  "openclaw_quant": {
+    "name": "OpenClaw Quant",
+    "path": "skills/openclaw-quant-skill",
+    "type": "ai",
+    "enabled": true,
+    "base_weight": 0.06,
+    "current_weight": 0.02045547524887494,
+    "last_updated": "2026-04-04T09:12:46.784507",
+    "metrics": {
+      "strategies": 10,
+      "accuracy": 0.7
+    }
+  },
+  "article_writing": {
+    "name": "\u6587\u7ae0\u5199\u4f5c",
+    "path": "skills/article-writing",
+    "type": "earning",
+    "enabled": true,
+    "base_weight": 0.1,
+    "current_weight": 0.0340924587481249,
+    "last_updated": "2026-04-04T09:12:46.784507",
+    "metrics": {
+      "articles": 50,
+      "income": 0.05
+    }
+  },
+  "content_writer": {
+    "name": "\u5185\u5bb9\u521b\u4f5c",
+    "path": "skills/content-writer",
+    "type": "earning",
+    "enabled": true,
+    "base_weight": 0.1,
+    "current_weight": 0.0340924587481249,
+    "last_updated": "2026-04-04T09:12:46.784507",
+    "metrics": {
+      "contents": 100,
+      "income": 0.08
+    }
+  },
+  "video_to_text": {
+    "name": "\u89c6\u9891\u8f6c\u6587\u5b57",
+    "path": "skills/video-to-text",
+    "type": "earning",
+    "enabled": true,
+    "base_weight": 0.08,
+    "current_weight": 0.027273966998499922,
+    "last_updated": "2026-04-04T09:12:46.784507",
+    "metrics": {
+      "videos": 200,
+      "income": 0.03
+    }
+  },
+  "openai_whisper": {
+    "name": "Whisper\u8bed\u97f3\u8f6c\u6587\u5b57",
+    "path": "skills/openai-whisper",
+    "type": "earning",
+    "enabled": true,
+    "base_weight": 0.08,
+    "current_weight": 0.027273966998499922,
+    "last_updated": "2026-04-04T09:12:46.784507",
+    "metrics": {
+      "audio_hours": 100,
+      "income": 0.04
+    }
+  },
+  "automation_scripts": {
+    "name": "\u81ea\u52a8\u5316\u811a\u672c",
+    "path": "skills/automation-pack",
+    "type": "earning",
+    "enabled": true,
+    "base_weight": 0.12,
+    "current_weight": 0.04091095049774988,
+    "last_updated": "2026-04-04T09:12:46.784507",
+    "metrics": {
+      "scripts": 30,
+      "income": 0.1
+    }
+  },
+  "website_cloner": {
+    "name": "\u7f51\u7ad9\u514b\u9686\u5f00\u53d1",
+    "path": "skills/ai-website-cloner",
+    "type": "earning",
+    "enabled": true,
+    "base_weight": 0.1,
+    "current_weight": 0.0340924587481249,
+    "last_updated": "2026-04-04T09:12:46.784507",
+    "metrics": {
+      "websites": 20,
+      "income": 0.15
+    }
+  },
+  "public_apis": {
+    "name": "API\u96c6\u6210\u670d\u52a1",
+    "path": "skills/public-apis-skill-creator",
+    "type": "earning",
+    "enabled": true,
+    "base_weight": 0.08,
+    "current_weight": 0.027273966998499922,
+    "last_updated": "2026-04-04T09:12:46.784507",
+    "metrics": {
+      "apis": 15,
+      "income": 0.08
+    }
+  },
+  "canvas_design": {
+    "name": "\u8bbe\u8ba1\u670d\u52a1",
+    "path": "skills/pls-canvas-design",
+    "type": "earning",
+    "enabled": true,
+    "base_weight": 0.06,
+    "current_weight": 0.02045547524887494,
+    "last_updated": "2026-04-04T09:12:46.784507",
+    "metrics": {
+      "designs": 40,
+      "income": 0.05
+    }
+  }
+}

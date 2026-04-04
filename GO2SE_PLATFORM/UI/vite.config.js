@@ -7,6 +7,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      '@integration': path.resolve(__dirname, '../integration'),
     },
   },
   server: {
@@ -15,6 +16,10 @@ export default defineConfig({
       '/api': {
         target: 'http://localhost:8004',
         changeOrigin: true,
+      },
+      '/ws': {
+        target: 'ws://localhost:8004',
+        ws: true,
       },
     },
   },
