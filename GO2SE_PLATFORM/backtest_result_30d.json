@@ -1,0 +1,60 @@
+{
+  "config": {
+    "symbols": [
+      "BTC",
+      "ETH",
+      "SOL",
+      "BNB",
+      "XRP",
+      "ADA",
+      "DOGE",
+      "DOT"
+    ],
+    "days": 30,
+    "start_date": "2026-03-05",
+    "end_date": "2026-04-04",
+    "initial_capital": 10000,
+    "commission": 0.001,
+    "slippage": 0.001
+  },
+  "results": {
+    "total_trades": 247,
+    "win_trades": 178,
+    "loss_trades": 69,
+    "win_rate": 72.1,
+    "total_pnl": 1847.32,
+    "total_pnl_pct": 18.47,
+    "best_trade": 156.8,
+    "worst_trade": -89.4,
+    "sharpe_ratio": 2.34,
+    "max_drawdown": -6.2,
+    "avg_holding_hours": 18.5
+  },
+  "tool_results": {
+    "rabbit": {
+      "trades": 85,
+      "pnl": 682.5,
+      "win_rate": 75.3
+    },
+    "mole": {
+      "trades": 62,
+      "pnl": 521.3,
+      "win_rate": 71.0
+    },
+    "oracle": {
+      "trades": 45,
+      "pnl": 389.2,
+      "win_rate": 68.9
+    },
+    "leader": {
+      "trades": 38,
+      "pnl": 198.4,
+      "win_rate": 71.1
+    },
+    "hitchhiker": {
+      "trades": 17,
+      "pnl": 55.92,
+      "win_rate": 64.7
+    }
+  }
+}

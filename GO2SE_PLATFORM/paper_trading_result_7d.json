@@ -1,0 +1,94 @@
+{
+  "period": "7 days",
+  "timestamp": "2026-04-04T14:28:46.055073",
+  "investment": {
+    "total_trades": 89,
+    "win_trades": 65,
+    "loss_trades": 24,
+    "win_rate": 73.0,
+    "total_pnl": 423.5,
+    "positions": [
+      {
+        "symbol": "BTC",
+        "side": "long",
+        "size": 0.15,
+        "entry": 67450.0,
+        "current": 68120.0,
+        "pnl": 100.5
+      },
+      {
+        "symbol": "ETH",
+        "side": "long",
+        "size": 1.2,
+        "entry": 3520.0,
+        "current": 3580.0,
+        "pnl": 72.0
+      },
+      {
+        "symbol": "SOL",
+        "side": "long",
+        "size": 15,
+        "entry": 142.5,
+        "current": 145.8,
+        "pnl": 49.5
+      }
+    ]
+  },
+  "earning": {
+    "airdrop": {
+      "name": "\ud83d\udcb0 \u8585\u7f8a\u6bdb",
+      "tasks_completed": 12,
+      "airdrops_claimed": 3,
+      "value": 156.8,
+      "details": [
+        {
+          "name": "LayerZero ZRO",
+          "status": "claimed",
+          "value": 89.5,
+          "date": "2026-04-02"
+        },
+        {
+          "name": "Starknet STRK",
+          "status": "claimed",
+          "value": 45.3,
+          "date": "2026-04-01"
+        },
+        {
+          "name": "zkSync ZK",
+          "status": "pending",
+          "value": 120.0,
+          "date": "2026-04-05"
+        }
+      ]
+    },
+    "crowdsource": {
+      "name": "\ud83d\udc76 \u7a77\u5b69\u5b50",
+      "tasks_completed": 28,
+      "tasks_pending": 5,
+      "earnings": 89.4,
+      "details": [
+        {
+          "task": "\u6570\u636e\u6807\u6ce8 BTC",
+          "status": "completed",
+          "earnings": 12.5
+        },
+        {
+          "task": "\u56fe\u7247\u6807\u6ce8 ETH",
+          "status": "completed",
+          "earnings": 8.3
+        },
+        {
+          "task": "\u95ee\u5377\u8c03\u67e5 SOL",
+          "status": "completed",
+          "earnings": 5.0
+        }
+      ]
+    }
+  },
+  "summary": {
+    "total_pnl": 669.6999999999999,
+    "win_rate": 73.0,
+    "max_drawdown": 2.1,
+    "sharpe_ratio": 1.87
+  }
+}
