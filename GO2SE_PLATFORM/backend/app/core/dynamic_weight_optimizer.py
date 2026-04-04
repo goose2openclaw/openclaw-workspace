@@ -228,6 +228,47 @@ class DynamicWeightOptimizer:
         
         return sorted(recommendations, key=lambda x: x["avg_score"], reverse=True)
 
+    def auto_adjust_by_performance(self, scores: Dict[str, float], returns: Dict[str, float]) -> Dict[str, float]:
+        """
+        根据性能和收益自动调整仓位
+        
+        规则:
+        - 胜率<40% 或 预期收益<0% → 仓位归零(暂停)
+        - 胜率40-50% 或 预期收益0-2% → 仓位减半
+        - 胜率50-60% 或 预期收益2-5% → 保持
+        - 胜率>60% 或 预期收益>5% → 仓位增加20%
+        
+        注意: 不禁止，只调整仓位
+        """
+        adjusted = {}
+        
+        for strategy, weight in self.current_weights.items():
+            score = scores.get(strategy, 50)
+            ret = returns.get(strategy, 0)
+            
+            # 评分转胜率估算
+            estimated_win_rate = min(score / 100, 1.0)
+            
+            if estimated_win_rate < 0.4 or ret < 0:
+                # 仓位归零(暂停)
+                adjusted[strategy] = 0.0
+                print(f"  ⏸️ {strategy}: 暂停 (胜率{estimated_win_rate:.0%}, 收益{ret:.1f}%)")
+            elif estimated_win_rate < 0.5 or ret < 2:
+                # 仓位减半
+                adjusted[strategy] = weight * 0.5
+                print(f"  📉 {strategy}: 减半 {weight:.2%}→{weight*0.5:.2%} (胜率{estimated_win_rate:.0%}, 收益{ret:.1f}%)")
+            elif estimated_win_rate >= 0.6 and ret > 5:
+                # 仓位增加20%
+                new_weight = min(weight * 1.2, 0.50)  # 上限50%
+                adjusted[strategy] = new_weight
+                print(f"  📈 {strategy}: 加码 {weight:.2%}→{new_weight:.2%} (胜率{estimated_win_rate:.0%}, 收益{ret:.1f}%)")
+            else:
+                # 保持
+                adjusted[strategy] = weight
+                print(f"  ✅ {strategy}: 保持 {weight:.2%} (胜率{estimated_win_rate:.0%}, 收益{ret:.1f}%)")
+        
+        return adjusted
+
 
 # ==================== MiroFish信号融合 ====================
 
@@ -596,9 +637,3 @@ if __name__ == "__main__":
     print("\n3. MiroFish信号融合:")
     fusion = MiroFishSignalFusion()
     sonar = {"BTC": {"signal": "buy", "confidence": 0.75, "indicators": ["EMA"]}}
-    miro = {"BTC": {"signal": "buy", "confidence": 0.82, "agents": 85}}
-    fused = fusion.fuse(sonar, miro)
-    print(f"   BTC融合信号: {fused['BTC']['signal']}")
-    print(f"   置信度: {fused['BTC']['confidence']:.0%}")
-    print(f"   MiroFish验证: {fused['BTC']['mirofish_verified']}")
-    print(f"   批准执行: {fused['BTC']['approved']}")
