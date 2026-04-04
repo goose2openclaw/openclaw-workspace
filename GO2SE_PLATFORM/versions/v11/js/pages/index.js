@@ -28,6 +28,9 @@ const Pages = {
     // Help page
     help: () => '<div class="page-content"><h1>帮助中心</h1><p>开发中...</p></div>',
     
+    // Public dashboard
+    public: () => PublicDashboard.init() || '<div>Loading...</div>',
+    
     // Default / loading
     loading: () => '<div class="loading-spinner"><div class="spinner"></div></div>'
 };
@@ -59,6 +62,9 @@ Pages.init = function(template) {
         case 'settings':
         case 'settings-api':
             SettingsPage.load();
+            break;
+        case 'public':
+            PublicDashboard.loadDashboard();
             break;
         default:
             console.log('No init handler for:', template);
