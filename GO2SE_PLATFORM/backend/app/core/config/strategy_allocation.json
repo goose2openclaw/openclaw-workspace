@@ -1,17 +1,88 @@
 {
-  "version": "8.3",
+  "version": "8.4",
   "updated": "2026-04-04",
   "tools": {
     "rabbit": {
       "name": "打兔子",
-      "allocation": 28,
+      "allocation": 25,
       "enabled": true,
       "max_position": 0.05,
+      "version": "v3.0-decision-equation",
+      "decision_equation": {
+        "formula": "W = 0.30·MiroFish + 0.25·External + 0.20·Historical + 0.15·ML + 0.10·Consensus"
+      },
+      "components": {
+        "mirofish": {
+          "weight": 0.3,
+          "agents": 1000,
+          "consensus_threshold": 0.55
+        },
+        "external": {
+          "weight": 0.25,
+          "sources": [
+            "coingecko",
+            "coinmarketcap",
+            "tradingview",
+            "glassnode",
+            "intoTheBlock"
+          ]
+        },
+        "historical": {
+          "weight": 0.2,
+          "patterns": [
+            "breakout",
+            "trendContinuation",
+            "reversal",
+            "rangeBound",
+            "volumeSpike"
+          ]
+        },
+        "ml": {
+          "weight": 0.15,
+          "cycle_hours": 24,
+          "model": "ensemble_v1"
+        },
+        "consensus": {
+          "weight": 0.1,
+          "strategies": [
+            "momentum",
+            "breakout",
+            "trendline",
+            "macd",
+            "bollinger"
+          ]
+        }
+      },
+      "coins": [
+        "BTC",
+        "ETH",
+        "BNB",
+        "XRP",
+        "SOL",
+        "ADA",
+        "DOGE",
+        "AVAX",
+        "DOT",
+        "MATIC",
+        "LINK",
+        "UNI",
+        "ATOM",
+        "LTC",
+        "ETC",
+        "XLM",
+        "ALGO",
+        "VET",
+        "ICP",
+        "FIL"
+      ],
       "strategies": [
-        "ema_cross"
+        "breakout",
+        "decision_equation",
+        "mirofish_consensus"
       ],
       "apis": [
-        "binance"
+        "binance",
+        "coingecko"
       ]
     },
     "mole": {
