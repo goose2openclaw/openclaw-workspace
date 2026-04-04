@@ -81,8 +81,8 @@ class MoleV4Strategy:
         hft_config = {
             "hft": {
                 "api_timeout": 1.0,
-                "max_concurrent_requests": 10,
-                "connection_pool_size": 20,
+                "max_concurrent_requests": 15,      # 优化: 10 → 15
+                "connection_pool_size": 50,           # 优化: 20 → 50
                 "cache_ttl": 0.5,
                 "min_spread": self.v4_config.hft_min_spread,
                 "min_volume": self.v4_config.hft_min_volume,

@@ -1,0 +1,39 @@
+{
+  "version": "v4.1-optimized",
+  "hft": {
+    "api_timeout": 1.0,
+    "max_concurrent_requests": 15,
+    "connection_pool_size": 50,
+    "cache_ttl": 0.5,
+    "min_spread": 0.001,
+    "scan_interval": 0.5,
+    "max_position": 0.04,
+    "max_total_position": 0.2
+  },
+  "cross_market": {
+    "min_spread": 0.0015,
+    "min_volume": 500000,
+    "max_position": 0.05,
+    "exchanges": [
+      "binance",
+      "bybit",
+      "okx",
+      "huobi"
+    ]
+  },
+  "resource_optimization": {
+    "connection_pool": 50,
+    "max_concurrent": 15,
+    "cache_enabled": true,
+    "cache_ttl_seconds": 0.5,
+    "estimated_scan_time_ms": 155,
+    "buffer_ms": 345,
+    "buffer_ratio": 0.69
+  },
+  "performance_target": {
+    "scan_interval_seconds": 0.5,
+    "scans_per_minute": 120,
+    "max_api_calls_per_scan": 24,
+    "estimated_memory_mb": 0.5
+  }
+}

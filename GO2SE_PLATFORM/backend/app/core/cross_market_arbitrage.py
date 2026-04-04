@@ -85,7 +85,7 @@ class CrossMarketArbitrage:
     
     async def _get_session(self) -> aiohttp.ClientSession:
         if self.session is None or self.session.closed:
-            connector = aiohttp.TCPConnector(limit=20, keepalive_timeout=30)
+            connector = aiohttp.TCPConnector(limit=50, keepalive_timeout=30)  # 优化: 20 → 50
             timeout = aiohttp.ClientTimeout(total=2.0)
             self.session = aiohttp.ClientSession(connector=connector, timeout=timeout)
         return self.session
