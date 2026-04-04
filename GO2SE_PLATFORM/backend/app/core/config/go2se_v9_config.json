@@ -1,0 +1,103 @@
+{
+  "name": "GO2SE",
+  "version": "v9.0-final",
+  "updated": "2026-04-04",
+  "modes": {
+    "normal": {
+      "leverage": 1.5,
+      "risk_level": "medium",
+      "target_win_rate": 0.7,
+      "target_return": 0.08,
+      "max_position": 0.05,
+      "stop_loss": 0.05,
+      "take_profit": 0.08
+    },
+    "expert": {
+      "leverage": 2.0,
+      "risk_level": "high",
+      "target_win_rate": 0.75,
+      "target_return": 0.15,
+      "max_position": 0.1,
+      "stop_loss": 0.03,
+      "take_profit": 0.12
+    }
+  },
+  "tools": {
+    "rabbit": {
+      "name": "🐰 打兔子",
+      "allocation": 25,
+      "enabled": true,
+      "version": "v4.0-full-enhanced"
+    },
+    "mole": {
+      "name": "🐹 打地鼠",
+      "allocation": 20,
+      "enabled": true,
+      "version": "v5.0-full-enhanced"
+    },
+    "oracle": {
+      "name": "🔮 走着瞧",
+      "allocation": 17,
+      "enabled": true,
+      "version": "v4.0-full-enhanced"
+    },
+    "leader": {
+      "name": "👑 跟大哥",
+      "allocation": 17,
+      "enabled": true,
+      "version": "v4.0-full-enhanced"
+    },
+    "hitchhiker": {
+      "name": "🍀 搭便车",
+      "allocation": 11,
+      "enabled": true,
+      "version": "v4.0-full-enhanced"
+    },
+    "airdrop": {
+      "name": "💰 薅羊毛",
+      "allocation": 3,
+      "enabled": true,
+      "version": "v4.0-full-enhanced"
+    },
+    "crowdsourcing": {
+      "name": "👶 穷孩子",
+      "allocation": 2,
+      "enabled": true,
+      "version": "v4.0-full-enhanced"
+    }
+  },
+  "capabilities": {
+    "global_scan": {
+      "enabled": true,
+      "interval": 0.5
+    },
+    "deep_scan": {
+      "enabled": true,
+      "dimensions": 5
+    },
+    "mirofish": {
+      "enabled": true,
+      "agents": 1000
+    },
+    "sniping": {
+      "enabled": true,
+      "response_time": 0.5
+    },
+    "gstack_retro": {
+      "enabled": true,
+      "team_size": 15
+    }
+  },
+  "optimization": {
+    "selection_snipe": true,
+    "strategy_portfolio": true,
+    "compute_schedule": true,
+    "resource_match": true
+  },
+  "targets": {
+    "win_rate": 0.7,
+    "return": 0.1,
+    "sharpe_ratio": 2.0,
+    "max_drawdown": 0.1
+  }
+}
