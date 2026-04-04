@@ -1,0 +1,29 @@
+{
+  "timestamp": "2026-04-04T18:38:34.194694",
+  "version": "v9.0-optimized",
+  "optimizations": {
+    "B7_\u7a77\u5b69\u5b50\u7b56\u7565": {
+      "before": 64.0,
+      "after": 82.5,
+      "improvement": 18.5
+    },
+    "B3_\u8d70\u7740\u77a7\u7b56\u7565": {
+      "before": 71.1,
+      "after": 85.2,
+      "improvement": 14.1
+    },
+    "B5_\u642d\u4fbf\u8f66\u7b56\u7565": {
+      "before": 71.7,
+      "after": 84.3,
+      "improvement": 12.6
+    }
+  },
+  "mobile_ui": {
+    "added": true,
+    "features": 7
+  },
+  "e2e_tests": {
+    "total": 21
+  },
+  "overall_score": 86.33333333333333
+}

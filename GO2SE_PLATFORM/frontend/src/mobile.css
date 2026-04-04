@@ -1,0 +1,400 @@
+/**
+ * GO2SE V9 - 移动端适配样式
+ * 
+ * 优化项:
+ * - 响应式布局
+ * - 触摸友好
+ * - 移动端导航
+ * - 紧凑模式
+ */
+
+/* 移动端断点 */
+@media (max-width: 768px) {
+  /* Header */
+  .header {
+    padding: 0.75rem 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .logo h1 {
+    font-size: 1.25rem;
+  }
+  
+  .version-badge {
+    font-size: 0.625rem;
+    padding: 0.2rem 0.4rem;
+  }
+  
+  .status-badge {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.75rem;
+  }
+  
+  /* Navigation - 底部固定 */
+  .nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: auto;
+    padding: 0.5rem;
+    background: var(--bg-card);
+    border-top: 1px solid rgba(0, 212, 170, 0.2);
+    display: flex;
+    justify-content: space-around;
+    z-index: 1000;
+    gap: 0.25rem;
+  }
+  
+  .nav button {
+    flex: 1;
+    padding: 0.5rem 0.25rem;
+    font-size: 0.7rem;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  
+  .nav button::before {
+    font-size: 1.25rem;
+  }
+  
+  /* Main Content */
+  .main {
+    padding: 1rem;
+    padding-bottom: 5rem; /* 底部导航高度 */
+  }
+  
+  /* Page Title */
+  .page-title {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+  }
+  
+  /* Grid */
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  /* Cards */
+  .card {
+    padding: 1rem;
+    border-radius: 8px;
+  }
+  
+  .card h3 {
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  /* Brain Switcher */
+  .brain-indicators {
+    gap: 1rem;
+  }
+  
+  .brain {
+    min-width: 100px;
+    padding: 0.75rem;
+  }
+  
+  .brain-icon {
+    font-size: 2rem;
+  }
+  
+  .brain-label {
+    font-size: 0.875rem;
+  }
+  
+  .brain-mode {
+    font-size: 0.75rem;
+  }
+  
+  .switch-arrows {
+    gap: 0.25rem;
+  }
+  
+  .switch-btn {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.875rem;
+  }
+  
+  /* Wallet */
+  .wallet-flow {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .wallet-arrow {
+    transform: rotate(90deg);
+  }
+  
+  .wallet-box {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+  }
+  
+  .total-assets {
+    font-size: 0.9rem;
+    padding: 0.75rem;
+  }
+  
+  .total-assets strong {
+    font-size: 1rem;
+  }
+  
+  /* Lobster */
+  .lobster-stats {
+    flex-direction: row;
+    gap: 1rem;
+  }
+  
+  .lobster-btns {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  
+  .lobster-btn {
+    flex: 1 1 45%;
+    min-width: 45%;
+    font-size: 0.75rem;
+    padding: 0.6rem;
+  }
+  
+  /* Tools Grid */
+  .tools-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  
+  .tool-card {
+    padding: 1rem;
+  }
+  
+  .tool-header {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .tool-name {
+    font-size: 1rem;
+  }
+  
+  .tool-version {
+    font-size: 0.65rem;
+  }
+  
+  .tool-desc {
+    font-size: 0.8rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .tool-caps {
+    font-size: 0.75rem;
+  }
+  
+  .tool-actions {
+    gap: 0.25rem;
+  }
+  
+  .tool-action {
+    flex: 1 1 45%;
+    min-width: 45%;
+    font-size: 0.65rem;
+    padding: 0.4rem;
+  }
+  
+  /* Settings */
+  .settings-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .setting-row {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .setting-label {
+    flex: 1;
+    font-size: 0.8rem;
+  }
+  
+  .setting-input {
+    width: 80px;
+  }
+  
+  .setting-input.small {
+    width: 50px;
+  }
+  
+  .setting-checkbox {
+    width: 24px;
+    height: 24px;
+  }
+  
+  /* Footer */
+  .footer {
+    display: none; /* 移动端隐藏，底部导航已足够 */
+  }
+  
+  /* Loading */
+  .loading {
+    font-size: 1.25rem;
+  }
+  
+  /* Status Cards */
+  .status-info {
+    font-size: 0.875rem;
+  }
+  
+  .status-info div {
+    margin-bottom: 0.25rem;
+  }
+  
+  /* Buttons */
+  button {
+    min-height: 44px; /* 触摸友好 */
+    min-width: 44px;
+  }
+  
+  /* Inputs */
+  input, select {
+    min-height: 40px;
+    font-size: 16px; /* 防止iOS缩放 */
+  }
+  
+  /* Table */
+  table {
+    font-size: 0.8rem;
+  }
+  
+  th, td {
+    padding: 0.5rem 0.25rem;
+  }
+}
+
+/* 平板适配 */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .nav {
+    padding: 0.75rem 1.5rem;
+  }
+  
+  .nav button {
+    padding: 0.6rem 1rem;
+  }
+  
+  .tools-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 大屏幕 */
+@media (min-width: 1025px) {
+  .grid {
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  }
+  
+  .main {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+}
+
+/* 触摸设备优化 */
+@media (hover: none) and (pointer: coarse) {
+  /* 移除hover效果 */
+  .nav button:hover,
+  .lobster-btn:hover,
+  .tool-action:hover,
+  .switch-btn:hover:not(:disabled) {
+    background: inherit;
+    border-color: inherit;
+  }
+  
+  /* 增加触摸反馈 */
+  .nav button:active,
+  .lobster-btn:active,
+  .tool-action:active,
+  .switch-btn:active {
+    opacity: 0.7;
+    transform: scale(0.98);
+  }
+  
+  /* 隐藏滚动条但保持滚动 */
+  ::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+  
+  /* 使用原生滚动 */
+  .main {
+    -webkit-overflow-scrolling: touch;
+    overflow-y: auto;
+  }
+}
+
+/* 安全区域适配 (iPhone X+) */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .nav {
+    padding-bottom: calc(0.5rem + env(safe-area-inset-bottom));
+  }
+  
+  .main {
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+  }
+}
+
+/* 深色模式增强 */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-dark: #000000;
+    --bg-card: #111827;
+  }
+}
+
+/* 高对比度模式 */
+@media (prefers-contrast: high) {
+  :root {
+    --primary: #00FFAA;
+    --secondary: #9D4EDD;
+    --text: #FFFFFF;
+    --text-muted: #CCCCCC;
+  }
+  
+  .card {
+    border-width: 2px;
+  }
+}
+
+/* 减少动画 */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* 打印样式 */
+@media print {
+  .nav, .footer {
+    display: none;
+  }
+  
+  .main {
+    padding: 0;
+  }
+  
+  .card {
+    break-inside: avoid;
+    box-shadow: none;
+  }
+}

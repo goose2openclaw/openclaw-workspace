@@ -1,0 +1,6 @@
+# GO2SE E2E 测试依赖
+pytest>=7.0.0
+pytest-asyncio>=0.21.0
+pytest-timeout>=2.1.0
+aiohttp>=3.8.0
+playwright>=1.30.0
