@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  # GO2SE Backend
+  backend:
+    build: .
+    container_name: go2se-backend
+    ports:
+      - "8004:8004"
+    environment:
+      - PYTHONPATH=/app
+      - PORT=8004
+      - HOST=0.0.0.0
+      - LOG_LEVEL=INFO
+      - CORS_ORIGINS=["*"]
+      - API_RATE_LIMIT=100
+      - TOTAL_CAPITAL=100000
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8004/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - go2se-network
+
+  # Redis Cache (可选)
+  redis:
+    image: redis:7-alpine
+    container_name: go2se-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+    networks:
+      - go2se-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+networks:
+  go2se-network:
+    driver: bridge
+
+volumes:
+  redis-data:
