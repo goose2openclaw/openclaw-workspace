@@ -1,0 +1,19 @@
+{
+  "strategies": {
+    "ema_cross": {
+      "allocation": 50,
+      "enabled": true,
+      "max_position": 0.05
+    },
+    "macd": {
+      "allocation": 0,
+      "enabled": false,
+      "max_position": 0.04
+    },
+    "rsi_extreme": {
+      "allocation": 0,
+      "enabled": false,
+      "max_position": 0.03
+    }
+  }
+}
