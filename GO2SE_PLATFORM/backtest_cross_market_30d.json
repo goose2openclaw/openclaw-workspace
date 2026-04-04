@@ -1,0 +1,228 @@
+{
+  "strategy": "\ud83d\udd17 \u8de8\u5e02\u573a\u5957\u5229",
+  "version": "v1.0-cross-market",
+  "period": "30 days",
+  "initial_capital": 10000,
+  "final_capital": 10469.51,
+  "total_return_pct": 4.7,
+  "total_opportunities": 44,
+  "total_trades": 38,
+  "winning_trades": 30,
+  "losing_trades": 8,
+  "win_rate": 78.9,
+  "max_drawdown": 0.01,
+  "sharpe_ratio": 2.19,
+  "daily_stats": [
+    {
+      "day": 1,
+      "opportunities": 2,
+      "trades": 2,
+      "profit_pct": 0.018587527392454554,
+      "capital": 10001.858752739245
+    },
+    {
+      "day": 2,
+      "opportunities": 2,
+      "trades": 2,
+      "profit_pct": 0.1720816729111356,
+      "capital": 10019.070118603167
+    },
+    {
+      "day": 3,
+      "opportunities": 2,
+      "trades": 2,
+      "profit_pct": -0.2569751074068948,
+      "capital": 9993.323602404715
+    },
+    {
+      "day": 4,
+      "opportunities": 1,
+      "trades": 0,
+      "profit_pct": 0.0,
+      "capital": 9993.323602404715
+    },
+    {
+      "day": 5,
+      "opportunities": 1,
+      "trades": 1,
+      "profit_pct": -0.28310055070463414,
+      "capital": 9965.032448252612
+    },
+    {
+      "day": 6,
+      "opportunities": 2,
+      "trades": 2,
+      "profit_pct": 0.4522219849233195,
+      "capital": 10010.096515788353
+    },
+    {
+      "day": 7,
+      "opportunities": 1,
+      "trades": 0,
+      "profit_pct": 0.0,
+      "capital": 10010.096515788353
+    },
+    {
+      "day": 8,
+      "opportunities": 2,
+      "trades": 2,
+      "profit_pct": -0.21595251489894915,
+      "capital": 9988.479460618695
+    },
+    {
+      "day": 9,
+      "opportunities": 1,
+      "trades": 0,
+      "profit_pct": 0.0,
+      "capital": 9988.479460618695
+    },
+    {
+      "day": 10,
+      "opportunities": 1,
+      "trades": 0,
+      "profit_pct": 0.0,
+      "capital": 9988.479460618695
+    },
+    {
+      "day": 11,
+      "opportunities": 1,
+      "trades": 1,
+      "profit_pct": -0.0763547045250309,
+      "capital": 9980.852786639996
+    },
+    {
+      "day": 12,
+      "opportunities": 0,
+      "trades": 0,
+      "profit_pct": 0.0,
+      "capital": 9980.852786639996
+    },
+    {
+      "day": 13,
+      "opportunities": 1,
+      "trades": 1,
+      "profit_pct": -0.23708403428847336,
+      "capital": 9957.189778197037
+    },
+    {
+      "day": 14,
+      "opportunities": 2,
+      "trades": 2,
+      "profit_pct": 0.7076721467591431,
+      "capital": 10027.654036857286
+    },
+    {
+      "day": 15,
+      "opportunities": 1,
+      "trades": 1,
+      "profit_pct": 0.34327521943666506,
+      "capital": 10062.076488256658
+    },
+    {
+      "day": 16,
+      "opportunities": 1,
+      "trades": 0,
+      "profit_pct": 0.0,
+      "capital": 10062.076488256658
+    },
+    {
+      "day": 17,
+      "opportunities": 0,
+      "trades": 0,
+      "profit_pct": 0.0,
+      "capital": 10062.076488256658
+    },
+    {
+      "day": 18,
+      "opportunities": 3,
+      "trades": 3,
+      "profit_pct": 0.5482677692922685,
+      "capital": 10117.243610563304
+    },
+    {
+      "day": 19,
+      "opportunities": 1,
+      "trades": 1,
+      "profit_pct": -0.22886479005020888,
+      "capital": 10094.08880221512
+    },
+    {
+      "day": 20,
+      "opportunities": 1,
+      "trades": 1,
+      "profit_pct": 0.26088697580756776,
+      "capital": 10120.42296522655
+    },
+    {
+      "day": 21,
+      "opportunities": 3,
+      "trades": 2,
+      "profit_pct": 0.0858934299900773,
+      "capital": 10129.115743640887
+    },
+    {
+      "day": 22,
+      "opportunities": 3,
+      "trades": 3,
+      "profit_pct": 0.6744594896762924,
+      "capital": 10197.432525994167
+    },
+    {
+      "day": 23,
+      "opportunities": 2,
+      "trades": 2,
+      "profit_pct": 0.3799877344568105,
+      "capital": 10236.181518822455
+    },
+    {
+      "day": 24,
+      "opportunities": 1,
+      "trades": 1,
+      "profit_pct": 0.3137936848584568,
+      "capital": 10268.30200999917
+    },
+    {
+      "day": 25,
+      "opportunities": 1,
+      "trades": 1,
+      "profit_pct": 0.1635130697505527,
+      "capital": 10285.092025826978
+    },
+    {
+      "day": 26,
+      "opportunities": 2,
+      "trades": 2,
+      "profit_pct": 0.6257401825721909,
+      "capital": 10349.449979447107
+    },
+    {
+      "day": 27,
+      "opportunities": 2,
+      "trades": 2,
+      "profit_pct": 0.4674679621417153,
+      "capital": 10397.830342358904
+    },
+    {
+      "day": 28,
+      "opportunities": 1,
+      "trades": 1,
+      "profit_pct": 0.3401171693237676,
+      "capital": 10433.195148590423
+    },
+    {
+      "day": 29,
+      "opportunities": 2,
+      "trades": 2,
+      "profit_pct": 0.11070743052390328,
+      "capital": 10444.745470860971
+    },
+    {
+      "day": 30,
+      "opportunities": 1,
+      "trades": 1,
+      "profit_pct": 0.23706684282333088,
+      "capital": 10469.506499189676
+    }
+  ],
+  "timestamp": "2026-04-04T15:39:56.809005"
+}

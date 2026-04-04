@@ -1,0 +1,329 @@
+{
+  "strategy": "\ud83d\udc39 \u6253\u5730\u9f20V4",
+  "version": "v4.0-dual-engine",
+  "period": "30 days",
+  "initial_capital": 10000,
+  "final_capital": 10503.61,
+  "total_return_pct": 5.04,
+  "engines": {
+    "hft": {
+      "opportunities": 134,
+      "trades": 134,
+      "weight": 0.6
+    },
+    "cross_market": {
+      "opportunities": 39,
+      "trades": 39,
+      "weight": 0.4
+    }
+  },
+  "total_trades": 173,
+  "winning_trades": 134,
+  "losing_trades": 39,
+  "win_rate": 77.5,
+  "max_drawdown": 0.0,
+  "sharpe_ratio": 2.38,
+  "daily_stats": [
+    {
+      "day": 1,
+      "hft_opportunities": 5,
+      "cross_opportunities": 2,
+      "hft_trades": 5,
+      "cross_trades": 2,
+      "total_trades": 7,
+      "profit_pct": 0.059686413062895155,
+      "capital": 10005.968641306288
+    },
+    {
+      "day": 2,
+      "hft_opportunities": 3,
+      "cross_opportunities": 1,
+      "hft_trades": 3,
+      "cross_trades": 1,
+      "total_trades": 4,
+      "profit_pct": 0.08197778936201956,
+      "capital": 10014.171313202687
+    },
+    {
+      "day": 3,
+      "hft_opportunities": 9,
+      "cross_opportunities": 0,
+      "hft_trades": 9,
+      "cross_trades": 0,
+      "total_trades": 9,
+      "profit_pct": 0.05197844569687819,
+      "capital": 10019.376523800713
+    },
+    {
+      "day": 4,
+      "hft_opportunities": 6,
+      "cross_opportunities": 0,
+      "hft_trades": 6,
+      "cross_trades": 0,
+      "total_trades": 6,
+      "profit_pct": 0.05935136993497321,
+      "capital": 10025.323161026532
+    },
+    {
+      "day": 5,
+      "hft_opportunities": 9,
+      "cross_opportunities": 1,
+      "hft_trades": 9,
+      "cross_trades": 1,
+      "total_trades": 10,
+      "profit_pct": 0.6008956628333049,
+      "capital": 10085.564893086163
+    },
+    {
+      "day": 6,
+      "hft_opportunities": 5,
+      "cross_opportunities": 1,
+      "hft_trades": 5,
+      "cross_trades": 1,
+      "total_trades": 6,
+      "profit_pct": 0.27128303393461956,
+      "capital": 10112.925319517572
+    },
+    {
+      "day": 7,
+      "hft_opportunities": 4,
+      "cross_opportunities": 2,
+      "hft_trades": 4,
+      "cross_trades": 2,
+      "total_trades": 6,
+      "profit_pct": -0.1355420855617627,
+      "capital": 10099.218049628194
+    },
+    {
+      "day": 8,
+      "hft_opportunities": 3,
+      "cross_opportunities": 2,
+      "hft_trades": 3,
+      "cross_trades": 2,
+      "total_trades": 5,
+      "profit_pct": 0.03956395703584234,
+      "capital": 10103.213699918304
+    },
+    {
+      "day": 9,
+      "hft_opportunities": 3,
+      "cross_opportunities": 3,
+      "hft_trades": 3,
+      "cross_trades": 3,
+      "total_trades": 6,
+      "profit_pct": 0.6668420629897539,
+      "capital": 10170.586178583102
+    },
+    {
+      "day": 10,
+      "hft_opportunities": 6,
+      "cross_opportunities": 1,
+      "hft_trades": 6,
+      "cross_trades": 1,
+      "total_trades": 7,
+      "profit_pct": 0.43408233426274906,
+      "capital": 10214.7348964753
+    },
+    {
+      "day": 11,
+      "hft_opportunities": 4,
+      "cross_opportunities": 0,
+      "hft_trades": 4,
+      "cross_trades": 0,
+      "total_trades": 4,
+      "profit_pct": -0.1569220247519798,
+      "capital": 10198.705727652703
+    },
+    {
+      "day": 12,
+      "hft_opportunities": 7,
+      "cross_opportunities": 2,
+      "hft_trades": 7,
+      "cross_trades": 2,
+      "total_trades": 9,
+      "profit_pct": 0.4693266255038581,
+      "capital": 10246.570969089364
+    },
+    {
+      "day": 13,
+      "hft_opportunities": 1,
+      "cross_opportunities": 2,
+      "hft_trades": 1,
+      "cross_trades": 2,
+      "total_trades": 3,
+      "profit_pct": 0.06008650748220621,
+      "capital": 10252.727775721376
+    },
+    {
+      "day": 14,
+      "hft_opportunities": 5,
+      "cross_opportunities": 2,
+      "hft_trades": 5,
+      "cross_trades": 2,
+      "total_trades": 7,
+      "profit_pct": 0.22887710018807184,
+      "capital": 10276.193921744623
+    },
+    {
+      "day": 15,
+      "hft_opportunities": 4,
+      "cross_opportunities": 2,
+      "hft_trades": 4,
+      "cross_trades": 2,
+      "total_trades": 6,
+      "profit_pct": 0.6239777633596955,
+      "capital": 10340.315086736031
+    },
+    {
+      "day": 16,
+      "hft_opportunities": 3,
+      "cross_opportunities": 2,
+      "hft_trades": 3,
+      "cross_trades": 2,
+      "total_trades": 5,
+      "profit_pct": 0.030452810274929593,
+      "capital": 10343.464003271225
+    },
+    {
+      "day": 17,
+      "hft_opportunities": 3,
+      "cross_opportunities": 1,
+      "hft_trades": 3,
+      "cross_trades": 1,
+      "total_trades": 4,
+      "profit_pct": -0.09915043465148207,
+      "capital": 10333.208413753962
+    },
+    {
+      "day": 18,
+      "hft_opportunities": 6,
+      "cross_opportunities": 0,
+      "hft_trades": 6,
+      "cross_trades": 0,
+      "total_trades": 6,
+      "profit_pct": 0.07516534658859897,
+      "capital": 10340.975405671883
+    },
+    {
+      "day": 19,
+      "hft_opportunities": 4,
+      "cross_opportunities": 1,
+      "hft_trades": 4,
+      "cross_trades": 1,
+      "total_trades": 5,
+      "profit_pct": 0.008165214587298686,
+      "capital": 10341.819768504176
+    },
+    {
+      "day": 20,
+      "hft_opportunities": 3,
+      "cross_opportunities": 1,
+      "hft_trades": 3,
+      "cross_trades": 1,
+      "total_trades": 4,
+      "profit_pct": -0.2000365895793994,
+      "capital": 10321.132344938813
+    },
+    {
+      "day": 21,
+      "hft_opportunities": 3,
+      "cross_opportunities": 3,
+      "hft_trades": 3,
+      "cross_trades": 3,
+      "total_trades": 6,
+      "profit_pct": 0.8562264519970504,
+      "capital": 10409.504610221802
+    },
+    {
+      "day": 22,
+      "hft_opportunities": 2,
+      "cross_opportunities": 2,
+      "hft_trades": 2,
+      "cross_trades": 2,
+      "total_trades": 4,
+      "profit_pct": 0.14391876616658025,
+      "capital": 10424.485840820886
+    },
+    {
+      "day": 23,
+      "hft_opportunities": 3,
+      "cross_opportunities": 0,
+      "hft_trades": 3,
+      "cross_trades": 0,
+      "total_trades": 3,
+      "profit_pct": 0.07515259420851697,
+      "capital": 10432.320112363162
+    },
+    {
+      "day": 24,
+      "hft_opportunities": 8,
+      "cross_opportunities": 1,
+      "hft_trades": 8,
+      "cross_trades": 1,
+      "total_trades": 9,
+      "profit_pct": 0.10815339996103385,
+      "capital": 10443.603021259503
+    },
+    {
+      "day": 25,
+      "hft_opportunities": 5,
+      "cross_opportunities": 0,
+      "hft_trades": 5,
+      "cross_trades": 0,
+      "total_trades": 5,
+      "profit_pct": 0.077924870359234,
+      "capital": 10451.741185374653
+    },
+    {
+      "day": 26,
+      "hft_opportunities": 5,
+      "cross_opportunities": 2,
+      "hft_trades": 5,
+      "cross_trades": 2,
+      "total_trades": 7,
+      "profit_pct": -0.358594097342359,
+      "capital": 10414.261858414398
+    },
+    {
+      "day": 27,
+      "hft_opportunities": 5,
+      "cross_opportunities": 0,
+      "hft_trades": 5,
+      "cross_trades": 0,
+      "total_trades": 5,
+      "profit_pct": -0.08498457139463829,
+      "capital": 10405.411342610108
+    },
+    {
+      "day": 28,
+      "hft_opportunities": 3,
+      "cross_opportunities": 2,
+      "hft_trades": 3,
+      "cross_trades": 2,
+      "total_trades": 5,
+      "profit_pct": 0.3940593387752757,
+      "capital": 10446.414837743645
+    },
+    {
+      "day": 29,
+      "hft_opportunities": 2,
+      "cross_opportunities": 1,
+      "hft_trades": 2,
+      "cross_trades": 1,
+      "total_trades": 3,
+      "profit_pct": 0.38394514359859266,
+      "capital": 10486.523340193324
+    },
+    {
+      "day": 30,
+      "hft_opportunities": 5,
+      "cross_opportunities": 2,
+      "hft_trades": 5,
+      "cross_trades": 2,
+      "total_trades": 7,
+      "profit_pct": 0.1629811240950128,
+      "capital": 10503.614393811657
+    }
+  ],
+  "timestamp": "2026-04-04T15:40:32.598170"
+}
