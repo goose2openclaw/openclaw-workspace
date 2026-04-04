@@ -1,10 +1,10 @@
 {
-  "version": "5.0",
+  "version": "6.0",
   "updated": "2026-04-04",
-  "note": "主配置文件 - 所有工具和策略的仓位分配",
+  "note": "\u4e3b\u914d\u7f6e\u6587\u4ef6 - \u6240\u6709\u5de5\u5177\u548c\u7b56\u7565\u7684\u4ed3\u4f4d\u5206\u914d",
   "tools": {
     "rabbit": {
-      "name": "打兔子",
+      "name": "\u6253\u5154\u5b50",
       "name_en": "rabbit",
       "allocation": 27.8,
       "enabled": true,
@@ -20,10 +20,10 @@
         "bybit",
         "okx"
       ],
-      "description": "前20主流加密货币，稳定收益"
+      "description": "\u524d20\u4e3b\u6d41\u52a0\u5bc6\u8d27\u5e01\uff0c\u7a33\u5b9a\u6536\u76ca"
     },
     "mole": {
-      "name": "打地鼠",
+      "name": "\u6253\u5730\u9f20",
       "name_en": "mole",
       "allocation": 22.2,
       "enabled": true,
@@ -39,10 +39,10 @@
         "okx",
         "kucoin"
       ],
-      "description": "高波动币种，火控雷达锁定"
+      "description": "\u9ad8\u6ce2\u52a8\u5e01\u79cd\uff0c\u706b\u63a7\u96f7\u8fbe\u9501\u5b9a"
     },
     "oracle": {
-      "name": "走着瞧",
+      "name": "\u8d70\u7740\u77a7",
       "name_en": "oracle",
       "allocation": 16.7,
       "enabled": true,
@@ -61,10 +61,10 @@
         "kalshi",
         "predictit"
       ],
-      "description": "预测市场，高胜率信号"
+      "description": "\u9884\u6d4b\u5e02\u573a\uff0c\u9ad8\u80dc\u7387\u4fe1\u53f7"
     },
     "leader": {
-      "name": "跟大哥",
+      "name": "\u8ddf\u5927\u54e5",
       "name_en": "leader",
       "allocation": 16.7,
       "enabled": true,
@@ -81,10 +81,10 @@
         "bybit",
         "okx"
       ],
-      "description": "做市协作，MiroFish评估"
+      "description": "\u505a\u5e02\u534f\u4f5c\uff0cMiroFish\u8bc4\u4f30"
     },
     "hitchhiker": {
-      "name": "搭便车",
+      "name": "\u642d\u4fbf\u8f66",
       "name_en": "hitchhiker",
       "allocation": 11.1,
       "enabled": true,
@@ -101,10 +101,10 @@
         "conform",
         "token_terminal"
       ],
-      "description": "跟单分成，二级分包"
+      "description": "\u8ddf\u5355\u5206\u6210\uff0c\u4e8c\u7ea7\u5206\u5305"
     },
     "airdrop": {
-      "name": "薅羊毛",
+      "name": "\u8585\u7f8a\u6bdb",
       "name_en": "airdrop",
       "allocation": 3.3,
       "enabled": true,
@@ -127,10 +127,10 @@
         "linea",
         "polygon"
       ],
-      "description": "空投猎手，杜绝授权链接"
+      "description": "\u7a7a\u6295\u730e\u624b\uff0c\u675c\u7edd\u6388\u6743\u94fe\u63a5"
     },
     "crowdsource": {
-      "name": "穷孩子",
+      "name": "\u7a77\u5b69\u5b50",
       "name_en": "crowdsource",
       "allocation": 2.2,
       "enabled": true,
@@ -150,29 +150,29 @@
         "remotasks",
         "appen"
       ],
-      "description": "众包赚钱，EvoMap隔离"
+      "description": "\u4f17\u5305\u8d5a\u94b1\uff0cEvoMap\u9694\u79bb"
     }
   },
   "sonar_models": {
     "bullish": [
-      "牛旗",
-      "双底",
-      "突破",
-      "杯柄",
-      "上升三角",
-      "圆底"
+      "\u725b\u65d7",
+      "\u53cc\u5e95",
+      "\u7a81\u7834",
+      "\u676f\u67c4",
+      "\u4e0a\u5347\u4e09\u89d2",
+      "\u5706\u5e95"
     ],
     "bearish": [
-      "熊旗",
-      "双顶",
-      "跌破",
-      "头肩顶",
-      "下降三角"
+      "\u718a\u65d7",
+      "\u53cc\u9876",
+      "\u8dcc\u7834",
+      "\u5934\u80a9\u9876",
+      "\u4e0b\u964d\u4e09\u89d2"
     ],
     "neutral": [
-      "矩形",
-      "扩散楔形",
-      "通道"
+      "\u77e9\u5f62",
+      "\u6269\u6563\u6954\u5f62",
+      "\u901a\u9053"
     ]
   },
   "auto_adjust_rules": {
@@ -193,51 +193,206 @@
   "risk_rules": [
     {
       "id": "R001",
-      "name": "仓位限制",
+      "name": "\u4ed3\u4f4d\u9650\u5236",
       "condition": "position > 80%",
-      "action": "禁止开仓"
+      "action": "\u7981\u6b62\u5f00\u4ed3"
     },
     {
       "id": "R002",
-      "name": "日内熔断",
+      "name": "\u65e5\u5185\u7194\u65ad",
       "condition": "loss > 30%",
-      "action": "全部平仓"
+      "action": "\u5168\u90e8\u5e73\u4ed3"
     },
     {
       "id": "R003",
-      "name": "单笔风险",
+      "name": "\u5355\u7b14\u98ce\u9669",
       "condition": "risk > 5%",
-      "action": "降低仓位"
+      "action": "\u964d\u4f4e\u4ed3\u4f4d"
     },
     {
       "id": "R004",
-      "name": "波动止损",
+      "name": "\u6ce2\u52a8\u6b62\u635f",
       "condition": "volatility > 8%",
-      "action": "自动止损"
+      "action": "\u81ea\u52a8\u6b62\u635f"
     },
     {
       "id": "R005",
-      "name": "流动性检查",
+      "name": "\u6d41\u52a8\u6027\u68c0\u67e5",
       "condition": "volume < 100K",
-      "action": "禁止交易"
+      "action": "\u7981\u6b62\u4ea4\u6613"
     },
     {
       "id": "R006",
-      "name": "API故障",
+      "name": "API\u6545\u969c",
       "condition": "error_rate > 1%",
-      "action": "切换API"
+      "action": "\u5207\u6362API"
     },
     {
       "id": "R007",
-      "name": "异常检测",
-      "condition": "deviation > 3σ",
-      "action": "人工确认"
+      "name": "\u5f02\u5e38\u68c0\u6d4b",
+      "condition": "deviation > 3\u03c3",
+      "action": "\u4eba\u5de5\u786e\u8ba4"
     },
     {
       "id": "R008",
-      "name": "情绪过热",
-      "condition": "volatility > 5σ",
-      "action": "暂停交易"
+      "name": "\u60c5\u7eea\u8fc7\u70ed",
+      "condition": "volatility > 5\u03c3",
+      "action": "\u6682\u505c\u4ea4\u6613"
+    },
+    {
+      "id": "R009",
+      "name": "\u5171\u8bc6\u4e0d\u8db3",
+      "condition": "mirofish_consensus < 50%",
+      "action": "\u7981\u6b62\u5f00\u4ed3"
+    },
+    {
+      "id": "R010",
+      "name": "\u7f6e\u4fe1\u5ea6\u8fc7\u4f4e",
+      "condition": "avg_confidence < 75%",
+      "action": "\u964d\u4f4e\u4ed3\u4f4d50%"
+    },
+    {
+      "id": "R011",
+      "name": "API\u9650\u6d41",
+      "condition": "calls > 60/min",
+      "action": "\u6682\u505c1\u5206\u949f"
+    },
+    {
+      "id": "R012",
+      "name": "\u65e5\u63d0\u53d6\u4e0a\u9650",
+      "condition": "withdrawal > 10%",
+      "action": "\u4eba\u5de5\u786e\u8ba4"
     }
-  ]
+  ],
+  "mirofish": {
+    "enabled": true,
+    "agent_count": 500,
+    "consensus_threshold": 0.5,
+    "confidence_threshold": 0.75,
+    "agent_types": {
+      "trend": {
+        "weight": 0.3,
+        "reliability": 0.85
+      },
+      "mean_reversion": {
+        "weight": 0.25,
+        "reliability": 0.8
+      },
+      "momentum": {
+        "weight": 0.25,
+        "reliability": 0.75
+      },
+      "sentiment": {
+        "weight": 0.15,
+        "reliability": 0.7
+      },
+      "onchain": {
+        "weight": 0.05,
+        "reliability": 0.9
+      }
+    },
+    "market_adjustment": {
+      "bullish": {
+        "buy_weight": 1.2,
+        "sell_weight": 0.8
+      },
+      "bearish": {
+        "buy_weight": 0.8,
+        "sell_weight": 1.2
+      },
+      "neutral": {
+        "buy_weight": 1.0,
+        "sell_weight": 1.0
+      }
+    }
+  },
+  "security": {
+    "wallet_isolation": true,
+    "api_key_rotation_days": 90,
+    "max_daily_withdrawal": 0.1,
+    "require_multi_sig": true,
+    "audit_log_enabled": true,
+    "rate_limit": {
+      "api_calls_per_minute": 60,
+      "trades_per_hour": 10,
+      "signals_per_minute": 100
+    }
+  },
+  "performance": {
+    "cache": {
+      "enabled": true,
+      "ttl_seconds": {
+        "market_data": 5,
+        "signals": 30,
+        "portfolio": 60,
+        "backtest": 300
+      }
+    },
+    "database": {
+      "pool_size": 10,
+      "max_overflow": 20,
+      "pool_timeout": 30
+    },
+    "api": {
+      "timeout_seconds": 10,
+      "retry_attempts": 3,
+      "retry_backoff": 2.0
+    }
+  },
+  "ux": {
+    "navigation": {
+      "show_breadcrumb": true,
+      "show_shortcuts": true,
+      "expand_submenu_on_hover": true
+    },
+    "dashboard": {
+      "auto_refresh_seconds": 5,
+      "show_pnl_tooltip": true,
+      "enable_keyboard_shortcuts": true
+    },
+    "signals": {
+      "show_confidence_bar": true,
+      "highlight_strong_signals": true,
+      "filter_by_confidence": 0.7
+    },
+    "notifications": {
+      "enabled": true,
+      "sound": true,
+      "desktop": true
+    }
+  },
+  "data": {
+    "sources": {
+      "binance": {
+        "priority": 1,
+        "enabled": true
+      },
+      "bybit": {
+        "priority": 2,
+        "enabled": true
+      },
+      "okx": {
+        "priority": 3,
+        "enabled": true
+      },
+      "coingecko": {
+        "priority": 4,
+        "enabled": true
+      }
+    },
+    "update_frequency": {
+      "price": 5,
+      "orderbook": 10,
+      "ohlcv": 60
+    },
+    "history_days": 365,
+    "fallback_enabled": true
+  },
+  "strategy_engine": {
+    "max_concurrent": 10,
+    "timeout_seconds": 30,
+    "retry_failed": true,
+    "emit_signals": true
+  },
+  "last_updated": "2026-04-04"
 }
