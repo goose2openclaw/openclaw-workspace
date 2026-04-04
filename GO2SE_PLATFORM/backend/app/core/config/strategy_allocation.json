@@ -1,5 +1,5 @@
 {
-  "version": "8.4",
+  "version": "8.5",
   "updated": "2026-04-04",
   "tools": {
     "rabbit": {
@@ -306,8 +306,74 @@
       "allocation": 3,
       "enabled": true,
       "max_position": 0.03,
+      "version": "v3.0-decision-equation",
+      "decision_equation": {
+        "formula": "W = 0.30·MiroFish + 0.25·External + 0.20·Historical + 0.15·ML + 0.10·Consensus"
+      },
+      "components": {
+        "mirofish": {
+          "weight": 0.3,
+          "agents": 1000,
+          "consensus_threshold": 0.55
+        },
+        "external": {
+          "weight": 0.25,
+          "sources": [
+            "layerzero",
+            "zksync",
+            "starknet",
+            "scroll",
+            "linea"
+          ]
+        },
+        "historical": {
+          "weight": 0.2,
+          "patterns": [
+            "bridge_and_swap",
+            "nft_mint",
+            "testnet_farm",
+            "socialengage",
+            "defi_lending"
+          ]
+        },
+        "ml": {
+          "weight": 0.15,
+          "cycle_hours": 24,
+          "model": "ensemble_v1"
+        },
+        "consensus": {
+          "weight": 0.1,
+          "strategies": [
+            "potential",
+            "eligibility",
+            "risk_adjusted",
+            "time_efficiency",
+            "gas_optimized"
+          ]
+        }
+      },
+      "protocols": [
+        "layerzero",
+        "zksync",
+        "starknet",
+        "scroll",
+        "linea",
+        "celestia",
+        "fuel",
+        "argent",
+        "degen",
+        "scroll_zk"
+      ],
+      "risk_rules": {
+        "max_gas_fee": 50,
+        "max_time_per_hunt": 2,
+        "min_potential": 100,
+        "bridge_limit": 1000
+      },
       "strategies": [
-        "airdrop"
+        "airdrop_hunt",
+        "decision_equation",
+        "mirofish_consensus"
       ],
       "apis": []
     },
