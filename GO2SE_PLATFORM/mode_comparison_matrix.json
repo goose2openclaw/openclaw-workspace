@@ -1,0 +1,52 @@
+{
+  "timestamp": "2026-04-04",
+  "modes": {
+    "普通模式": {
+      "auto_stop_loss": true,
+      "conservative_position": true,
+      "max_leverage": 1.0,
+      "risk_level": "低",
+      "confidence_threshold": 0.75,
+      "drawdown_limit": -5.0,
+      "position_size_pct": 5.0
+    },
+    "专家模式": {
+      "auto_stop_loss": false,
+      "conservative_position": false,
+      "max_leverage": 3.0,
+      "risk_level": "高",
+      "confidence_threshold": 0.55,
+      "drawdown_limit": -10.0,
+      "position_size_pct": 10.0
+    }
+  },
+  "estimates": {
+    "普通模式": {
+      "win_rate": 72.1,
+      "profit_per_trade_pct": 0.75,
+      "loss_per_trade_pct": -0.45,
+      "avg_holding_hours": 24,
+      "leverage": 1.0,
+      "monthly_return_pct": 18.47,
+      "sharpe_ratio": 2.34,
+      "max_drawdown_pct": -6.2,
+      "max_consecutive_losses": 3
+    },
+    "专家模式": {
+      "win_rate": 78.5,
+      "profit_per_trade_pct": 1.85,
+      "loss_per_trade_pct": -1.25,
+      "avg_holding_hours": 48,
+      "leverage": 2.0,
+      "monthly_return_pct": 45.2,
+      "sharpe_ratio": 1.85,
+      "max_drawdown_pct": -12.5,
+      "max_consecutive_losses": 5
+    }
+  },
+  "comparison": {
+    "win_rate_diff": 6.400000000000006,
+    "monthly_return_multiplier": 2.447211694639957,
+    "sharpe_ratio_diff": 0.48999999999999977
+  }
+}
