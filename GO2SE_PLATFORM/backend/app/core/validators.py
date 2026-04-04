@@ -59,10 +59,10 @@ class TradeRequest(BaseModel):
         v = v.upper().strip()
         if "/" not in v:
             # 尝试自动转换 BTCUSDT -> BTC/USDT
-            for sep in ["USDT", "BTC", "ETH", "BNB"]:
-                if v.endswith(sep) and len(v) > len(sep) + 3:
-                    base = v[: -len(sep)]
-                    if base:
+            for sep in ["USDT", "USDC", "BUSD", "BTC", "ETH", "BNB"]:
+                if v.endswith(sep) and len(v) >= len(sep) + 3:
+                    base = v[:-len(sep)]
+                    if base and len(base) >= 2:
                         v = f"{base}/{sep}"
                         break
         return v
