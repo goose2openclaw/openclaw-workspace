@@ -1,5 +1,5 @@
 {
-  "version": "8.2",
+  "version": "8.3",
   "updated": "2026-04-04",
   "tools": {
     "rabbit": {
@@ -177,8 +177,56 @@
       "allocation": 11,
       "enabled": true,
       "max_position": 0.05,
+      "version": "v3.0-decision-equation",
+      "decision_equation": {
+        "formula": "W = 0.28·MiroFish + 0.27·External + 0.20·Historical + 0.15·ML + 0.10·Consensus"
+      },
+      "components": {
+        "mirofish": {
+          "weight": 0.28,
+          "agents": 1000,
+          "consensus_threshold": 0.55
+        },
+        "external": {
+          "weight": 0.27,
+          "sources": [
+            "cryptohopper",
+            "coinrule",
+            "tradesanta",
+            "wundertrading",
+            "cope"
+          ]
+        },
+        "historical": {
+          "weight": 0.2,
+          "patterns": [
+            "trend_follower",
+            "momentum",
+            "grid",
+            "scalper",
+            "swing"
+          ]
+        },
+        "ml": {
+          "weight": 0.15,
+          "cycle_hours": 24,
+          "model": "ensemble_v1"
+        },
+        "consensus": {
+          "weight": 0.1,
+          "strategies": [
+            "momentum",
+            "trend",
+            "risk_adjusted",
+            "sharpe",
+            "drawdown"
+          ]
+        }
+      },
       "strategies": [
-        "follow"
+        "follow",
+        "decision_equation",
+        "mirofish_consensus"
       ],
       "apis": []
     },

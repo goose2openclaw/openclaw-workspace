@@ -1,0 +1,298 @@
+{
+  "strategy": "\ud83c\udf40 \u642d\u4fbf\u8f66V3",
+  "version": "v3.0-decision-equation",
+  "period": "30 days",
+  "initial_capital": 10000,
+  "final_capital": 10913.57,
+  "total_return_pct": 9.14,
+  "signals": {
+    "total": 300,
+    "copy": 300,
+    "skip": 0,
+    "correct": 221,
+    "accuracy": 73.7
+  },
+  "weights": {
+    "mirofish": 0.28,
+    "external": 0.27,
+    "historical": 0.2,
+    "ml": 0.15,
+    "consensus": 0.1
+  },
+  "decision_equation": "W = 0.28\u00b7MiroFish + 0.27\u00b7External + 0.2\u00b7Historical + 0.15\u00b7ML + 0.1\u00b7Consensus",
+  "max_drawdown": 0.0,
+  "sharpe_ratio": 12.03,
+  "daily_stats": [
+    {
+      "day": 1,
+      "signals": 10,
+      "copy": 10,
+      "win": 7,
+      "acc": 70.0,
+      "pnl_pct": 0.3200924022029189,
+      "capital": 10032.009240220292
+    },
+    {
+      "day": 2,
+      "signals": 10,
+      "copy": 10,
+      "win": 8,
+      "acc": 80.0,
+      "pnl_pct": 0.3057684742361547,
+      "capital": 10062.683961809344
+    },
+    {
+      "day": 3,
+      "signals": 10,
+      "copy": 10,
+      "win": 6,
+      "acc": 60.0,
+      "pnl_pct": 0.14770556088375772,
+      "capital": 10077.547105595093
+    },
+    {
+      "day": 4,
+      "signals": 10,
+      "copy": 10,
+      "win": 8,
+      "acc": 80.0,
+      "pnl_pct": 0.37617676528426564,
+      "capital": 10115.45649631692
+    },
+    {
+      "day": 5,
+      "signals": 10,
+      "copy": 10,
+      "win": 6,
+      "acc": 60.0,
+      "pnl_pct": 0.28482944243188324,
+      "capital": 10144.26829465482
+    },
+    {
+      "day": 6,
+      "signals": 10,
+      "copy": 10,
+      "win": 8,
+      "acc": 80.0,
+      "pnl_pct": 0.3492858869038663,
+      "capital": 10179.700792137712
+    },
+    {
+      "day": 7,
+      "signals": 10,
+      "copy": 10,
+      "win": 7,
+      "acc": 70.0,
+      "pnl_pct": 0.22425751398233662,
+      "capital": 10202.529536065
+    },
+    {
+      "day": 8,
+      "signals": 10,
+      "copy": 10,
+      "win": 8,
+      "acc": 80.0,
+      "pnl_pct": 0.23768035395868783,
+      "capital": 10226.778944379057
+    },
+    {
+      "day": 9,
+      "signals": 10,
+      "copy": 10,
+      "win": 7,
+      "acc": 70.0,
+      "pnl_pct": 0.2523882398552256,
+      "capital": 10252.59013175066
+    },
+    {
+      "day": 10,
+      "signals": 10,
+      "copy": 10,
+      "win": 8,
+      "acc": 80.0,
+      "pnl_pct": 0.29259087046259585,
+      "capital": 10282.588274462112
+    },
+    {
+      "day": 11,
+      "signals": 10,
+      "copy": 10,
+      "win": 9,
+      "acc": 90.0,
+      "pnl_pct": 0.4196493932171112,
+      "capital": 10325.739093762906
+    },
+    {
+      "day": 12,
+      "signals": 10,
+      "copy": 10,
+      "win": 8,
+      "acc": 80.0,
+      "pnl_pct": 0.30987406965091513,
+      "capital": 10357.735881714283
+    },
+    {
+      "day": 13,
+      "signals": 10,
+      "copy": 10,
+      "win": 6,
+      "acc": 60.0,
+      "pnl_pct": 0.15413446778532813,
+      "capital": 10373.700722790174
+    },
+    {
+      "day": 14,
+      "signals": 10,
+      "copy": 10,
+      "win": 7,
+      "acc": 70.0,
+      "pnl_pct": 0.22425751398233662,
+      "capital": 10396.96452613907
+    },
+    {
+      "day": 15,
+      "signals": 10,
+      "copy": 10,
+      "win": 9,
+      "acc": 90.0,
+      "pnl_pct": 0.4483256962416269,
+      "capital": 10443.576789738878
+    },
+    {
+      "day": 16,
+      "signals": 10,
+      "copy": 10,
+      "win": 8,
+      "acc": 80.0,
+      "pnl_pct": 0.36270914057304826,
+      "capital": 10481.456597358027
+    },
+    {
+      "day": 17,
+      "signals": 10,
+      "copy": 10,
+      "win": 7,
+      "acc": 70.0,
+      "pnl_pct": 0.22752751130781196,
+      "capital": 10505.304794702804
+    },
+    {
+      "day": 18,
+      "signals": 10,
+      "copy": 10,
+      "win": 7,
+      "acc": 70.0,
+      "pnl_pct": 0.2633719045088306,
+      "capital": 10532.97281601507
+    },
+    {
+      "day": 19,
+      "signals": 10,
+      "copy": 10,
+      "win": 8,
+      "acc": 80.0,
+      "pnl_pct": 0.4014050929495541,
+      "capital": 10575.252705337545
+    },
+    {
+      "day": 20,
+      "signals": 10,
+      "copy": 10,
+      "win": 6,
+      "acc": 60.0,
+      "pnl_pct": 0.28246397591244987,
+      "capital": 10605.12398459183
+    },
+    {
+      "day": 21,
+      "signals": 10,
+      "copy": 10,
+      "win": 7,
+      "acc": 70.0,
+      "pnl_pct": 0.27899005245249286,
+      "capital": 10634.711225559095
+    },
+    {
+      "day": 22,
+      "signals": 10,
+      "copy": 10,
+      "win": 9,
+      "acc": 90.0,
+      "pnl_pct": 0.3761319805493995,
+      "capital": 10674.711775517499
+    },
+    {
+      "day": 23,
+      "signals": 10,
+      "copy": 10,
+      "win": 4,
+      "acc": 40.0,
+      "pnl_pct": 0.02841013807959079,
+      "capital": 10677.744475872521
+    },
+    {
+      "day": 24,
+      "signals": 10,
+      "copy": 10,
+      "win": 8,
+      "acc": 80.0,
+      "pnl_pct": 0.3728572071373681,
+      "capital": 10717.557215710525
+    },
+    {
+      "day": 25,
+      "signals": 10,
+      "copy": 10,
+      "win": 6,
+      "acc": 60.0,
+      "pnl_pct": 0.1521538787737647,
+      "capital": 10733.864394724027
+    },
+    {
+      "day": 26,
+      "signals": 10,
+      "copy": 10,
+      "win": 8,
+      "acc": 80.0,
+      "pnl_pct": 0.3393782804557828,
+      "capital": 10770.292799133296
+    },
+    {
+      "day": 27,
+      "signals": 10,
+      "copy": 10,
+      "win": 9,
+      "acc": 90.0,
+      "pnl_pct": 0.41935937227945264,
+      "capital": 10815.459031408402
+    },
+    {
+      "day": 28,
+      "signals": 10,
+      "copy": 10,
+      "win": 8,
+      "acc": 80.0,
+      "pnl_pct": 0.3492858869038663,
+      "capital": 10853.23590340898
+    },
+    {
+      "day": 29,
+      "signals": 10,
+      "copy": 10,
+      "win": 6,
+      "acc": 60.0,
+      "pnl_pct": 0.15596945325086672,
+      "capital": 10870.163636107554
+    },
+    {
+      "day": 30,
+      "signals": 10,
+      "copy": 10,
+      "win": 8,
+      "acc": 80.0,
+      "pnl_pct": 0.39932964736777926,
+      "capital": 10913.571422223922
+    }
+  ],
+  "timestamp": "2026-04-04T17:15:56.859565"
+}
