@@ -193,18 +193,28 @@ class FeedbackLoop:
     def _backtest_rsi_extreme(self, ohlcv: List) -> List[Dict]:
         """RSI极端值策略回测"""
         closes = [c[4] for c in ohlcv]
+        if len(closes) < 15:
+            return []
+        
         rsi = self._calc_rsi(closes, 14)
+        if len(rsi) < 15:
+            return []
         
         trades = []
         position = None
         
         for i in range(14, len(closes)):
-            if rsi[i] < 30 and position is None:
-                position = {"entry_price": closes[i]}
-            elif rsi[i] > 70 and position is not None:
-                pnl = (closes[i] - position["entry_price"]) / position["entry_price"]
-                trades.append({"pnl": pnl})
-                position = None
+            if i >= len(rsi):
+                break
+            try:
+                if rsi[i] < 30 and position is None:
+                    position = {"entry_price": closes[i]}
+                elif rsi[i] > 70 and position is not None:
+                    pnl = (closes[i] - position["entry_price"]) / position["entry_price"]
+                    trades.append({"pnl": pnl})
+                    position = None
+            except (IndexError, KeyError):
+                continue
         
         return trades
     

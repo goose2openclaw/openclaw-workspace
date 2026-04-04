@@ -97,7 +97,7 @@
       "position_pct": 20,
       "stop_loss": 8,
       "take_profit": 15,
-      "max_position": 0.3,
+      "max_position": 0.04,
       "coins": [
         "*"
       ],
@@ -159,7 +159,8 @@
         "auto_adjust": true,
         "confidence_threshold": 65,
         "fire_control_radar": true
-      }
+      },
+      "max_concurrent_positions": 5
     },
     "oracle": {
       "name": "走着瞧",
@@ -167,7 +168,7 @@
       "position_pct": 15,
       "stop_loss": 5,
       "take_profit": 10,
-      "max_position": 0.2,
+      "max_position": 0.05,
       "markets": [
         "polymarket",
         "ket",
@@ -217,7 +218,8 @@
         "auto_adjust": true,
         "confidence_threshold": 65,
         "prediction_interval": "15m"
-      }
+      },
+      "max_concurrent_positions": 3
     },
     "leader": {
       "name": "跟大哥",
@@ -225,7 +227,7 @@
       "position_pct": 15,
       "stop_loss": 3,
       "take_profit": 6,
-      "max_position": 0.3,
+      "max_position": 0.05,
       "strategies": [
         {
           "id": "copy_trade",
@@ -256,7 +258,8 @@
         "auto_adjust": true,
         "max_follow_percent": 30,
         "stop_if_drawdown": 15
-      }
+      },
+      "max_concurrent_positions": 3
     },
     "hitchhike": {
       "name": "搭便车",
@@ -264,7 +267,7 @@
       "position_pct": 10,
       "stop_loss": 5,
       "take_profit": 8,
-      "max_position": 0.2,
+      "max_position": 0.05,
       "strategies": [
         {
           "id": "signal_share",
@@ -295,7 +298,8 @@
         "auto_adjust": true,
         "confidence_threshold": 70,
         "subpackage_ratio": 0.5
-      }
+      },
+      "max_concurrent_positions": 2
     },
     "airdrop": {
       "name": "薅羊毛",
@@ -303,7 +307,7 @@
       "position_pct": 3,
       "stop_loss": 2,
       "take_profit": 20,
-      "max_position": 0.1,
+      "max_position": 0.03,
       "strategies": [
         {
           "id": "evomap_search",
@@ -335,7 +339,8 @@
         "security_check": true,
         "no授权_links": true,
         "bridge_wallet": true
-      }
+      },
+      "max_concurrent_positions": 3
     },
     "crowdsource": {
       "name": "穷孩子",
@@ -343,7 +348,7 @@
       "position_pct": 2,
       "stop_loss": 1,
       "take_profit": 30,
-      "max_position": 0.1,
+      "max_position": 0.02,
       "strategies": [
         {
           "id": "evomap_social",
@@ -374,7 +379,8 @@
         "auto_adjust": true,
         "idle_compute_threshold": 50,
         "isolation_mode": true
-      }
+      },
+      "max_concurrent_positions": 2
     }
   },
   "signal_fusion": {
