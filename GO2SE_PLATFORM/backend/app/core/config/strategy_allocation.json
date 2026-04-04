@@ -1,5 +1,5 @@
 {
-  "version": "8.5",
+  "version": "8.6",
   "updated": "2026-04-04",
   "tools": {
     "rabbit": {
@@ -384,6 +384,80 @@
       "max_position": 0.02,
       "strategies": [
         "crowdsource"
+      ],
+      "apis": []
+    },
+    "crowdsourcing": {
+      "name": "穷孩子",
+      "allocation": 2,
+      "enabled": true,
+      "max_position": 0.02,
+      "version": "v3.0-decision-equation",
+      "decision_equation": {
+        "formula": "W = 0.30·MiroFish + 0.25·External + 0.20·Historical + 0.15·ML + 0.10·Consensus"
+      },
+      "components": {
+        "mirofish": {
+          "weight": 0.3,
+          "agents": 1000,
+          "consensus_threshold": 0.55
+        },
+        "external": {
+          "weight": 0.25,
+          "sources": [
+            "evomap",
+            "clawjob",
+            "toloka",
+            "clickworker",
+            "appen",
+            "scale"
+          ]
+        },
+        "historical": {
+          "weight": 0.2,
+          "patterns": [
+            "social",
+            "data",
+            "research",
+            "micro",
+            "creative",
+            "annotation"
+          ]
+        },
+        "ml": {
+          "weight": 0.15,
+          "cycle_hours": 24,
+          "model": "ensemble_v1"
+        },
+        "consensus": {
+          "weight": 0.1,
+          "strategies": [
+            "reward",
+            "time_efficiency",
+            "skill_match",
+            "reliability",
+            "availability"
+          ]
+        }
+      },
+      "platforms": [
+        "evomap",
+        "clawjob",
+        "toloka",
+        "clickworker",
+        "appen",
+        "scale"
+      ],
+      "risk_rules": {
+        "min_hourly_rate": 5,
+        "max_task_time": 4,
+        "min_difficulty": 1,
+        "max_difficulty": 4
+      },
+      "strategies": [
+        "crowdsourcing",
+        "decision_equation",
+        "mirofish_consensus"
       ],
       "apis": []
     }
