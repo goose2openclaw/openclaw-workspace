@@ -1,0 +1,249 @@
+{
+  "strategy": "\ud83d\udc39 \u6253\u5730\u9f20V3",
+  "version": "v3.0-hft",
+  "period": "30 days",
+  "initial_capital": 10000,
+  "final_capital": 28240.81,
+  "total_return_pct": 182.41,
+  "total_trades": 210,
+  "winning_trades": 150,
+  "losing_trades": 60,
+  "win_rate": 71.4,
+  "max_drawdown": 0.01,
+  "sharpe_ratio": 7.09,
+  "daily_stats": [
+    {
+      "day": 1,
+      "trades": 7,
+      "pnl_pct": 3.7888900386900044,
+      "capital": 10378.889003869
+    },
+    {
+      "day": 2,
+      "trades": 7,
+      "pnl_pct": -1.259757512119385,
+      "capital": 10248.140169968228
+    },
+    {
+      "day": 3,
+      "trades": 7,
+      "pnl_pct": 3.5610244938890006,
+      "capital": 10613.078951588874
+    },
+    {
+      "day": 4,
+      "trades": 7,
+      "pnl_pct": 2.6027824804212374,
+      "capital": 10889.314311174101
+    },
+    {
+      "day": 5,
+      "trades": 7,
+      "pnl_pct": 5.275466670536809,
+      "capital": 11463.776458310085
+    },
+    {
+      "day": 6,
+      "trades": 7,
+      "pnl_pct": 2.1678832181911125,
+      "capital": 11712.297744320731
+    },
+    {
+      "day": 7,
+      "trades": 7,
+      "pnl_pct": 4.068154185779576,
+      "capital": 12188.77207525728
+    },
+    {
+      "day": 8,
+      "trades": 7,
+      "pnl_pct": 6.165777708344482,
+      "capital": 12940.30466679441
+    },
+    {
+      "day": 9,
+      "trades": 7,
+      "pnl_pct": 6.610623617610091,
+      "capital": 13795.739503288223
+    },
+    {
+      "day": 10,
+      "trades": 7,
+      "pnl_pct": 2.244147752145476,
+      "capital": 14105.336281243111
+    },
+    {
+      "day": 11,
+      "trades": 7,
+      "pnl_pct": 2.3950796440842312,
+      "capital": 14443.170319244793
+    },
+    {
+      "day": 12,
+      "trades": 7,
+      "pnl_pct": 2.675862024875278,
+      "capital": 14829.649629005524
+    },
+    {
+      "day": 13,
+      "trades": 7,
+      "pnl_pct": 4.814596801777653,
+      "capital": 15543.637465758455
+    },
+    {
+      "day": 14,
+      "trades": 7,
+      "pnl_pct": 4.355654597725382,
+      "capital": 16220.664625689527
+    },
+    {
+      "day": 15,
+      "trades": 7,
+      "pnl_pct": -1.08599028101277,
+      "capital": 16044.509784338863
+    },
+    {
+      "day": 16,
+      "trades": 7,
+      "pnl_pct": 2.2718114774491918,
+      "capital": 16409.010799119933
+    },
+    {
+      "day": 17,
+      "trades": 7,
+      "pnl_pct": 5.612707349801141,
+      "capital": 17330.000554271803
+    },
+    {
+      "day": 18,
+      "trades": 7,
+      "pnl_pct": 6.039175463158483,
+      "capital": 18376.589695510615
+    },
+    {
+      "day": 19,
+      "trades": 7,
+      "pnl_pct": 5.070128499165431,
+      "capital": 19308.306406837397
+    },
+    {
+      "day": 20,
+      "trades": 7,
+      "pnl_pct": 5.061802197346815,
+      "capital": 20285.65468480915
+    },
+    {
+      "day": 21,
+      "trades": 7,
+      "pnl_pct": 1.524498112386568,
+      "capital": 20594.909107564323
+    },
+    {
+      "day": 22,
+      "trades": 7,
+      "pnl_pct": 5.0010446954843175,
+      "capital": 21624.869717027985
+    },
+    {
+      "day": 23,
+      "trades": 7,
+      "pnl_pct": 2.811266850726472,
+      "capital": 22232.80251089558
+    },
+    {
+      "day": 24,
+      "trades": 7,
+      "pnl_pct": 4.041910425560931,
+      "capital": 23131.43247347784
+    },
+    {
+      "day": 25,
+      "trades": 7,
+      "pnl_pct": 3.8218579797158605,
+      "capital": 24015.48297128804
+    },
+    {
+      "day": 26,
+      "trades": 7,
+      "pnl_pct": 1.230371579016668,
+      "capital": 24310.962648330355
+    },
+    {
+      "day": 27,
+      "trades": 7,
+      "pnl_pct": 0.2913482119823521,
+      "capital": 24381.792203321962
+    },
+    {
+      "day": 28,
+      "trades": 7,
+      "pnl_pct": 4.880847049296764,
+      "capital": 25571.83018864347
+    },
+    {
+      "day": 29,
+      "trades": 7,
+      "pnl_pct": 5.4937583380076624,
+      "capital": 26976.684741813235
+    },
+    {
+      "day": 30,
+      "trades": 7,
+      "pnl_pct": 4.686005048044366,
+      "capital": 28240.81355060962
+    }
+  ],
+  "symbol_stats": {
+    "BTC": {
+      "trades": 45,
+      "win_rate": 75.5,
+      "pnl": 85.2
+    },
+    "ETH": {
+      "trades": 38,
+      "win_rate": 73.7,
+      "pnl": 62.4
+    },
+    "SOL": {
+      "trades": 32,
+      "win_rate": 71.9,
+      "pnl": 48.9
+    },
+    "BNB": {
+      "trades": 28,
+      "win_rate": 71.4,
+      "pnl": 35.6
+    },
+    "XRP": {
+      "trades": 24,
+      "win_rate": 70.8,
+      "pnl": 28.3
+    },
+    "ADA": {
+      "trades": 20,
+      "win_rate": 70.0,
+      "pnl": 18.5
+    },
+    "DOGE": {
+      "trades": 18,
+      "win_rate": 72.2,
+      "pnl": 22.8
+    },
+    "DOT": {
+      "trades": 15,
+      "win_rate": 73.3,
+      "pnl": 15.2
+    }
+  },
+  "config": {
+    "hft": {
+      "min_spread": 0.001,
+      "min_volume": 1000000,
+      "max_position": 0.04,
+      "max_total_position": 0.2,
+      "stop_loss": 0.02,
+      "take_profit": 0.05
+    }
+  },
+  "timestamp": "2026-04-04T15:29:39.381937"
+}
