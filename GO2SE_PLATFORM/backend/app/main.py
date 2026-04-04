@@ -31,6 +31,7 @@ from app.api.routes_expert_mode import router as expert_mode_router
 from app.api.routes_factor_degradation import router as factor_degradation_router
 from app.api.routes_optimizer import router as optimizer_router
 from app.api.routes_mapping import router as mapping_router
+from app.api.routes_public import router as public_router
 
 # 日志配置
 logging.basicConfig(
@@ -136,6 +137,7 @@ app.include_router(paper_trading_router, tags=["模拟交易"])
 app.include_router(expert_mode_router, tags=["专家模式配置"])
 app.include_router(factor_degradation_router, tags=["因子退化检测"])
 app.include_router(optimizer_router, tags=["优化器"])
+app.include_router(public_router, tags=["公开数据"])
 app.include_router(mapping_router, tags=["Mapping"])
 
 
