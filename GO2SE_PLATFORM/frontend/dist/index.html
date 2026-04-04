@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GO2SE V9 - 双脑架构</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    :root {
+      --primary: #00D4AA;
+      --secondary: #7C3AED;
+      --accent: #F59E0B;
+      --bg-dark: #0A0E17;
+      --bg-card: #111827;
+      --text: #E5E7EB;
+      --text-muted: #9CA3AF;
+      --success: #10B981;
+      --warning: #F59E0B;
+      --danger: #EF4444;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: linear-gradient(135deg, var(--bg-card), var(--bg-dark));
+      border-bottom: 1px solid rgba(0, 212, 170, 0.2);
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .logo h1 {
+      font-size: 1.5rem;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .version-badge {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.5rem;
+      background: var(--secondary);
+      border-radius: 4px;
+      color: white;
+    }
+    
+    .status-badge {
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-weight: 600;
+      background: rgba(0, 212, 170, 0.2);
+      border: 1px solid var(--primary);
+    }
+    
+    /* Navigation */
+    .nav {
+      display: flex;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
+      background: var(--bg-card);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .nav button {
+      padding: 0.75rem 1.5rem;
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .nav button:hover {
+      background: rgba(0, 212, 170, 0.1);
+      color: var(--primary);
+    }
+    
+    .nav button.active {
+      background: rgba(0, 212, 170, 0.2);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    
+    /* Main */
+    .main {
+      padding: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    .page-title {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    /* Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    /* Card */
+    .card {
+      background: var(--bg-card);
+      border-radius: 12px;
+      padding: 1.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .card h3 {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+    
+    /* Brain Switcher */
+    .brain-switcher {
+      text-align: center;
+    }
+    
+    .brain-indicators {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      margin-bottom: 1rem;
+    }
+    
+    .brain {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem;
+      border-radius: 12px;
+      min-width: 130px;
+      opacity: 0.5;
+      transition: all 0.3s;
+    }
+    
+    .brain.active {
+      opacity: 1;
+      background: rgba(0, 212, 170, 0.1);
+      border: 2px solid var(--primary);
+    }
+    
+    .brain-icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .brain-label {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    
+    .brain-mode {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+    
+    .health-bar {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    
+    .health-fill {
+      height: 100%;
+      background: var(--success);
+      transition: width 0.3s;
+    }
+    
+    .switch-btn {
+      padding: 0.5rem 1rem;
+      background: var(--bg-dark);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .switch-btn:hover:not(:disabled) {
+      background: var(--primary);
+      color: var(--bg-dark);
+    }
+    
+    .switch-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+    
+    .switch-arrows {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .active-info {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+    
+    .active-info strong {
+      color: var(--primary);
+    }
+    
+    /* Wallet */
+    .wallet-flow {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .wallet-box {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem;
+      border-radius: 8px;
+      min-width: 90px;
+    }
+    
+    .wallet-box.main {
+      background: rgba(0, 212, 170, 0.1);
+      border: 1px solid var(--primary);
+    }
+    
+    .wallet-box.transfer {
+      background: rgba(124, 58, 237, 0.1);
+      border: 1px solid var(--secondary);
+    }
+    
+    .wallet-box.exchange {
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid var(--accent);
+    }
+    
+    .wallet-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 0.25rem;
+    }
+    
+    .wallet-balance {
+      font-size: 1.125rem;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    
+    .wallet-arrow {
+      font-size: 1.25rem;
+      color: var(--text-muted);
+    }
+    
+    .total-assets {
+      text-align: center;
+      padding: 1rem;
+      background: rgba(0, 212, 170, 0.1);
+      border-radius: 8px;
+    }
+    
+    .total-assets strong {
+      color: var(--primary);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    
+    /* Lobster */
+    .lobster-stats {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 1rem;
+    }
+    
+    .stat {
+      text-align: center;
+    }
+    
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    
+    .lobster-btns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    
+    .lobster-btn {
+      flex: 1;
+      min-width: 70px;
+      padding: 0.75rem;
+      background: var(--bg-dark);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .lobster-btn:hover {
+      background: rgba(0, 212, 170, 0.1);
+      border-color: var(--primary);
+    }
+    
+    .lobster-btn.primary {
+      background: var(--primary);
+      color: var(--bg-dark);
+      border-color: var(--primary);
+    }
+    
+    /* Footer */
+    .footer {
+      padding: 1rem 2rem;
+      text-align: center;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    /* Tools Grid */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1rem;
+    }
+    
+    .tool-card {
+      background: var(--bg-card);
+      border-radius: 12px;
+      padding: 1.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .tool-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+    
+    .tool-name {
+      font-size: 1.125rem;
+      font-weight: 600;
+    }
+    
+    .tool-version {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.5rem;
+      background: var(--secondary);
+      border-radius: 4px;
+    }
+    
+    .tool-desc {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+    
+    .tool-caps {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+    }
+    
+    .cap-on { color: var(--primary); }
+    
+    .tool-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    
+    .tool-action {
+      flex: 1;
+      min-width: 60px;
+      padding: 0.5rem;
+      background: var(--bg-dark);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+      color: var(--text);
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .tool-action:hover {
+      background: rgba(0, 212, 170, 0.1);
+      border-color: var(--primary);
+    }
+    
+    /* Settings */
+    .settings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .setting-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    
+    .setting-label {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+    
+    .setting-input {
+      padding: 0.5rem;
+      background: var(--bg-dark);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+      color: var(--text);
+      width: 100px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    
+    .setting-input.small {
+      width: 60px;
+    }
+    
+    .setting-checkbox {
+      width: 20px;
+      height: 20px;
+      accent-color: var(--primary);
+    }
+    
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .page {
+      animation: fadeIn 0.3s ease;
+    }
+    
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 50vh;
+      font-size: 1.5rem;
+      color: var(--primary);
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <header class="header">
+      <div class="logo">
+        <h1>🪿 GO2SE V9</h1>
+        <span class="version-badge">dual-brain</span>
+      </div>
+      <div class="status-badge" id="status-badge">🧠 左脑</div>
+    </header>
+    
+    <nav class="nav">
+      <button class="active" data-page="overview">📊 总览</button>
+      <button data-page="trading">📈 交易</button>
+      <button data-page="tools">⚙️ 工具</button>
+      <button data-page="settings">⚙️ 设置</button>
+    </nav>
+    
+    <main class="main" id="main-content">
+      <!-- Content loaded by JS -->
+    </main>
+    
+    <footer class="footer">
+      GO2SE V9 Dual-Brain | <span id="current-mode">普通模式</span>
+    </footer>
+  </div>
+  
+  <script>
+    // State
+    let currentPage = 'overview';
+    let activeBrain = 'left';
+    let status = {
+      left: { mode: 'normal', health: 1.0, state: 'active' },
+      right: { mode: 'expert', health: 1.0, state: 'standby' }
+    };
+    
+    // API Base
+    const API = '/api/dual-brain';
+    
+    // Fetch status
+    async function fetchStatus() {
+      try {
+        const res = await fetch(`${API}/status`);
+        const data = await res.json();
+        if (data && data.brain_manager) {
+          status = {
+            left: data.brain_manager.left_brain,
+            right: data.brain_manager.right_brain
+          };
+          activeBrain = data.brain_manager.active_brain;
+          updateUI();
+        }
+      } catch (e) {
+        console.log('API not available, using mock data');
+      }
+    }
+    
+    // Switch brain
+    async function switchBrain(target) {
+      try {
+        await fetch(`${API}/switch`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ target })
+        });
+      } catch (e) {}
+      activeBrain = target;
+      status[activeBrain].state = 'active';
+      const other = target === 'left' ? 'right' : 'left';
+      status[other].state = 'standby';
+      updateUI();
+    }
+    
+    // Update UI
+    function updateUI() {
+      document.getElementById('status-badge').textContent = 
+        `🧠 ${activeBrain === 'left' ? '左脑' : '右脑'}`;
+      document.getElementById('current-mode').textContent = 
+        status[activeBrain].mode === 'normal' ? '普通模式' : '专家模式';
+      
+      document.querySelectorAll('.brain').forEach(el => {
+        el.classList.toggle('active', el.dataset.brain === activeBrain);
+      });
+      
+      document.querySelectorAll('.switch-btn').forEach((el, i) => {
+        el.disabled = i === 0 ? activeBrain === 'left' : activeBrain === 'right';
+      });
+      
+      renderPage();
+    }
+    
+    // Render pages
+    function renderPage() {
+      const main = document.getElementById('main-content');
+      
+      if (currentPage === 'overview') {
+        main.innerHTML = `
+          <h2 class="page-title">📊 总览</h2>
+          <div class="grid">
+            <div class="card">
+              <h3>🧠 系统状态</h3>
+              <p>版本: v9.0-dual-brain</p>
+              <p>运行时间: 24分钟</p>
+              <p>状态: <span style="color: var(--success)">● 运行中</span></p>
+            </div>
+            
+            <div class="card">
+              <h3>🧠 左右脑状态</h3>
+              <div class="brain-switcher">
+                <div class="brain-indicators">
+                  <div class="brain ${activeBrain === 'left' ? 'active' : ''}" data-brain="left">
+                    <span class="brain-icon">🧠</span>
+                    <span class="brain-label">左脑</span>
+                    <span class="brain-mode">${status.left.mode === 'normal' ? '普通模式' : '专家模式'}</span>
+                    <div class="health-bar">
+                      <div class="health-fill" style="width: ${status.left.health * 100}%"></div>
+                    </div>
+                  </div>
+                  <div class="switch-arrows">
+                    <button class="switch-btn" onclick="switchBrain('left')" ${activeBrain === 'left' ? 'disabled' : ''}>◀</button>
+                    <button class="switch-btn" onclick="switchBrain('right')" ${activeBrain === 'right' ? 'disabled' : ''}>▶</button>
+                  </div>
+                  <div class="brain ${activeBrain === 'right' ? 'active' : ''}" data-brain="right">
+                    <span class="brain-icon">🧠</span>
+                    <span class="brain-label">右脑</span>
+                    <span class="brain-mode">${status.right.mode === 'normal' ? '普通模式' : '专家模式'}</span>
+                    <div class="health-bar">
+                      <div class="health-fill" style="width: ${status.right.health * 100}%"></div>
+                    </div>
+                  </div>
+                </div>
+                <p class="active-info">当前活跃: <strong>🧠 ${activeBrain === 'left' ? '左脑' : '右脑'}</strong></p>
+              </div>
+            </div>
+            
+            <div class="card">
+              <h3>💰 钱包架构</h3>
+              <div class="wallet-flow">
+                <div class="wallet-box main">
+                  <span class="wallet-label">主钱包</span>
+                  <span class="wallet-balance">$100,000</span>
+                </div>
+                <span class="wallet-arrow">→</span>
+                <div class="wallet-box transfer">
+                  <span class="wallet-label">中转钱包</span>
+                  <span class="wallet-balance">$50,000</span>
+                </div>
+                <span class="wallet-arrow">→</span>
+                <div class="wallet-box exchange">
+                  <span class="wallet-label">交易所</span>
+                  <span class="wallet-balance">$65,000</span>
+                </div>
+              </div>
+              <div class="total-assets">总资产: <strong>$215,000</strong></div>
+            </div>
+            
+            <div class="card">
+              <h3>🦞 龙虾模块</h3>
+              <div class="lobster-stats">
+                <div class="stat"><span class="stat-label">复盘</span><span class="stat-value">0</span></div>
+                <div class="stat"><span class="stat-label">仿真</span><span class="stat-value">0</span></div>
+                <div class="stat"><span class="stat-label">优化</span><span class="stat-value">0</span></div>
+              </div>
+              <div class="lobster-btns">
+                <button class="lobster-btn" onclick="runRetro()">📊 复盘</button>
+                <button class="lobster-btn" onclick="runSim()">🧠 仿真</button>
+                <button class="lobster-btn" onclick="runOpt()">⚙️ 优化</button>
+                <button class="lobster-btn primary" onclick="runFull()">🚀 完整周期</button>
+              </div>
+            </div>
+          </div>
+        `;
+      } else if (currentPage === 'trading') {
+        main.innerHTML = `
+          <h2 class="page-title">📈 交易</h2>
+          <div class="grid tools-grid">
+            ${['🐰 打兔子', '🐹 打地鼠', '🔮 走着瞧', '👑 跟大哥', '🍀 搭便车', '💰 薅羊毛', '👶 穷孩子'].map((name, i) => `
+              <div class="tool-card">
+                <div class="tool-header">
+                  <span class="tool-name">${name}</span>
+                  <span class="tool-version">v4.0</span>
+                </div>
+                <p class="tool-desc">策略描述内容</p>
+                <div class="tool-caps">能力: <span class="cap-on">●●●●●</span></div>
+                <div class="tool-actions">
+                  <button class="tool-action">全域扫描</button>
+                  <button class="tool-action">深度扫描</button>
+                  <button class="tool-action">MiroFish</button>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      } else if (currentPage === 'tools') {
+        main.innerHTML = `
+          <h2 class="page-title">⚙️ 工具详情</h2>
+          <div class="tools-grid">
+            ${[
+              { name: '🐰 打兔子', desc: '前20主流加密货币趋势跟踪', caps: 5 },
+              { name: '🐹 打地鼠', desc: 'HFT套利+跨市场套利', caps: 5 },
+              { name: '🔮 走着瞧', desc: '预测市场+决策等式', caps: 5 },
+              { name: '👑 跟大哥', desc: '做市商跟单', caps: 5 },
+              { name: '🍀 搭便车', desc: '跟单分成', caps: 5 },
+              { name: '💰 薅羊毛', desc: '空投猎手', caps: 5 },
+              { name: '👶 穷孩子', desc: '众包打工', caps: 5 }
+            ].map(t => `
+              <div class="tool-card">
+                <div class="tool-header">
+                  <span class="tool-name">${t.name}</span>
+                  <span class="tool-version">v4.0</span>
+                </div>
+                <p class="tool-desc">${t.desc}</p>
+                <div class="tool-caps">能力: ${'●●●●●'.slice(0, t.caps).split('').map(() => '<span class="cap-on">●</span>').join('')}</div>
+                <div class="tool-actions">
+                  <button class="tool-action">全域扫描</button>
+                  <button class="tool-action">深度扫描</button>
+                  <button class="tool-action">选品</button>
+                  <button class="tool-action">抢单</button>
+                  <button class="tool-action">复盘</button>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      } else if (currentPage === 'settings') {
+        main.innerHTML = `
+          <h2 class="page-title">⚙️ 设置</h2>
+          <div class="settings-grid">
+            <div class="card">
+              <h3>🧠 左右脑配置</h3>
+              <div class="setting-row">
+                <span class="setting-label">左脑模式</span>
+                <select class="setting-input">
+                  <option value="normal" selected>普通模式</option>
+                  <option value="expert">专家模式</option>
+                </select>
+              </div>
+              <div class="setting-row">
+                <span class="setting-label">右脑模式</span>
+                <select class="setting-input">
+                  <option value="normal">普通模式</option>
+                  <option value="expert" selected>专家模式</option>
+                </select>
+              </div>
+              <div class="setting-row">
+                <span class="setting-label">自动切换</span>
+                <input type="checkbox" class="setting-checkbox" checked>
+              </div>
+            </div>
+            
+            <div class="card">
+              <h3>💰 钱包配置</h3>
+              <div class="setting-row">
+                <span class="setting-label">最大中转金额</span>
+                <input type="number" class="setting-input" value="10000">
+              </div>
+              <div class="setting-row">
+                <span class="setting-label">最小中转金额</span>
+                <input type="number" class="setting-input" value="1000">
+              </div>
+              <div class="setting-row">
+                <span class="setting-label">最低保留金额</span>
+                <input type="number" class="setting-input" value="20000">
+              </div>
+            </div>
+            
+            <div class="card">
+              <h3>🦞 龙虾模块</h3>
+              <div class="setting-row">
+                <span class="setting-label">自动复盘</span>
+                <input type="checkbox" class="setting-checkbox" checked>
+              </div>
+              <div class="setting-row">
+                <span class="setting-label">自动仿真</span>
+                <input type="checkbox" class="setting-checkbox" checked>
+              </div>
+              <div class="setting-row">
+                <span class="setting-label">优化周期(小时)</span>
+                <input type="number" class="setting-input small" value="24">
+              </div>
+            </div>
+          </div>
+        `;
+      }
+    }
+    
+    // Nav click
+    document.querySelectorAll('.nav button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentPage = btn.dataset.page;
+        updateUI();
+      });
+    });
+    
+    // Lobster actions
+    async function runRetro() { try { await fetch(`${API}/lobster/retro`, { method: 'POST' }); } catch (e) {} }
+    async function runSim() { try { await fetch(`${API}/lobster/simulation`, { method: 'POST' }); } catch (e) {} }
+    async function runOpt() { try { await fetch(`${API}/lobster/optimization`, { method: 'POST' }); } catch (e) {} }
+    async function runFull() { try { await fetch(`${API}/lobster/full-cycle`, { method: 'POST' }); } catch (e) {} }
+    
+    // Init
+    fetchStatus();
+    setInterval(fetchStatus, 5000);
+    renderPage();
+  </script>
+</body>
+</html>

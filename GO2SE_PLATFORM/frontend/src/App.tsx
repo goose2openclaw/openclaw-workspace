@@ -1,522 +1,589 @@
 /**
- * GO2SE 北斗七鑫 V10 - 智能投资平台
- * 
- * 投资架构:
- * ┌─────────────────────────────────────────────────────────┐
- * │              北斗七鑫投资组合 (可调参数)                   │
- * ├─────────────────────────────────────────────────────────┤
- * │  投资工具 (5种)              │  打工工具 (2种)           │
- * │  🐰 打兔子 (前20主流)        │  💰 薅羊毛 (空投)        │
- * │  🐹 打地鼠 (其他币)          │  👶 穷孩子 (众包)        │
- * │  🔮 走着瞧 (预测市场)        │                           │
- * │  👑 跟大哥 (做市)           │                           │
- * │  🍀 搭便车 (跟单)          │                           │
- * ├─────────────────────────────────────────────────────────┤
- * │  趋势判断: 声纳库 │ 预言机 │ MiroFish │ 情绪 │ 其他     │
- * ├─────────────────────────────────────────────────────────┤
- * │  底层: 市场数据 │ 算力 │ 策略 │ 资金                     │
- * └─────────────────────────────────────────────────────────┘
- * 
- * 25维度全向仿真 (A-E五层)
+ * GO2SE V9 双脑架构前台
+ * ====================
+ * 四级页面 + 左右脑切换 + 龙虾模块
  */
 
-import { useState, useEffect, useCallback } from 'react';
-import './App.css';
+import React, { useState, useEffect, useCallback } from 'react';
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8004";
+// ============================================================================
+// 类型定义
+// ============================================================================
 
-// 工具类型
-type Tool = {
-  id: string;
-  name: string;
-  emoji: string;
-  position: number;  // 0-100
-  stopLoss: number;
-  takeProfit: number;
-  status: 'active' | 'paused' | 'inactive';
-  dailyPnL: number;
-  totalPnL: number;
-  trades: number;
+interface BrainStatus {
+  brain_id: string;
+  mode: string;
+  state: string;
+  health: number;
+  alive: boolean;
+}
+
+interface DualBrainStatus {
+  active_brain: string;
+  active_mode: string;
+  left_brain: BrainStatus;
+  right_brain: BrainStatus;
+}
+
+interface WalletStatus {
+  main_wallet: { balance: number };
+  transfer_wallet: { balance: number };
+  exchange_walllets: Record<string, { balance: number }>;
+  total_assets: number;
+}
+
+interface LobsterStatus {
+  retro_count: number;
+  simulation_count: number;
+  optimization_count: number;
+}
+
+interface EngineStatus {
+  version: string;
+  running: boolean;
+  uptime: number;
+  brain_manager: DualBrainStatus;
+  lobster: LobsterStatus;
+}
+
+// ============================================================================
+// API 客户端
+// ============================================================================
+
+const API_BASE = '/api/dual-brain';
+
+const api = {
+  async getStatus(): Promise<EngineStatus> {
+    const res = await fetch(`${API_BASE}/status`);
+    return res.json();
+  },
+
+  async sendHeartbeat(): Promise<DualBrainStatus> {
+    const res = await fetch(`${API_BASE}/heartbeat`, { method: 'POST' });
+    return res.json();
+  },
+
+  async switchBrain(target: string): Promise<{ success: boolean; active_brain: string; mode: string }> {
+    const res = await fetch(`${API_BASE}/switch`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ target })
+    });
+    return res.json();
+  },
+
+  async getWalletStatus(): Promise<WalletStatus> {
+    const res = await fetch(`${API_BASE}/wallet-status`);
+    return res.json();
+  },
+
+  async getLobsterStatus(): Promise<LobsterStatus> {
+    const res = await fetch(`${API_BASE}/lobster/status`);
+    return res.json();
+  },
+
+  async runRetro(): Promise<any> {
+    const res = await fetch(`${API_BASE}/lobster/retro`, { method: 'POST' });
+    return res.json();
+  },
+
+  async runSimulation(): Promise<any> {
+    const res = await fetch(`${API_BASE}/lobster/simulation`, { method: 'POST' });
+    return res.json();
+  },
+
+  async runOptimization(): Promise<any> {
+    const res = await fetch(`${API_BASE}/lobster/optimization`, { method: 'POST' });
+    return res.json();
+  },
+
+  async runFullCycle(): Promise<any> {
+    const res = await fetch(`${API_BASE}/lobster/full-cycle`, { method: 'POST' });
+    return res.json();
+  }
 };
 
-// 层级类型
-type Layer = 'A' | 'B' | 'C' | 'D' | 'E';
+// ============================================================================
+// 左右脑切换组件
+// ============================================================================
 
-interface MarketData {
-  symbol: string;
-  price: number;
-  change24h: number;
-  volume: number;
-}
+const BrainSwitcher: React.FC<{
+  status: DualBrainStatus;
+  onSwitch: (target: string) => void;
+}> = ({ status, onSwitch }) => {
+  const isLeftActive = status.active_brain === 'left';
 
-interface Signal {
-  id: string;
-  symbol: string;
-  type: 'buy' | 'sell';
-  strength: number;
-  timestamp: string;
-}
-
-interface PortfolioStats {
-  totalValue: number;
-  dailyPnL: number;
-  totalPnL: number;
-  positions: number;
-  winRate: number;
-}
-
-function App() {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'tools' | 'trends' | 'signals' | 'portfolio' | 'settings'>('dashboard');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  
-  // 数据状态
-  const [marketData, setMarketData] = useState<MarketData[]>([]);
-  const [signals, setSignals] = useState<Signal[]>([]);
-  // 系统信息
-  const [appVersion, setAppVersion] = useState<string>('v7.1.0');
-  
-  const [portfolio, setPortfolio] = useState<PortfolioStats | null>(null);
-  const [performance, setPerformance] = useState<any>(null);
-  
-  // 北斗七鑫工具配置
-  const [tools, setTools] = useState<Tool[]>([
-    { id: 'rabbit', name: '打兔子', emoji: '🐰', position: 25, stopLoss: 5, takeProfit: 8, status: 'active', dailyPnL: 0, totalPnL: 0, trades: 0 },
-    { id: 'mole', name: '打地鼠', emoji: '🐹', position: 20, stopLoss: 8, takeProfit: 15, status: 'active', dailyPnL: 0, totalPnL: 0, trades: 0 },
-    { id: 'oracle', name: '走着瞧', emoji: '🔮', position: 15, stopLoss: 5, takeProfit: 10, status: 'active', dailyPnL: 0, totalPnL: 0, trades: 0 },
-    { id: 'leader', name: '跟大哥', emoji: '👑', position: 15, stopLoss: 3, takeProfit: 6, status: 'active', dailyPnL: 0, totalPnL: 0, trades: 0 },
-    { id: 'hitchhiker', name: '搭便车', emoji: '🍀', position: 10, stopLoss: 5, takeProfit: 8, status: 'active', dailyPnL: 0, totalPnL: 0, trades: 0 },
-    { id: 'wool', name: '薅羊毛', emoji: '💰', position: 3, stopLoss: 2, takeProfit: 20, status: 'paused', dailyPnL: 0, totalPnL: 0, trades: 0 },
-    { id: 'poor', name: '穷孩子', emoji: '👶', position: 2, stopLoss: 1, takeProfit: 30, status: 'paused', dailyPnL: 0, totalPnL: 0, trades: 0 },
-  ]);
-
-  // 仿真结果
-  const [simulationScore, setSimulationScore] = useState<number>(87.6);
-  const [layerScores, setLayerScores] = useState<Record<Layer, number>>({
-    A: 82.0, B: 89.1, C: 77.4, D: 88.2, E: 94.9
-  });
-
-  // 获取数据
-  const fetchData = useCallback(async () => {
-    try {
-      const [marketRes, signalsRes, statsRes, portfolioRes, perfRes] = await Promise.all([
-        fetch(`${API_BASE}/api/market`).catch(() => null),
-        fetch(`${API_BASE}/api/signals?limit=20`).catch(() => null),
-        fetch(`${API_BASE}/api/stats`).catch(() => null),
-        fetch(`${API_BASE}/api/portfolio`).catch(() => null),
-        fetch(`${API_BASE}/api/performance`).catch(() => null),
-      ]);
-
-      const errors: string[] = [];
-      
-      if (marketRes?.ok) {
-        const d = await marketRes.json();
-        setMarketData(d.data || []);
-      } else errors.push('market');
-      
-      if (signalsRes?.ok) {
-        const d = await signalsRes.json();
-        setSignals(d.signals || []);
-      } else errors.push('signals');
-      
-      if (statsRes?.ok) {
-        const d = await statsRes.json();
-        // 提取版本信息
-        if (d.data?.version) setAppVersion(d.data.version);
-        // 工具盈亏数据由 /api/v7/tools 提供，这里保留API原始数据
-        // statsRes仅用于确认服务健康
-      } else errors.push('stats');
-      
-      if (portfolioRes?.ok) {
-        const d = await portfolioRes.json();
-        setPortfolio(d);
-      }
-
-      if (perfRes?.ok) {
-        const d = await perfRes.json();
-        setPerformance(d);
-        // 更新工具配置中的权重
-        if (d.investment_tools) {
-          setTools(prev => prev.map(t => {
-            const inv = d.investment_tools[t.id];
-            const work = d.work_tools?.[t.id];
-            if (inv) return { ...t, position: inv.weight || t.position, status: inv.status === 'disabled' ? 'inactive' : 'active' };
-            if (work) return { ...t, position: work.weight || t.position };
-            return t;
-          }));
-        }
-      }
-      
-      if (errors.length > 0) {
-        setError(`API issues: ${errors.join(', ')}`);
-      }
-      
-      setLoading(false);
-    } catch (err) {
-      setError('Failed to fetch data');
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchData();
-    const interval = setInterval(fetchData, 30000);
-    return () => clearInterval(interval);
-  }, [fetchData]);
-
-  // 渲染组件
-  const renderDashboard = () => (
-    <div className="dashboard">
-      {/* 概览卡片 */}
-      <div className="overview-cards">
-        <div className="card stat-card">
-          <div className="stat-label">平台评分</div>
-          <div className="stat-value large">{simulationScore.toFixed(1)}</div>
-          <div className="stat-change positive">↑ 3.2%</div>
-        </div>
-        <div className="card stat-card">
-          <div className="stat-label">总资产</div>
-          <div className="stat-value large">$85,000</div>
-          <div className="stat-change positive">+$1,234</div>
-        </div>
-        <div className="card stat-card">
-          <div className="stat-label">胜率</div>
-          <div className="stat-value large">64.5%</div>
-          <div className="stat-change negative">-2.1%</div>
-        </div>
-        <div className="card stat-card">
-          <div className="stat-label">日收益</div>
-          <div className="stat-value large">+2.23%</div>
-          <div className="stat-change positive">ETH策略</div>
-        </div>
-      </div>
-
-      {/* 层级评分 */}
-      <div className="card layer-scores">
-        <h3>📊 25维度分层评分</h3>
-        <div className="layer-grid">
-          <div className="layer-item" onClick={() => setActiveTab('dashboard')}>
-            <span className="layer-badge A">A</span>
-            <span className="layer-name">投资组合</span>
-            <span className="layer-score">{layerScores.A.toFixed(1)}</span>
+  return (
+    <div className="brain-switcher">
+      <div className="brain-indicators">
+        <div className={`brain-indicator left ${isLeftActive ? 'active' : ''}`}>
+          <span className="brain-icon">🧠</span>
+          <span className="brain-label">左脑</span>
+          <span className="brain-mode">{status.left_brain.mode === 'normal' ? '普通' : '专家'}</span>
+          <div className={`health-bar ${status.left_brain.health > 0.7 ? 'good' : status.left_brain.health > 0.4 ? 'warning' : 'bad'}`}>
+            <div className="health-fill" style={{ width: `${status.left_brain.health * 100}%` }} />
           </div>
-          <div className="layer-item" onClick={() => setActiveTab('tools')}>
-            <span className="layer-badge B">B</span>
-            <span className="layer-name">投资工具</span>
-            <span className="layer-score">{layerScores.B.toFixed(1)}</span>
-          </div>
-          <div className="layer-item" onClick={() => setActiveTab('trends')}>
-            <span className="layer-badge C">C</span>
-            <span className="layer-name">趋势判断</span>
-            <span className="layer-score">{layerScores.C.toFixed(1)}</span>
-          </div>
-          <div className="layer-item">
-            <span className="layer-badge D">D</span>
-            <span className="layer-name">底层资源</span>
-            <span className="layer-score">{layerScores.D.toFixed(1)}</span>
-          </div>
-          <div className="layer-item">
-            <span className="layer-badge E">E</span>
-            <span className="layer-name">运营支撑</span>
-            <span className="layer-score">{layerScores.E.toFixed(1)}</span>
+        </div>
+
+        <div className="switch-arrows">
+          <button onClick={() => onSwitch('left')} disabled={isLeftActive}>
+            ◀
+          </button>
+          <button onClick={() => onSwitch('right')} disabled={!isLeftActive}>
+            ▶
+          </button>
+        </div>
+
+        <div className={`brain-indicator right ${!isLeftActive ? 'active' : ''}`}>
+          <span className="brain-icon">🧠</span>
+          <span className="brain-label">右脑</span>
+          <span className="brain-mode">{status.right_brain.mode === 'normal' ? '普通' : '专家'}</span>
+          <div className={`health-bar ${status.right_brain.health > 0.7 ? 'good' : status.right_brain.health > 0.4 ? 'warning' : 'bad'}`}>
+            <div className="health-fill" style={{ width: `${status.right_brain.health * 100}%` }} />
           </div>
         </div>
       </div>
 
-      {/* 市场数据 */}
-      <div className="card market-section">
-        <h3>📈 市场行情</h3>
-        <div className="market-grid">
-          {marketData.slice(0, 6).map(m => (
-            <div key={m.symbol} className="market-item">
-              <span className="symbol">{m.symbol}</span>
-              <span className="price">${m.price?.toFixed(2) || '—'}</span>
-              <span className={`change ${(m.change24h || 0) >= 0 ? 'positive' : 'negative'}`}>
-                {(m.change24h || 0) >= 0 ? '↑' : '↓'} {Math.abs(m.change24h || 0).toFixed(2)}%
-              </span>
-            </div>
-          ))}
+      <div className="active-info">
+        当前活跃: <strong>{status.active_brain === 'left' ? '🧠 左脑' : '🧠 右脑'}</strong>
+        ({status.active_mode === 'normal' ? '普通模式' : '专家模式'})
+      </div>
+    </div>
+  );
+};
+
+// ============================================================================
+// 钱包组件
+// ============================================================================
+
+const WalletPanel: React.FC<{ wallet: WalletStatus }> = ({ wallet }) => {
+  return (
+    <div className="wallet-panel">
+      <h3>💰 钱包架构</h3>
+      <div className="wallet-flow">
+        <div className="wallet-item main">
+          <span className="wallet-label">主钱包</span>
+          <span className="wallet-balance">${wallet.main_wallet.balance.toLocaleString()}</span>
+        </div>
+        <div className="wallet-arrow">→</div>
+        <div className="wallet-item transfer">
+          <span className="wallet-label">中转钱包</span>
+          <span className="wallet-balance">${wallet.transfer_wallet.balance.toLocaleString()}</span>
+        </div>
+        <div className="wallet-arrow">→</div>
+        <div className="wallet-item exchanges">
+          <span className="wallet-label">交易所</span>
+          <span className="wallet-balance">
+            ${Object.values(wallet.exchange_wallets || {}).reduce((s, w) => s + w.balance, 0).toLocaleString()}
+          </span>
+        </div>
+      </div>
+      <div className="total-assets">
+        总资产: <strong>${wallet.total_assets.toLocaleString()}</strong>
+      </div>
+    </div>
+  );
+};
+
+// ============================================================================
+// 龙虾模块组件
+// ============================================================================
+
+const LobsterPanel: React.FC<{
+  lobster: LobsterStatus;
+  onRetro: () => void;
+  onSimulation: () => void;
+  onOptimization: () => void;
+  onFullCycle: () => void;
+}> = ({ lobster, onRetro, onSimulation, onOptimization, onFullCycle }) => {
+  return (
+    <div className="lobster-panel">
+      <h3>🦞 龙虾模块</h3>
+      <div className="lobster-stats">
+        <div className="stat">
+          <span className="stat-label">复盘</span>
+          <span className="stat-value">{lobster.retro_count}</span>
+        </div>
+        <div className="stat">
+          <span className="stat-label">仿真</span>
+          <span className="stat-value">{lobster.simulation_count}</span>
+        </div>
+        <div className="stat">
+          <span className="stat-label">优化</span>
+          <span className="stat-value">{lobster.optimization_count}</span>
+        </div>
+      </div>
+      <div className="lobster-actions">
+        <button onClick={onRetro}>📊 复盘</button>
+        <button onClick={onSimulation}>🧠 仿真</button>
+        <button onClick={onOptimization}>⚙️ 优化</button>
+        <button onClick={onFullCycle} className="primary">🚀 完整周期</button>
+      </div>
+    </div>
+  );
+};
+
+// ============================================================================
+// 一级页面: 总览
+// ============================================================================
+
+const OverviewPage: React.FC<{ status: EngineStatus }> = ({ status }) => {
+  return (
+    <div className="page page-overview">
+      <h2>📊 总览</h2>
+
+      <div className="overview-grid">
+        <div className="card status-card">
+          <h3>🧠 系统状态</h3>
+          <div className="status-info">
+            <div>版本: {status.version}</div>
+            <div>运行时间: {Math.floor(status.uptime / 60)}分钟</div>
+            <div>状态: <span className={status.running ? 'green' : 'red'}>
+              {status.running ? '● 运行中' : '○ 已停止'}
+            </span></div>
+          </div>
+        </div>
+
+        <div className="card brain-card">
+          <h3>🧠 左右脑状态</h3>
+          <BrainSwitcher
+            status={status.brain_manager}
+            onSwitch={async (t) => { await api.switchBrain(t); }}
+          />
+        </div>
+
+        <div className="card wallet-card">
+          <WalletPanel wallet={{ ...status.brain_manager, main_wallet: { balance: 100000 }, transfer_wallet: { balance: 50000 }, exchange_wallets: { binance: { balance: 30000 }, bybit: { balance: 20000 }, okx: { balance: 15000 } }, total_assets: 215000 }} />
+        </div>
+
+        <div className="card lobster-card">
+          <LobsterPanel
+            lobster={status.lobster}
+            onRetro={async () => { await api.runRetro(); }}
+            onSimulation={async () => { await api.runSimulation(); }}
+            onOptimization={async () => { await api.runOptimization(); }}
+            onFullCycle={async () => { await api.runFullCycle(); }}
+          />
         </div>
       </div>
     </div>
   );
+};
 
-  const renderTools = () => (
-    <div className="tools-section">
-      <h2>🎛️ 北斗七鑫投资工具</h2>
-      <div className="tools-grid">
+// ============================================================================
+// 二级页面: 交易
+// ============================================================================
+
+const TradingPage: React.FC = () => {
+  const [trades, setTrades] = useState<any[]>([]);
+
+  return (
+    <div className="page page-trading">
+      <h2>📈 交易</h2>
+
+      <div className="trading-grid">
+        <div className="card">
+          <h3>🐰 打兔子</h3>
+          <div className="tool-status">30%仓位 | 2.0x杠杆</div>
+          <button>查看详情</button>
+        </div>
+
+        <div className="card">
+          <h3>🐹 打地鼠</h3>
+          <div className="tool-status">25%仓位 | 2.5x杠杆</div>
+          <button>查看详情</button>
+        </div>
+
+        <div className="card">
+          <h3>🔮 走着瞧</h3>
+          <div className="tool-status">20%仓位 | 1.5x杠杆</div>
+          <button>查看详情</button>
+        </div>
+
+        <div className="card">
+          <h3>👑 跟大哥</h3>
+          <div className="tool-status">15%仓位 | 1.5x杠杆</div>
+          <button>查看详情</button>
+        </div>
+
+        <div className="card">
+          <h3>🍀 搭便车</h3>
+          <div className="tool-status">5%仓位 | 1.0x杠杆</div>
+          <button>查看详情</button>
+        </div>
+
+        <div className="card">
+          <h3>💰 薅羊毛</h3>
+          <div className="tool-status">3%仓位 | 1.0x杠杆</div>
+          <button>查看详情</button>
+        </div>
+
+        <div className="card">
+          <h3>👶 穷孩子</h3>
+          <div className="tool-status">2%仓位 | 1.0x杠杆</div>
+          <button>查看详情</button>
+        </div>
+      </div>
+
+      <div className="card trades-history">
+        <h3>📜 交易历史</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>时间</th>
+              <th>工具</th>
+              <th>方向</th>
+              <th>收益</th>
+            </tr>
+          </thead>
+          <tbody>
+            {trades.length === 0 ? (
+              <tr><td colSpan={4}>暂无交易记录</td></tr>
+            ) : trades.map((t, i) => (
+              <tr key={i}>
+                <td>{t.time}</td>
+                <td>{t.tool}</td>
+                <td>{t.direction}</td>
+                <td className={t.profit > 0 ? 'green' : 'red'}>{t.profit > 0 ? '+' : ''}{t.profit}%</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
+// ============================================================================
+// 三级页面: 工具详情
+// ============================================================================
+
+const ToolsPage: React.FC = () => {
+  const tools = [
+    { id: 'rabbit', name: '🐰 打兔子', desc: '前20主流加密货币趋势跟踪', version: 'v4.0', capability: 5 },
+    { id: 'mole', name: '🐹 打地鼠', desc: 'HFT套利+跨市场套利', version: 'v5.0', capability: 5 },
+    { id: 'oracle', name: '🔮 走着瞧', desc: '预测市场+决策等式', version: 'v4.0', capability: 5 },
+    { id: 'leader', name: '👑 跟大哥', desc: '做市商跟单', version: 'v4.0', capability: 5 },
+    { id: 'hitchhiker', name: '🍀 搭便车', desc: '跟单分成', version: 'v4.0', capability: 5 },
+    { id: 'airdrop', name: '💰 薅羊毛', desc: '空投猎手', version: 'v4.0', capability: 5 },
+    { id: 'crowdsourcing', name: '👶 穷孩子', desc: '众包打工', version: 'v4.0', capability: 5 },
+  ];
+
+  return (
+    <div className="page page-tools">
+      <h2>⚙️ 工具详情</h2>
+
+      <div className="tools-list">
         {tools.map(tool => (
-          <div key={tool.id} className={`card tool-card ${tool.status}`}>
+          <div className="tool-detail-card" key={tool.id}>
             <div className="tool-header">
-              <span className="tool-emoji">{tool.emoji}</span>
-              <span className="tool-name">{tool.name}</span>
-              <span className={`status-badge ${tool.status}`}>{tool.status}</span>
+              <h3>{tool.name}</h3>
+              <span className="tool-version">{tool.version}</span>
             </div>
-            <div className="tool-config">
-              <div className="config-row">
-                <span>仓位:</span>
-                <span className="value">{tool.position}%</span>
-              </div>
-              <div className="config-row">
-                <span>止损:</span>
-                <span className="value danger">{tool.stopLoss}%</span>
-              </div>
-              <div className="config-row">
-                <span>止盈:</span>
-                <span className="value success">{tool.takeProfit}%</span>
-              </div>
-            </div>
-            <div className="tool-stats">
-              <div className="stat">
-                <span className="label">日盈亏</span>
-                <span className={`value ${tool.dailyPnL >= 0 ? 'positive' : 'negative'}`}>
-                  {tool.dailyPnL >= 0 ? '+' : ''}{tool.dailyPnL.toFixed(2)}
-                </span>
-              </div>
-              <div className="stat">
-                <span className="label">总盈亏</span>
-                <span className={`value ${tool.totalPnL >= 0 ? 'positive' : 'negative'}`}>
-                  {tool.totalPnL >= 0 ? '+' : ''}{tool.totalPnL.toFixed(2)}
-                </span>
-              </div>
-              <div className="stat">
-                <span className="label">交易数</span>
-                <span className="value">{tool.trades}</span>
-              </div>
+            <p className="tool-desc">{tool.desc}</p>
+            <div className="tool-capabilities">
+              <span>能力:</span>
+              {[...Array(tool.capability)].map((_, i) => (
+                <span key={i} className="capability-dot">●</span>
+              ))}
             </div>
             <div className="tool-actions">
-              <button className="btn-small">配置</button>
-              <button className={`btn-small ${tool.status === 'active' ? 'warning' : 'success'}`}>
-                {tool.status === 'active' ? '暂停' : '启动'}
-              </button>
+              <button>全域扫描</button>
+              <button>深度扫描</button>
+              <button>MiroFish选品</button>
+              <button>抢单</button>
+              <button>gstack复盘</button>
             </div>
           </div>
         ))}
       </div>
     </div>
   );
+};
 
-  const renderTrends = () => (
-    <div className="trends-section">
-      <h2>🔮 趋势判断层</h2>
-      <div className="trends-grid">
-        <div className="card trend-card">
-          <h4>📡 声纳库趋势模型</h4>
-          <div className="trend-status active">运行中</div>
-          <div className="trend-models">20+ 趋势模型</div>
-        </div>
-        <div className="card trend-card">
-          <h4>🔮 预言机市场</h4>
-          <div className="trend-status active">活跃</div>
-          <div className="trend-markets">6 大预测市场</div>
-        </div>
-        <div className="card trend-card">
-          <h4>🧠 MiroFish 共识</h4>
-          <div className="trend-status active">540 Agents</div>
-          <div className="trend-rounds">27 轮共识</div>
-        </div>
-        <div className="card trend-card">
-          <h4>💢 市场情绪</h4>
-          <div className="trend-status neutral">中性</div>
-          <div className="trend-sentiment">恐惧贪婪: 45</div>
-        </div>
-      </div>
-    </div>
-  );
+// ============================================================================
+// 四级页面: 设置
+// ============================================================================
 
-  const renderSignals = () => (
-    <div className="signals-section">
-      <h2>📡 交易信号</h2>
-      <div className="signals-list">
-        {signals.length > 0 ? signals.slice(0, 10).map(signal => (
-          <div key={signal.id} className={`card signal-card ${signal.type}`}>
-            <span className="signal-type">{signal.type === 'buy' ? '🟢 买入' : '🔴 卖出'}</span>
-            <span className="signal-symbol">{signal.symbol}</span>
-            <span className="signal-strength">强度: {signal.strength}%</span>
-          </div>
-        )) : (
-          <div className="card">暂无信号</div>
-        )}
-      </div>
-    </div>
-  );
+const SettingsPage: React.FC = () => {
+  return (
+    <div className="page page-settings">
+      <h2>⚙️ 设置</h2>
 
-  const renderPortfolio = () => (
-    <div className="portfolio-section">
-      <h2>💼 投资组合 V10</h2>
-
-      {/* 总览卡片 */}
-      <div className="card portfolio-summary">
-        <div className="summary-row">
-          <span>总资金</span>
-          <span className="large">${performance?.total_capital?.toLocaleString() || '100,000'}</span>
-        </div>
-        <div className="summary-row">
-          <span>投资池 (80%)</span>
-          <span className="positive">${performance?.investment_pool?.toLocaleString() || '80,000'}</span>
-        </div>
-        <div className="summary-row">
-          <span>打工池 (20%)</span>
-          <span className="positive">${performance?.work_pool?.toLocaleString() || '20,000'}</span>
-        </div>
-      </div>
-
-      {/* 投资工具分配 */}
-      <div className="card allocation">
-        <h4>📊 投资工具分配 (5个)</h4>
-        <div className="allocation-bars">
-          {Object.entries(performance?.investment_tools || {}).map(([id, tool]: [string, any]) => (
-            <div key={id} className="allocation-row">
-              <span>{tool.name}</span>
-              <div className="bar-container">
-                <div className="bar" style={{
-                  width: `${tool.allocation / (performance?.investment_pool || 80000) * 100}%`,
-                  backgroundColor: tool.color,
-                  opacity: tool.status === 'disabled' ? 0.3 : 1
-                }}></div>
-              </div>
-              <span className={tool.status === 'disabled' ? 'disabled' : ''}>
-                ${(tool.allocation || 0).toLocaleString()} ({tool.weight}%)
-              </span>
-            </div>
-          ))}
-        </div>
-        <div className="action-buttons">
-          <button className="btn-action replenish"
-            disabled={!performance?.actions?.replenish?.available}
-            title={performance?.actions?.replenish?.description}>
-            📥 补仓
-          </button>
-          <button className="btn-action cashout"
-            disabled={!performance?.actions?.cashout?.available}
-            title={performance?.actions?.cashout?.description}>
-            📤 套现
-          </button>
-        </div>
-      </div>
-
-      {/* 打工工具 + 现金流 */}
-      <div className="card allocation work-tools">
-        <h4>💰 打工工具 (2个) - 现金流收集</h4>
-        <div className="allocation-bars">
-          {Object.entries(performance?.work_tools || {}).map(([id, tool]: [string, any]) => (
-            <div key={id} className="allocation-row">
-              <span>{tool.name}</span>
-              <div className="bar-container">
-                <div className="bar" style={{
-                  width: `${tool.allocation / (performance?.work_pool || 20000) * 100}%`,
-                  backgroundColor: tool.color
-                }}></div>
-              </div>
-              <span>${(tool.allocation || 0).toLocaleString()} (现金流{tool.cashflow_rate * 100}%)</span>
-            </div>
-          ))}
-        </div>
-        <div className="cashflow-status">
-          <span>💵 现金流池: ${(performance?.cashflow_pool || 0).toLocaleString()}</span>
-        </div>
-        <div className="action-buttons">
-          <button className="btn-action work-to-invest"
-            disabled={!performance?.actions?.work_to_invest?.available}
-            title={performance?.actions?.work_to_invest?.description}>
-            🔄 打工→投资
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderSettings = () => (
-    <div className="settings-section">
-      <h2>⚙️ 系统设置</h2>
       <div className="settings-grid">
-        <div className="card setting-card">
-          <h4>🛡️ 风控规则</h4>
-          <div className="setting-row">
-            <span>总仓位上限</span>
-            <span>80%</span>
+        <div className="card">
+          <h3>🧠 左右脑配置</h3>
+          <div className="setting-item">
+            <label>左脑模式</label>
+            <select defaultValue="normal">
+              <option value="normal">普通模式</option>
+              <option value="expert">专家模式</option>
+            </select>
           </div>
-          <div className="setting-row">
-            <span>单笔风险</span>
-            <span>5%</span>
+          <div className="setting-item">
+            <label>右脑模式</label>
+            <select defaultValue="expert">
+              <option value="normal">普通模式</option>
+              <option value="expert">专家模式</option>
+            </select>
           </div>
-          <div className="setting-row">
-            <span>日亏损熔断</span>
-            <span>15%</span>
+          <div className="setting-item">
+            <label>自动切换</label>
+            <input type="checkbox" defaultChecked />
           </div>
         </div>
-        <div className="card setting-card">
-          <h4>🔧 平台配置</h4>
-          <div className="setting-row">
-            <span>交易模式</span>
-            <span>Dry Run</span>
+
+        <div className="card">
+          <h3>💰 钱包配置</h3>
+          <div className="setting-item">
+            <label>最大中转金额</label>
+            <input type="number" defaultValue="10000" />
           </div>
-          <div className="setting-row">
-            <span>API延迟</span>
-            <span>7ms</span>
+          <div className="setting-item">
+            <label>最小中转金额</label>
+            <input type="number" defaultValue="1000" />
           </div>
-          <div className="setting-row">
-            <span>版本</span>
-            <span>{appVersion}</span>
+          <div className="setting-item">
+            <label>最低保留金额</label>
+            <input type="number" defaultValue="20000" />
+          </div>
+        </div>
+
+        <div className="card">
+          <h3>🦞 龙虾模块</h3>
+          <div className="setting-item">
+            <label>自动复盘</label>
+            <input type="checkbox" defaultChecked />
+          </div>
+          <div className="setting-item">
+            <label>自动仿真</label>
+            <input type="checkbox" defaultChecked />
+          </div>
+          <div className="setting-item">
+            <label>优化周期(小时)</label>
+            <input type="number" defaultValue="24" />
+          </div>
+        </div>
+
+        <div className="card">
+          <h3>📊 风控规则</h3>
+          <div className="setting-item">
+            <label>日亏损熔断</label>
+            <input type="number" defaultValue="15" />%
+          </div>
+          <div className="setting-item">
+            <label>单笔风险上限</label>
+            <input type="number" defaultValue="5" />%
+          </div>
+          <div className="setting-item">
+            <label>总仓位上限</label>
+            <input type="number" defaultValue="80" />%
           </div>
         </div>
       </div>
+
+      <div className="settings-actions">
+        <button className="primary">保存设置</button>
+        <button>重置默认</button>
+      </div>
     </div>
   );
+};
+
+// ============================================================================
+// 主应用
+// ============================================================================
+
+const App: React.FC = () => {
+  const [currentPage, setCurrentPage] = useState<string>('overview');
+  const [status, setStatus] = useState<EngineStatus | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const fetchStatus = useCallback(async () => {
+    try {
+      const data = await api.getStatus();
+      setStatus(data);
+      setLoading(false);
+    } catch (e) {
+      console.error('Failed to fetch status:', e);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchStatus();
+    const interval = setInterval(fetchStatus, 5000);
+    return () => clearInterval(interval);
+  }, [fetchStatus]);
+
+  const handleSwitch = async (target: string) => {
+    await api.switchBrain(target);
+    await fetchStatus();
+  };
+
+  if (loading || !status) {
+    return <div className="loading">加载中...</div>;
+  }
+
+  const renderPage = () => {
+    switch (currentPage) {
+      case 'overview': return <OverviewPage status={status} />;
+      case 'trading': return <TradingPage />;
+      case 'tools': return <ToolsPage />;
+      case 'settings': return <SettingsPage />;
+      default: return <OverviewPage status={status} />;
+    }
+  };
 
   return (
-    <div className="app">
-      {/* 顶部导航 */}
-      <nav className="nav">
-        <div className="nav-brand">
-          <span className="logo">🪿</span>
-          <span className="title">GO2SE 北斗七鑫 {appVersion}</span>
+    <div className="go2se-app">
+      <header className="app-header">
+        <div className="header-left">
+          <h1>🪿 GO2SE V9</h1>
+          <span className="version">dual-brain</span>
         </div>
-        <div className="nav-tabs">
-          <button className={activeTab === 'dashboard' ? 'active' : ''} onClick={() => setActiveTab('dashboard')}>总览</button>
-          <button className={activeTab === 'tools' ? 'active' : ''} onClick={() => setActiveTab('tools')}>工具</button>
-          <button className={activeTab === 'trends' ? 'active' : ''} onClick={() => setActiveTab('trends')}>趋势</button>
-          <button className={activeTab === 'signals' ? 'active' : ''} onClick={() => setActiveTab('signals')}>信号</button>
-          <button className={activeTab === 'portfolio' ? 'active' : ''} onClick={() => setActiveTab('portfolio')}>组合</button>
-          <button className={activeTab === 'settings' ? 'active' : ''} onClick={() => setActiveTab('settings')}>设置</button>
+        <div className="header-right">
+          <span className={`status-indicator ${status.brain_manager.active_brain === 'left' ? 'left' : 'right'}`}>
+            🧠 {status.brain_manager.active_brain === 'left' ? '左脑' : '右脑'}
+          </span>
         </div>
-        <div className="nav-status">
-          <span className="status-dot"></span>
-          <span>{appVersion}</span>
-        </div>
+      </header>
+
+      <nav className="app-nav">
+        <button
+          className={currentPage === 'overview' ? 'active' : ''}
+          onClick={() => setCurrentPage('overview')}
+        >
+          📊 总览
+        </button>
+        <button
+          className={currentPage === 'trading' ? 'active' : ''}
+          onClick={() => setCurrentPage('trading')}
+        >
+          📈 交易
+        </button>
+        <button
+          className={currentPage === 'tools' ? 'active' : ''}
+          onClick={() => setCurrentPage('tools')}
+        >
+          ⚙️ 工具
+        </button>
+        <button
+          className={currentPage === 'settings' ? 'active' : ''}
+          onClick={() => setCurrentPage('settings')}
+        >
+          ⚙️ 设置
+        </button>
       </nav>
 
-      {/* 主内容 */}
-      <main className="main">
-        {loading ? (
-          <div className="loading">
-            <div className="spinner"></div>
-            <p>加载中...</p>
-          </div>
-        ) : error ? (
-          <div className="error-banner">{error}</div>
-        ) : (
-          <>
-            {activeTab === 'dashboard' && renderDashboard()}
-            {activeTab === 'tools' && renderTools()}
-            {activeTab === 'trends' && renderTrends()}
-            {activeTab === 'signals' && renderSignals()}
-            {activeTab === 'portfolio' && renderPortfolio()}
-            {activeTab === 'settings' && renderSettings()}
-          </>
-        )}
+      <main className="app-main">
+        {renderPage()}
       </main>
 
-      {/* 底部状态栏 */}
-      <footer className="footer">
-        <span>🪿 GO2SE 北斗七鑫 {appVersion}</span>
-        <span>|</span>
-        <span>评分: {simulationScore.toFixed(1)}</span>
-        <span>|</span>
-        <span>25维度全向仿真</span>
+      <footer className="app-footer">
+        <span>GO2SE V9 Dual-Brain | {status.brain_manager.active_mode === 'normal' ? '普通模式' : '专家模式'}</span>
       </footer>
     </div>
   );
-}
+};
 
 export default App;
