@@ -767,3 +767,400 @@ tr:hover td {
 ::-webkit-scrollbar-thumb:hover {
     background: var(--text-muted);
 }
+
+/* ==================== 4级导航样式 ==================== */
+
+/* 导航分组 */
+.nav-group {
+    position: relative;
+}
+
+.nav-group-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav-arrow {
+    font-size: 8px;
+    transition: transform 0.2s ease;
+}
+
+.nav-group.expanded .nav-arrow {
+    transform: rotate(90deg);
+}
+
+/* 子菜单 */
+.nav-submenu {
+    display: none;
+    padding-left: 24px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 0 0 8px 8px;
+    margin-top: -8px;
+}
+
+.nav-group.expanded .nav-submenu {
+    display: block;
+}
+
+.nav-subitem {
+    padding: 8px 12px;
+    font-size: 13px;
+    opacity: 0.85;
+    border-radius: 6px;
+    margin: 2px 4px;
+}
+
+.nav-subitem:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* 导航徽章 */
+.nav-badge {
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 10px;
+    margin-left: auto;
+}
+
+.nav-badge.winrate {
+    background: rgba(0, 212, 170, 0.2);
+    color: #00d4aa;
+}
+
+.nav-badge.new {
+    background: rgba(255, 149, 0, 0.2);
+    color: #ff9500;
+}
+
+.nav-badge:not(.winrate):not(.new) {
+    background: rgba(255, 59, 48, 0.2);
+    color: #ff3b30;
+}
+
+/* 导航搜索 */
+.nav-search {
+    position: relative;
+    padding: 8px 12px;
+}
+
+#nav-search-input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    font-size: 13px;
+    outline: none;
+}
+
+#nav-search-input:focus {
+    border-color: #00d4aa;
+}
+
+.nav-search-results {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 12px;
+    right: 12px;
+    background: #1a1a2e;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.nav-search-results.active {
+    display: block;
+}
+
+.search-result-item {
+    padding: 10px 14px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.search-result-item:hover {
+    background: rgba(0, 212, 170, 0.1);
+}
+
+.search-result-title {
+    font-size: 14px;
+    color: #fff;
+    margin-bottom: 2px;
+}
+
+.search-result-desc {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.search-result-type {
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(0, 212, 170, 0.2);
+    color: #00d4aa;
+    float: right;
+}
+
+/* ==================== 工具页面样式 ==================== */
+
+.tool-page, .risk-page {
+    padding: 24px;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+}
+
+.page-title h1 {
+    font-size: 28px;
+    margin: 0 0 8px 0;
+}
+
+.page-desc {
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+}
+
+.page-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.btn-primary {
+    background: #00d4aa;
+    color: #0a0e17;
+}
+
+.btn-primary:hover {
+    background: #00e6b8;
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* 统计卡片 */
+.tool-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat-label {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 8px;
+}
+
+.stat-value {
+    font-size: 28px;
+    font-weight: bold;
+    color: #00d4aa;
+}
+
+/* 内容区域 */
+.tool-content {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 24px;
+}
+
+.content-section {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.content-section h2 {
+    font-size: 16px;
+    margin: 0 0 16px 0;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* 策略列表 */
+.strategy-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.strategy-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.strategy-item:hover {
+    background: rgba(0, 212, 170, 0.1);
+}
+
+.strategy-name {
+    font-size: 14px;
+}
+
+.strategy-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-icon {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s ease;
+}
+
+.btn-icon:hover {
+    background: rgba(0, 212, 170, 0.3);
+}
+
+/* 图表占位 */
+.chart-placeholder {
+    height: 300px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* 风控页面 */
+.risk-items {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.risk-item {
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.risk-icon {
+    font-size: 24px;
+    margin-right: 16px;
+}
+
+.risk-content {
+    flex: 1;
+}
+
+.risk-title {
+    font-size: 16px;
+    margin-bottom: 4px;
+}
+
+.risk-status {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.risk-badge {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+}
+
+.risk-badge.safe {
+    background: rgba(0, 212, 170, 0.2);
+    color: #00d4aa;
+}
+
+.risk-badge.warning {
+    background: rgba(255, 149, 0, 0.2);
+    color: #ff9500;
+}
+
+/* 面包屑导航 */
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+}
+
+.breadcrumb-item {
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.breadcrumb-item:hover {
+    color: #00d4aa;
+}
+
+.breadcrumb-item.active {
+    color: #fff;
+}
+
+.breadcrumb-sep {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* 404页面 */
+.page-404 {
+    text-align: center;
+    padding: 80px 20px;
+}
+
+.page-404 h1 {
+    font-size: 48px;
+    margin-bottom: 16px;
+}
+
+.page-404 p {
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 24px;
+}
