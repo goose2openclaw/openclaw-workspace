@@ -1165,3 +1165,136 @@ tr:hover td {
     margin-bottom: 24px;
 }
 /* P2/P3 Page Styles Added */
+
+/* ==================== MiroFish 置信度展示 ==================== */
+
+.mirofish-score {
+    font-size: 14px;
+    font-weight: bold;
+    background: linear-gradient(135deg, #00d4aa, #00a080);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-left: auto;
+}
+
+.mirofish-reasoning {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.reasoning-title {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 6px;
+}
+
+.reasoning-bar {
+    display: flex;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.reasoning-segment {
+    transition: width 0.3s ease;
+}
+
+.reasoning-segment.bullish {
+    background: #34c759;
+}
+
+.reasoning-segment.neutral {
+    background: #ff9500;
+}
+
+.reasoning-segment.bearish {
+    background: #ff3b30;
+}
+
+.reasoning-stats {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    margin-bottom: 6px;
+}
+
+.reasoning-stats .stat {
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.reasoning-stats .bullish {
+    background: rgba(52, 199, 89, 0.2);
+    color: #34c759;
+}
+
+.reasoning-stats .neutral {
+    background: rgba(255, 149, 0, 0.2);
+    color: #ff9500;
+}
+
+.reasoning-stats .bearish {
+    background: rgba(255, 59, 48, 0.2);
+    color: #ff3b30;
+}
+
+.reasoning-conclusion {
+    font-size: 11px;
+    line-height: 1.4;
+    padding: 8px;
+    background: rgba(0, 212, 170, 0.1);
+    border-radius: 6px;
+    border-left: 3px solid #00d4aa;
+}
+
+.reasoning-conclusion .bearish-text {
+    color: #ff3b30;
+}
+
+.reasoning-conclusion .bullish-text {
+    color: #34c759;
+}
+
+/* 置信度条颜色 */
+.confidence-fill.high {
+    background: linear-gradient(90deg, #00d4aa, #00ffcc);
+}
+
+.confidence-fill.medium {
+    background: linear-gradient(90deg, #ff9500, #ffcc00);
+}
+
+.confidence-fill.low {
+    background: linear-gradient(90deg, #ff3b30, #ff6b6b);
+}
+
+/* MiroFish卡片增强 */
+.mirofish-card {
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.mirofish-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 212, 170, 0.2);
+    border-color: rgba(0, 212, 170, 0.3);
+}
+
+.mirofish-card.buy {
+    border-left: 4px solid #34c759;
+}
+
+.mirofish-card.sell {
+    border-left: 4px solid #ff3b30;
+}
+
+.mirofish-card.hold {
+    border-left: 4px solid #ff9500;
+}

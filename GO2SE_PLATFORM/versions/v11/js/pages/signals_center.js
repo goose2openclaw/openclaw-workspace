@@ -159,11 +159,11 @@ window.SignalsCenter = {
     
     renderMirofishCards() {
         const predictions = [
-            {symbol: 'BTC', signal: 'buy', confidence: 85, price: 68500, change: '+2.3%'},
-            {symbol: 'ETH', signal: 'buy', confidence: 78, price: 3800, change: '+1.8%'},
-            {symbol: 'SOL', signal: 'hold', confidence: 65, price: 145, change: '-0.5%'},
-            {symbol: 'BNB', signal: 'sell', confidence: 72, price: 580, change: '-1.2%'},
-            {symbol: 'XRP', signal: 'buy', confidence: 75, price: 0.52, change: '+3.1%'}
+            {symbol: 'BTC', signal: 'buy', confidence: 85, bullish: 8, bearish: 2, neutral: 3, price: 68500, change: '+2.3%'},
+            {symbol: 'ETH', signal: 'buy', confidence: 78, bullish: 6, bearish: 3, neutral: 4, price: 3800, change: '+1.8%'},
+            {symbol: 'SOL', signal: 'hold', confidence: 65, bullish: 4, bearish: 4, neutral: 5, price: 145, change: '-0.5%'},
+            {symbol: 'BNB', signal: 'sell', confidence: 72, bullish: 2, bearish: 7, neutral: 4, price: 580, change: '-1.2%'},
+            {symbol: 'XRP', signal: 'buy', confidence: 75, bullish: 5, bearish: 3, neutral: 5, price: 0.52, change: '+3.1%'}
         ];
         
         return predictions.map(p => `
@@ -171,19 +171,56 @@ window.SignalsCenter = {
                 <div class="mirofish-header">
                     <span class="symbol">${p.symbol}</span>
                     <span class="signal-badge ${p.signal}">${this.getSignalText(p.signal)}</span>
+                    <span class="mirofish-score" title="MiroFish AI置信度">🪿${p.confidence}</span>
                 </div>
+                
+                <!-- 置信度进度条 -->
                 <div class="mirofish-confidence">
                     <div class="confidence-bar">
-                        <div class="confidence-fill" style="width: ${p.confidence}%"></div>
+                        <div class="confidence-fill ${p.confidence >= 75 ? 'high' : p.confidence >= 60 ? 'medium' : 'low'}" 
+                             style="width: ${p.confidence}%"></div>
                     </div>
                     <span class="confidence-value">${p.confidence}%</span>
                 </div>
+                
+                <!-- 决策理由 -->
+                <div class="mirofish-reasoning">
+                    <div class="reasoning-title">🤔 决策理由</div>
+                    <div class="reasoning-bar">
+                        <div class="reasoning-segment bullish" style="width: ${p.bullish * 10}%"></div>
+                        <div class="reasoning-segment neutral" style="width: ${p.neutral * 10}%"></div>
+                        <div class="reasoning-segment bearish" style="width: ${p.bearish * 10}%"></div>
+                    </div>
+                    <div class="reasoning-stats">
+                        <span class="stat bullish">🟢 ${p.bullish} 看涨</span>
+                        <span class="stat neutral">🟡 ${p.neutral} 中性</span>
+                        <span class="stat bearish">🔴 ${p.bearish} 看跌</span>
+                    </div>
+                    <div class="reasoning-conclusion">
+                        ${this.getReasoningText(p)}
+                    </div>
+                </div>
+                
                 <div class="mirofish-price">
                     <span class="price">$${this.formatPrice(p.price)}</span>
                     <span class="change ${p.change.startsWith('+') ? 'up' : 'down'}">${p.change}</span>
                 </div>
             </div>
         `).join('');
+    },
+    
+    getReasoningText(p) {
+        const total = p.bullish + p.bearish + p.neutral;
+        const bullishPct = Math.round(p.bullish / total * 100);
+        const bearishPct = Math.round(p.bearish / total * 100);
+        
+        if (p.signal === 'buy') {
+            return `📈 <strong>${p.bullish}个看涨模型</strong> vs <span class="bearish-text">${p.bearish}个看跌模型</span> → <strong>推荐买入</strong>`;
+        } else if (p.signal === 'sell') {
+            return `📉 <strong>${p.bearish}个看跌模型</strong> vs <span class="bullish-text">${p.bullish}个看涨模型</span> → <strong>推荐卖出</strong>`;
+        } else {
+            return `⏸️ <strong>多空分歧</strong> (${p.bullish} vs ${p.bearish}) → <strong>建议观望</strong>`;
+        }
     },
     
     getSignalText(signal) {
