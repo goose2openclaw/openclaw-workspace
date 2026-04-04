@@ -265,6 +265,56 @@ class WeightUpdater:
                 current_weight=0.06, last_updated=datetime.now().isoformat(),
                 metrics={"strategies": 10, "accuracy": 0.70}
             ),
+            
+            # === 打工赚钱技能 (8个) ===
+            "article_writing": SkillInfo(
+                name="文章写作", path="skills/article-writing",
+                type="earning", enabled=True, base_weight=0.10,
+                current_weight=0.10, last_updated=datetime.now().isoformat(),
+                metrics={"articles": 50, "income": 0.05}
+            ),
+            "content_writer": SkillInfo(
+                name="内容创作", path="skills/content-writer",
+                type="earning", enabled=True, base_weight=0.10,
+                current_weight=0.10, last_updated=datetime.now().isoformat(),
+                metrics={"contents": 100, "income": 0.08}
+            ),
+            "video_to_text": SkillInfo(
+                name="视频转文字", path="skills/video-to-text",
+                type="earning", enabled=True, base_weight=0.08,
+                current_weight=0.08, last_updated=datetime.now().isoformat(),
+                metrics={"videos": 200, "income": 0.03}
+            ),
+            "openai_whisper": SkillInfo(
+                name="Whisper语音转文字", path="skills/openai-whisper",
+                type="earning", enabled=True, base_weight=0.08,
+                current_weight=0.08, last_updated=datetime.now().isoformat(),
+                metrics={"audio_hours": 100, "income": 0.04}
+            ),
+            "automation_scripts": SkillInfo(
+                name="自动化脚本", path="skills/automation-pack",
+                type="earning", enabled=True, base_weight=0.12,
+                current_weight=0.12, last_updated=datetime.now().isoformat(),
+                metrics={"scripts": 30, "income": 0.10}
+            ),
+            "website_cloner": SkillInfo(
+                name="网站克隆开发", path="skills/ai-website-cloner",
+                type="earning", enabled=True, base_weight=0.10,
+                current_weight=0.10, last_updated=datetime.now().isoformat(),
+                metrics={"websites": 20, "income": 0.15}
+            ),
+            "public_apis": SkillInfo(
+                name="API集成服务", path="skills/public-apis-skill-creator",
+                type="earning", enabled=True, base_weight=0.08,
+                current_weight=0.08, last_updated=datetime.now().isoformat(),
+                metrics={"apis": 15, "income": 0.08}
+            ),
+            "canvas_design": SkillInfo(
+                name="设计服务", path="skills/pls-canvas-design",
+                type="earning", enabled=True, base_weight=0.06,
+                current_weight=0.06, last_updated=datetime.now().isoformat(),
+                metrics={"designs": 40, "income": 0.05}
+            ),
         }
         self.skills = default_skills
         self.save_skills()
