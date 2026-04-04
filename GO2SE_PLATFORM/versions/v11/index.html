@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GO2SE Platform v11 - 北斗七鑫投资平台</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/components.css">
+    <link rel="stylesheet" href="styles/animations.css">
+    <link rel="stylesheet" href="styles/skins.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body class="skin-dark">
+    <!-- 启动动画覆盖层 -->
+    <div id="splash-screen" class="splash-screen">
+        <div class="splash-content">
+            <!-- 3D大白鹅SVG动画 -->
+            <div class="goose-container">
+                <svg class="goose-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="gooseGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#ffffff"/>
+                            <stop offset="50%" style="stop-color:#f0f0f0"/>
+                            <stop offset="100%" style="stop-color:#e0e0e0"/>
+                        </linearGradient>
+                        <filter id="gooseShadow" x="-50%" y="-50%" width="200%" height="200%">
+                            <feDropShadow dx="0" dy="10" stdDeviation="15" flood-color="#000" flood-opacity="0.3"/>
+                        </filter>
+                        <filter id="glow">
+                            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                            <feMerge>
+                                <feMergeNode in="coloredBlur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+                    <!-- 身体 -->
+                    <ellipse class="goose-body" cx="100" cy="120" rx="55" ry="45" fill="url(#gooseGradient)" filter="url(#gooseShadow)"/>
+                    <!-- 脖子 -->
+                    <path class="goose-neck" d="M130 100 Q150 80 145 50 Q140 30 130 25" stroke="url(#gooseGradient)" stroke-width="18" fill="none" stroke-linecap="round"/>
+                    <!-- 头 -->
+                    <circle class="goose-head" cx="130" cy="30" r="22" fill="url(#gooseGradient)"/>
+                    <!-- 眼睛 -->
+                    <circle cx="138" cy="26" r="5" fill="#1a1a2e"/>
+                    <circle cx="140" cy="24" r="2" fill="#fff"/>
+                    <!-- 嘴巴 -->
+                    <path d="M145 35 L165 38 L145 42 Z" fill="#ff9500"/>
+                    <!-- 翅膀 -->
+                    <ellipse class="goose-wing" cx="80" cy="110" rx="35" ry="25" fill="url(#gooseGradient)" transform="rotate(-15 80 110)"/>
+                    <!-- 脚 -->
+                    <path d="M85 160 L75 180 M85 160 L85 182 M85 160 L95 180" stroke="#ff9500" stroke-width="4" stroke-linecap="round"/>
+                    <path d="M115 160 L105 180 M115 160 L115 182 M115 160 L125 180" stroke="#ff9500" stroke-width="4" stroke-linecap="round"/>
+                    <!-- 信号光环 -->
+                    <circle class="signal-ring signal-ring-1" cx="130" cy="30" r="35" fill="none" stroke="#00d4ff" stroke-width="2" opacity="0.6"/>
+                    <circle class="signal-ring signal-ring-2" cx="130" cy="30" r="50" fill="none" stroke="#00d4ff" stroke-width="1.5" opacity="0.4"/>
+                    <circle class="signal-ring signal-ring-3" cx="130" cy="30" r="65" fill="none" stroke="#00d4ff" stroke-width="1" opacity="0.2"/>
+                </svg>
+            </div>
+            <!-- 平台名称 -->
+            <h1 class="splash-title">GO2SE</h1>
+            <p class="splash-subtitle">北斗七鑫投资平台 v11</p>
+            <!-- 分阶段进度条 -->
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+                <div class="progress-text" id="progress-text">正在初始化...</div>
+            </div>
+            <!-- 操作按钮 -->
+            <div class="splash-actions">
+                <button class="btn-skip" id="btn-skip">
+                    <span>跳过</span>
+                    <kbd>ESC</kbd>
+                </button>
+                <button class="btn-quick" id="btn-quick">
+                    <span>快速进入</span>
+                    <div class="quick-options" id="quick-options">
+                        <button data-page="dashboard">📊 仪表盘</button>
+                        <button data-page="signals">📡 信号列表</button>
+                        <button data-page="portfolio">💼 投资组合</button>
+                        <button data-page="assets">💰 资产看板</button>
+                    </div>
+                </button>
+            </div>
+        </div>
+        <!-- 背景粒子效果 -->
+        <div class="particles" id="particles"></div>
+    </div>
+
+    <!-- 主应用容器 -->
+    <div id="app" class="app-container" style="display:none;">
+        <!-- 侧边栏 -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <svg viewBox="0 0 40 40" width="40" height="40">
+                        <circle cx="26" cy="10" r="8" fill="#fff"/>
+                        <ellipse cx="20" cy="22" rx="15" ry="12" fill="#fff"/>
+                        <path d="M28 18 Q35 15 33 8" stroke="#fff" stroke-width="4" fill="none"/>
+                    </svg>
+                    <span>GO2SE</span>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <button class="nav-item active" data-page="dashboard" data-shortcut="1">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-text">仪表盘</span>
+                    <kbd class="shortcut">1</kbd>
+                </button>
+                <button class="nav-item" data-page="signals" data-shortcut="2">
+                    <span class="nav-icon">📡</span>
+                    <span class="nav-text">信号列表</span>
+                    <kbd class="shortcut">2</kbd>
+                </button>
+                <button class="nav-item" data-page="portfolio" data-shortcut="3">
+                    <span class="nav-icon">💼</span>
+                    <span class="nav-text">投资组合</span>
+                    <kbd class="shortcut">3</kbd>
+                </button>
+                <button class="nav-item" data-page="assets" data-shortcut="4">
+                    <span class="nav-icon">💰</span>
+                    <span class="nav-text">资产看板</span>
+                    <kbd class="shortcut">4</kbd>
+                </button>
+                <button class="nav-item" data-page="wallet" data-shortcut="5">
+                    <span class="nav-icon">👛</span>
+                    <span class="nav-text">钱包架构</span>
+                    <kbd class="shortcut">5</kbd>
+                </button>
+                <button class="nav-item" data-page="settings" data-shortcut="6">
+                    <span class="nav-icon">⚙️</span>
+                    <span class="nav-text">系统设置</span>
+                    <kbd class="shortcut">6</kbd>
+                </button>
+                <button class="nav-item" data-page="help" data-shortcut="7">
+                    <span class="nav-icon">❓</span>
+                    <span class="nav-text">帮助中心</span>
+                    <kbd class="shortcut">7</kbd>
+                </button>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="connection-status" id="connection-status">
+                    <span class="status-dot online"></span>
+                    <span class="status-text">已连接</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 顶部栏 -->
+            <header class="top-bar">
+                <!-- 面包屑导航 -->
+                <nav class="breadcrumb" id="breadcrumb">
+                    <span class="breadcrumb-item" data-page="dashboard">首页</span>
+                </nav>
+                <!-- 快捷操作 -->
+                <div class="top-actions">
+                    <button class="btn-icon" id="btn-refresh" title="刷新 (Ctrl+R)">
+                        <span>🔄</span>
+                    </button>
+                    <button class="btn-icon" id="btn-notifications">
+                        <span>🔔</span>
+                        <span class="notification-badge" id="notification-badge">3</span>
+                    </button>
+                    <div class="datetime" id="datetime"></div>
+                </div>
+            </header>
+
+            <!-- 页面内容区 -->
+            <div class="page-content" id="page-content">
+                <!-- 动态加载页面内容 -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast通知容器 -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Loading骨架屏模板 -->
+    <template id="skeleton-template">
+        <div class="skeleton">
+            <div class="skeleton-header"></div>
+            <div class="skeleton-body">
+                <div class="skeleton-line"></div>
+                <div class="skeleton-line short"></div>
+                <div class="skeleton-chart"></div>
+            </div>
+        </div>
+    </template>
+
+    <!-- 页面模板 -->
+    <script src="js/app.js"></script>
+    <script src="js/router.js"></script>
+    <script src="js/components.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/interactions.js"></script>
+    <script src="js/pages/dashboard.js"></script>
+    <script src="js/pages/signals.js"></script>
+    <script src="js/pages/portfolio.js"></script>
+    <script src="js/pages/assets.js"></script>
+    <script src="js/pages/wallet.js"></script>
+    <script src="js/pages/settings.js"></script>
+    <script src="js/pages/help.js"></script>
+</body>
+</html>

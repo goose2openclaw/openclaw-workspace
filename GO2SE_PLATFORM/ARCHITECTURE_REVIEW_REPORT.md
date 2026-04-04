@@ -8,19 +8,24 @@
 
 ### 后端模块统计
 ```
-backend/app/core/  - 30+ 模块, 16000+ 行代码
+backend/app/core/  - 51 模块, 17869+ 行代码
 backend/app/api/   - 15+ 路由文件
 ```
 
-### 模块分类
+### 最大模块TOP10
 
-| 类别 | 模块数 | 代码量 | 状态 |
-|------|--------|--------|------|
-| 策略引擎 | 8 | ~3000行 | ⚠️ 需优化 |
-| 数据源 | 6 | ~2000行 | ✅ 可用 |
-| 风控 | 4 | ~1500行 | ✅ 可用 |
-| API路由 | 15 | ~2500行 | ✅ 可用 |
-| 测试/工具 | 5 | ~1500行 | ✅ 新增 |
+| 模块 | 行数 | 状态 |
+|------|------|------|
+| sonar_v2.py | 2236 | ⚠️ 过大 |
+| market_data_fetcher.py | 1301 | ✅ |
+| ai_portfolio_manager.py | 855 | ✅ |
+| exchanges.py | 523 | ✅ |
+| tool_signal_integration.py | 514 | ✅ |
+| leader_strategy.py | 495 | ✅ |
+| risk_manager.py | 481 | ✅ |
+| mole_strategy.py | 447 | ✅ |
+| market_data.py | 446 | ✅ |
+| rabbit_v2_strategy.py | 422 | ✅ |
 
 ---
 

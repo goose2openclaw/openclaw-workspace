@@ -1,0 +1,567 @@
+/* GO2SE Platform v11 - Animation Styles */
+
+/* ========== Splash Screen ========== */
+.splash-screen {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0a0a0f 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100000;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.splash-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.splash-content {
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+/* ========== Goose Animation ========== */
+.goose-container {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 32px;
+    position: relative;
+}
+
+.goose-svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 20px 40px rgba(0, 212, 255, 0.3));
+}
+
+.goose-body {
+    animation: gooseFloat 3s ease-in-out infinite;
+    transform-origin: center center;
+}
+
+.goose-neck {
+    animation: neckWave 4s ease-in-out infinite;
+    transform-origin: 130px 100px;
+}
+
+.goose-head {
+    animation: headBob 2s ease-in-out infinite;
+    transform-origin: center center;
+}
+
+.goose-wing {
+    animation: wingFlap 2s ease-in-out infinite;
+    transform-origin: 60px 100px;
+}
+
+@keyframes gooseFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes neckWave {
+    0%, 100% { d: path("M130 100 Q150 80 145 50 Q140 30 130 25"); }
+    25% { d: path("M130 100 Q155 75 150 45 Q145 25 135 20"); }
+    50% { d: path("M130 100 Q150 80 145 50 Q140 30 130 25"); }
+    75% { d: path("M130 100 Q145 85 140 55 Q135 35 125 30"); }
+}
+
+@keyframes headBob {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-2px) rotate(3deg); }
+    75% { transform: translateY(2px) rotate(-3deg); }
+}
+
+@keyframes wingFlap {
+    0%, 100% { transform: rotate(-15deg) scaleY(1); }
+    50% { transform: rotate(-25deg) scaleY(0.95); }
+}
+
+/* Signal Rings Animation */
+.signal-ring {
+    transform-origin: 130px 30px;
+}
+
+.signal-ring-1 {
+    animation: ringPulse 2s ease-out infinite;
+}
+
+.signal-ring-2 {
+    animation: ringPulse 2s ease-out infinite 0.4s;
+}
+
+.signal-ring-3 {
+    animation: ringPulse 2s ease-out infinite 0.8s;
+}
+
+@keyframes ringPulse {
+    0% {
+        transform: scale(0.5);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* ========== Splash Title Animation ========== */
+.splash-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #00d4ff 0%, #7c3aed 50%, #00d4ff 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: titleShine 3s linear infinite;
+    margin-bottom: 8px;
+}
+
+.splash-subtitle {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+}
+
+@keyframes titleShine {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+}
+
+/* ========== Progress Bar Animation ========== */
+.progress-container {
+    margin-bottom: 32px;
+}
+
+.progress-bar {
+    height: 6px;
+    background: var(--bg-tertiary);
+    border-radius: 999px;
+    overflow: hidden;
+    position: relative;
+}
+
+#progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #00d4ff, #7c3aed, #00d4ff);
+    background-size: 200% auto;
+    border-radius: 999px;
+    transition: width 0.5s ease;
+    animation: progressGlow 1.5s ease-in-out infinite;
+}
+
+@keyframes progressGlow {
+    0%, 100% { box-shadow: 0 0 10px rgba(0, 212, 255, 0.5); }
+    50% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.8); }
+}
+
+.progress-text {
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-top: 12px;
+    min-height: 24px;
+}
+
+/* ========== Splash Actions ========== */
+.splash-actions {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    opacity: 0;
+    animation: fadeInUp 0.5s ease forwards 1s;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.btn-skip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-skip:hover {
+    border-color: var(--text-muted);
+    color: var(--text-primary);
+}
+
+.btn-skip kbd {
+    font-size: 0.75rem;
+    padding: 2px 6px;
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+}
+
+.btn-quick {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(124, 58, 237, 0.2));
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 8px;
+    color: var(--accent-primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-quick:hover {
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.3), rgba(124, 58, 237, 0.3));
+    border-color: var(--accent-primary);
+    transform: translateY(-2px);
+}
+
+.quick-options {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(8px);
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 8px;
+    min-width: 160px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.btn-quick:hover .quick-options {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(12px);
+}
+
+.quick-options button {
+    display: block;
+    width: 100%;
+    padding: 10px 16px;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s ease;
+}
+
+.quick-options button:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+/* ========== Particles Background ========== */
+.particles {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--accent-primary);
+    border-radius: 50%;
+    opacity: 0.3;
+    animation: particleFloat 8s linear infinite;
+}
+
+@keyframes particleFloat {
+    0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.3;
+    }
+    90% {
+        opacity: 0.3;
+    }
+    100% {
+        transform: translateY(-100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+/* ========== Page Transitions ========== */
+.page-enter {
+    animation: pageEnter 0.4s ease forwards;
+}
+
+.page-exit {
+    animation: pageExit 0.3s ease forwards;
+}
+
+@keyframes pageEnter {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes pageExit {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+}
+
+/* ========== Fade In Animation ========== */
+.fade-in {
+    animation: fadeIn 0.3s ease forwards;
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.4s ease forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* ========== Scale Animation ========== */
+.scale-in {
+    animation: scaleIn 0.3s ease forwards;
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ========== Stagger Animation ========== */
+.stagger-item {
+    opacity: 0;
+    animation: fadeInUp 0.4s ease forwards;
+}
+
+.stagger-item:nth-child(1) { animation-delay: 0ms; }
+.stagger-item:nth-child(2) { animation-delay: 50ms; }
+.stagger-item:nth-child(3) { animation-delay: 100ms; }
+.stagger-item:nth-child(4) { animation-delay: 150ms; }
+.stagger-item:nth-child(5) { animation-delay: 200ms; }
+.stagger-item:nth-child(6) { animation-delay: 250ms; }
+.stagger-item:nth-child(7) { animation-delay: 300ms; }
+.stagger-item:nth-child(8) { animation-delay: 350ms; }
+
+/* ========== Hover Effects ========== */
+.hover-lift {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.hover-glow {
+    transition: box-shadow 0.3s ease;
+}
+
+.hover-glow:hover {
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+}
+
+/* ========== Loading Spinner ========== */
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--bg-tertiary);
+    border-top-color: var(--accent-primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.spinner-sm {
+    width: 20px;
+    height: 20px;
+    border-width: 2px;
+}
+
+.spinner-lg {
+    width: 60px;
+    height: 60px;
+    border-width: 4px;
+}
+
+/* ========== Shimmer Effect ========== */
+.shimmer {
+    position: relative;
+    overflow: hidden;
+}
+
+.shimmer::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    to { left: 100%; }
+}
+
+/* ========== Pulse Animation ========== */
+.pulse {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* ========== Bounce Animation ========== */
+.bounce {
+    animation: bounce 1s ease infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* ========== Shake Animation ========== */
+.shake {
+    animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-5px); }
+    40%, 80% { transform: translateX(5px); }
+}
+
+/* ========== Rotate Animation ========== */
+.rotate {
+    animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate {
+    to { transform: rotate(360deg); }
+}
+
+/* ========== Signal Indicator Animation ========== */
+.signal-indicator {
+    position: relative;
+}
+
+.signal-indicator::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0;
+    animation: signalIndicator 2s ease-out infinite;
+}
+
+@keyframes signalIndicator {
+    0% {
+        transform: scale(0.5);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* ========== Chart Animations ========== */
+.chart-animate-in {
+    animation: chartReveal 0.8s ease forwards;
+}
+
+@keyframes chartReveal {
+    from {
+        opacity: 0;
+        clip-path: inset(100% 0 0 0);
+    }
+    to {
+        opacity: 1;
+        clip-path: inset(0 0 0 0);
+    }
+}
+
+/* ========== Ripple Effect ========== */
+.ripple {
+    position: relative;
+    overflow: hidden;
+}
+
+.ripple::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle, var(--accent-primary) 10%, transparent 10.01%);
+    background-repeat: no-repeat;
+    background-position: 50%;
+    transform: scale(10, 10);
+    opacity: 0;
+    transition: transform 0.5s, opacity 1s;
+}
+
+.ripple:active::after {
+    transform: scale(0, 0);
+    opacity: 0.3;
+    transition: 0s;
+}

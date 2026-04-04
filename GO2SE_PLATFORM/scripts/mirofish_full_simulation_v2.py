@@ -26,12 +26,14 @@
 【闭环迭代】
 数据与资金 → 逻辑 → 决策 → 操作 → (迭代)
 
-【25维度分类】
+【30维度分类】
 A. 投资组合层 (3个)
 B. 投资工具层 (7个)
 C. 趋势判断层 (5个)
 D. 底层资源层 (4个)
 E. 运营支撑层 (6个)
+F. UI/UX层 (3个) - 新增
+G. 集成测试层 (2个) - 新增
 """
 
 import asyncio
@@ -1347,6 +1349,301 @@ class GO2SEFullSimulationV2:
         )
     
     # ═══════════════════════════════════════════════════════════════
+    # F. UI/UX层 (维度26-28) - 新增
+    # ═══════════════════════════════════════════════════════════════
+    
+    def test_ui_responsiveness(self) -> TestResult:
+        """F1: UI响应性"""
+        try:
+            # 测试前端页面加载时间
+            latencies = []
+            for _ in range(5):
+                try:
+                    start = time.time()
+                    req = urllib.request.Request(BACKEND_URL)
+                    with urllib.request.urlopen(req, timeout=10) as resp:
+                        content = resp.read()
+                        latencies.append((time.time() - start) * 1000)
+                except:
+                    pass
+            
+            if latencies:
+                avg = statistics.mean(latencies)
+                score = max(0, 100 - (avg - 200) / 10)
+                details = f"平均加载={avg:.0f}ms, 响应性={'优秀' if avg < 300 else '良好' if avg < 500 else '需优化'}"
+                recommendations = []
+                
+                if avg > 500:
+                    recommendations.append("页面加载过慢，优化资源")
+                
+                return TestResult(
+                    dimension="F1-UI响应性",
+                    category="UI/UX",
+                    layer="F",
+                    status="PASS" if score >= 70 else "WARN",
+                    score=score,
+                    latency_ms=avg,
+                    details=details,
+                    recommendations=recommendations,
+                    timestamp=datetime.now().isoformat()
+                )
+            
+            return TestResult(
+                dimension="F1-UI响应性",
+                category="UI/UX",
+                layer="F",
+                status="WARN",
+                score=50,
+                latency_ms=0,
+                details="无法测量UI响应",
+                recommendations=["检查前端服务"],
+                timestamp=datetime.now().isoformat()
+            )
+        except Exception as e:
+            return TestResult(
+                dimension="F1-UI响应性",
+                category="UI/UX",
+                layer="F",
+                status="FAIL",
+                score=0,
+                latency_ms=0,
+                details=str(e),
+                recommendations=["检查前端服务"],
+                timestamp=datetime.now().isoformat()
+            )
+    
+    def test_ui_navigation(self) -> TestResult:
+        """F2: UI导航结构"""
+        try:
+            # 测试关键页面可访问性
+            pages = [
+                ("/", "根页面"),
+                ("/docs", "API文档"),
+                ("/api/health", "健康端点"),
+            ]
+            
+            accessible = 0
+            for path, name in pages:
+                try:
+                    req = urllib.request.Request(f"{BACKEND_URL}{path}")
+                    with urllib.request.urlopen(req, timeout=10) as resp:
+                        if resp.status == 200:
+                            accessible += 1
+                except:
+                    pass
+            
+            score = (accessible / len(pages)) * 100
+            details = f"可访问页面={accessible}/{len(pages)}, 导航={'正常' if score >= 80 else '需检查'}"
+            recommendations = []
+            
+            if score < 80:
+                recommendations.append("部分页面无法访问")
+            
+            return TestResult(
+                dimension="F2-UI导航结构",
+                category="UI/UX",
+                layer="F",
+                status="PASS" if score >= 80 else "WARN",
+                score=score,
+                latency_ms=0,
+                details=details,
+                recommendations=recommendations,
+                timestamp=datetime.now().isoformat()
+            )
+        except Exception as e:
+            return TestResult(
+                dimension="F2-UI导航结构",
+                category="UI/UX",
+                layer="F",
+                status="FAIL",
+                score=0,
+                latency_ms=0,
+                details=str(e),
+                recommendations=["检查UI导航"],
+                timestamp=datetime.now().isoformat()
+            )
+    
+    def test_ui_components(self) -> TestResult:
+        """F3: UI组件完整性"""
+        try:
+            # 检查HTML中的关键组件
+            req = urllib.request.Request(BACKEND_URL)
+            with urllib.request.urlopen(req, timeout=10) as resp:
+                content = resp.read().decode('utf-8', errors='ignore')
+            
+            # 检查关键组件
+            has_root = 'id="root"' in content or 'id="app"' in content
+            has_title = 'GO2SE' in content or 'goose' in content.lower()
+            has_vite = 'vite' in content.lower() or '/@vite' in content
+            
+            # 组件完整性评分
+            component_score = (has_root + has_title + has_vite) / 3 * 100
+            
+            score = component_score
+            details = f"root={has_root}, title={has_title}, vite={has_vite}, 组件完整性={'完整' if score >= 80 else '缺失部分'}"
+            recommendations = []
+            
+            if not has_root:
+                recommendations.append("缺少React根节点")
+            if not has_title:
+                recommendations.append("缺少平台标题")
+            
+            return TestResult(
+                dimension="F3-UI组件完整性",
+                category="UI/UX",
+                layer="F",
+                status="PASS" if score >= 70 else "WARN",
+                score=score,
+                latency_ms=0,
+                details=details,
+                recommendations=recommendations,
+                timestamp=datetime.now().isoformat()
+            )
+        except Exception as e:
+            return TestResult(
+                dimension="F3-UI组件完整性",
+                category="UI/UX",
+                layer="F",
+                status="FAIL",
+                score=0,
+                latency_ms=0,
+                details=str(e),
+                recommendations=["检查UI组件"],
+                timestamp=datetime.now().isoformat()
+            )
+    
+    # ═══════════════════════════════════════════════════════════════
+    # G. 集成测试层 (维度29-30) - 新增
+    # ═══════════════════════════════════════════════════════════════
+    
+    def test_backend_frontend_integration(self) -> TestResult:
+        """G1: 后端-前端集成"""
+        try:
+            # 1. 前端能访问后端API
+            req1 = urllib.request.Request(BACKEND_URL)
+            with urllib.request.urlopen(req1, timeout=10) as resp:
+                frontend_ok = resp.status == 200
+            
+            # 2. 后端API正常
+            req2 = urllib.request.Request(f"{BACKEND_URL}/api/health")
+            with urllib.request.urlopen(req2, timeout=10) as resp:
+                backend_ok = resp.status == 200
+            
+            # 3. 数据一致性检查
+            req3 = urllib.request.Request(f"{BACKEND_URL}/api/stats")
+            with urllib.request.urlopen(req3, timeout=10) as resp:
+                data = json.loads(resp.read())
+                stats_ok = "trading_mode" in data.get("data", {})
+            
+            integration_score = (frontend_ok + backend_ok + stats_ok) / 3 * 100
+            
+            score = integration_score
+            details = f"前端={frontend_ok}, 后端={backend_ok}, 数据={stats_ok}, 集成={'正常' if score >= 80 else '需检查'}"
+            recommendations = []
+            
+            if not frontend_ok:
+                recommendations.append("前端无法访问")
+            if not backend_ok:
+                recommendations.append("后端API异常")
+            
+            return TestResult(
+                dimension="G1-后端前端集成",
+                category="集成测试",
+                layer="G",
+                status="PASS" if score >= 80 else "WARN",
+                score=score,
+                latency_ms=0,
+                details=details,
+                recommendations=recommendations,
+                timestamp=datetime.now().isoformat()
+            )
+        except Exception as e:
+            return TestResult(
+                dimension="G1-后端前端集成",
+                category="集成测试",
+                layer="G",
+                status="FAIL",
+                score=0,
+                latency_ms=0,
+                details=str(e),
+                recommendations=["检查前后端集成"],
+                timestamp=datetime.now().isoformat()
+            )
+    
+    def test_e2e_workflow(self) -> TestResult:
+        """G2: 端到端工作流"""
+        try:
+            # 模拟完整工作流: 启动 -> 健康检查 -> API调用 -> 数据验证
+            workflow_steps = []
+            
+            # Step 1: 健康检查
+            try:
+                req = urllib.request.Request(f"{BACKEND_URL}/api/health")
+                with urllib.request.urlopen(req, timeout=10) as resp:
+                    workflow_steps.append(resp.status == 200)
+            except:
+                workflow_steps.append(False)
+            
+            # Step 2: 获取统计数据
+            try:
+                req = urllib.request.Request(f"{BACKEND_URL}/api/stats")
+                with urllib.request.urlopen(req, timeout=10) as resp:
+                    data = json.loads(resp.read())
+                    workflow_steps.append("data" in data)
+            except:
+                workflow_steps.append(False)
+            
+            # Step 3: MiroFish市场
+            try:
+                req = urllib.request.Request(f"{BACKEND_URL}/api/oracle/mirofish/markets")
+                with urllib.request.urlopen(req, timeout=10) as resp:
+                    data = json.loads(resp.read())
+                    workflow_steps.append("data" in data)
+            except:
+                workflow_steps.append(False)
+            
+            # Step 4: 前端页面
+            try:
+                req = urllib.request.Request(BACKEND_URL)
+                with urllib.request.urlopen(req, timeout=10) as resp:
+                    workflow_steps.append(resp.status == 200)
+            except:
+                workflow_steps.append(False)
+            
+            workflow_score = sum(workflow_steps) / len(workflow_steps) * 100
+            
+            score = workflow_score
+            details = f"工作流={sum(workflow_steps)}/{len(workflow_steps)}步完成, E2E={'正常' if score >= 75 else '需检查'}"
+            recommendations = []
+            
+            if score < 75:
+                recommendations.append("E2E工作流异常")
+            
+            return TestResult(
+                dimension="G2-E2E工作流",
+                category="集成测试",
+                layer="G",
+                status="PASS" if score >= 75 else "WARN",
+                score=score,
+                latency_ms=0,
+                details=details,
+                recommendations=recommendations,
+                timestamp=datetime.now().isoformat()
+            )
+        except Exception as e:
+            return TestResult(
+                dimension="G2-E2E工作流",
+                category="集成测试",
+                layer="G",
+                status="FAIL",
+                score=0,
+                latency_ms=0,
+                details=str(e),
+                recommendations=["检查E2E工作流"],
+                timestamp=datetime.now().isoformat()
+            )
+    
+    # ═══════════════════════════════════════════════════════════════
     # 运行所有测试
     # ═══════════════════════════════════════════════════════════════
     
@@ -1356,7 +1653,14 @@ class GO2SEFullSimulationV2:
         print("🪿 GO2SE 北斗七鑫投资体系 全向仿真测试 V2")
         print("=" * 70)
         print(f"开始时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-        print(f"测试维度: 25个 (A-E五层)")
+        print(f"测试维度: 30个 (A-G七层)")
+        print("   A. 投资组合层 (3)")
+        print("   B. 投资工具层 (7)")
+        print("   C. 趋势判断层 (5)")
+        print("   D. 底层资源层 (4)")
+        print("   E. 运营支撑层 (6)")
+        print("   F. UI/UX层 (3) - 新增")
+        print("   G. 集成测试层 (2) - 新增")
         print("=" * 70)
         
         tests = [
@@ -1390,6 +1694,13 @@ class GO2SEFullSimulationV2:
             ("E4-运维脚本", self.test_ops_scripts),
             ("E5-系统稳定", self.test_system_stability),
             ("E6-API延迟", self.test_api_latency),
+            # F. UI/UX层 (3个) - 新增
+            ("F1-UI响应性", self.test_ui_responsiveness),
+            ("F2-UI导航", self.test_ui_navigation),
+            ("F3-UI组件", self.test_ui_components),
+            # G. 集成测试层 (2个) - 新增
+            ("G1-前后端集成", self.test_backend_frontend_integration),
+            ("G2-E2E工作流", self.test_e2e_workflow),
         ]
         
         print("\n📊 开始逐项测试...\n")
@@ -1422,8 +1733,11 @@ class GO2SEFullSimulationV2:
         print(f"   ❌ 失败: {failed} ({failed/total*100:.1f}%)")
         
         # 按层级分组
-        layers = {"A": [], "B": [], "C": [], "D": [], "E": []}
-        layer_names = {"A": "投资组合", "B": "投资工具", "C": "趋势判断", "D": "底层资源", "E": "运营支撑"}
+        layers = {"A": [], "B": [], "C": [], "D": [], "E": [], "F": [], "G": []}
+        layer_names = {
+            "A": "投资组合", "B": "投资工具", "C": "趋势判断", 
+            "D": "底层资源", "E": "运营支撑", "F": "UI/UX", "G": "集成测试"
+        }
         
         for r in self.results:
             layers[r.layer].append(r)

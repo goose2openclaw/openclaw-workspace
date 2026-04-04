@@ -1,0 +1,261 @@
+/* GO2SE Platform v11 - Skin Themes */
+
+/* ========== Dark Theme (Default) ========== */
+.skin-dark {
+    --bg-primary: #0a0a0f;
+    --bg-secondary: #12121a;
+    --bg-tertiary: #1a1a25;
+    --bg-card: #1e1e2a;
+    --bg-hover: #252535;
+    
+    --text-primary: #ffffff;
+    --text-secondary: #b0b0c0;
+    --text-muted: #6a6a80;
+    
+    --accent-primary: #00d4ff;
+    --accent-secondary: #7c3aed;
+    --accent-success: #10b981;
+    --accent-warning: #f59e0b;
+    --accent-danger: #ef4444;
+    
+    --border-color: #2a2a3a;
+    --border-active: #3a3a4a;
+}
+
+/* ========== Light Theme ========== */
+.skin-light {
+    --bg-primary: #f5f7fa;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #eef1f5;
+    --bg-card: #ffffff;
+    --bg-hover: #f0f2f5;
+    
+    --text-primary: #1a1a2e;
+    --text-secondary: #4a4a60;
+    --text-muted: #8a8aa0;
+    
+    --accent-primary: #0088cc;
+    --accent-secondary: #6c3aed;
+    --accent-success: #10b981;
+    --accent-warning: #f59e0b;
+    --accent-danger: #ef4444;
+    
+    --border-color: #e0e0e8;
+    --border-active: #d0d0d8;
+}
+
+/* ========== Neon Theme ========== */
+.skin-neon {
+    --bg-primary: #0a0a0f;
+    --bg-secondary: #0f0f1a;
+    --bg-tertiary: #1a1a2e;
+    --bg-card: #12122a;
+    --bg-hover: #1e1e3a;
+    
+    --text-primary: #00ff88;
+    --text-secondary: #00cc66;
+    --text-muted: #009944;
+    
+    --accent-primary: #00ff88;
+    --accent-secondary: #ff00ff;
+    --accent-success: #00ff88;
+    --accent-warning: #ffff00;
+    --accent-danger: #ff0044;
+    
+    --border-color: #1a3a2a;
+    --border-active: #00ff88;
+}
+
+/* ========== Ocean Theme ========== */
+.skin-ocean {
+    --bg-primary: #0a1628;
+    --bg-secondary: #0d1f3c;
+    --bg-tertiary: #122a4a;
+    --bg-card: #163358;
+    --bg-hover: #1a3d6a;
+    
+    --text-primary: #e8f4fc;
+    --text-secondary: #a8c8e8;
+    --text-muted: #6898b8;
+    
+    --accent-primary: #00b4d8;
+    --accent-secondary: #0077b6;
+    --accent-success: #06d6a0;
+    --accent-warning: #ffd166;
+    --accent-danger: #ef476f;
+    
+    --border-color: #1a4a6a;
+    --border-active: #00b4d8;
+}
+
+/* ========== Sunset Theme ========== */
+.skin-sunset {
+    --bg-primary: #1a0a0f;
+    --bg-secondary: #2a121a;
+    --bg-tertiary: #3a1a25;
+    --bg-card: #4a2230;
+    --bg-hover: #5a2a3a;
+    
+    --text-primary: #fff5f0;
+    --text-secondary: #e8c8c0;
+    --text-muted: #c89888;
+    
+    --accent-primary: #ff6b6b;
+    --accent-secondary: #ffa500;
+    --accent-success: #88d88a;
+    --accent-warning: #ffd166;
+    --accent-danger: #ff4757;
+    
+    --border-color: #5a3a40;
+    --border-active: #ff6b6b;
+}
+
+/* ========== Forest Theme ========== */
+.skin-forest {
+    --bg-primary: #0a1a0a;
+    --bg-secondary: #122812;
+    --bg-tertiary: #1a3a1a;
+    --bg-card: #224822;
+    --bg-hover: #2a5a2a;
+    
+    --text-primary: #f0fff0;
+    --text-secondary: #c8e8c8;
+    --text-muted: #88a888;
+    
+    --accent-primary: #4ade80;
+    --accent-secondary: #22c55e;
+    --accent-success: #4ade80;
+    --accent-warning: #fbbf24;
+    --accent-danger: #f87171;
+    
+    --border-color: #2a4a2a;
+    --border-active: #4ade80;
+}
+
+/* ========== Theme Transition ========== */
+body {
+    transition: 
+        background-color 0.3s ease,
+        color 0.3s ease;
+}
+
+.skin-neon body {
+    text-shadow: 0 0 10px currentColor;
+}
+
+/* ========== Neon Glow Effects ========== */
+.skin-neon .card,
+.skin-neon .nav-item,
+.skin-neon .btn {
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.1);
+}
+
+.skin-neon .card:hover,
+.skin-neon .nav-item:hover {
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+}
+
+.skin-neon .logo span {
+    text-shadow: 0 0 20px var(--accent-primary);
+}
+
+/* ========== Theme Selector Styles ========== */
+.theme-selector {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.theme-option {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    border: 2px solid var(--border-color);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.theme-option:hover {
+    transform: scale(1.1);
+}
+
+.theme-option.active {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 10px var(--accent-primary);
+}
+
+.theme-option::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+}
+
+.theme-option.dark::before {
+    background: linear-gradient(135deg, #0a0a0f 50%, #1a1a2e 50%);
+}
+
+.theme-option.light::before {
+    background: linear-gradient(135deg, #f5f7fa 50%, #ffffff 50%);
+}
+
+.theme-option.neon::before {
+    background: linear-gradient(135deg, #0a0a0f 50%, #00ff88 50%);
+}
+
+.theme-option.ocean::before {
+    background: linear-gradient(135deg, #0a1628 50%, #00b4d8 50%);
+}
+
+.theme-option.sunset::before {
+    background: linear-gradient(135deg, #1a0a0f 50%, #ff6b6b 50%);
+}
+
+.theme-option.forest::before {
+    background: linear-gradient(135deg, #0a1a0a 50%, #4ade80 50%);
+}
+
+/* ========== High Contrast Mode ========== */
+.skin-high-contrast {
+    --bg-primary: #000000;
+    --bg-secondary: #000000;
+    --bg-tertiary: #1a1a1a;
+    --bg-card: #1a1a1a;
+    --bg-hover: #2a2a2a;
+    
+    --text-primary: #ffffff;
+    --text-secondary: #ffffff;
+    --text-muted: #cccccc;
+    
+    --accent-primary: #00ffff;
+    --accent-secondary: #ff00ff;
+    --accent-success: #00ff00;
+    --accent-warning: #ffff00;
+    --accent-danger: #ff0000;
+    
+    --border-color: #ffffff;
+    --border-active: #ffffff;
+}
+
+/* ========== AMOLED Black Theme ========== */
+.skin-amoled {
+    --bg-primary: #000000;
+    --bg-secondary: #0a0a0a;
+    --bg-tertiary: #141414;
+    --bg-card: #1a1a1a;
+    --bg-hover: #202020;
+    
+    --text-primary: #ffffff;
+    --text-secondary: #b0b0b0;
+    --text-muted: #707070;
+    
+    --accent-primary: #00d4ff;
+    --accent-secondary: #7c3aed;
+    --accent-success: #10b981;
+    --accent-warning: #f59e0b;
+    --accent-danger: #ef4444;
+    
+    --border-color: #2a2a2a;
+    --border-active: #3a3a3a;
+}
