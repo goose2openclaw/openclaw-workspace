@@ -9,6 +9,50 @@ class AssetPage {
     this.refreshInterval = 30000; // 30秒刷新
   }
 
+  template() {
+    return `
+    <div class="asset-page">
+      <div class="page-header">
+        <h1>💰 资产看板</h1>
+        <div class="header-actions">
+          <button class="btn-refresh" onclick="AssetPage.loadAssets()">🔄 刷新</button>
+        </div>
+      </div>
+      
+      <div class="asset-summary">
+        <div class="summary-card">
+          <div class="summary-label">总资产</div>
+          <div class="summary-value" id="asset-total">$0.00</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-label">可用现金</div>
+          <div class="summary-value" id="asset-cash">$0.00</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-label">已锁定</div>
+          <div class="summary-value" id="asset-locked">$0.00</div>
+        </div>
+      </div>
+      
+      <div class="asset-grid">
+        <div class="card chart-card">
+          <h3>📊 资产分布</h3>
+          <canvas id="portfolio-pie"></canvas>
+        </div>
+        <div class="card chart-card">
+          <h3>📈 收益曲线</h3>
+          <canvas id="profit-line"></canvas>
+        </div>
+      </div>
+      
+      <div class="card risk-card">
+        <h3>🛡️ 风险仪表</h3>
+        <div id="risk-gauge" class="risk-gauge"></div>
+      </div>
+    </div>
+    `;
+  }
+
   async init() {
     await this.loadAssets();
     this.initCharts();
