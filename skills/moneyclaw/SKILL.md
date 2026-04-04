@@ -68,7 +68,7 @@ MoneyClaw策略是**投资/理财工具**，对应GO2SE投资工具层：
 | crypto_dca (DCA定投) | 🐰 打兔子 | 长期定投主流资产 |
 | smart_rebalance (智能再平衡) | 👑 跟大哥 | 组合再平衡 |
 | crypto_price_alert (价格告警) | 🐹 打地鼠 | 机会发现/告警 |
-| crypto_funding (资金费率) | 🔮 走着瞧 | 跨市场套利机会 |
+| crypto_funding (资金费率) | 🔮 走着瞧 | 预测市场辅助 |
 
 ### 打工工具独立
 
