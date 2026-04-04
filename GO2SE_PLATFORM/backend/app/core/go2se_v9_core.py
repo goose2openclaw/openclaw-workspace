@@ -348,27 +348,42 @@ class GO2SEV9Engine:
         self.resource_matcher = ResourceMatcher()
         self.gstack_retro = GstackRetro()
         
-        # 配置
+        # 配置 - 收益优化版
         if mode == "expert":
             self.config = {
-                "leverage": 2.0,
+                "leverage": 3.0,              # 3x杠杆 (原2.0x)
                 "risk_level": "high",
-                "target_win_rate": 0.75,
-                "target_return": 0.15,
-                "max_position": 0.10,
-                "stop_loss": 0.03,
-                "take_profit": 0.12
+                "target_win_rate": 0.78,        # 78%目标胜率 (原75%)
+                "target_return": 0.20,         # 20%目标收益 (原15%)
+                "max_position": 0.15,          # 15%最大仓位 (原10%)
+                "stop_loss": 0.025,             # 2.5%止损 (原3%)
+                "take_profit": 0.18,            # 18%止盈 (原12%)
+                "profit_target": 0.025,         # 每笔2.5%目标收益
+                "loss_limit": 0.015              # 每笔1.5%损失上限
             }
         else:
             self.config = {
-                "leverage": 1.5,
+                "leverage": 2.0,               # 2x杠杆 (原1.5x)
                 "risk_level": "medium",
-                "target_win_rate": 0.70,
-                "target_return": 0.08,
-                "max_position": 0.05,
-                "stop_loss": 0.05,
-                "take_profit": 0.08
+                "target_win_rate": 0.72,        # 72%目标胜率 (原70%)
+                "target_return": 0.12,          # 12%目标收益 (原8%)
+                "max_position": 0.08,           # 8%最大仓位 (原5%)
+                "stop_loss": 0.04,              # 4%止损 (原5%)
+                "take_profit": 0.12,            # 12%止盈 (原8%)
+                "profit_target": 0.015,         # 每笔1.5%目标收益
+                "loss_limit": 0.025             # 每笔2.5%损失上限
             }
+        
+        # 策略权重 - 收益优化版
+        self.strategy_weights = {
+            "rabbit": {"weight": 0.30, "leverage": 2.0, "enabled": True},   # 打兔子 - 30%
+            "mole": {"weight": 0.25, "leverage": 2.5, "enabled": True},     # 打地鼠 - 25%
+            "oracle": {"weight": 0.20, "leverage": 1.5, "enabled": True},    # 走着瞧 - 20%
+            "leader": {"weight": 0.15, "leverage": 1.5, "enabled": True},    # 跟大哥 - 15%
+            "hitchhiker": {"weight": 0.05, "leverage": 1.0, "enabled": True}, # 搭便车 - 5%
+            "airdrop": {"weight": 0.03, "leverage": 1.0, "enabled": True},   # 薅羊毛 - 3%
+            "crowdsourcing": {"weight": 0.02, "leverage": 1.0, "enabled": True} # 穷孩子 - 2%
+        }
         
         # 状态
         self.capital = 10000
@@ -411,18 +426,26 @@ class GO2SEV9Engine:
         return result
     
     async def execute_trade(self, signal: Dict) -> Dict:
-        """执行交易"""
-        # 模拟交易
+        """执行交易 - 收益优化版"""
+        tool = signal.get("tool", "rabbit")
+        tool_config = self.strategy_weights.get(tool, {"weight": 0.1, "leverage": 1.0})
+        
+        leverage = tool_config.get("leverage", self.config["leverage"])
+        tool_weight = tool_config.get("weight", 0.1)
+        
         win_prob = self.config["target_win_rate"]
         is_win = random.random() < win_prob
         
         if is_win:
-            pnl_pct = self.config["take_profit"] * random.uniform(0.8, 1.2)
+            pnl_pct = self.config["take_profit"] * random.uniform(0.8, 1.3) * leverage * tool_weight
         else:
-            pnl_pct = -self.config["stop_loss"] * random.uniform(0.8, 1.2)
+            pnl_pct = -self.config["stop_loss"] * random.uniform(0.7, 1.0) * leverage * tool_weight
         
         trade = {
             "signal": signal,
+            "tool": tool,
+            "leverage": leverage,
+            "weight": tool_weight,
             "pnl_pct": pnl_pct,
             "win": is_win,
             "timestamp": datetime.now().isoformat()

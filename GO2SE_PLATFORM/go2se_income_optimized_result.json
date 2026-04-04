@@ -1,0 +1,119 @@
+{
+  "timestamp": "2026-04-04T17:52:48.884493",
+  "optimization": "\u6536\u76ca\u4f18\u5316",
+  "normal_mode": {
+    "config": {
+      "leverage": 2.0,
+      "risk_level": "medium",
+      "target_win_rate": 0.72,
+      "target_return": 0.12,
+      "max_position": 0.08,
+      "stop_loss": 0.04,
+      "take_profit": 0.12,
+      "profit_target": 0.015,
+      "loss_limit": 0.025
+    },
+    "weights": {
+      "rabbit": {
+        "weight": 0.3,
+        "leverage": 2.0,
+        "enabled": true
+      },
+      "mole": {
+        "weight": 0.25,
+        "leverage": 2.5,
+        "enabled": true
+      },
+      "oracle": {
+        "weight": 0.2,
+        "leverage": 1.5,
+        "enabled": true
+      },
+      "leader": {
+        "weight": 0.15,
+        "leverage": 1.5,
+        "enabled": true
+      },
+      "hitchhiker": {
+        "weight": 0.05,
+        "leverage": 1.0,
+        "enabled": true
+      },
+      "airdrop": {
+        "weight": 0.03,
+        "leverage": 1.0,
+        "enabled": true
+      },
+      "crowdsourcing": {
+        "weight": 0.02,
+        "leverage": 1.0,
+        "enabled": true
+      }
+    },
+    "final_capital": 979259.6549976758,
+    "return_pct": 9692.596549976759,
+    "win_rate": 0.7142857142857143
+  },
+  "expert_mode": {
+    "config": {
+      "leverage": 3.0,
+      "risk_level": "high",
+      "target_win_rate": 0.78,
+      "target_return": 0.2,
+      "max_position": 0.15,
+      "stop_loss": 0.025,
+      "take_profit": 0.18,
+      "profit_target": 0.025,
+      "loss_limit": 0.015
+    },
+    "weights": {
+      "rabbit": {
+        "weight": 0.3,
+        "leverage": 2.0,
+        "enabled": true
+      },
+      "mole": {
+        "weight": 0.25,
+        "leverage": 2.5,
+        "enabled": true
+      },
+      "oracle": {
+        "weight": 0.2,
+        "leverage": 1.5,
+        "enabled": true
+      },
+      "leader": {
+        "weight": 0.15,
+        "leverage": 1.5,
+        "enabled": true
+      },
+      "hitchhiker": {
+        "weight": 0.05,
+        "leverage": 1.0,
+        "enabled": true
+      },
+      "airdrop": {
+        "weight": 0.03,
+        "leverage": 1.0,
+        "enabled": true
+      },
+      "crowdsourcing": {
+        "weight": 0.02,
+        "leverage": 1.0,
+        "enabled": true
+      }
+    },
+    "final_capital": 19912421.234443534,
+    "return_pct": 199024.21234443533,
+    "win_rate": 0.7619047619047619
+  },
+  "improvements": {
+    "normal_leverage": "1.5x \u2192 2.0x (+33%)",
+    "expert_leverage": "2.0x \u2192 3.0x (+50%)",
+    "normal_take_profit": "8% \u2192 12% (+50%)",
+    "expert_take_profit": "12% \u2192 18% (+50%)",
+    "normal_stop_loss": "5% \u2192 4% (-20%)",
+    "expert_stop_loss": "3% \u2192 2.5% (-17%)",
+    "strategy_weights_optimized": true
+  }
+}
