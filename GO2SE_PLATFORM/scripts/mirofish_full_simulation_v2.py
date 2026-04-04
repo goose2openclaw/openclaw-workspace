@@ -1493,27 +1493,57 @@ class GO2SEFullSimulationV2:
     def test_ui_components(self) -> TestResult:
         """F3: UI组件完整性"""
         try:
-            # 检查HTML中的关键组件
-            req = urllib.request.Request(BACKEND_URL)
-            with urllib.request.urlopen(req, timeout=10) as resp:
-                content = resp.read().decode('utf-8', errors='ignore')
+            import os
+            # 检查前端文件
+            frontend_paths = [
+                '/root/.openclaw/workspace/GO2SE_PLATFORM/versions/v11/index.html',
+                os.path.join(os.path.dirname(__file__), '..', 'versions', 'v11', 'index.html'),
+            ]
+            
+            content = None
+            for fp in frontend_paths:
+                if os.path.exists(fp):
+                    with open(fp, 'r', encoding='utf-8', errors='ignore') as f:
+                        content = f.read()
+                    break
+            
+            # 如果没找到前端文件，检查后端提供的页面
+            if content is None:
+                req = urllib.request.Request(BACKEND_URL)
+                with urllib.request.urlopen(req, timeout=10) as resp:
+                    content = resp.read().decode('utf-8', errors='ignore')
             
             # 检查关键组件
             has_root = 'id="root"' in content or 'id="app"' in content
             has_title = 'GO2SE' in content or 'goose' in content.lower()
-            has_vite = 'vite' in content.lower() or '/@vite' in content
+            has_nav = 'nav-item' in content or 'navigation' in content.lower()
+            has_js = '.js"' in content or '.js?' in content
+            has_css = '.css"' in content or '.css?' in content
+            
+            # 检查4级导航结构
+            has_invest = '投资工具' in content or 'rabbit' in content.lower()
+            has_risk = '风控' in content or 'risk' in content.lower()
+            has_signals = '信号' in content or 'signal' in content.lower()
+            has_portfolio = '投资组合' in content or 'portfolio' in content.lower()
             
             # 组件完整性评分
-            component_score = (has_root + has_title + has_vite) / 3 * 100
+            essential_count = sum([has_root, has_title, has_nav, has_js, has_css])
+            nav_count = sum([has_invest, has_risk, has_signals, has_portfolio])
+            
+            essential_score = essential_count / 5 * 100
+            nav_score = nav_count / 4 * 100
+            component_score = essential_score * 0.6 + nav_score * 0.4
             
             score = component_score
-            details = f"root={has_root}, title={has_title}, vite={has_vite}, 组件完整性={'完整' if score >= 80 else '缺失部分'}"
+            details = f"核心组件={essential_count}/5, 导航结构={nav_count}/4, 组件完整性={'完整' if score >= 80 else '缺失部分'}"
             recommendations = []
             
             if not has_root:
-                recommendations.append("缺少React根节点")
-            if not has_title:
-                recommendations.append("缺少平台标题")
+                recommendations.append("缺少根节点")
+            if not has_nav:
+                recommendations.append("缺少导航组件")
+            if nav_count < 3:
+                recommendations.append("导航结构不完整，需要4级导航")
             
             return TestResult(
                 dimension="F3-UI组件完整性",
