@@ -1,0 +1,232 @@
+{
+  "name": "北斗七鑫",
+  "version": "v9.0-final",
+  "updated": "2026-04-04T17:39:36.605313",
+  "tools": {
+    "rabbit": {
+      "name": "🐰 打兔子",
+      "allocation": 25,
+      "enabled": true,
+      "version": "v4.0-full-enhanced",
+      "capabilities": [
+        "global_scan",
+        "deep_scan",
+        "mirofish_select",
+        "sniping",
+        "gstack_retro"
+      ],
+      "weights": {
+        "mirofish": 0.3,
+        "external": 0.25,
+        "historical": 0.2,
+        "ml": 0.15,
+        "consensus": 0.1
+      },
+      "params": {
+        "stop_loss": 0.045,
+        "take_profit": 0.088,
+        "max_position": 0.052
+      },
+      "coins": [
+        "BTC",
+        "ETH",
+        "BNB",
+        "XRP",
+        "SOL",
+        "ADA",
+        "DOGE",
+        "AVAX",
+        "DOT",
+        "MATIC",
+        "LINK",
+        "UNI",
+        "ATOM",
+        "LTC",
+        "ETC",
+        "XLM",
+        "ALGO",
+        "VET",
+        "ICP",
+        "FIL"
+      ]
+    },
+    "mole": {
+      "name": "🐹 打地鼠",
+      "allocation": 20,
+      "enabled": true,
+      "version": "v5.0-full-enhanced",
+      "capabilities": [
+        "global_scan",
+        "deep_scan",
+        "mirofish_select",
+        "sniping",
+        "gstack_retro"
+      ],
+      "weights": {
+        "mirofish": 0.3,
+        "external": 0.25,
+        "historical": 0.2,
+        "ml": 0.15,
+        "consensus": 0.1
+      },
+      "params": {
+        "hft_min_spread": 0.0018,
+        "hft_max_position": 0.022,
+        "scan_interval": 0.5
+      }
+    },
+    "oracle": {
+      "name": "🔮 走着瞧",
+      "allocation": 17,
+      "enabled": true,
+      "version": "v4.0-full-enhanced",
+      "capabilities": [
+        "global_scan",
+        "deep_scan",
+        "mirofish_select",
+        "sniping",
+        "gstack_retro"
+      ],
+      "weights": {
+        "mirofish": 0.35,
+        "external": 0.25,
+        "historical": 0.15,
+        "ml": 0.15,
+        "consensus": 0.1
+      },
+      "params": {
+        "min_confidence": 0.65,
+        "max_stake": 0.048
+      }
+    },
+    "leader": {
+      "name": "👑 跟大哥",
+      "allocation": 17,
+      "enabled": true,
+      "version": "v4.0-full-enhanced",
+      "capabilities": [
+        "global_scan",
+        "deep_scan",
+        "mirofish_select",
+        "sniping",
+        "gstack_retro"
+      ],
+      "weights": {
+        "mirofish": 0.3,
+        "external": 0.25,
+        "historical": 0.2,
+        "ml": 0.15,
+        "consensus": 0.1
+      },
+      "params": {
+        "max_followers": 6,
+        "position_per_mm": 0.021
+      }
+    },
+    "hitchhiker": {
+      "name": "🍀 搭便车",
+      "allocation": 11,
+      "enabled": true,
+      "version": "v4.0-full-enhanced",
+      "capabilities": [
+        "global_scan",
+        "deep_scan",
+        "mirofish_select",
+        "sniping",
+        "gstack_retro"
+      ],
+      "weights": {
+        "mirofish": 0.28,
+        "external": 0.27,
+        "historical": 0.2,
+        "ml": 0.15,
+        "consensus": 0.1
+      },
+      "params": {
+        "min_trader_score": 78,
+        "max_copy_ratio": 0.28
+      }
+    },
+    "airdrop": {
+      "name": "💰 薅羊毛",
+      "allocation": 3,
+      "enabled": true,
+      "version": "v4.0-full-enhanced",
+      "capabilities": [
+        "global_scan",
+        "deep_scan",
+        "mirofish_select",
+        "sniping",
+        "gstack_retro"
+      ],
+      "weights": {
+        "mirofish": 0.3,
+        "external": 0.25,
+        "historical": 0.2,
+        "ml": 0.15,
+        "consensus": 0.1
+      },
+      "params": {
+        "max_gas_fee": 45,
+        "min_potential": 110
+      }
+    },
+    "crowdsourcing": {
+      "name": "👶 穷孩子",
+      "allocation": 2,
+      "enabled": true,
+      "version": "v4.0-full-enhanced",
+      "capabilities": [
+        "global_scan",
+        "deep_scan",
+        "mirofish_select",
+        "sniping",
+        "gstack_retro"
+      ],
+      "weights": {
+        "mirofish": 0.3,
+        "external": 0.25,
+        "historical": 0.2,
+        "ml": 0.15,
+        "consensus": 0.1
+      },
+      "params": {
+        "min_hourly_rate": 5.5,
+        "max_task_time": 3.8
+      }
+    }
+  },
+  "common_capabilities": {
+    "global_scan": {
+      "name": "全域扫描",
+      "interval": 0.5,
+      "targets": 100
+    },
+    "deep_scan": {
+      "name": "深度扫描",
+      "dimensions": 5,
+      "confidence_threshold": 0.6
+    },
+    "mirofish_select": {
+      "name": "MiroFish智能选品",
+      "agent_count": 1000,
+      "consensus_threshold": 0.55
+    },
+    "sniping": {
+      "name": "抢单能力",
+      "response_time": 0.5,
+      "urgency_levels": [
+        "critical",
+        "high",
+        "normal",
+        "low"
+      ]
+    },
+    "gstack_retro": {
+      "name": "gstack复盘",
+      "frequency": "sprint",
+      "team_size": 15
+    }
+  },
+  "decision_equation_template": "W = {mirofish}·MiroFish + {external}·External + {historical}·Historical + {ml}·ML + {consensus}·Consensus"
+}
