@@ -1,9 +1,20 @@
 {
   "version": "1.0.0",
   "name": "GO2SE 7工具策略配置",
-  "description": "北斗七鑫投资体系 - 7大工具策略配置",
+  "description": "北斗七鑫投资体系 - 7大工具策略配置 (推荐值,UI可调)",
   "last_updated": "2026-04-04",
-  
+  "adjustable": true,
+  "adjustment_rules": {
+    "ui_editable": true,
+    "requires_confirmation": true,
+    "backup_before_change": true,
+    "allowed_ranges": {
+      "position_limit": [0, 80],
+      "stop_loss": [0, 50],
+      "take_profit": [0, 100],
+      "weight": [0, 1]
+    }
+  },
   "tools": {
     "RABBIT": {
       "tool_type": "RABBIT",
@@ -11,9 +22,37 @@
       "name_cn": "打兔子策略",
       "emoji": "🐰",
       "description": "前20主流加密货币，稳定收益策略",
-      "position_limit": 25.0,
-      "stop_loss": 5.0,
-      "take_profit": 8.0,
+      "position_limit": {
+        "value": 25.0,
+        "unit": "%",
+        "adjustable": true,
+        "min": 10,
+        "max": 40,
+        "recommended": 25
+      },
+      "stop_loss": {
+        "value": 5.0,
+        "unit": "%",
+        "adjustable": true,
+        "min": 1,
+        "max": 20,
+        "recommended": 5
+      },
+      "take_profit": {
+        "value": 8.0,
+        "unit": "%",
+        "adjustable": true,
+        "min": 3,
+        "max": 30,
+        "recommended": 8
+      },
+      "weight": {
+        "value": 0.25,
+        "adjustable": true,
+        "min": 0,
+        "max": 1,
+        "recommended": 0.25
+      },
       "max_positions": 10,
       "risk_level": "LOW",
       "symbols": [
@@ -29,345 +68,307 @@
         "MOMENTUM_ADX_14", "VOLATILITY_BOLLINGER_20_2_0",
         "VOLUME_VWAP_1d", "CHANNEL_DONCHIAN_20"
       ],
-      "conditions": {
-        "trend恶化_减仓": true,
-        "RSI大于75": {
-          "action": "reduce_position",
-          "target": 15,
-          "description": "RSI超买时自动减仓至15%"
-        },
-        "ADX下降": {
-          "action": "switch_tool",
-          "target": "GOPHER",
-          "description": "趋势减弱时切换到打地鼠"
-        },
-        "趋势确认信号": [
-          "EMA多头排列",
-          "RSI在40-70区间",
-          "MACD柱状图正值"
-        ]
-      },
-      "execution": {
-        "order_type": "LIMIT",
-        "retry_on_failure": true,
-        "max_retries": 3
+      "mirofish_weight": {
+        "value": 0.35,
+        "adjustable": true,
+        "min": 0,
+        "max": 1,
+        "recommended": 0.35
       }
     },
-
     "GOPHER": {
       "tool_type": "GOPHER",
-      "name": "Gopher Strategy",
+      "name": "Mole Strategy",
       "name_cn": "打地鼠策略",
       "emoji": "🐹",
-      "description": "其他所有加密货币，火控雷达锁定异动",
-      "position_limit": 20.0,
-      "stop_loss": 8.0,
-      "take_profit": 15.0,
-      "max_positions": 20,
-      "risk_level": "MEDIUM",
-      "symbols": "ALL_OTHERS",
-      "applicable_models": [
-        "MOMENTUM_RSI_7", "MOMENTUM_RSI_14", "MOMENTUM_STOCH_14",
-        "MOMENTUM_MACD_8_17_9", "REVERSAL_CCI_14", "REVERSAL_WILLIAMS_14",
-        "VOLATILITY_ATR_14", "VOLATILITY_KELTNER_20", 
-        "VOLUME_OBV_14", "CHANNEL_DONCHIAN_10", "CHANNEL_DONCHIAN_20",
-        "SPECIAL_RSI_DIV_BULL", "SPECIAL_RSI_DIV_BEAR"
-      ],
-      "conditions": {
-        "火控雷达_锁定": true,
-        "火控雷达_配置": {
-          "min_volatility_ratio": 2.0,
-          "min_volume_ratio": 1.5,
-          "scan_interval_seconds": 60
-        },
-        "波动异常检测": {
-          "indicator": "ATR",
-          "threshold": 2.0,
-          "action": "alert_and_wait"
-        },
-        "专家模式_止盈可移除": true,
-        "止盈条件": [
-          "价格达到预期目标",
-          "趋势反转信号确认",
-          "时间到期自动平仓"
-        ],
-        "适用场景": [
-          "非主流币",
-          "异动币",
-          "小市值币"
-        ]
+      "description": "其他加密货币，火控雷达锁定异动",
+      "position_limit": {
+        "value": 20.0,
+        "unit": "%",
+        "adjustable": true,
+        "min": 5,
+        "max": 30,
+        "recommended": 20
       },
-      "execution": {
-        "order_type": "MARKET",
-        "retry_on_failure": true,
-        "max_retries": 5
-      }
-    },
-
-    "LOOKER": {
-      "tool_type": "LOOKER",
-      "name": "Looker Strategy",
-      "name_cn": "走着瞧策略",
-      "emoji": "🔮",
-      "description": "预测市场 + MiroFish仿真",
-      "position_limit": 15.0,
-      "stop_loss": 5.0,
-      "take_profit": 10.0,
-      "max_positions": 5,
-      "risk_level": "MEDIUM",
-      "symbols": "PREDICTION_MARKETS",
-      "applicable_models": [
-        "TREND_EMA_21", "TREND_ICHIMOKU_TENKAN",
-        "MOMENTUM_RSI_10", "MOMENTUM_ADX_10",
-        "VOLATILITY_ATR_10", "VOLUME_VWAP_1d",
-        "SPECIAL_MELT_STANDARD", "SPECIAL_RSI_DIV_BULL",
-        "REVERSAL_RVI_14"
-      ],
-      "conditions": {
-        "MiroFish_仿真": true,
-        "胜率门槛": 0.65,
-        "仿真配置": {
-          "sample_size": 1000,
-          "confidence_level": 0.95,
-          "time_horizons": ["1h", "4h", "1d", "1w"]
-        },
-        "预测市场集成": [
-          {"name": "Polymarket", "enabled": true},
-          {"name": "Betfair", "enabled": true},
-          {"name": "Augur", "enabled": true}
-        ],
-        "策略对比": true,
-        "对比维度": [
-          "历史胜率",
-          "最大回撤",
-          "夏普比率",
-          "卡尔玛比率"
-        ],
-        "适用场景": [
-          "预测事件结果",
-          "选举预测",
-          "赛事结果",
-          "价格预测"
-        ]
+      "stop_loss": {
+        "value": 8.0,
+        "unit": "%",
+        "adjustable": true,
+        "min": 3,
+        "max": 25,
+        "recommended": 8
       },
-      "execution": {
-        "order_type": "LIMIT",
-        "retry_on_failure": true,
-        "max_retries": 3
-      }
-    },
-
-    "FOLLOWER": {
-      "tool_type": "FOLLOWER",
-      "name": "Follower Strategy",
-      "name_cn": "跟大哥策略",
-      "emoji": "👑",
-      "description": "做市协作 + MiroFish评估",
-      "position_limit": 15.0,
-      "stop_loss": 3.0,
-      "take_profit": 6.0,
-      "max_positions": 8,
-      "risk_level": "MEDIUM",
-      "symbols": "MARKET_MAKERS",
-      "applicable_models": [
-        "TREND_EMA_50", "TREND_EMA_100",
-        "TREND_CHANNEL_PRICE_CHANNEL_20",
-        "VOLATILITY_KELTNER_30",
-        "VOLUME_VWAP_1h", "VOLUME_VWAP_4h",
-        "SPECIAL_MELT_MODIFIED"
-      ],
-      "conditions": {
-        "MiroFish_评估": true,
-        "评估指标": [
-          "信号质量",
-          "执行延迟",
-          "历史表现"
-        ],
-        "最大跟单比例": 0.30,
-        "综合判断": true,
-        "判断因素": [
-          "做市商信誉评分",
-          "历史胜率",
-          "最大回撤",
-          "信号一致性"
-        ],
-        "大哥列表": [
-          "做市商A",
-          "机构投资者",
-          "专业交易员"
-        ],
-        "适用场景": [
-          "跟单做市",
-          "大户信号",
-          "机构动向"
-        ]
+      "take_profit": {
+        "value": 15.0,
+        "unit": "%",
+        "adjustable": true,
+        "min": 5,
+        "max": 40,
+        "recommended": 15
       },
-      "execution": {
-        "order_type": "LIMIT",
-        "retry_on_failure": false,
-        "max_retries": 1
-      }
-    },
-
-    "HITCHHIKE": {
-      "tool_type": "HITCHHIKE",
-      "name": "Hitchhike Strategy",
-      "name_cn": "搭便车策略",
-      "emoji": "🍀",
-      "description": "跟单分成 + 二级分包",
-      "position_limit": 10.0,
-      "stop_loss": 5.0,
-      "take_profit": 8.0,
+      "weight": {
+        "value": 0.20,
+        "adjustable": true,
+        "min": 0,
+        "max": 1,
+        "recommended": 0.20
+      },
       "max_positions": 10,
       "risk_level": "MEDIUM",
-      "symbols": "COPY_TRADING",
-      "applicable_models": [
-        "TREND_EMA_20", "TREND_MA_50",
-        "VOLUME_VWAP_1h", "CHANNEL_DONCHIAN_20",
-        "SPECIAL_MA_CROSS_GOLDEN"
-      ],
-      "conditions": {
-        "二级分包": true,
-        "分包层级": 2,
-        "加强风控": true,
-        "风控倍数": 1.5,
-        "策略仿真": true,
-        "仿真样本": 500,
-        "分成比例": "70/30",
-        "分成规则": {
-          "跟单方": 70,
-          "平台": 30
-        },
-        "适用场景": [
-          "专业跟单平台",
-          "信号订阅服务",
-          "社区跟单"
-        ]
+      "radar": {
+        "volume_spike": 3.0,
+        "price_change_1h": 0.05,
+        "price_change_24h": 0.15,
+        "funding_rate_anomaly": 0.02
       },
-      "execution": {
-        "order_type": "LIMIT",
-        "retry_on_failure": true,
-        "max_retries": 3
+      "mirofish_weight": {
+        "value": 0.40,
+        "adjustable": true,
+        "min": 0,
+        "max": 1,
+        "recommended": 0.40
       }
     },
-
+    "LOOKER": {
+      "tool_type": "LOOKER",
+      "name": "Oracle Strategy",
+      "name_cn": "走着瞧策略",
+      "emoji": "🔮",
+      "description": "预测市场+MiroFish仿真",
+      "position_limit": {
+        "value": 15.0,
+        "unit": "%",
+        "adjustable": true,
+        "min": 5,
+        "max": 25,
+        "recommended": 15
+      },
+      "stop_loss": {
+        "value": 5.0,
+        "unit": "%",
+        "adjustable": true,
+        "min": 1,
+        "max": 15,
+        "recommended": 5
+      },
+      "take_profit": {
+        "value": 10.0,
+        "unit": "%",
+        "adjustable": true,
+        "min": 3,
+        "max": 30,
+        "recommended": 10
+      },
+      "weight": {
+        "value": 0.15,
+        "adjustable": true,
+        "min": 0,
+        "max": 1,
+        "recommended": 0.15
+      },
+      "risk_level": "HIGH",
+      "prediction_markets": {
+        "enabled": true,
+        "markets": ["polymarket", "azuro", "witch", "metagate", "perspectx", "kucoin_predict"],
+        "min_probability": 0.65,
+        "max_probability": 0.95
+      },
+      "mirofish_weight": {
+        "value": 0.50,
+        "adjustable": true,
+        "min": 0,
+        "max": 1,
+        "recommended": 0.50
+      }
+    },
+    "FOLLOWER": {
+      "tool_type": "FOLLOWER",
+      "name": "Leader Strategy",
+      "name_cn": "跟大哥策略",
+      "emoji": "👑",
+      "description": "做市协作+MiroFish评估",
+      "position_limit": {
+        "value": 15.0,
+        "unit": "%",
+        "adjustable": true,
+        "min": 5,
+        "max": 25,
+        "recommended": 15
+      },
+      "stop_loss": {
+        "value": 3.0,
+        "unit": "%",
+        "adjustable": true,
+        "min": 1,
+        "max": 10,
+        "recommended": 3
+      },
+      "take_profit": {
+        "value": 6.0,
+        "unit": "%",
+        "adjustable": true,
+        "min": 2,
+        "max": 20,
+        "recommended": 6
+      },
+      "weight": {
+        "value": 0.15,
+        "adjustable": true,
+        "min": 0,
+        "max": 1,
+        "recommended": 0.15
+      },
+      "risk_level": "MEDIUM",
+      "market_making": {
+        "spread_min": 0.001,
+        "spread_max": 0.01,
+        "inventory_target": 0.50
+      },
+      "mirofish_weight": {
+        "value": 0.30,
+        "adjustable": true,
+        "min": 0,
+        "max": 1,
+        "recommended": 0.30
+      }
+    },
+    "HITCHHIKE": {
+      "tool_type": "HITCHHIKE",
+      "name": "Hitchhiker Strategy",
+      "name_cn": "搭便车策略",
+      "emoji": "🍀",
+      "description": "跟单分成+二级分包+风控",
+      "position_limit": {
+        "value": 10.0,
+        "unit": "%",
+        "adjustable": true,
+        "min": 3,
+        "max": 20,
+        "recommended": 10
+      },
+      "stop_loss": {
+        "value": 5.0,
+        "unit": "%",
+        "adjustable": true,
+        "min": 1,
+        "max": 15,
+        "recommended": 5
+      },
+      "take_profit": {
+        "value": 8.0,
+        "unit": "%",
+        "adjustable": true,
+        "min": 3,
+        "max": 25,
+        "recommended": 8
+      },
+      "weight": {
+        "value": 0.10,
+        "adjustable": true,
+        "min": 0,
+        "max": 1,
+        "recommended": 0.10
+      },
+      "risk_level": "MEDIUM",
+      "copy_trading": {
+        "providers": ["top_traders", "strategy_funds", "signal_groups"],
+        "min_win_rate": 0.55
+      },
+      "mirofish_weight": {
+        "value": 0.25,
+        "adjustable": true,
+        "min": 0,
+        "max": 1,
+        "recommended": 0.25
+      }
+    },
     "AIREDROP": {
       "tool_type": "AIREDROP",
       "name": "Airdrop Strategy",
       "name_cn": "薅羊毛策略",
       "emoji": "💰",
-      "description": "空投猎手，只读安全",
-      "position_limit": 3.0,
-      "stop_loss": 2.0,
-      "take_profit": 20.0,
-      "max_positions": 30,
-      "risk_level": "HIGH",
-      "symbols": "NEW_PROJECTS",
-      "applicable_models": [
-        "SPECIAL_MELT_STANDARD",
-        "VOLATILITY_ATR_14"
-      ],
-      "conditions": {
-        "安全第一": "永远不授权资产",
-        "杜绝授权链接": true,
-        "安全措施": [
-          "不签署任何授权交易",
-          "使用专用空投钱包",
-          "仅使用只读API"
-        ],
-        "中转钱包隔离": true,
-        "钱包配置": {
-          "主钱包": "隔离冷钱包",
-          "中转钱包": "专用空投钱包",
-          "只读API": "仅查询余额和交易历史"
-        },
-        "项目筛选": [
-          "有真实空投历史",
-          "项目方信誉良好",
-          "代币经济学合理"
-        ],
-        "适用场景": [
-          "新项目空投",
-          "测试网交互",
-          "社交媒体任务"
-        ]
+      "description": "空投猎手(打工工具)",
+      "position_limit": {
+        "value": 3.0,
+        "unit": "%",
+        "adjustable": true,
+        "min": 0,
+        "max": 10,
+        "recommended": 3
       },
-      "execution": {
-        "order_type": "MANUAL",
-        "retry_on_failure": false,
-        "max_retries": 0
+      "stop_loss": {
+        "value": 2.0,
+        "unit": "%",
+        "adjustable": true,
+        "min": 0,
+        "max": 10,
+        "recommended": 2
+      },
+      "take_profit": {
+        "value": 20.0,
+        "unit": "%",
+        "adjustable": true,
+        "min": 5,
+        "max": 100,
+        "recommended": 20
+      },
+      "weight": {
+        "value": 0.03,
+        "adjustable": true,
+        "min": 0,
+        "max": 1,
+        "recommended": 0.03
+      },
+      "risk_level": "HIGH",
+      "type": "打工工具",
+      "mirofish_weight": {
+        "value": 0,
+        "adjustable": false
       }
     },
-
     "CROWDSOURCE": {
       "tool_type": "CROWDSOURCE",
       "name": "Crowdsource Strategy",
       "name_cn": "穷孩子策略",
       "emoji": "👶",
-      "description": "众包赚钱 + EvoMap隔离",
-      "position_limit": 2.0,
-      "stop_loss": 1.0,
-      "take_profit": 30.0,
-      "max_positions": 5,
-      "risk_level": "HIGH",
-      "symbols": "CROWDSOURCING",
-      "applicable_models": [
-        "SPECIAL_MELT_STANDARD"
-      ],
-      "conditions": {
-        "EvoMap_社交圈": true,
-        "EvoMap配置": {
-          "node_id": "node_41349a7fe0f7c472",
-          "skills": ["evomap-tools"],
-          "任务类型": ["数据分析", "内容创作", "社区运营"]
-        },
-        "人设收益": true,
-        "隔离保护": true,
-        "隔离措施": [
-          "EvoMap任务与交易完全隔离",
-          "使用独立账户",
-          "不混用资金"
-        ],
-        "收益目标": [
-          "月度目标: $100-500",
-          "长期目标: 建立稳定收入源"
-        ],
-        "适用场景": [
-          "众包任务",
-          "微任务平台",
-          "EvoMap技能任务"
-        ]
+      "description": "众包赚钱+EvoMap(打工工具)",
+      "position_limit": {
+        "value": 2.0,
+        "unit": "%",
+        "adjustable": true,
+        "min": 0,
+        "max": 5,
+        "recommended": 2
       },
-      "execution": {
-        "order_type": "MANUAL",
-        "retry_on_failure": false,
-        "max_retries": 0
+      "stop_loss": {
+        "value": 1.0,
+        "unit": "%",
+        "adjustable": true,
+        "min": 0,
+        "max": 5,
+        "recommended": 1
+      },
+      "take_profit": {
+        "value": 30.0,
+        "unit": "%",
+        "adjustable": true,
+        "min": 5,
+        "max": 100,
+        "recommended": 30
+      },
+      "weight": {
+        "value": 0.02,
+        "adjustable": true,
+        "min": 0,
+        "max": 1,
+        "recommended": 0.02
+      },
+      "risk_level": "HIGH",
+      "type": "打工工具",
+      "mirofish_weight": {
+        "value": 0,
+        "adjustable": false
       }
     }
-  },
-
-  "global_settings": {
-    "总仓位上限": 80.0,
-    "单笔风险上限": 5.0,
-    "日亏损熔断": 15.0,
-    "风控启动阈值": 10.0,
-    "动态调整": {
-      "enabled": true,
-      "规则": {
-        "日收益大于5%": "允许增加10%仓位",
-        "日收益小于-5%": "自动减仓20%",
-        "连续3日亏损": "暂停新开仓"
-      }
-    }
-  },
-
-  "tool_priority": [
-    "RABBIT",
-    "GOPHER", 
-    "LOOKER",
-    "FOLLOWER",
-    "HITCHHIKE",
-    "AIREDROP",
-    "CROWDSOURCE"
-  ]
+  }
 }
