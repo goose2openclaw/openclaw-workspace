@@ -82,69 +82,188 @@ class WeightUpdater:
             self._init_default_strategies()
     
     def _init_default_skills(self):
-        """初始化默认技能注册表"""
+        """初始化默认技能注册表 - 包含全部量化交易技能"""
         default_skills = {
-            # 交易所连接
+            # === 交易所连接 (5个) ===
             "binance_spot": SkillInfo(
                 name="Binance现货", path="skills/binance-spot-trading",
-                type="exchange", enabled=True, base_weight=0.15,
-                current_weight=0.15, last_updated=datetime.now().isoformat(),
+                type="exchange", enabled=True, base_weight=0.12,
+                current_weight=0.12, last_updated=datetime.now().isoformat(),
                 metrics={"latency_ms": 50, "error_rate": 0.001}
             ),
             "binance_grid": SkillInfo(
                 name="Binance网格", path="skills/binance-grid-trading",
-                type="exchange", enabled=True, base_weight=0.10,
-                current_weight=0.10, last_updated=datetime.now().isoformat(),
+                type="exchange", enabled=True, base_weight=0.08,
+                current_weight=0.08, last_updated=datetime.now().isoformat(),
                 metrics={"grid_count": 10, "profit": 0.05}
             ),
-            "polymarket": SkillInfo(
-                name="Polymarket预测", path="skills/polymarket-bot",
-                type="external", enabled=True, base_weight=0.15,
-                current_weight=0.15, last_updated=datetime.now().isoformat(),
-                metrics={"markets": 6, "volume": 10000}
+            "okx_spot": SkillInfo(
+                name="OKX现货", path="skills/okx-spot-trading",
+                type="exchange", enabled=True, base_weight=0.08,
+                current_weight=0.08, last_updated=datetime.now().isoformat(),
+                metrics={"latency_ms": 60, "error_rate": 0.002}
             ),
-            "moneyclaw": SkillInfo(
-                name="MoneyClaw", path="skills/moneyclaw",
-                type="external", enabled=True, base_weight=0.20,
-                current_weight=0.20, last_updated=datetime.now().isoformat(),
-                metrics={"strategies": 4, "profit": 0.08}
+            "bybit_spot": SkillInfo(
+                name="Bybit现货", path="skills/bybit-spot-trading",
+                type="exchange", enabled=True, base_weight=0.05,
+                current_weight=0.05, last_updated=datetime.now().isoformat(),
+                metrics={"latency_ms": 70, "error_rate": 0.002}
             ),
-            "agentbrain": SkillInfo(
-                name="AgentBrain", path="skills/agentbrain",
-                type="memory", enabled=True, base_weight=0.10,
-                current_weight=0.10, last_updated=datetime.now().isoformat(),
-                metrics={"memory_hits": 100, "accuracy": 0.85}
-            ),
-            "evomap": SkillInfo(
-                name="EvoMap众包", path="skills/evomap-tools",
-                type="external", enabled=True, base_weight=0.10,
-                current_weight=0.10, last_updated=datetime.now().isoformat(),
-                metrics={"tasks": 50, "earnings": 0.02}
-            ),
+            
+            # === 量化交易AI (8个) ===
             "trading_brain": SkillInfo(
                 name="Trading Brain", path="skills/trading-brain",
-                type="ai", enabled=True, base_weight=0.25,
-                current_weight=0.25, last_updated=datetime.now().isoformat(),
+                type="ai", enabled=True, base_weight=0.15,
+                current_weight=0.15, last_updated=datetime.now().isoformat(),
                 metrics={"decisions": 500, "accuracy": 0.72}
             ),
             "quant_system": SkillInfo(
                 name="Quant系统", path="skills/quant-trading-system",
-                type="ai", enabled=True, base_weight=0.15,
-                current_weight=0.15, last_updated=datetime.now().isoformat(),
+                type="ai", enabled=True, base_weight=0.12,
+                current_weight=0.12, last_updated=datetime.now().isoformat(),
                 metrics={"signals": 200, "win_rate": 0.68}
             ),
-            # RAG & Hermes
+            "trading_agents": SkillInfo(
+                name="Trading Agents", path="skills/trading-agents",
+                type="ai", enabled=True, base_weight=0.10,
+                current_weight=0.10, last_updated=datetime.now().isoformat(),
+                metrics={"agents": 5, "accuracy": 0.70}
+            ),
+            "crypto_trading_bot": SkillInfo(
+                name="Crypto交易Bot", path="skills/crypto-trading-bot",
+                type="ai", enabled=True, base_weight=0.08,
+                current_weight=0.08, last_updated=datetime.now().isoformat(),
+                metrics={"trades": 100, "win_rate": 0.65}
+            ),
+            "rho_signals": SkillInfo(
+                name="Rho信号", path="skills/rho-signals",
+                type="ai", enabled=True, base_weight=0.08,
+                current_weight=0.08, last_updated=datetime.now().isoformat(),
+                metrics={"signals": 150, "accuracy": 0.68}
+            ),
+            "trading_assistant": SkillInfo(
+                name="交易助手", path="skills/trading-assistant",
+                type="ai", enabled=True, base_weight=0.06,
+                current_weight=0.06, last_updated=datetime.now().isoformat(),
+                metrics={"queries": 300, "accuracy": 0.75}
+            ),
+            "trading_devbox": SkillInfo(
+                name="交易开发箱", path="skills/trading-devbox",
+                type="ai", enabled=True, base_weight=0.05,
+                current_weight=0.05, last_updated=datetime.now().isoformat(),
+                metrics={"backtests": 50, "accuracy": 0.72}
+            ),
+            
+            # === 预测市场 (2个) ===
+            "polymarket": SkillInfo(
+                name="Polymarket", path="skills/polymarket-bot",
+                type="prediction", enabled=True, base_weight=0.12,
+                current_weight=0.12, last_updated=datetime.now().isoformat(),
+                metrics={"markets": 6, "volume": 10000}
+            ),
+            "polymarket_arbitrage": SkillInfo(
+                name="Polymarket套利", path="skills/polymarket-arbitrage",
+                type="prediction", enabled=True, base_weight=0.08,
+                current_weight=0.08, last_updated=datetime.now().isoformat(),
+                metrics={"arb_opportunities": 20, "profit": 0.03}
+            ),
+            
+            # === 外部金融AI (3个) ===
+            "moneyclaw": SkillInfo(
+                name="MoneyClaw", path="skills/moneyclaw",
+                type="external", enabled=True, base_weight=0.15,
+                current_weight=0.15, last_updated=datetime.now().isoformat(),
+                metrics={"strategies": 4, "profit": 0.08}
+            ),
+            "agentbrain": SkillInfo(
+                name="AgentBrain", path="skills/agentbrain",
+                type="memory", enabled=True, base_weight=0.08,
+                current_weight=0.08, last_updated=datetime.now().isoformat(),
+                metrics={"memory_hits": 100, "accuracy": 0.85}
+            ),
+            "hermes": SkillInfo(
+                name="Hermes Agent", path="hermes-agent",
+                type="agent", enabled=True, base_weight=0.10,
+                current_weight=0.10, last_updated=datetime.now().isoformat(),
+                metrics={"skills_created": 5, "improvements": 20}
+            ),
+            
+            # === 股票/数据 (5个) ===
+            "agent_stock": SkillInfo(
+                name="股票Agent", path="skills/agent-stock",
+                type="stock", enabled=True, base_weight=0.05,
+                current_weight=0.05, last_updated=datetime.now().isoformat(),
+                metrics={"stocks": 50, "accuracy": 0.65}
+            ),
+            "akshare_stock": SkillInfo(
+                name="AKShare A股", path="skills/akshare-stock",
+                type="stock", enabled=True, base_weight=0.04,
+                current_weight=0.04, last_updated=datetime.now().isoformat(),
+                metrics={"symbols": 5000, "latency_ms": 100}
+            ),
+            "china_stock_analysis": SkillInfo(
+                name="A股分析", path="skills/china-stock-analysis",
+                type="stock", enabled=True, base_weight=0.04,
+                current_weight=0.04, last_updated=datetime.now().isoformat(),
+                metrics={"analyses": 100, "accuracy": 0.62}
+            ),
+            "stock_analysis": SkillInfo(
+                name="股票分析", path="skills/stock-analysis",
+                type="stock", enabled=True, base_weight=0.04,
+                current_weight=0.04, last_updated=datetime.now().isoformat(),
+                metrics={"analyses": 100, "accuracy": 0.63}
+            ),
+            "stock_watcher": SkillInfo(
+                name="股票监视", path="skills/stock-watcher",
+                type="stock", enabled=True, base_weight=0.03,
+                current_weight=0.03, last_updated=datetime.now().isoformat(),
+                metrics={"watched": 100, "alerts": 50}
+            ),
+            
+            # === RAG和记忆 (3个) ===
             "rag": SkillInfo(
                 name="RAG引擎", path="backend/app/core/rag_engine.py",
                 type="memory", enabled=True, base_weight=0.08,
                 current_weight=0.08, last_updated=datetime.now().isoformat(),
                 metrics={"retrievals": 1000, "accuracy": 0.82}
             ),
-            "hermes": SkillInfo(
-                name="Hermes Agent", path="hermes-agent",
-                type="agent", enabled=True, base_weight=0.12,
-                current_weight=0.12, last_updated=datetime.now().isoformat(),
-                metrics={"skills_created": 5, "improvements": 20}
+            "evomap": SkillInfo(
+                name="EvoMap众包", path="skills/evomap-tools",
+                type="crowdsource", enabled=True, base_weight=0.06,
+                current_weight=0.06, last_updated=datetime.now().isoformat(),
+                metrics={"tasks": 50, "earnings": 0.02}
+            ),
+            "data_analysis": SkillInfo(
+                name="数据分析", path="skills/data-analysis",
+                type="data", enabled=True, base_weight=0.05,
+                current_weight=0.05, last_updated=datetime.now().isoformat(),
+                metrics={"datasets": 20, "accuracy": 0.78}
+            ),
+            
+            # === gstack工具 (4个) ===
+            "gstack_browse": SkillInfo(
+                name="gstack浏览", path="skills/gstack-browse",
+                type="tool", enabled=True, base_weight=0.05,
+                current_weight=0.05, last_updated=datetime.now().isoformat(),
+                metrics={"pages": 500, "accuracy": 0.90}
+            ),
+            "gstack_investigate": SkillInfo(
+                name="gstack调查", path="skills/gstack-investigate",
+                type="tool", enabled=True, base_weight=0.04,
+                current_weight=0.04, last_updated=datetime.now().isoformat(),
+                metrics={"investigations": 50, "accuracy": 0.85}
+            ),
+            "gstack_retro": SkillInfo(
+                name="gstack复盘", path="skills/gstack-retro",
+                type="tool", enabled=True, base_weight=0.04,
+                current_weight=0.04, last_updated=datetime.now().isoformat(),
+                metrics={"retrospectives": 20, "improvements": 100}
+            ),
+            "openclaw_quant": SkillInfo(
+                name="OpenClaw Quant", path="skills/openclaw-quant-skill",
+                type="ai", enabled=True, base_weight=0.06,
+                current_weight=0.06, last_updated=datetime.now().isoformat(),
+                metrics={"strategies": 10, "accuracy": 0.70}
             ),
         }
         self.skills = default_skills
