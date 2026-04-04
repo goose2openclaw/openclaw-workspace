@@ -1,7 +1,7 @@
 /**
  * GO2SE Vue3 Router Configuration
  * ===============================
- * 基于v2.5页面架构
+ * 基于v2.5 UX完整架构
  */
 import { createRouter, createWebHistory } from 'vue-router'
 
@@ -26,175 +26,118 @@ const routes = [
     meta: { title: '注册' },
   },
 
-  // ========== 一级: 主导航页 (基于v2.5架构) ==========
+  // ========== A. 注意力板块 ==========
   {
-    path: '/home',
-    name: 'Home',
-    component: () => import('@/pages/Home.vue'),
-    meta: { title: '首页纵览', icon: '🏠' },
+    path: '/focus',
+    name: 'Focus',
+    component: () => import('@/pages/Focus.vue'),
+    meta: { title: '注意力板块', icon: '🎯' },
   },
+
+  // ========== B. 宏观微观 ==========
   {
-    path: '/hot',
-    name: 'Hot',
-    component: () => import('@/pages/Hot.vue'),
-    meta: { title: '热点纵览', icon: '🔥' },
+    path: '/macro-micro',
+    name: 'MacroMicro',
+    component: () => import('@/pages/MacroMicro.vue'),
+    meta: { title: '宏观微观', icon: '🔭' },
   },
-  {
-    path: '/dashboard',
-    name: 'Dashboard',
-    component: () => import('@/pages/Dashboard.vue'),
-    meta: { title: '参数仪表盘', icon: '📊' },
-  },
+
+  // ========== C. 资产看板 ==========
   {
     path: '/assets',
     name: 'Assets',
     component: () => import('@/pages/Assets.vue'),
     meta: { title: '资产看板', icon: '💰' },
-  },
-  {
-    path: '/portfolio',
-    name: 'Portfolio',
-    component: () => import('@/pages/Portfolio.vue'),
-    meta: { title: '投资组合', icon: '📈' },
-  },
-  {
-    path: '/sonar',
-    name: 'Sonar',
-    component: () => import('@/pages/Sonar.vue'),
-    meta: { title: '声纳趋势', icon: '📡' },
-  },
-  {
-    path: '/oracle',
-    name: 'Oracle',
-    component: () => import('@/pages/Oracle.vue'),
-    meta: { title: '预言机', icon: '🔮' },
-  },
-  {
-    path: '/ecosystem',
-    name: 'Ecosystem',
-    component: () => import('@/pages/Ecosystem.vue'),
-    meta: { title: '生态工具', icon: '🛠️' },
-  },
-  {
-    path: '/scripts',
-    name: 'Scripts',
-    component: () => import('@/pages/Scripts.vue'),
-    meta: { title: '脚本日志', icon: '📝' },
-  },
-  {
-    path: '/referral',
-    name: 'Referral',
-    component: () => import('@/pages/Referral.vue'),
-    meta: { title: '分享有礼', icon: '🎁' },
-  },
-  {
-    path: '/private',
-    name: 'Private',
-    component: () => import('@/pages/Private.vue'),
-    meta: { title: '私募LP', icon: '💎' },
-  },
-  {
-    path: '/support',
-    name: 'Support',
-    component: () => import('@/pages/Support.vue'),
-    meta: { title: '客服中心', icon: '💬' },
-  },
-
-  // ========== 北斗七鑫 (子路由) ==========
-  {
-    path: '/market',
-    name: 'Market',
-    component: () => import('@/pages/Market.vue'),
-    meta: { title: '北斗七鑫', icon: '🔯' },
-    redirect: '/market/top20',
     children: [
-      { path: 'top20', name: 'MarketTop20', component: () => import('@/pages/MarketTop20.vue') },
-      { path: 'movers', name: 'MarketMovers', component: () => import('@/pages/MarketMovers.vue') },
-      { path: 'exchanges', name: 'MarketExchanges', component: () => import('@/pages/MarketExchanges.vue') },
-    ],
-  },
-  {
-    path: '/market/kline/:symbol',
-    name: 'KlineDetail',
-    component: () => import('@/pages/KlineDetail.vue'),
-  },
-
-  // ========== 策略 (子路由) ==========
-  {
-    path: '/strategies',
-    name: 'Strategies',
-    component: () => import('@/pages/Strategies.vue'),
-    meta: { title: '策略模型', icon: '♟️' },
-    redirect: '/strategies/rabbit',
-    children: [
-      { path: 'rabbit', name: 'StrategyRabbit', component: () => import('@/pages/StrategyRabbit.vue') },
-      { path: 'mole', name: 'StrategyMole', component: () => import('@/pages/StrategyMole.vue') },
-      { path: 'oracle', name: 'StrategyOracle', component: () => import('@/pages/StrategyOracle.vue') },
-      { path: 'leader', name: 'StrategyLeader', component: () => import('@/pages/StrategyLeader.vue') },
-      { path: 'hitchhiker', name: 'StrategyHitchhiker', component: () => import('@/pages/StrategyHitchhiker.vue') },
-      { path: 'airdrop', name: 'StrategyAirdrop', component: () => import('@/pages/StrategyAirdrop.vue') },
-      { path: 'crowdsource', name: 'StrategyCrowdsource', component: () => import('@/pages/StrategyCrowdsource.vue') },
+      { path: '', redirect: '/assets/overview' },
+      { path: 'overview', name: 'AssetsOverview', component: () => import('@/pages/assets/Overview.vue') },
+      { path: 'investment', name: 'AssetsInvestment', component: () => import('@/pages/assets/Investment.vue') },
+      { path: 'work', name: 'AssetsWork', component: () => import('@/pages/assets/Work.vue') },
+      { path: 'simulator', name: 'AssetsSimulator', component: () => import('@/pages/assets/Simulator.vue') },
     ],
   },
 
-  // ========== 信号 (子路由) ==========
+  // ========== D. 投资配置 ==========
+  {
+    path: '/invest',
+    name: 'Invest',
+    component: () => import('@/pages/Invest.vue'),
+    meta: { title: '投资配置', icon: '📊' },
+    children: [
+      { path: '', redirect: '/invest/rabbit' },
+      { path: 'rabbit', name: 'InvestRabbit', component: () => import('@/pages/invest/Rabbit.vue') },
+      { path: 'mole', name: 'InvestMole', component: () => import('@/pages/invest/Mole.vue') },
+      { path: 'oracle', name: 'InvestOracle', component: () => import('@/pages/invest/Oracle.vue') },
+      { path: 'leader', name: 'InvestLeader', component: () => import('@/pages/invest/Leader.vue') },
+      { path: 'hitchhiker', name: 'InvestHitchhiker', component: () => import('@/pages/invest/Hitchhiker.vue') },
+    ],
+  },
+
+  // ========== E. 打工配置 ==========
+  {
+    path: '/work',
+    name: 'Work',
+    component: () => import('@/pages/Work.vue'),
+    meta: { title: '打工配置', icon: '💼' },
+    children: [
+      { path: '', redirect: '/work/wool' },
+      { path: 'wool', name: 'WorkWool', component: () => import('@/pages/work/Wool.vue') },
+      { path: 'poor', name: 'WorkPoor', component: () => import('@/pages/work/Poor.vue') },
+    ],
+  },
+
+  // ========== F. 算力资源 ==========
+  {
+    path: '/compute',
+    name: 'Compute',
+    component: () => import('@/pages/Compute.vue'),
+    meta: { title: '算力资源', icon: '🖥️' },
+  },
+
+  // ========== G. 信号输入 ==========
   {
     path: '/signals',
     name: 'Signals',
     component: () => import('@/pages/Signals.vue'),
-    meta: { title: '信号', icon: '📡' },
-    redirect: '/signals/list',
-    children: [
-      { path: 'list', name: 'SignalsList', component: () => import('@/pages/SignalsList.vue') },
-      { path: 'mirofish', name: 'SignalsMirofish', component: () => import('@/pages/SignalsMirofish.vue') },
-      { path: 'sonar', name: 'SignalsSonar', component: () => import('@/pages/SignalsSonar.vue') },
-    ],
+    meta: { title: '信号输入', icon: '📡' },
   },
 
-  // ========== 交易 (子路由) ==========
+  // ========== H. 策略为王 ==========
   {
-    path: '/trading',
-    name: 'Trading',
-    component: () => import('@/pages/Trading.vue'),
-    meta: { title: '交易', icon: '💹' },
-    redirect: '/trading/positions',
-    children: [
-      { path: 'positions', name: 'TradingPositions', component: () => import('@/pages/TradingPositions.vue') },
-      { path: 'history', name: 'TradingHistory', component: () => import('@/pages/TradingHistory.vue') },
-      { path: 'paper', name: 'TradingPaper', component: () => import('@/pages/TradingPaper.vue') },
-      { path: 'live', name: 'TradingLive', component: () => import('@/pages/TradingLive.vue') },
-    ],
+    path: '/strategies',
+    name: 'Strategies',
+    component: () => import('@/pages/Strategies.vue'),
+    meta: { title: '策略为王', icon: '♟️' },
   },
 
-  // ========== 钱包 (子路由) ==========
+  // ========== I. 安全机制 ==========
   {
-    path: '/wallet',
-    name: 'Wallet',
-    component: () => import('@/pages/Wallet.vue'),
-    meta: { title: '钱包', icon: '💰' },
-    redirect: '/wallet/assets',
-    children: [
-      { path: 'assets', name: 'WalletAssets', component: () => import('@/pages/WalletAssets.vue') },
-      { path: 'deposit', name: 'WalletDeposit', component: () => import('@/pages/WalletDeposit.vue') },
-      { path: 'withdraw', name: 'WalletWithdraw', component: () => import('@/pages/WalletWithdraw.vue') },
-      { path: 'history', name: 'WalletHistory', component: () => import('@/pages/WalletHistory.vue') },
-    ],
+    path: '/security',
+    name: 'Security',
+    component: () => import('@/pages/Security.vue'),
+    meta: { title: '安全机制', icon: '🔒' },
   },
 
-  // ========== 设置 (子路由) ==========
+  // ========== J. 机器学习 ==========
   {
-    path: '/settings',
-    name: 'Settings',
-    component: () => import('@/pages/Settings.vue'),
-    meta: { title: '设置中心', icon: '⚙️' },
-    redirect: '/settings/trading',
-    children: [
-      { path: 'trading', name: 'SettingsTrading', component: () => import('@/pages/SettingsTrading.vue') },
-      { path: 'risk', name: 'SettingsRisk', component: () => import('@/pages/SettingsRisk.vue') },
-      { path: 'api', name: 'SettingsAPI', component: () => import('@/pages/SettingsAPI.vue') },
-      { path: 'notifications', name: 'SettingsNotifications', component: () => import('@/pages/SettingsNotifications.vue') },
-      { path: 'team', name: 'SettingsTeam', component: () => import('@/pages/SettingsTeam.vue') },
-    ],
+    path: '/ml',
+    name: 'ML',
+    component: () => import('@/pages/ML.vue'),
+    meta: { title: '机器学习', icon: '🤖' },
+  },
+
+  // ========== Legacy Routes (兼容) ==========
+  {
+    path: '/dashboard',
+    redirect: '/assets'
+  },
+  {
+    path: '/home',
+    redirect: '/focus'
+  },
+  {
+    path: '/hot',
+    redirect: '/focus'
   },
 ]
 
