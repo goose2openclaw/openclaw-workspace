@@ -1,5 +1,5 @@
 {
-  "version": "8.6",
+  "version": "9.0-full-enhanced",
   "updated": "2026-04-04",
   "tools": {
     "rabbit": {
@@ -7,7 +7,7 @@
       "allocation": 25,
       "enabled": true,
       "max_position": 0.05,
-      "version": "v3.0-decision-equation",
+      "version": "v3.0-full-enhanced",
       "decision_equation": {
         "formula": "W = 0.30·MiroFish + 0.25·External + 0.20·Historical + 0.15·ML + 0.10·Consensus"
       },
@@ -83,6 +83,13 @@
       "apis": [
         "binance",
         "coingecko"
+      ],
+      "capabilities": [
+        "global_scan",
+        "deep_scan",
+        "mirofish_select",
+        "sniping",
+        "gstack_retro"
       ]
     },
     "mole": {
@@ -90,7 +97,7 @@
       "allocation": 22,
       "enabled": true,
       "max_position": 0.04,
-      "version": "v4.0-dual-engine",
+      "version": "v4.0-full-enhanced",
       "engines": {
         "hft": {
           "enabled": true,
@@ -121,6 +128,13 @@
         "bybit",
         "okx",
         "huobi"
+      ],
+      "capabilities": [
+        "global_scan",
+        "deep_scan",
+        "mirofish_select",
+        "sniping",
+        "gstack_retro"
       ]
     },
     "oracle": {
@@ -128,7 +142,7 @@
       "allocation": 17,
       "enabled": true,
       "max_position": 0.05,
-      "version": "v2.1-optimized",
+      "version": "v2.0-full-enhanced",
       "decision_equation": {
         "formula": "W = 0.35·MiroFish + 0.25·External + 0.15·Historical + 0.15·ML + 0.10·Consensus"
       },
@@ -181,6 +195,13 @@
         "augur",
         "kalshi",
         "metaculus"
+      ],
+      "capabilities": [
+        "global_scan",
+        "deep_scan",
+        "mirofish_select",
+        "sniping",
+        "gstack_retro"
       ]
     },
     "leader": {
@@ -188,7 +209,7 @@
       "allocation": 17,
       "enabled": true,
       "max_position": 0.05,
-      "version": "v3.0-decision-equation",
+      "version": "v3.0-full-enhanced",
       "decision_equation": {
         "formula": "W = 0.30·MiroFish + 0.25·External + 0.20·Historical + 0.15·ML + 0.10·Consensus"
       },
@@ -241,6 +262,13 @@
       ],
       "apis": [
         "binance"
+      ],
+      "capabilities": [
+        "global_scan",
+        "deep_scan",
+        "mirofish_select",
+        "sniping",
+        "gstack_retro"
       ]
     },
     "hitchhiker": {
@@ -248,7 +276,7 @@
       "allocation": 11,
       "enabled": true,
       "max_position": 0.05,
-      "version": "v3.0-decision-equation",
+      "version": "v3.0-full-enhanced",
       "decision_equation": {
         "formula": "W = 0.28·MiroFish + 0.27·External + 0.20·Historical + 0.15·ML + 0.10·Consensus"
       },
@@ -299,14 +327,21 @@
         "decision_equation",
         "mirofish_consensus"
       ],
-      "apis": []
+      "apis": [],
+      "capabilities": [
+        "global_scan",
+        "deep_scan",
+        "mirofish_select",
+        "sniping",
+        "gstack_retro"
+      ]
     },
     "airdrop": {
       "name": "薅羊毛",
       "allocation": 3,
       "enabled": true,
       "max_position": 0.03,
-      "version": "v3.0-decision-equation",
+      "version": "v3.0-full-enhanced",
       "decision_equation": {
         "formula": "W = 0.30·MiroFish + 0.25·External + 0.20·Historical + 0.15·ML + 0.10·Consensus"
       },
@@ -375,7 +410,14 @@
         "decision_equation",
         "mirofish_consensus"
       ],
-      "apis": []
+      "apis": [],
+      "capabilities": [
+        "global_scan",
+        "deep_scan",
+        "mirofish_select",
+        "sniping",
+        "gstack_retro"
+      ]
     },
     "crowdsource": {
       "name": "穷孩子",
@@ -392,7 +434,7 @@
       "allocation": 2,
       "enabled": true,
       "max_position": 0.02,
-      "version": "v3.0-decision-equation",
+      "version": "v3.0-full-enhanced",
       "decision_equation": {
         "formula": "W = 0.30·MiroFish + 0.25·External + 0.20·Historical + 0.15·ML + 0.10·Consensus"
       },
@@ -459,7 +501,14 @@
         "decision_equation",
         "mirofish_consensus"
       ],
-      "apis": []
+      "apis": [],
+      "capabilities": [
+        "global_scan",
+        "deep_scan",
+        "mirofish_select",
+        "sniping",
+        "gstack_retro"
+      ]
     }
   },
   "mole_v4": {
