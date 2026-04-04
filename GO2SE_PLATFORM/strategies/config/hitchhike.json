@@ -1,0 +1,65 @@
+{
+  "id": "tool_hitchhike",
+  "name": "🍀 搭便车",
+  "description": "跟单分成+二级分包+风控",
+  "version": "11.0.0",
+  "enabled": true,
+  "priority": 5,
+  "allocation": {
+    "target": 0.10,
+    "min": 0.05,
+    "max": 0.15
+  },
+  "risk": {
+    "stop_loss": 0.05,
+    "take_profit": 0.08,
+    "max_position_size": 0.03,
+    "daily_loss_limit": 0.10
+  },
+  "copy_trading": {
+    "enabled": true,
+    "providers": ["top_traders", "strategy_funds", "signal_groups"],
+    "selection_criteria": {
+      "min_win_rate": 0.55,
+      "min_trades": 100,
+      "max_drawdown": 0.20,
+      "min_roi_30d": 0.10
+    },
+    "allocation_per_provider": 0.33,
+    "min_providers": 3
+  },
+  "sub_packages": {
+    "enabled": true,
+    "levels": 2,
+    "spread_allocation": true,
+    "risk_scaling": 0.8
+  },
+  "simulation": {
+    "enabled": true,
+    "backtest_before_copy": true,
+    "paper_trade_first": true,
+    "paper_trade_duration_days": 7
+  },
+  "indicators": {
+    "primary": ["provider_performance", "signal_lag", "drawdown_depth"],
+    "secondary": ["correlation", "spread_impact", "fee_structure"],
+    "filters": ["provider_reputation", "strategy_decay"]
+  },
+  "entry_rules": {
+    "provider_score_min": 70,
+    "correlation_check": true,
+    "max_correlation_between_providers": 0.6,
+    "simulation_pass_required": true
+  },
+  "exit_rules": {
+    "provider_performance_drop": 0.15,
+    "roi_vs_benchmark_negative": true,
+    "provider_exit_signal": true,
+    "time_based_review_days": 7
+  },
+  "position_management": {
+    "auto_scale_with_provider": false,
+    "max_total_followed": 0.30,
+    "emergency_exit_threshold": 0.25
+  }
+}

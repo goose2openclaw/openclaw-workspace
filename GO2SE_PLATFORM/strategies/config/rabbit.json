@@ -1,0 +1,53 @@
+{
+  "id": "tool_rabbit",
+  "name": "🐰 打兔子",
+  "description": "前20主流加密货币策略，稳定收益型",
+  "version": "11.0.0",
+  "enabled": true,
+  "priority": 1,
+  "allocation": {
+    "target": 0.25,
+    "min": 0.15,
+    "max": 0.30
+  },
+  "risk": {
+    "stop_loss": 0.05,
+    "take_profit": 0.08,
+    "max_position_size": 0.08,
+    "daily_loss_limit": 0.15
+  },
+  "symbols": {
+    "include": ["BTC", "ETH", "BNB", "XRP", "ADA", "DOGE", "SOL", "DOT", "MATIC", "LTC", "SHIB", "TRX", "AVAX", "LINK", "ATOM", "UNI", "XMR", "ETC", "XLM", "BCH"],
+    "exclude": []
+  },
+  "indicators": {
+    "primary": ["EMA_20", "EMA_50", "EMA_200"],
+    "secondary": ["RSI", "MACD", "ADX"],
+    "filters": ["volume_24h_min", "market_cap_rank_max"]
+  },
+  "entry_rules": {
+    "trend_alignment": "bullish",
+    "rsi_threshold": {"min": 30, "max": 70},
+    "volume_confirm": true,
+    "adx_threshold": 25
+  },
+  "exit_rules": {
+    "trailing_stop": true,
+    "trailing_distance": 0.03,
+    "time_based_exit": 720,
+    "trend_reversal_exit": true
+  },
+  "position_management": {
+    "auto_rebalance": true,
+    "rebalance_threshold": 0.05,
+    "scale_in": true,
+    "scale_in_levels": [0.02, 0.04]
+  },
+  "auto_reduce": {
+    "enabled": true,
+    "triggers": [
+      {"condition": "RSI > 75 AND ADX_decreasing", "action": "reduce_50pct"},
+      {"condition": "trend_score < 0.3", "action": "reduce_to_min"}
+    ]
+  }
+}

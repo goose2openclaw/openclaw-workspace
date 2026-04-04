@@ -1,0 +1,67 @@
+{
+  "id": "tool_airdrop",
+  "name": "💰 薅羊毛",
+  "description": "空投猎手，只读安全",
+  "version": "11.0.0",
+  "enabled": true,
+  "priority": 6,
+  "allocation": {
+    "target": 0.03,
+    "min": 0.01,
+    "max": 0.05
+  },
+  "risk": {
+    "stop_loss": 0.02,
+    "take_profit": 0.20,
+    "max_position_size": 0.01,
+    "daily_loss_limit": 0.05
+  },
+  "security": {
+    "allow_signature_request": false,
+    "allow_transfer_approval": false,
+    "bridge_warning": true,
+    "max_gas_approval": 50,
+    "wallet_isolation": true,
+    "read_only_mode": true
+  },
+  "airdrop_tracking": {
+    "enabled": true,
+    "networks": ["ethereum", "arbitrum", "optimism", "polygon", "base", "zksync", "scroll", "linea"],
+    "criteria": {
+      "min_volume_usd": 100,
+      "active_contracts": 5,
+      "unique_interactions": 20
+    },
+    "projects": ["eigenlayer", "linea", "zksync", "scroll", "starknet", "arbitrum", "optimism", "polygon"]
+  },
+  "wallet_management": {
+    "dedicated_wallets": true,
+    "max_wallets": 10,
+    "rotation_enabled": true,
+    "funding_source": "cold_wallet",
+    "funding_per_wallet_limit": 0.002
+  },
+  "indicators": {
+    "primary": ["activity_score", "eligibility_rank", "claim_probability"],
+    "secondary": ["token_price_estimate", "airdrop_size_history", "network_activity"],
+    "filters": ["project_credibility", "team_background"]
+  },
+  "entry_rules": {
+    "project_research_pass": true,
+    "eligibility_score_min": 60,
+    "security_scan_pass": true,
+    "no_auth_required": true
+  },
+  "exit_rules": {
+    "claim_available": true,
+    "token_distribution": true,
+    "project_abandonment": true,
+    "security_concern": true
+  },
+  "position_management": {
+    "cost_tracking": true,
+    "roi_estimation": true,
+    "tax_reporting": true,
+    "max_project_exposure": 0.005
+  }
+}

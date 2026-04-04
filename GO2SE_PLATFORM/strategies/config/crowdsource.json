@@ -1,0 +1,69 @@
+{
+  "id": "tool_crowdsource",
+  "name": "👶 穷孩子",
+  "description": "众包赚钱+EvoMap社交圈",
+  "version": "11.0.0",
+  "enabled": true,
+  "priority": 7,
+  "allocation": {
+    "target": 0.02,
+    "min": 0.01,
+    "max": 0.05
+  },
+  "risk": {
+    "stop_loss": 0.01,
+    "take_profit": 0.30,
+    "max_position_size": 0.005,
+    "daily_loss_limit": 0.03
+  },
+  "crowdsourcing": {
+    "enabled": true,
+    "platforms": ["evomap", "clickworker", "amazon_mturk", "toloka"],
+    "task_types": ["data_labeling", "content_moderation", "survey", "micro_task"],
+    "payment_min_usd": 0.01,
+    "rating_threshold": 4.0
+  },
+  "evomap": {
+    "enabled": true,
+    "node_id": "node_41349a7fe0f7c472",
+    "api_endpoint": "https://evomap.ai/a2a/",
+    "social_circle_integration": true,
+    "persona_based_earnings": true
+  },
+  "persona_system": {
+    "enabled": true,
+    "personas": ["researcher", "analyst", "writer", "validator"],
+    "active_persona": "researcher",
+    "skill_match": true,
+    "earnings_multiplier": 1.5
+  },
+  "security": {
+    "isolation": true,
+    "payment_separation": true,
+    "personal_data_protection": true,
+    "platform_verification": true
+  },
+  "indicators": {
+    "primary": ["task_availability", "payment_reliability", "skill_match_score"],
+    "secondary": ["platform_reputation", "earning_potential", "time_efficiency"],
+    "filters": ["payment_verified", "fraud_check"]
+  },
+  "entry_rules": {
+    "platform_reliability_score": 80,
+    "task_value_min": 0.005,
+    "persona_match_min": 0.7,
+    "fraud_check_pass": true
+  },
+  "exit_rules": {
+    "payment_received": true,
+    "platform_rating_drop": true,
+    "fraud_detected": true,
+    "earnings_target_reached": true
+  },
+  "position_management": {
+    "max_concurrent_tasks": 20,
+    "daily_earning_limit": 100,
+    "time_tracking": true,
+    "performance_review_days": 7
+  }
+}

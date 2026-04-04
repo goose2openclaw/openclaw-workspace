@@ -1,0 +1,62 @@
+{
+  "id": "tool_follow",
+  "name": "👑 跟大哥",
+  "description": "做市协作+MiroFish评估",
+  "version": "11.0.0",
+  "enabled": true,
+  "priority": 4,
+  "allocation": {
+    "target": 0.15,
+    "min": 0.05,
+    "max": 0.20
+  },
+  "risk": {
+    "stop_loss": 0.03,
+    "take_profit": 0.06,
+    "max_position_size": 0.05,
+    "daily_loss_limit": 0.08
+  },
+  "market_making": {
+    "enabled": true,
+    "spread_strategy": "dynamic",
+    "min_spread": 0.001,
+    "max_spread": 0.01,
+    "order_refresh_ms": 500,
+    "inventory_risk_limit": 0.10
+  },
+  "signal_sources": {
+    "min_follow_percentage": 0.30,
+    "max_follow_percentage": 0.30,
+    "verified_only": true,
+    "sources": ["institutional", " whale", "certified_trader"],
+    "reputation_threshold": 0.8
+  },
+  "mirofish": {
+    "enabled": true,
+    "evaluation_before_follow": true,
+    "required_score": 75,
+    "evaluation_criteria": ["signal_quality", "timing", "risk_adjusted"]
+  },
+  "indicators": {
+    "primary": ["leader_position", "spread_opportunity", "inventory_skew"],
+    "secondary": ["market_depth", "order_imbalance", "funding_rate"],
+    "filters": ["liquidity_check", "slippage_estimate"]
+  },
+  "entry_rules": {
+    "leader_signal_strength": 0.7,
+    "spread_opportunity_min": 0.002,
+    "mirofish_evaluation_pass": true,
+    "max_correlation": 0.5
+  },
+  "exit_rules": {
+    "leader_exit_signal": true,
+    "time_based_exit": 360,
+    "spread_squeeze_exit": true,
+    "inventory_threshold_exit": 0.15
+  },
+  "position_management": {
+    "max_follow_per_leader": 0.10,
+    "diversification_min_leaders": 3,
+    "rebalance_interval_hours": 24
+  }
+}

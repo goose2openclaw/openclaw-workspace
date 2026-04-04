@@ -1,0 +1,62 @@
+{
+  "id": "tool_mole",
+  "name": "🐹 打地鼠",
+  "description": "其他加密货币，火控雷达锁定异动",
+  "version": "11.0.0",
+  "enabled": true,
+  "priority": 2,
+  "allocation": {
+    "target": 0.20,
+    "min": 0.10,
+    "max": 0.25
+  },
+  "risk": {
+    "stop_loss": 0.08,
+    "take_profit": 0.15,
+    "max_position_size": 0.05,
+    "daily_loss_limit": 0.15
+  },
+  "symbols": {
+    "include": [],
+    "exclude": ["BTC", "ETH", "BNB", "XRP", "ADA", "DOGE", "SOL", "DOT", "MATIC", "LTC", "SHIB", "TRX", "AVAX", "LINK", "ATOM", "UNI", "XMR", "ETC", "XLM", "BCH"],
+    "watch_list_rank": 500
+  },
+  "radar": {
+    "enabled": true,
+    "scan_interval": 60,
+    "alert_threshold": {
+      "volume_spike": 3.0,
+      "price_change_1h": 0.05,
+      "price_change_24h": 0.15,
+      "funding_rate_anomaly": 0.02
+    },
+    "detection_indicators": ["volume_ratio", "price_momentum", "open_interest_delta", "funding_rate"]
+  },
+  "indicators": {
+    "primary": ["RSI", "Williams_R", "CCI"],
+    "secondary": ["ATR", "Bollinger_Bands", "VolumeProfile"],
+    "filters": ["volume_spike", "volatility_boost"]
+  },
+  "entry_rules": {
+    "radar_lock": true,
+    "min_confidence": 0.7,
+    "volume_confirm": true,
+    "volatility_filter": "ATR_20 > SMA_20_ATR_1.5"
+  },
+  "exit_rules": {
+    "expert_mode_take_profit": true,
+    "trailing_stop": true,
+    "trailing_distance": 0.05,
+    "partial_exit_levels": [0.08, 0.12, 0.15]
+  },
+  "position_management": {
+    "max_concurrent": 10,
+    "position_lifetime_hours": 168,
+    "auto_close_on_signal": true
+  },
+  "expert_mode": {
+    "enabled": false,
+    "manual_take_profit_override": true,
+    "signals": ["whale_movement", "kOL_signal", "on_chain_activity"]
+  }
+}

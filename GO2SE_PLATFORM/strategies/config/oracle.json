@@ -1,0 +1,53 @@
+{
+  "id": "tool_oracle",
+  "name": "🔮 走着瞧",
+  "description": "预测市场+MiroFish仿真",
+  "version": "11.0.0",
+  "enabled": true,
+  "priority": 3,
+  "allocation": {
+    "target": 0.15,
+    "min": 0.08,
+    "max": 0.20
+  },
+  "risk": {
+    "stop_loss": 0.05,
+    "take_profit": 0.10,
+    "max_position_size": 0.03,
+    "daily_loss_limit": 0.10
+  },
+  "prediction_markets": {
+    "enabled": true,
+    "markets": ["polymarket", "azuro", "witch", "metagate", "perspectx", "kucoin_predict"],
+    "min_probability": 0.65,
+    "max_probability": 0.95
+  },
+  "mirofish": {
+    "enabled": true,
+    "simulation_before_entry": true,
+    "required_score": 70,
+    "dimensions": ["A1", "A2", "A3", "B3", "C1", "C2", "C3", "D1", "D4"],
+    "monte_carlo_runs": 1000
+  },
+  "indicators": {
+    "primary": ["market_probability", "volume_bet", "consensus_score"],
+    "secondary": ["sentiment", "crowd_wisdom", "expert_alignment"],
+    "filters": ["odds_value", "edge_threshold"]
+  },
+  "entry_rules": {
+    "win_rate_threshold": 0.65,
+    "mirofish_score_min": 70,
+    "odds_value_min": 1.2,
+    "market_depth_min": 1000
+  },
+  "exit_rules": {
+    "time_based_exit": 1440,
+    "prob_change_exit": {"threshold": 0.15, "direction": "decrease"},
+    "early_close_on_mirofish": true
+  },
+  "strategy_comparison": {
+    "enabled": true,
+    "compare_strategies": ["mean_reversion", "momentum", "breakout"],
+    "select_best": true
+  }
+}
