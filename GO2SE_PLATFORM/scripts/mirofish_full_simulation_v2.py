@@ -86,16 +86,43 @@ class GO2SEFullSimulationV2:
             "风控启动阈值": 0.10,
         }
         
-        # 投资工具配置
+        # 尝试从实际配置文件加载
+        import os as _os
+        config_paths = [
+            _os.path.join(_os.path.dirname(__file__), '..', 'backend', 'app', 'core', 'config', 'strategy_allocation.json'),
+            '/root/.openclaw/workspace/GO2SE_PLATFORM/backend/app/core/config/strategy_allocation.json',
+        ]
+        
+        loaded_config = None
+        for cp in config_paths:
+            if _os.path.exists(cp):
+                with open(cp) as f:
+                    loaded_config = json.load(f)
+                break
+        
+        # 投资工具配置 (中英对照)
         self.tools_config = {
-            "打兔子": {"仓位占比": 0.25, "止损": 0.05, "止盈": 0.08},
-            "打地鼠": {"仓位占比": 0.20, "止损": 0.08, "止盈": 0.15},
-            "走着瞧": {"仓位占比": 0.15, "止损": 0.05, "止盈": 0.10},
-            "跟大哥": {"仓位占比": 0.15, "止损": 0.03, "止盈": 0.06},
-            "搭便车": {"仓位占比": 0.10, "止损": 0.05, "止盈": 0.08},
-            "薅羊毛": {"仓位占比": 0.03, "止损": 0.02, "止盈": 0.20},
-            "穷孩子": {"仓位占比": 0.02, "止损": 0.01, "止盈": 0.30},
+            "rabbit": {"仓位占比": 0.25, "止损": 0.05, "止盈": 0.08, "name": "打兔子"},
+            "mole": {"仓位占比": 0.20, "止损": 0.08, "止盈": 0.15, "name": "打地鼠"},
+            "oracle": {"仓位占比": 0.15, "止损": 0.05, "止盈": 0.10, "name": "走着瞧"},
+            "leader": {"仓位占比": 0.15, "止损": 0.03, "止盈": 0.06, "name": "跟大哥"},
+            "hitchhiker": {"仓位占比": 0.10, "止损": 0.05, "止盈": 0.08, "name": "搭便车"},
+            "airdrop": {"仓位占比": 0.03, "止损": 0.02, "止盈": 0.20, "name": "薅羊毛"},
+            "crowdsource": {"仓位占比": 0.02, "止损": 0.01, "止盈": 0.30, "name": "穷孩子"},
         }
+        
+        # 用实际配置覆盖
+        if loaded_config and 'tools' in loaded_config:
+            for tool_id, tool_cfg in loaded_config['tools'].items():
+                if tool_id in self.tools_config:
+                    # allocation在配置中是百分比(如27.8)，需要转为小数(如0.278)
+                    alloc = tool_cfg.get('allocation', 0)
+                    if alloc > 1:  # 如果大于1，说明是百分比
+                        alloc = alloc / 100.0
+                    self.tools_config[tool_id]['仓位占比'] = alloc
+                    self.tools_config[tool_id]['止损'] = tool_cfg.get('stop_loss', self.tools_config[tool_id]['止损'])
+                    self.tools_config[tool_id]['止盈'] = tool_cfg.get('take_profit', self.tools_config[tool_id]['止盈'])
+            print(f'✅ 加载实际配置: {len(loaded_config["tools"])} 个工具')
         
     def log(self, msg: str):
         ts = datetime.now().strftime("%H:%M:%S")
@@ -368,7 +395,7 @@ class GO2SEFullSimulationV2:
         """B2: 🐹 打地鼠 - 异动扫描"""
         try:
             # 打地鼠配置
-            mole_config = self.tools_config.get("打地鼠", {})
+            mole_config = self.tools_config.get("mole", {})
             position_pct = mole_config.get("仓位占比", 0.2)
             
             # 检查信号
@@ -537,7 +564,7 @@ class GO2SEFullSimulationV2:
                 stats = data.get("data", {})
             
             stop_loss = stats.get("stop_loss", 0)
-            config = self.tools_config.get("搭便车", {})
+            config = self.tools_config.get("hitchhiker", {})
             
             # 跟单风控评分
             risk_score = 100 if stop_loss >= config.get("止损", 0.05) else 50
@@ -577,7 +604,7 @@ class GO2SEFullSimulationV2:
     def test_wool_tool(self) -> TestResult:
         """B6: 💰 薅羊毛 - 空投猎手"""
         try:
-            config = self.tools_config.get("薅羊毛", {})
+            config = self.tools_config.get("airdrop", {})
             position_pct = config.get("仓位占比", 0.03)
             
             # 空投策略评分
@@ -615,7 +642,7 @@ class GO2SEFullSimulationV2:
     def test_poor_kid_tool(self) -> TestResult:
         """B7: 👶 穷孩子 - 众包赚钱"""
         try:
-            config = self.tools_config.get("穷孩子", {})
+            config = self.tools_config.get("crowdsource", {})
             position_pct = config.get("仓位占比", 0.02)
             
             # 众包策略评分

@@ -1,0 +1,15 @@
+[
+  {
+    "timestamp": "2026-04-04T12:03:21.055915",
+    "skills_count": 36,
+    "strategies_count": 14,
+    "confidence": 0.8083129473705548,
+    "top_weights": {
+      "strategy_rabbit_v2": 0.0850997121004765,
+      "strategy_mirofish": 0.08032808645224486,
+      "strategy_rabbit": 0.05795980391708127,
+      "strategy_sonar": 0.04613715734693038,
+      "strategy_leader_v2": 0.04294463083408475
+    }
+  }
+]
