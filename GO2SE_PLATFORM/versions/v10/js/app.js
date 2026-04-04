@@ -770,3 +770,51 @@
   }
 
 })();
+
+// ========== Expert Mode Toggle ==========
+function initExpertMode() {
+  const modeBtns = document.querySelectorAll('.mode-btn');
+  const ninjaItems = document.querySelectorAll('.ninja-only');
+  
+  modeBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const mode = btn.dataset.mode;
+      modeBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      
+      if (mode === 'expert') {
+        // Show engineering mode
+        ninjaItems.forEach(item => {
+          item.style.display = '';
+          item.querySelectorAll('.sidebar-item').forEach(si => {
+            si.style.display = '';
+          });
+        });
+        console.log('🥷 工程模式已激活');
+      } else {
+        // Hide engineering mode
+        ninjaItems.forEach(item => {
+          item.style.display = 'none';
+          item.querySelectorAll('.sidebar-item').forEach(si => {
+            si.style.display = 'none';
+          });
+        });
+        console.log('普通模式: 工程模式已隐藏');
+      }
+    });
+  });
+  
+  // Check initial state
+  const activeMode = document.querySelector('.mode-btn.active');
+  if (activeMode && activeMode.dataset.mode === 'expert') {
+    ninjaItems.forEach(item => {
+      item.style.display = '';
+      item.querySelectorAll('.sidebar-item').forEach(si => {
+        si.style.display = '';
+      });
+    });
+  }
+}
+
+// Add to init
+document.addEventListener('DOMContentLoaded', initExpertMode);

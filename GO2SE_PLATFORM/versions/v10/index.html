@@ -123,9 +123,10 @@
             <span class="item-icon">⚙️</span>
             <span class="item-text">设置</span>
           </a>
-          <a href="#contact" class="sidebar-item" data-section="contact">
-            <span class="item-icon">📞</span>
-            <span class="item-text">转发</span>
+          <!-- 🥷 工程模式: 仅专家模式可见 -->
+          <a href="#ninja" class="sidebar-item ninja-only" data-section="ninja" style="display:none;">
+            <span class="item-icon">🥷</span>
+            <span class="item-text">工程模式</span>
           </a>
         </div>
         <div class="sidebar-footer">
@@ -789,7 +790,7 @@
         <!-- ========== 7. 设置 (设置+私募LP+系统版本) ========== -->
         <section class="content-section" id="settings">
           <div class="section-header">
-            <h2>⚙️ 设置</h2>
+            <h2>⚙️ 设置 · 系统 · 联系我</h2>
           </div>
 
           <div class="settings-grid">
@@ -882,65 +883,104 @@
                 <button class="rollback-btn">回滚到 2026-03-28</button>
               </div>
             </div>
-          </div>
-        </section>
 
-        <!-- ========== 8. 联系与转发 ========== -->
-        <section class="content-section" id="contact">
-          <div class="section-header">
-            <h2>📞 联系与转发</h2>
-          </div>
-
-          <div class="contact-grid">
-            <div class="contact-card">
-              <h3>O1 客服Bot</h3>
-              <div class="support-options">
-                <button class="support-btn">💬 在线客服</button>
-                <button class="support-btn">📧 邮件支持</button>
-                <button class="support-btn">📖 使用文档</button>
-              </div>
-            </div>
-
-            <div class="contact-card">
-              <h3>O2 平台下载</h3>
-              <div class="download-links">
-                <div class="download-item"><span class="dl-icon">🪟</span><span>Windows</span><button class="dl-btn">下载</button></div>
-                <div class="download-item"><span class="dl-icon">🍎</span><span>macOS</span><button class="dl-btn">下载</button></div>
-                <div class="download-item"><span class="dl-icon">🐧</span><span>Linux</span><button class="dl-btn">下载</button></div>
-              </div>
-              <div class="qr-code">
-                <div class="qr-placeholder">📱</div>
-                <span>扫码下载App</span>
-              </div>
-            </div>
-
-            <div class="contact-card">
-              <h3>O3 制作量化盘</h3>
-              <p>制作专属OpenClaw和GO2SE量化盘</p>
-              <div class="quant盘-config">
-                <input type="text" placeholder="量化盘名称" class="盘-name">
-                <button class="盘-create">创建量化盘</button>
-              </div>
-            </div>
-
-            <div class="contact-card">
-              <h3>O4 转发有礼</h3>
-              <p>邀请好友加入GO2SE，双方获得$10奖励</p>
-              <div class="referral-link">
-                <input type="text" readonly value="https://go2se.ai/ref/user123">
-                <button class="copy-btn">复制</button>
-              </div>
-              <div class="referral-stats">
-                <span>已邀请: 5人</span>
-                <span>获得奖励: $50</span>
+            <!-- O: 联系与转发 (合并到设置) -->
+            <div class="settings-card full">
+              <h3>O 联系与转发</h3>
+              <div class="contact-grid compact">
+                <div class="contact-mini">
+                  <h4>📞 客服</h4>
+                  <div class="support-options">
+                    <button class="support-btn">💬 在线客服</button>
+                    <button class="support-btn">📧 邮件支持</button>
+                  </div>
+                </div>
+                <div class="contact-mini">
+                  <h4>⬇️ 下载</h4>
+                  <div class="download-mini">
+                    <button class="dl-btn">🪟 Windows</button>
+                    <button class="dl-btn">🍎 macOS</button>
+                    <button class="dl-btn">🐧 Linux</button>
+                  </div>
+                </div>
+                <div class="contact-mini">
+                  <h4>🎁 转发有礼</h4>
+                  <div class="referral-link">
+                    <input type="text" readonly value="https://go2se.ai/ref/user123">
+                    <button class="copy-btn">复制</button>
+                  </div>
+                  <p class="referral-hint">邀请好友各获$10</p>
+                </div>
               </div>
             </div>
           </div>
-        </section>
-
+        </section> -->
       </div>
     </main>
   </div>
+
+  <!-- 🥷 工程模式 (仅专家模式可见) -->
+  <section class="content-section ninja-only" id="ninja" style="display:none;">
+    <div class="section-header">
+      <h2>🥷 工程模式</h2>
+      <span class="section-tag expert">专家专属</span>
+    </div>
+    <div class="eng-grid">
+      <div class="eng-card">
+        <h3>N1 AI Debug</h3>
+        <div class="debug-panel">
+          <textarea class="debug-input" placeholder="描述问题或错误..."></textarea>
+          <button class="debug-run">MiroFish仿真诊断</button>
+        </div>
+        <div class="debug-result">
+          <div class="debug-status">诊断完成</div>
+          <div class="debug-finding">发现3个潜在问题，已自动修复2个</div>
+        </div>
+      </div>
+      <div class="eng-card">
+        <h3>N2 终端 Termux</h3>
+        <div class="terminal-preview">
+          <div class="terminal-header">
+            <span class="term-dot red"></span>
+            <span class="term-dot yellow"></span>
+            <span class="term-dot green"></span>
+            <span class="term-title">GO2SE Terminal</span>
+          </div>
+          <div class="terminal-body">
+            <p class="term-line">$ go2se status</p>
+            <p class="term-line output">System: OK | Signals: 25 | Trades: 0</p>
+            <p class="term-line">$ _</p>
+          </div>
+        </div>
+        <button class="term-btn">打开终端</button>
+      </div>
+      <div class="eng-card">
+        <h3>N3 数据指令通道</h3>
+        <div class="channel-config">
+          <div class="channel-item"><span>API Gateway</span><span class="channel-status">:8004</span></div>
+          <div class="channel-item"><span>WebSocket</span><span class="channel-status">:8005</span></div>
+          <div class="channel-item"><span>Admin API</span><span class="channel-status">:8006</span></div>
+        </div>
+      </div>
+      <div class="eng-card full">
+        <h3>N4 专家全部参数</h3>
+        <div class="expert-params">
+          <div class="param-group">
+            <h4>投资参数</h4>
+            <div class="param-row"><label>总仓位上限</label><input type="range" min="50" max="100" value="80"><span class="param-val">80%</span></div>
+            <div class="param-row"><label>单笔风险</label><input type="range" min="1" max="10" value="5"><span class="param-val">5%</span></div>
+            <div class="param-row"><label>日熔断</label><input type="range" min="5" max="30" value="15"><span class="param-val">15%</span></div>
+          </div>
+          <div class="param-group">
+            <h4>策略参数</h4>
+            <div class="param-row"><label>置信度阈值</label><input type="range" min="50" max="90" value="70"><span class="param-val">70%</span></div>
+            <div class="param-row"><label>仿真迭代</label><input type="range" min="100" max="1000" value="500"><span class="param-val">500</span></div>
+          </div>
+        </div>
+        <button class="param-save">保存参数</button>
+      </div>
+    </div>
+  </section>
 
   <!-- 通知面板 -->
   <div class="notification-panel hidden" id="notificationPanel">
