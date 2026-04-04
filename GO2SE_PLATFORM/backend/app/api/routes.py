@@ -28,6 +28,22 @@ router = APIRouter()
 # 简单内存缓存 (key: (endpoint, hash), value: (data, expire_ts))
 _cache: dict = {}
 _CACHE_TTL_STATS = 8   # /stats 缓存8秒
+
+# 优化器路由
+try:
+    from app.api.routes_optimizer import router as optimizer_router
+    router.include_router(optimizer_router)
+    logger.info("✅ 优化器路由已注册")
+except Exception as e:
+    logger.warning(f"⚠️ 优化器路由注册失败: {e}")
+
+# Mapping路由
+try:
+    from app.api.routes_mapping import router as mapping_router
+    router.include_router(mapping_router)
+    logger.info("✅ Mapping路由已注册")
+except Exception as e:
+    logger.warning(f"⚠️ Mapping路由注册失败: {e}")
 _CACHE_TTL_PORTFOLIO = 10  # /portfolio 缓存10秒
 _CACHE_TTL_MARKET = 15   # /market 新鲜缓存15秒
 _CACHE_MAX_AGE_MARKET = 60  # /market 允许返回过期数据60秒 (stale-while-revalidate)
