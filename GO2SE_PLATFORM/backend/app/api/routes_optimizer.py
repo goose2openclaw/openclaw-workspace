@@ -8,7 +8,7 @@ from typing import Dict, List, Optional
 from datetime import datetime
 import asyncio
 
-router = APIRouter(prefix="/api/optimizer", tags=["optimizer"])
+router = APIRouter(prefix="", tags=["optimizer"])
 
 # ==================== 数据模型 ====================
 

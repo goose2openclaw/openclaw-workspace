@@ -8,7 +8,7 @@ from typing import Dict, List, Optional
 from datetime import datetime
 import re
 
-router = APIRouter(prefix="/api/mapping", tags=["mapping"])
+router = APIRouter(prefix="/mapping", tags=["mapping"])
 
 # ==================== 币种Mapping ====================
 
