@@ -1,0 +1,271 @@
+{
+  "strategy": "\ud83d\udd2e \u8d70\u7740\u77a7V2",
+  "version": "v2.0-decision-equation",
+  "period": "30 days",
+  "initial_capital": 10000,
+  "final_capital": 29926.56,
+  "total_return_pct": 199.27,
+  "predictions": {
+    "total": 240,
+    "correct": 116,
+    "accuracy": 48.3
+  },
+  "signals": {
+    "buy": 172,
+    "sell": 0,
+    "hold": 68
+  },
+  "weights": {
+    "mirofish": 0.35,
+    "external": 0.25,
+    "historical": 0.15,
+    "ml": 0.15,
+    "consensus": 0.1
+  },
+  "decision_equation": "W = 0.35\u00b7MiroFish + 0.25\u00b7External + 0.15\u00b7Historical + 0.15\u00b7ML + 0.1\u00b7Consensus",
+  "max_drawdown": 0.0,
+  "sharpe_ratio": 7.19,
+  "daily_stats": [
+    {
+      "day": 1,
+      "predictions": 8,
+      "correct": 2,
+      "accuracy": 25.0,
+      "pnl_pct": 0.6305541045685812,
+      "capital": 10063.055410456858
+    },
+    {
+      "day": 2,
+      "predictions": 8,
+      "correct": 3,
+      "accuracy": 37.5,
+      "pnl_pct": 1.2678952962525936,
+      "capital": 10190.644416665333
+    },
+    {
+      "day": 3,
+      "predictions": 8,
+      "correct": 5,
+      "accuracy": 62.5,
+      "pnl_pct": 5.079094225521532,
+      "capital": 10708.236848775614
+    },
+    {
+      "day": 4,
+      "predictions": 8,
+      "correct": 5,
+      "accuracy": 62.5,
+      "pnl_pct": 5.800901140104345,
+      "capital": 11329.411082221312
+    },
+    {
+      "day": 5,
+      "predictions": 8,
+      "correct": 4,
+      "accuracy": 50.0,
+      "pnl_pct": 4.539547519289757,
+      "capital": 11843.715081954428
+    },
+    {
+      "day": 6,
+      "predictions": 8,
+      "correct": 6,
+      "accuracy": 75.0,
+      "pnl_pct": 7.607776781026154,
+      "capital": 12744.75848797025
+    },
+    {
+      "day": 7,
+      "predictions": 8,
+      "correct": 5,
+      "accuracy": 62.5,
+      "pnl_pct": 4.4218042702418705,
+      "capital": 13308.306763023333
+    },
+    {
+      "day": 8,
+      "predictions": 8,
+      "correct": 5,
+      "accuracy": 62.5,
+      "pnl_pct": 5.737596333155446,
+      "capital": 14071.883683863638
+    },
+    {
+      "day": 9,
+      "predictions": 8,
+      "correct": 1,
+      "accuracy": 12.5,
+      "pnl_pct": -0.0033763577017006247,
+      "capital": 14071.408566735103
+    },
+    {
+      "day": 10,
+      "predictions": 8,
+      "correct": 3,
+      "accuracy": 37.5,
+      "pnl_pct": 3.864825022068706,
+      "capital": 14615.2438859798
+    },
+    {
+      "day": 11,
+      "predictions": 8,
+      "correct": 2,
+      "accuracy": 25.0,
+      "pnl_pct": 0.6390984005860699,
+      "capital": 14708.64967589685
+    },
+    {
+      "day": 12,
+      "predictions": 8,
+      "correct": 3,
+      "accuracy": 37.5,
+      "pnl_pct": 3.167783984232151,
+      "capital": 15174.587924626723
+    },
+    {
+      "day": 13,
+      "predictions": 8,
+      "correct": 6,
+      "accuracy": 75.0,
+      "pnl_pct": 7.084898345193907,
+      "capital": 16249.692053388595
+    },
+    {
+      "day": 14,
+      "predictions": 8,
+      "correct": 3,
+      "accuracy": 37.5,
+      "pnl_pct": 1.3005282882467615,
+      "capital": 16461.0238952959
+    },
+    {
+      "day": 15,
+      "predictions": 8,
+      "correct": 5,
+      "accuracy": 62.5,
+      "pnl_pct": 4.505347416931153,
+      "capital": 17202.650210163036
+    },
+    {
+      "day": 16,
+      "predictions": 8,
+      "correct": 5,
+      "accuracy": 62.5,
+      "pnl_pct": 5.098235793384514,
+      "capital": 18079.681880588305
+    },
+    {
+      "day": 17,
+      "predictions": 8,
+      "correct": 5,
+      "accuracy": 62.5,
+      "pnl_pct": 5.072721410392739,
+      "capital": 18996.813774275804
+    },
+    {
+      "day": 18,
+      "predictions": 8,
+      "correct": 4,
+      "accuracy": 50.0,
+      "pnl_pct": 3.1134896437414414,
+      "capital": 19588.27760377873
+    },
+    {
+      "day": 19,
+      "predictions": 8,
+      "correct": 5,
+      "accuracy": 62.5,
+      "pnl_pct": 5.113529768929892,
+      "capital": 20589.93001026858
+    },
+    {
+      "day": 20,
+      "predictions": 8,
+      "correct": 5,
+      "accuracy": 62.5,
+      "pnl_pct": 5.731385714358643,
+      "capital": 21770.018317473558
+    },
+    {
+      "day": 21,
+      "predictions": 8,
+      "correct": 4,
+      "accuracy": 50.0,
+      "pnl_pct": 3.888953079447958,
+      "capital": 22616.644115227333
+    },
+    {
+      "day": 22,
+      "predictions": 8,
+      "correct": 4,
+      "accuracy": 50.0,
+      "pnl_pct": 3.894600444343858,
+      "capital": 23497.472037434647
+    },
+    {
+      "day": 23,
+      "predictions": 8,
+      "correct": 6,
+      "accuracy": 75.0,
+      "pnl_pct": 7.6406424275912235,
+      "capital": 25292.82985533826
+    },
+    {
+      "day": 24,
+      "predictions": 8,
+      "correct": 2,
+      "accuracy": 25.0,
+      "pnl_pct": 1.2355786526380161,
+      "capital": 25605.342661678875
+    },
+    {
+      "day": 25,
+      "predictions": 8,
+      "correct": 3,
+      "accuracy": 37.5,
+      "pnl_pct": 3.1860695986746084,
+      "capital": 26421.146699859084
+    },
+    {
+      "day": 26,
+      "predictions": 8,
+      "correct": 3,
+      "accuracy": 37.5,
+      "pnl_pct": 2.5694728932051243,
+      "capital": 27100.030902385923
+    },
+    {
+      "day": 27,
+      "predictions": 8,
+      "correct": 3,
+      "accuracy": 37.5,
+      "pnl_pct": 2.457245274161927,
+      "capital": 27765.945131031225
+    },
+    {
+      "day": 28,
+      "predictions": 8,
+      "correct": 4,
+      "accuracy": 50.0,
+      "pnl_pct": 4.4625725723593375,
+      "capital": 29005.020582904966
+    },
+    {
+      "day": 29,
+      "predictions": 8,
+      "correct": 2,
+      "accuracy": 25.0,
+      "pnl_pct": 0.6322082923661453,
+      "capital": 29188.392728232597
+    },
+    {
+      "day": 30,
+      "predictions": 8,
+      "correct": 3,
+      "accuracy": 37.5,
+      "pnl_pct": 2.5289821118110942,
+      "capital": 29926.56195905477
+    }
+  ],
+  "timestamp": "2026-04-04T16:56:58.040391"
+}

@@ -1,5 +1,5 @@
 {
-  "version": "8.0",
+  "version": "8.1",
   "updated": "2026-04-04",
   "tools": {
     "rabbit": {
@@ -7,8 +7,12 @@
       "allocation": 28,
       "enabled": true,
       "max_position": 0.05,
-      "strategies": ["ema_cross"],
-      "apis": ["binance"]
+      "strategies": [
+        "ema_cross"
+      ],
+      "apis": [
+        "binance"
+      ]
     },
     "mole": {
       "name": "打地鼠",
@@ -30,34 +34,104 @@
           "min_spread": 0.0015,
           "min_volume": 500000,
           "max_position": 0.05,
-          "types": ["exchange", "triangle", "calendar"]
+          "types": [
+            "exchange",
+            "triangle",
+            "calendar"
+          ]
         }
       },
-      "strategies": ["hft_arbitrage", "cross_market_arbitrage"],
-      "apis": ["binance", "bybit", "okx", "huobi"]
+      "strategies": [
+        "hft_arbitrage",
+        "cross_market_arbitrage"
+      ],
+      "apis": [
+        "binance",
+        "bybit",
+        "okx",
+        "huobi"
+      ]
     },
     "oracle": {
       "name": "走着瞧",
       "allocation": 17,
       "enabled": true,
       "max_position": 0.05,
-      "strategies": ["prediction"],
-      "apis": ["polymarket"]
+      "version": "v2.1-optimized",
+      "decision_equation": {
+        "formula": "W = 0.35·MiroFish + 0.25·External + 0.15·Historical + 0.15·ML + 0.10·Consensus"
+      },
+      "components": {
+        "mirofish": {
+          "weight": 0.35,
+          "agents": 1000,
+          "consensus_threshold": 0.55
+        },
+        "external": {
+          "weight": 0.25,
+          "markets": [
+            "polymarket",
+            "augur",
+            "kalshi",
+            "metaculus"
+          ]
+        },
+        "historical": {
+          "weight": 0.15,
+          "patterns": [
+            "head_shoulders",
+            "double_top",
+            "triangle",
+            "wedge",
+            "channel"
+          ]
+        },
+        "ml": {
+          "weight": 0.15,
+          "cycle_hours": 24,
+          "model": "ensemble_v1"
+        },
+        "consensus": {
+          "weight": 0.1,
+          "strategies": [
+            "momentum",
+            "trend",
+            "volume"
+          ]
+        }
+      },
+      "strategies": [
+        "prediction",
+        "decision_equation",
+        "mirofish_consensus"
+      ],
+      "apis": [
+        "polymarket",
+        "augur",
+        "kalshi",
+        "metaculus"
+      ]
     },
     "leader": {
       "name": "跟大哥",
       "allocation": 17,
       "enabled": true,
       "max_position": 0.05,
-      "strategies": ["spread"],
-      "apis": ["binance"]
+      "strategies": [
+        "spread"
+      ],
+      "apis": [
+        "binance"
+      ]
     },
     "hitchhiker": {
       "name": "搭便车",
       "allocation": 11,
       "enabled": true,
       "max_position": 0.05,
-      "strategies": ["follow"],
+      "strategies": [
+        "follow"
+      ],
       "apis": []
     },
     "airdrop": {
@@ -65,7 +139,9 @@
       "allocation": 3,
       "enabled": true,
       "max_position": 0.03,
-      "strategies": ["airdrop"],
+      "strategies": [
+        "airdrop"
+      ],
       "apis": []
     },
     "crowdsource": {
@@ -73,7 +149,9 @@
       "allocation": 2,
       "enabled": true,
       "max_position": 0.02,
-      "strategies": ["crowdsource"],
+      "strategies": [
+        "crowdsource"
+      ],
       "apis": []
     }
   },
@@ -96,13 +174,22 @@
         "min_spread": 0.0015,
         "min_volume": 500000,
         "max_position": 0.05,
-        "types": ["exchange", "triangle", "calendar"],
-        "exchanges": ["binance", "bybit", "okx", "huobi"]
+        "types": [
+          "exchange",
+          "triangle",
+          "calendar"
+        ],
+        "exchanges": [
+          "binance",
+          "bybit",
+          "okx",
+          "huobi"
+        ]
       }
     },
     "performance": {
       "expected_win_rate": 0.73,
-      "expected_return_monthly": 0.50,
+      "expected_return_monthly": 0.5,
       "max_drawdown": 0.05
     }
   },
