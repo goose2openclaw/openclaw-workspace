@@ -2274,7 +2274,7 @@ h4 { font-size: var(--text-lg); }
   color: var(--bg-primary);
 }
 
-/* ---------- ML Grid ---------- */
+/* ---------- ML Features ---------- */
 .ml-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -3456,4 +3456,38 @@ input[type="checkbox"] {
 .onboarding-container {
   width: 100%;
   max-width: 900px;
+}
+
+/* ========== ML Features (高级订阅) ========== */
+.ml-features {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.ml-feature-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+}
+
+.ml-icon {
+  font-size: var(--text-lg);
+}
+
+.ml-name {
+  flex: 1;
+  font-size: var(--text-sm);
+}
+
+.ml-badge {
+  padding: var(--space-1) var(--space-2);
+  background: linear-gradient(135deg, var(--accent-secondary), var(--accent-primary));
+  color: white;
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: 600;
 }
