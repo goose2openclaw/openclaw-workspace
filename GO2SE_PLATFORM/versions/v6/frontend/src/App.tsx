@@ -1,9 +1,18 @@
 /**
- * 🪿 GO2SE 主应用
- * Go2Se护食的小白鹅
+ * 🪿 GO2SE V6+V9 整合版
+ * ========================
+ * V6 7页架构 + V9 双重脑架构完整整合
+ * 
+ * 整合内容:
+ * - V6: 7页完整架构 (总览/市场/策略/信号/交易/钱包/设置)
+ * - V9: 左右脑架构
+ * - V9: 中转钱包架构
+ * - V9: 龙虾模块
+ * - V9: MiroFish仿真
+ * - V9: gstack集成
  */
 
-import { useState, useEffect, createContext, useContext } from 'react'
+import { useState, useEffect, createContext, useContext, useCallback } from 'react'
 import { useStore } from './stores/appStore'
 import { useAutoRefresh } from './hooks/useAPI'
 import { LoadingScreen } from './components/LoadingScreen'
@@ -17,7 +26,9 @@ import { Wallet } from './views/Wallet'
 import { Settings } from './views/Settings'
 import { Alternatives } from './views/Alternatives'
 
+// ============================================================================
 // Theme Context
+// ============================================================================
 type Theme = 'dark' | 'light'
 const ThemeContext = createContext<{ theme: Theme; setTheme: (t: Theme) => void }>({ 
   theme: 'dark', 
@@ -25,6 +36,154 @@ const ThemeContext = createContext<{ theme: Theme; setTheme: (t: Theme) => void 
 })
 export const useTheme = () => useContext(ThemeContext)
 
+// ============================================================================
+// Dual Brain Context
+// ============================================================================
+interface BrainStatus {
+  brain_id: string
+  mode: string
+  state: string
+  health: number
+  alive: boolean
+}
+
+interface WalletArchitecture {
+  main: { balance: number }
+  transfer: { balance: number }
+  exchange: { balance: number }
+  total: number
+}
+
+interface LobsterStatus {
+  retro: number
+  simulation: number
+  optimization: number
+}
+
+interface DualBrainState {
+  activeBrain: 'left' | 'right'
+  activeMode: 'normal' | 'expert'
+  leftBrain: BrainStatus
+  rightBrain: BrainStatus
+  wallet: WalletArchitecture
+  lobster: LobsterStatus
+  hermes: {
+    iterations: number
+    memory: number
+    skills: number
+  }
+}
+
+const DualBrainContext = createContext<{
+  state: DualBrainState
+  switchBrain: (target: 'left' | 'right') => Promise<void>
+  switchMode: (mode: 'normal' | 'expert') => Promise<void>
+  runRetro: () => Promise<void>
+  runSimulation: () => Promise<void>
+  runOptimization: () => Promise<void>
+  runMirofish: () => Promise<void>
+  runGstack: () => Promise<void>
+  refresh: () => Promise<void>
+}>({
+  state: {
+    activeBrain: 'left',
+    activeMode: 'normal',
+    leftBrain: { brain_id: 'left', mode: 'normal', state: 'active', health: 1.0, alive: true },
+    rightBrain: { brain_id: 'right', mode: 'expert', state: 'standby', health: 1.0, alive: true },
+    wallet: { main: { balance: 100000 }, transfer: { balance: 50000 }, exchange: { balance: 65000 }, total: 215000 },
+    lobster: { retro: 0, simulation: 0, optimization: 0 },
+    hermes: { iterations: 0, memory: 0, skills: 0 }
+  },
+  switchBrain: async () => {},
+  switchMode: async () => {},
+  runRetro: async () => {},
+  runSimulation: async () => {},
+  runOptimization: async () => {},
+  runMirofish: async () => {},
+  runGstack: async () => {},
+  refresh: async () => {}
+})
+
+export const useDualBrain = () => useContext(DualBrainContext)
+
+// ============================================================================
+// API Client
+// ============================================================================
+const API_BASE = '/api'
+
+const dualBrainAPI = {
+  async getStatus() {
+    try {
+      const res = await fetch(`${API_BASE}/dual-brain/status`)
+      return await res.json()
+    } catch { return null }
+  },
+  async getWallet() {
+    try {
+      const res = await fetch(`${API_BASE}/dual-brain/wallet-status`)
+      return await res.json()
+    } catch { return null }
+  },
+  async getLobster() {
+    try {
+      const res = await fetch(`${API_BASE}/dual-brain/lobster/status`)
+      return await res.json()
+    } catch { return null }
+  },
+  async getHermes() {
+    try {
+      const res = await fetch(`${API_BASE}/hermes/status`)
+      return await res.json()
+    } catch { return null }
+  },
+  async switchBrain(target: string) {
+    try {
+      await fetch(`${API_BASE}/dual-brain/switch`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ target })
+      })
+    } catch {}
+  },
+  async switchMode(mode: string) {
+    try {
+      await fetch(`${API_BASE}/dual-brain/switch-mode`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mode })
+      })
+    } catch {}
+  },
+  async runRetro() {
+    try {
+      await fetch(`${API_BASE}/dual-brain/lobster/retro`, { method: 'POST' })
+    } catch {}
+  },
+  async runSimulation() {
+    try {
+      await fetch(`${API_BASE}/dual-brain/lobster/simulation`, { method: 'POST' })
+    } catch {}
+  },
+  async runOptimization() {
+    try {
+      await fetch(`${API_BASE}/dual-brain/lobster/optimization`, { method: 'POST' })
+    } catch {}
+  },
+  async runMirofish() {
+    try {
+      await fetch(`${API_BASE}/go2se/v9/scan-and-select`, { method: 'POST' })
+    } catch {}
+  },
+  async runGstack() {
+    try {
+      await fetch(`${API_BASE}/hermes/iterate`, { method: 'POST' })
+    } catch {}
+  }
+}
+
+// ============================================================================
+// Navigation
+// ============================================================================
 type Section = 'overview' | 'market' | 'strategies' | 'signals' | 'trades' | 'wallet' | 'alternatives' | 'settings'
 
 const navItems = [
@@ -38,18 +197,226 @@ const navItems = [
   { id: 'settings', label: '设置', icon: '⚙️' },
 ]
 
+// ============================================================================
+// Dual Brain Components
+// ============================================================================
+
+const BrainSwitcher: React.FC<{
+  activeBrain: 'left' | 'right'
+  leftBrain: BrainStatus
+  rightBrain: BrainStatus
+  onSwitch: (brain: 'left' | 'right') => void
+}> = ({ activeBrain, leftBrain, rightBrain, onSwitch }) => {
+  return (
+    <div className="brain-switcher">
+      <div className={`brain-indicator ${activeBrain === 'left' ? 'active' : ''}`} onClick={() => onSwitch('left')}>
+        <span className="brain-icon">🧠</span>
+        <span className="brain-label">左脑</span>
+        <span className="brain-mode">{leftBrain.mode === 'normal' ? '普通' : '专家'}</span>
+        <div className="health-bar">
+          <div className="health-fill" style={{ width: `${leftBrain.health * 100}%` }} />
+        </div>
+      </div>
+      
+      <div className="switch-arrow">
+        <button onClick={() => onSwitch(activeBrain === 'left' ? 'right' : 'left')}>
+          ⬌
+        </button>
+      </div>
+      
+      <div className={`brain-indicator ${activeBrain === 'right' ? 'active' : ''}`} onClick={() => onSwitch('right')}>
+        <span className="brain-icon">🧠</span>
+        <span className="brain-label">右脑</span>
+        <span className="brain-mode">{rightBrain.mode === 'normal' ? '普通' : '专家'}</span>
+        <div className="health-bar">
+          <div className="health-fill" style={{ width: `${rightBrain.health * 100}%` }} />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const WalletDisplay: React.FC<{ wallet: WalletArchitecture }> = ({ wallet }) => {
+  return (
+    <div className="wallet-display">
+      <div className="wallet-flow">
+        <div className="wallet-box main">
+          <span className="wallet-label">主钱包</span>
+          <span className="wallet-balance">${wallet.main.balance.toLocaleString()}</span>
+        </div>
+        <span className="wallet-arrow">→</span>
+        <div className="wallet-box transfer">
+          <span className="wallet-label">中转钱包</span>
+          <span className="wallet-balance">${wallet.transfer.balance.toLocaleString()}</span>
+        </div>
+        <span className="wallet-arrow">→</span>
+        <div className="wallet-box exchange">
+          <span className="wallet-label">交易所</span>
+          <span className="wallet-balance">${wallet.exchange.balance.toLocaleString()}</span>
+        </div>
+      </div>
+      <div className="total-assets">
+        总资产: <strong>${wallet.total.toLocaleString()}</strong>
+      </div>
+    </div>
+  )
+}
+
+const LobsterPanel: React.FC<{
+  lobster: LobsterStatus
+  onRetro: () => void
+  onSimulation: () => void
+  onOptimization: () => void
+  onMirofish: () => void
+  onGstack: () => void
+}> = ({ lobster, onRetro, onSimulation, onOptimization, onMirofish, onGstack }) => {
+  return (
+    <div className="lobster-panel">
+      <div className="lobster-stats">
+        <div className="stat">
+          <span className="stat-label">复盘</span>
+          <span className="stat-value">{lobster.retro}</span>
+        </div>
+        <div className="stat">
+          <span className="stat-label">仿真</span>
+          <span className="stat-value">{lobster.simulation}</span>
+        </div>
+        <div className="stat">
+          <span className="stat-label">优化</span>
+          <span className="stat-value">{lobster.optimization}</span>
+        </div>
+      </div>
+      <div className="lobster-actions">
+        <button onClick={onRetro}>📊 复盘</button>
+        <button onClick={onSimulation}>🧠 仿真</button>
+        <button onClick={onOptimization}>⚙️ 优化</button>
+        <button onClick={onMirofish}>🔮 MiroFish</button>
+        <button onClick={onGstack} className="primary">🧬 gstack</button>
+      </div>
+    </div>
+  )
+}
+
+// ============================================================================
+// Main App
+// ============================================================================
 function App() {
   const [activeSection, setActiveSection] = useState<Section>('overview')
   const [isLoading, setIsLoading] = useState(true)
   const [theme, setTheme] = useState<'dark' | 'light'>('dark')
   
+  // Dual Brain State
+  const [dualBrainState, setDualBrainState] = useState<DualBrainState>({
+    activeBrain: 'left',
+    activeMode: 'normal',
+    leftBrain: { brain_id: 'left', mode: 'normal', state: 'active', health: 1.0, alive: true },
+    rightBrain: { brain_id: 'right', mode: 'expert', state: 'standby', health: 1.0, alive: true },
+    wallet: { main: { balance: 100000 }, transfer: { balance: 50000 }, exchange: { balance: 65000 }, total: 215000 },
+    lobster: { retro: 0, simulation: 0, optimization: 0 },
+    hermes: { iterations: 0, memory: 0, skills: 0 }
+  })
+
   const { wsConnected } = useStore()
   const { refreshAll, loading } = useAutoRefresh(15000)
 
   // 初始化加载数据
   useEffect(() => {
-    refreshAll().then(() => setIsLoading(false))
+    refreshDualBrain()
+    setIsLoading(false)
   }, [])
+
+  // Dual Brain刷新
+  const refreshDualBrain = useCallback(async () => {
+    const [status, wallet, lobster, hermes] = await Promise.all([
+      dualBrainAPI.getStatus(),
+      dualBrainAPI.getWallet(),
+      dualBrainAPI.getLobster(),
+      dualBrainAPI.getHermes()
+    ])
+
+    if (status) {
+      const bm = status.brain_manager || {}
+      setDualBrainState(prev => ({
+        ...prev,
+        activeBrain: bm.active_brain || 'left',
+        activeMode: bm.active_mode || 'normal',
+        leftBrain: bm.left_brain || prev.leftBrain,
+        rightBrain: bm.right_brain || prev.rightBrain,
+        lobster: {
+          retro: lobster?.retro_count || 0,
+          simulation: lobster?.simulation_count || 0,
+          optimization: lobster?.optimization_count || 0
+        }
+      }))
+    }
+
+    if (wallet) {
+      setDualBrainState(prev => ({
+        ...prev,
+        wallet: {
+          main: { balance: wallet.main_wallet?.balance || 100000 },
+          transfer: { balance: wallet.transfer_wallet?.balance || 50000 },
+          exchange: { balance: wallet.exchange_walllets ? Object.values(wallet.exchange_walllets).reduce((s: number, w: any) => s + w.balance, 0) : 65000 },
+          total: wallet.total_assets || 215000
+        }
+      }))
+    }
+
+    if (hermes) {
+      setDualBrainState(prev => ({
+        ...prev,
+        hermes: {
+          iterations: hermes.stats?.total_iterations || 0,
+          memory: (hermes.memory?.episodic_size || 0) + (hermes.memory?.semantic_size || 0),
+          skills: hermes.memory?.skills_count || 0
+        }
+      }))
+    }
+  }, [])
+
+  // 自动刷新
+  useEffect(() => {
+    const interval = setInterval(refreshDualBrain, 30000)
+    return () => clearInterval(interval)
+  }, [refreshDualBrain])
+
+  // 脑切换
+  const switchBrain = useCallback(async (target: 'left' | 'right') => {
+    await dualBrainAPI.switchBrain(target)
+    await refreshDualBrain()
+  }, [refreshDualBrain])
+
+  // 模式切换
+  const switchMode = useCallback(async (mode: 'normal' | 'expert') => {
+    await dualBrainAPI.switchMode(mode)
+    await refreshDualBrain()
+  }, [refreshDualBrain])
+
+  // 龙虾/MiroFish/gstack操作
+  const runRetro = useCallback(async () => {
+    await dualBrainAPI.runRetro()
+    await refreshDualBrain()
+  }, [refreshDualBrain])
+
+  const runSimulation = useCallback(async () => {
+    await dualBrainAPI.runSimulation()
+    await refreshDualBrain()
+  }, [refreshDualBrain])
+
+  const runOptimization = useCallback(async () => {
+    await dualBrainAPI.runOptimization()
+    await refreshDualBrain()
+  }, [refreshDualBrain])
+
+  const runMirofish = useCallback(async () => {
+    await dualBrainAPI.runMirofish()
+    await refreshDualBrain()
+  }, [refreshDualBrain])
+
+  const runGstack = useCallback(async () => {
+    await dualBrainAPI.runGstack()
+    await refreshDualBrain()
+  }, [refreshDualBrain])
 
   // 根据时间自动切换主题
   useEffect(() => {
@@ -63,6 +430,7 @@ function App() {
     document.documentElement.setAttribute('data-theme', theme)
   }, [theme])
 
+  // 键盘快捷键
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.target as HTMLElement).tagName === 'INPUT') return
@@ -76,11 +444,24 @@ function App() {
 
   const currentNav = navItems.find(n => n.id === activeSection)
 
+  // Dual Brain Context Value
+  const dualBrainContext = {
+    state: dualBrainState,
+    switchBrain,
+    switchMode,
+    runRetro,
+    runSimulation,
+    runOptimization,
+    runMirofish,
+    runGstack,
+    refresh: refreshDualBrain
+  }
+
   if (isLoading) return <LoadingScreen />
 
   const renderPage = () => {
     switch (activeSection) {
-      case 'overview': return <DashboardWithTheme />
+      case 'overview': return <DashboardWithDualBrain />
       case 'market': return <Market />
       case 'strategies': return <Strategies />
       case 'signals': return <Signals />
@@ -88,101 +469,86 @@ function App() {
       case 'wallet': return <Wallet />
       case 'alternatives': return <Alternatives />
       case 'settings': return <Settings />
-      default: return <DashboardWithTheme />
+      default: return <DashboardWithDualBrain />
     }
   }
 
-  // 包装Dashboard以传递主题
-  const DashboardWithTheme = () => (
+  // 包装Dashboard以传递主题和DualBrain
+  const DashboardWithDualBrain = () => (
     <ThemeContext.Provider value={{ theme, setTheme }}>
-      <Dashboard />
+      <DualBrainContext.Provider value={dualBrainContext}>
+        <Dashboard />
+      </DualBrainContext.Provider>
     </ThemeContext.Provider>
   )
 
   return (
     <ErrorBoundary>
-    <ThemeContext.Provider value={{ theme, setTheme }}>
-      <div className="app">
-        {/* Header - 简洁版 */}
-        <header style={{
-          padding: '0 24px',
-          background: theme === 'dark' ? 'rgba(12, 18, 34, 0.95)' : 'rgba(224, 242, 254, 0.95)',
-          borderBottom: `1px solid ${theme === 'dark' ? '#1E293B' : '#E2E8F0'}`,
-          position: 'sticky',
-          top: 0,
-          zIndex: 100,
-        }}>
-          <div style={{
-            maxWidth: '1440px',
-            margin: '0 auto',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            height: '56px',
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <span style={{ fontSize: '1.5rem' }}>🪿</span>
-              <span style={{ fontSize: '1.125rem', fontWeight: 700, color: theme === 'dark' ? '#F1F5F9' : '#0F172A' }}>
-                Go2Se 护食
-              </span>
-            </div>
-            <nav style={{ display: 'flex', gap: '4px' }}>
-              {navItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={() => setActiveSection(item.id as Section)}
-                  style={{
-                    padding: '8px 14px',
-                    border: 'none',
-                    background: activeSection === item.id 
-                      ? (theme === 'dark' ? '#00D4AA' : '#0891B2') 
-                      : 'transparent',
-                    color: activeSection === item.id 
-                      ? '#FFFFFF' 
-                      : (theme === 'dark' ? '#94A3B8' : '#64748B'),
-                    borderRadius: '8px',
-                    cursor: 'pointer',
-                    fontSize: '0.8125rem',
-                    fontWeight: 500,
-                    transition: 'all 0.2s ease',
-                  }}
-                >
-                  {item.icon} {item.label}
-                </button>
-              ))}
-            </nav>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-                padding: '6px 10px',
-                background: theme === 'dark' ? '#1E293B' : '#F1F5F9',
-                borderRadius: '12px',
-                fontSize: '0.6875rem',
-              }}>
-                <span style={{
-                  width: '6px',
-                  height: '6px',
-                  borderRadius: '50%',
-                  background: '#10B981',
-                }} />
-                <span style={{ color: theme === 'dark' ? '#94A3B8' : '#64748B' }}>
-                  {wsConnected ? '在线' : '离线'}
-                </span>
-              </div>
-            </div>
+      <div className="go2se-app">
+        {/* Header */}
+        <header className="app-header">
+          <div className="header-left">
+            <h1>🪿 GO2SE</h1>
+            <span className="version-badge">V6+V9</span>
+          </div>
+          
+          {/* Dual Brain Status */}
+          <div className="dual-brain-status">
+            <BrainSwitcher
+              activeBrain={dualBrainState.activeBrain}
+              leftBrain={dualBrainState.leftBrain}
+              rightBrain={dualBrainState.rightBrain}
+              onSwitch={switchBrain}
+            />
+          </div>
+          
+          <div className="header-right">
+            <span className={`status-indicator ${dualBrainState.activeBrain}`}>
+              🧠 {dualBrainState.activeBrain === 'left' ? '左脑' : '右脑'}
+              ({dualBrainState.activeMode === 'normal' ? '普通' : '专家'})
+            </span>
           </div>
         </header>
 
-        {/* Main */}
-        <main style={{
-          minHeight: 'calc(100vh - 56px)',
-        }}>
+        {/* Navigation */}
+        <nav className="app-nav">
+          {navItems.map(item => (
+            <button
+              key={item.id}
+              className={activeSection === item.id ? 'active' : ''}
+              onClick={() => setActiveSection(item.id as Section)}
+            >
+              <span className="nav-icon">{item.icon}</span>
+              <span className="nav-label">{item.label}</span>
+            </button>
+          ))}
+        </nav>
+
+        {/* Main Content */}
+        <main className="app-main">
           {renderPage()}
         </main>
+
+        {/* Footer */}
+        <footer className="app-footer">
+          <div className="footer-left">
+            <WalletDisplay wallet={dualBrainState.wallet} />
+          </div>
+          <div className="footer-center">
+            <LobsterPanel
+              lobster={dualBrainState.lobster}
+              onRetro={runRetro}
+              onSimulation={runSimulation}
+              onOptimization={runOptimization}
+              onMirofish={runMirofish}
+              onGstack={runGstack}
+            />
+          </div>
+          <div className="footer-right">
+            <span>🧬 Hermes: 迭代{dualBrainState.hermes.iterations} | 记忆{dualBrainState.hermes.memory} | 技能{dualBrainState.hermes.skills}</span>
+          </div>
+        </footer>
       </div>
-    </ThemeContext.Provider>
     </ErrorBoundary>
   )
 }

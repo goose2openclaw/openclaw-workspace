@@ -295,3 +295,314 @@ body {
   .page-title { fontSize: 1.25rem; }
   .theme-toggle { display: none; }
 }
+
+/* ============================================================================
+   V6+V9 整合样式
+   ============================================================================ */
+
+/* Dual Brain Status */
+.dual-brain-status {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.brain-switcher {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.brain-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.75rem;
+  border-radius: 8px;
+  min-width: 100px;
+  opacity: 0.6;
+  cursor: pointer;
+  transition: all 0.3s;
+  background: var(--bg-card);
+  border: 1px solid transparent;
+}
+
+.brain-indicator:hover {
+  opacity: 0.8;
+}
+
+.brain-indicator.active {
+  opacity: 1;
+  border-color: var(--primary);
+  background: rgba(0, 212, 170, 0.1);
+}
+
+.brain-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.brain-label {
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.brain-mode {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.health-bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.health-fill {
+  height: 100%;
+  background: var(--success);
+  transition: width 0.3s;
+}
+
+.switch-arrow button {
+  padding: 0.5rem 1rem;
+  background: var(--bg-dark);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.switch-arrow button:hover {
+  background: var(--primary);
+  color: var(--bg-dark);
+}
+
+/* Header */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, var(--bg-card), var(--bg-dark));
+  border-bottom: 1px solid rgba(0, 212, 170, 0.2);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-left h1 {
+  font-size: 1.5rem;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.version-badge {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  background: var(--secondary);
+  border-radius: 4px;
+  color: white;
+}
+
+.header-right .status-indicator {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.status-indicator.left {
+  background: rgba(0, 212, 170, 0.2);
+  border: 1px solid var(--primary);
+}
+
+.status-indicator.right {
+  background: rgba(124, 58, 237, 0.2);
+  border: 1px solid var(--secondary);
+}
+
+/* Navigation */
+.app-nav {
+  display: flex;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  background: var(--bg-card);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.app-nav button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.app-nav button:hover {
+  background: rgba(0, 212, 170, 0.1);
+  color: var(--primary);
+}
+
+.app-nav button.active {
+  background: rgba(0, 212, 170, 0.2);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.nav-icon {
+  font-size: 1.25rem;
+}
+
+/* Main Content */
+.app-main {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+/* Footer */
+.app-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: var(--bg-card);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Wallet Display */
+.wallet-display {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.wallet-flow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.wallet-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  min-width: 80px;
+}
+
+.wallet-box.main {
+  background: rgba(0, 212, 170, 0.1);
+  border: 1px solid var(--primary);
+}
+
+.wallet-box.transfer {
+  background: rgba(124, 58, 237, 0.1);
+  border: 1px solid var(--secondary);
+}
+
+.wallet-box.exchange {
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid var(--accent);
+}
+
+.wallet-label {
+  font-size: 0.625rem;
+  color: var(--text-muted);
+}
+
+.wallet-balance {
+  font-size: 0.875rem;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.wallet-arrow {
+  color: var(--text-muted);
+}
+
+.total-assets {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.total-assets strong {
+  color: var(--primary);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Lobster Panel */
+.lobster-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.lobster-stats {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.lobster-stats .stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lobster-stats .stat-label {
+  font-size: 0.625rem;
+  color: var(--text-muted);
+}
+
+.lobster-stats .stat-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.lobster-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.lobster-actions button {
+  padding: 0.5rem 0.75rem;
+  background: var(--bg-dark);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  color: var(--text);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.lobster-actions button:hover {
+  background: rgba(0, 212, 170, 0.1);
+  border-color: var(--primary);
+}
+
+.lobster-actions button.primary {
+  background: var(--primary);
+  color: var(--bg-dark);
+  border-color: var(--primary);
+}
+
+.footer-right {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
