@@ -1,0 +1,138 @@
+{
+  "name": "GO2SE Dual Brain Production Deployment",
+  "version": "v9.0-dual-brain",
+  "updated": "2026-04-04",
+  
+  "architecture": {
+    "type": "dual-brain-parallel",
+    "description": "左右脑并行架构，互为备份，自动切换"
+  },
+  
+  "brains": {
+    "left": {
+      "id": "left",
+      "mode": "normal",
+      "role": "primary-safe",
+      "description": "普通模式 - 稳健运行",
+      "config": {
+        "leverage": 2.0,
+        "stop_loss": 0.04,
+        "take_profit": 0.12,
+        "max_position": 0.08,
+        "target_win_rate": 0.72
+      }
+    },
+    "right": {
+      "id": "right",
+      "mode": "expert",
+      "role": "primary-aggressive",
+      "description": "专家模式 - 高收益追求",
+      "config": {
+        "leverage": 3.0,
+        "stop_loss": 0.025,
+        "take_profit": 0.18,
+        "max_position": 0.15,
+        "target_win_rate": 0.78
+      }
+    }
+  },
+  
+  "switching": {
+    "auto_switch": true,
+    "heartbeat_interval": 1.0,
+    "switch_threshold": 0.3,
+    "crash_timeout": 5.0,
+    "modes": {
+      "same_mode_switch": true,
+      "cross_mode_switch": true,
+      "description": "支持同模式切换(防崩溃)和跨模式切换(调仓)"
+    }
+  },
+  
+  "wallet": {
+    "architecture": "smart-contract-bridge",
+    "flow": {
+      "1": "主钱包 (冷存储)",
+      "2": "中转钱包 (智能合约隔离)",
+      "3": "交易所 (交易执行)",
+      "4": "收益回流 (自动归集)"
+    },
+    "security": {
+      "isolation": true,
+      "max_transfer": 10000,
+      "min_transfer": 1000,
+      "min_reserve": 20000
+    }
+  },
+  
+  "lobster": {
+    "modules": ["retro", "simulation", "optimization"],
+    "retro": {
+      "frequency": "sprint",
+      "team_size": 15,
+      "auto_trigger": true
+    },
+    "simulation": {
+      "agent_count": 1000,
+      "dimensions": 25,
+      "auto_trigger": true
+    },
+    "optimization": {
+      "cycle_hours": 24,
+      "auto_apply": false
+    }
+  },
+  
+  "monitoring": {
+    "heartbeat": {
+      "interval": 1.0,
+      "timeout": 5.0,
+      "alert_threshold": 3
+    },
+    "metrics": [
+      "health_score",
+      "crash_count",
+      "switch_count",
+      "win_rate",
+      "return_rate"
+    ]
+  },
+  
+  "api_endpoints": {
+    "status": "/api/dual-brain/status",
+    "brain_status": "/api/dual-brain/brain-status",
+    "heartbeat": "/api/dual-brain/heartbeat",
+    "switch": "/api/dual-brain/switch",
+    "wallet_status": "/api/dual-brain/wallet-status",
+    "lobster_retro": "/api/dual-brain/lobster/retro",
+    "lobster_simulation": "/api/dual-brain/lobster/simulation",
+    "execute_trade": "/api/dual-brain/execute-trade"
+  },
+  
+  "deployment": {
+    "type": "docker",
+    "replicas": 2,
+    "health_check": "/api/dual-brain/heartbeat",
+    "restart_policy": "always"
+  },
+  
+  "ui": {
+    "brain_toggle": {
+      "enabled": true,
+      "position": "top-right",
+      "show_health": true,
+      "show_mode": true,
+      "quick_switch": true
+    },
+    "wallet_panel": {
+      "enabled": true,
+      "show_balance": true,
+      "show_flow": true
+    },
+    "lobster_panel": {
+      "enabled": true,
+      "show_status": true,
+      "show_history": true
+    }
+  }
+}
