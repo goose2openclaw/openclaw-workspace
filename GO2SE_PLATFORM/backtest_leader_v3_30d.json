@@ -1,0 +1,298 @@
+{
+  "strategy": "\ud83d\udc51 \u8ddf\u5927\u54e5V3",
+  "version": "v3.0-decision-equation",
+  "period": "30 days",
+  "initial_capital": 10000,
+  "final_capital": 24309.63,
+  "total_return_pct": 143.1,
+  "signals": {
+    "total": 150,
+    "long": 150,
+    "short": 0,
+    "correct": 104,
+    "accuracy": 69.3
+  },
+  "weights": {
+    "mirofish": 0.3,
+    "external": 0.25,
+    "historical": 0.2,
+    "ml": 0.15,
+    "consensus": 0.1
+  },
+  "decision_equation": "W = 0.3\u00b7MiroFish + 0.25\u00b7External + 0.2\u00b7Historical + 0.15\u00b7ML + 0.1\u00b7Consensus",
+  "max_drawdown": 0.01,
+  "sharpe_ratio": 7.29,
+  "daily_stats": [
+    {
+      "day": 1,
+      "signals": 5,
+      "long": 5,
+      "short": 0,
+      "win": 2,
+      "pnl_pct": 0.7758182643517912,
+      "capital": 10077.58182643518
+    },
+    {
+      "day": 2,
+      "signals": 5,
+      "long": 5,
+      "short": 0,
+      "win": 3,
+      "pnl_pct": 2.572699864057656,
+      "capital": 10336.847760384177
+    },
+    {
+      "day": 3,
+      "signals": 5,
+      "long": 5,
+      "short": 0,
+      "win": 5,
+      "pnl_pct": 5.597195007479196,
+      "capital": 10915.421287159124
+    },
+    {
+      "day": 4,
+      "signals": 5,
+      "long": 5,
+      "short": 0,
+      "win": 1,
+      "pnl_pct": -0.8315424684307672,
+      "capital": 10824.654923548263
+    },
+    {
+      "day": 5,
+      "signals": 5,
+      "long": 5,
+      "short": 0,
+      "win": 4,
+      "pnl_pct": 4.073772139736411,
+      "capital": 11265.626700046378
+    },
+    {
+      "day": 6,
+      "signals": 5,
+      "long": 5,
+      "short": 0,
+      "win": 4,
+      "pnl_pct": 3.6301399721703644,
+      "capital": 11674.584718000258
+    },
+    {
+      "day": 7,
+      "signals": 5,
+      "long": 5,
+      "short": 0,
+      "win": 3,
+      "pnl_pct": 1.9661016502107258,
+      "capital": 11904.118920796109
+    },
+    {
+      "day": 8,
+      "signals": 5,
+      "long": 5,
+      "short": 0,
+      "win": 3,
+      "pnl_pct": 2.409733817776772,
+      "capital": 12190.976500138897
+    },
+    {
+      "day": 9,
+      "signals": 5,
+      "long": 5,
+      "short": 0,
+      "win": 4,
+      "pnl_pct": 3.413358829384365,
+      "capital": 12607.09827289456
+    },
+    {
+      "day": 10,
+      "signals": 5,
+      "long": 5,
+      "short": 0,
+      "win": 5,
+      "pnl_pct": 5.597195007479196,
+      "capital": 13312.74214801301
+    },
+    {
+      "day": 11,
+      "signals": 5,
+      "long": 5,
+      "short": 0,
+      "win": 5,
+      "pnl_pct": 5.597195007479196,
+      "capital": 14057.882286880173
+    },
+    {
+      "day": 12,
+      "signals": 5,
+      "long": 5,
+      "short": 0,
+      "win": 4,
+      "pnl_pct": 4.073772139736411,
+      "capital": 14630.568378920038
+    },
+    {
+      "day": 13,
+      "signals": 5,
+      "long": 5,
+      "short": 0,
+      "win": 3,
+      "pnl_pct": 2.355918721271656,
+      "capital": 14975.252678387465
+    },
+    {
+      "day": 14,
+      "signals": 5,
+      "long": 5,
+      "short": 0,
+      "win": 4,
+      "pnl_pct": 3.413358829384365,
+      "capital": 15486.411787907822
+    },
+    {
+      "day": 15,
+      "signals": 5,
+      "long": 5,
+      "short": 0,
+      "win": 2,
+      "pnl_pct": 0.4426787824679413,
+      "capital": 15554.966847058502
+    },
+    {
+      "day": 16,
+      "signals": 5,
+      "long": 5,
+      "short": 0,
+      "win": 3,
+      "pnl_pct": 2.572699864057656,
+      "capital": 15955.14945798699
+    },
+    {
+      "day": 17,
+      "signals": 5,
+      "long": 5,
+      "short": 0,
+      "win": 5,
+      "pnl_pct": 5.597195007479196,
+      "capital": 16848.19028688528
+    },
+    {
+      "day": 18,
+      "signals": 5,
+      "long": 5,
+      "short": 0,
+      "win": 4,
+      "pnl_pct": 3.413358829384365,
+      "capital": 17423.279477634158
+    },
+    {
+      "day": 19,
+      "signals": 5,
+      "long": 5,
+      "short": 0,
+      "win": 5,
+      "pnl_pct": 5.597195007479196,
+      "capital": 18398.494406695445
+    },
+    {
+      "day": 20,
+      "signals": 5,
+      "long": 5,
+      "short": 0,
+      "win": 2,
+      "pnl_pct": 0.22589763968194151,
+      "capital": 18440.056171297187
+    },
+    {
+      "day": 21,
+      "signals": 5,
+      "long": 5,
+      "short": 0,
+      "win": 3,
+      "pnl_pct": 2.875716577406848,
+      "capital": 18970.33992349831
+    },
+    {
+      "day": 22,
+      "signals": 5,
+      "long": 5,
+      "short": 0,
+      "win": 4,
+      "pnl_pct": 4.5397548993664865,
+      "capital": 19831.546859601804
+    },
+    {
+      "day": 23,
+      "signals": 5,
+      "long": 5,
+      "short": 0,
+      "win": 3,
+      "pnl_pct": 2.572699864057656,
+      "capital": 20341.75303869931
+    },
+    {
+      "day": 24,
+      "signals": 5,
+      "long": 5,
+      "short": 0,
+      "win": 3,
+      "pnl_pct": 1.8899359616415805,
+      "capital": 20726.199144606006
+    },
+    {
+      "day": 25,
+      "signals": 5,
+      "long": 5,
+      "short": 0,
+      "win": 4,
+      "pnl_pct": 3.413358829384365,
+      "capital": 21433.6586931042
+    },
+    {
+      "day": 26,
+      "signals": 5,
+      "long": 5,
+      "short": 0,
+      "win": 4,
+      "pnl_pct": 3.6301399721703644,
+      "capital": 22211.730504821146
+    },
+    {
+      "day": 27,
+      "signals": 5,
+      "long": 5,
+      "short": 0,
+      "win": 3,
+      "pnl_pct": 2.572699864057656,
+      "capital": 22783.171665323534
+    },
+    {
+      "day": 28,
+      "signals": 5,
+      "long": 5,
+      "short": 0,
+      "win": 2,
+      "pnl_pct": 1.0492769963148716,
+      "capital": 23022.230244638704
+    },
+    {
+      "day": 29,
+      "signals": 5,
+      "long": 5,
+      "short": 0,
+      "win": 4,
+      "pnl_pct": 3.413358829384365,
+      "capital": 23808.061573415274
+    },
+    {
+      "day": 30,
+      "signals": 5,
+      "long": 5,
+      "short": 0,
+      "win": 3,
+      "pnl_pct": 2.10671710442758,
+      "capital": 24309.630078815066
+    }
+  ],
+  "timestamp": "2026-04-04T17:11:36.374943"
+}

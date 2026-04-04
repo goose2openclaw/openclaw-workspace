@@ -1,5 +1,5 @@
 {
-  "version": "8.1",
+  "version": "8.2",
   "updated": "2026-04-04",
   "tools": {
     "rabbit": {
@@ -117,8 +117,56 @@
       "allocation": 17,
       "enabled": true,
       "max_position": 0.05,
+      "version": "v3.0-decision-equation",
+      "decision_equation": {
+        "formula": "W = 0.30·MiroFish + 0.25·External + 0.20·Historical + 0.15·ML + 0.10·Consensus"
+      },
+      "components": {
+        "mirofish": {
+          "weight": 0.3,
+          "agents": 1000,
+          "consensus_threshold": 0.55
+        },
+        "external": {
+          "weight": 0.25,
+          "sources": [
+            "haasonline",
+            "3commas",
+            "bitsgap",
+            "cornix",
+            "api_aggr"
+          ]
+        },
+        "historical": {
+          "weight": 0.2,
+          "patterns": [
+            "spread_master",
+            "volume_king",
+            "balanced",
+            "aggressive",
+            "conservative"
+          ]
+        },
+        "ml": {
+          "weight": 0.15,
+          "cycle_hours": 24,
+          "model": "ensemble_v1"
+        },
+        "consensus": {
+          "weight": 0.1,
+          "strategies": [
+            "momentum",
+            "trend",
+            "volume",
+            "spread",
+            "reputation"
+          ]
+        }
+      },
       "strategies": [
-        "spread"
+        "spread",
+        "decision_equation",
+        "mirofish_consensus"
       ],
       "apis": [
         "binance"
