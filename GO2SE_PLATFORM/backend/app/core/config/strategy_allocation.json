@@ -1,19 +1,98 @@
 {
-  "strategies": {
-    "ema_cross": {
-      "allocation": 50,
+  "version": "5.0",
+  "updated": "2026-04-04",
+  "note": "主配置文件 - 所有工具和策略的仓位分配",
+  "tools": {
+    "rabbit": {
+      "name": "打兔子",
+      "name_en": "rabbit",
+      "allocation": 25,
       "enabled": true,
-      "max_position": 0.05
+      "max_position": 0.05,
+      "strategies": ["ema_cross", "macd", "rsi", "bollinger"],
+      "apis": ["binance", "bybit", "okx"],
+      "description": "前20主流加密货币，稳定收益"
     },
-    "macd": {
-      "allocation": 0,
-      "enabled": false,
-      "max_position": 0.04
+    "mole": {
+      "name": "打地鼠",
+      "name_en": "mole", 
+      "allocation": 20,
+      "enabled": true,
+      "max_position": 0.04,
+      "strategies": ["volatility_breakout", "momentum", "trend"],
+      "apis": ["binance", "bybit", "okx", "kucoin"],
+      "description": "高波动币种，火控雷达锁定"
     },
-    "rsi_extreme": {
-      "allocation": 0,
-      "enabled": false,
-      "max_position": 0.03
+    "oracle": {
+      "name": "走着瞧",
+      "name_en": "oracle",
+      "allocation": 15,
+      "enabled": true,
+      "max_position": 0.05,
+      "strategies": ["mean_reversion", "momentum", "arbitrage", "event", "liquidity", "sentiment"],
+      "apis": ["polymarket", "augur", "kalshi", "predictit"],
+      "description": "预测市场，高胜率信号"
+    },
+    "leader": {
+      "name": "跟大哥",
+      "name_en": "leader",
+      "allocation": 15,
+      "enabled": true,
+      "max_position": 0.05,
+      "strategies": ["spread_matching", "inventory_balance", "liquidity", "volatility_capture", "fee_optimization"],
+      "apis": ["binance", "bybit", "okx"],
+      "description": "做市协作，MiroFish评估"
+    },
+    "hitchhiker": {
+      "name": "搭便车",
+      "name_en": "hitchhiker",
+      "allocation": 10,
+      "enabled": true,
+      "max_position": 0.05,
+      "strategies": ["top_performer", "stability", "risk_adjusted", "momentum", "diversification"],
+      "apis": ["dynatest", "conform", "token_terminal"],
+      "description": "跟单分成，二级分包"
+    },
+    "airdrop": {
+      "name": "薅羊毛",
+      "name_en": "airdrop",
+      "allocation": 3,
+      "enabled": true,
+      "max_position": 0.03,
+      "strategies": ["value_max", "efficiency", "difficulty_yield", "network_coverage", "claim_timing"],
+      "apis": ["layerzero", "zksync", "starknet", "arbitrum", "optimism", "base", "scroll", "linea", "polygon"],
+      "description": "空投猎手，杜绝授权链接"
+    },
+    "crowdsource": {
+      "name": "穷孩子",
+      "name_en": "crowdsource",
+      "allocation": 2,
+      "enabled": true,
+      "max_position": 0.02,
+      "strategies": ["high_pay", "high_hourly", "simple", "available", "fast"],
+      "apis": ["labelbox", "scale_ai", "mturk", "prolific", "remotasks", "appen"],
+      "description": "众包赚钱，EvoMap隔离"
     }
-  }
+  },
+  "sonar_models": {
+    "bullish": ["牛旗", "双底", "突破", "杯柄", "上升三角", "圆底"],
+    "bearish": ["熊旗", "双顶", "跌破", "头肩顶", "下降三角"],
+    "neutral": ["矩形", "扩散楔形", "通道"]
+  },
+  "auto_adjust_rules": {
+    "suspend": {"win_rate_threshold": 0.4, "return_threshold": 0},
+    "reduce": {"win_rate_threshold": 0.5, "return_threshold": 2},
+    "increase": {"win_rate_threshold": 0.6, "return_threshold": 5},
+    "max_single_weight": 0.50
+  },
+  "risk_rules": [
+    {"id": "R001", "name": "仓位限制", "condition": "position > 80%", "action": "禁止开仓"},
+    {"id": "R002", "name": "日内熔断", "condition": "loss > 30%", "action": "全部平仓"},
+    {"id": "R003", "name": "单笔风险", "condition": "risk > 5%", "action": "降低仓位"},
+    {"id": "R004", "name": "波动止损", "condition": "volatility > 8%", "action": "自动止损"},
+    {"id": "R005", "name": "流动性检查", "condition": "volume < 100K", "action": "禁止交易"},
+    {"id": "R006", "name": "API故障", "condition": "error_rate > 1%", "action": "切换API"},
+    {"id": "R007", "name": "异常检测", "condition": "deviation > 3σ", "action": "人工确认"},
+    {"id": "R008", "name": "情绪过热", "condition": "volatility > 5σ", "action": "暂停交易"}
+  ]
 }

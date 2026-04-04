@@ -126,14 +126,42 @@ class DynamicWeightOptimizer:
     - 持续低迷 -> 淘汰
     """
     
-    def __init__(self):
-        # 基础配置
-        self.base_weights = {
-            "rabbit_ema_cross": 0.35,
-            "rabbit_macd": 0.25,
-            "rabbit_rsi": 0.20,
-            "rabbit_bb": 0.20,
-        }
+    def __init__(self, config_path: str = None):
+        import os
+        
+        # 默认从v5配置加载
+        if config_path is None:
+            config_path = os.path.join(
+                os.path.dirname(__file__), 
+                "config", 
+                "strategy_allocation.json"
+            )
+        
+        # 尝试加载配置文件
+        self.config = None
+        if os.path.exists(config_path):
+            import json
+            with open(config_path) as f:
+                self.config = json.load(f)
+            print(f"✅ 从 {config_path} 加载配置")
+        
+        # 从配置构建基础权重
+        self.base_weights = {}
+        if self.config and "tools" in self.config:
+            for tool_id, tool_cfg in self.config["tools"].items():
+                alloc = tool_cfg.get("allocation", 0) / 100.0
+                self.base_weights[tool_id] = alloc
+        else:
+            # 默认配置
+            self.base_weights = {
+                "rabbit": 0.25,
+                "mole": 0.20,
+                "oracle": 0.15,
+                "leader": 0.15,
+                "hitchhiker": 0.10,
+                "airdrop": 0.03,
+                "crowdsource": 0.02,
+            }
         
         # 当前动态权重
         self.current_weights = self.base_weights.copy()
