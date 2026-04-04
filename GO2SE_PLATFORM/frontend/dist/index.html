@@ -480,7 +480,14 @@
       font-size: 1.5rem;
       color: var(--primary);
     }
-  </style>
+  
+        /* Hermes Panel */
+        .hermes-stats { display: flex; justify-content: space-around; margin-bottom: 1rem; }
+        .hermes-btn { flex: 1; min-width: 70px; padding: 0.75rem; background: var(--bg-dark); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: var(--text); cursor: pointer; transition: all 0.2s; }
+        .hermes-btn:hover { background: rgba(0,212,170,0.1); border-color: var(--primary); }
+        .hermes-btn.primary { background: var(--primary); color: var(--bg-dark); border-color: var(--primary); }
+    
+</style>
 </head>
 <body>
   <div id="app">
@@ -782,6 +789,39 @@
     async function runSim() { try { await fetch(`${API}/lobster/simulation`, { method: 'POST' }); } catch (e) {} }
     async function runOpt() { try { await fetch(`${API}/lobster/optimization`, { method: 'POST' }); } catch (e) {} }
     async function runFull() { try { await fetch(`${API}/lobster/full-cycle`, { method: 'POST' }); } catch (e) {} }
+    
+    
+    // Hermes functions
+    async function hermesStatus() {
+        try {
+            const res = await fetch('/api/hermes/status');
+            const data = await res.json();
+            document.getElementById('hermes-iterations').textContent = data.stats.total_iterations;
+            document.getElementById('hermes-memory').textContent = data.memory.episodic_size + data.memory.semantic_size;
+            document.getElementById('hermes-skills').textContent = data.memory.skills_count;
+        } catch(e) { console.log('Hermes API not available'); }
+    }
+    
+    async function hermesLearn() {
+        try {
+            await fetch('/api/hermes/learn', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ context: 'GO2SE优化迭代', action: '策略调整', result: '成功', score_delta: 0.05 })
+            });
+            hermesStatus();
+        } catch(e) { console.log('Hermes learn failed'); }
+    }
+    
+    async function hermesIterate() {
+        try {
+            await fetch('/api/hermes/iterate', { method: 'POST' });
+            hermesStatus();
+        } catch(e) { console.log('Hermes iterate failed'); }
+    }
+    
+    // Auto-refresh Hermes status
+    setInterval(hermesStatus, 30000);
     
     // Init
     fetchStatus();
