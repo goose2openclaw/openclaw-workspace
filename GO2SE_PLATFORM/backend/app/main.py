@@ -29,6 +29,8 @@ from app.api.routes_backtest import router as backtest_router
 from app.api.routes_paper_trading import router as paper_trading_router
 from app.api.routes_expert_mode import router as expert_mode_router
 from app.api.routes_factor_degradation import router as factor_degradation_router
+from app.api.routes_optimizer import router as optimizer_router
+from app.api.routes_mapping import router as mapping_router
 
 # 日志配置
 logging.basicConfig(
@@ -133,6 +135,8 @@ app.include_router(backtest_router, tags=["回测"])
 app.include_router(paper_trading_router, tags=["模拟交易"])
 app.include_router(expert_mode_router, tags=["专家模式配置"])
 app.include_router(factor_degradation_router, tags=["因子退化检测"])
+app.include_router(optimizer_router, tags=["优化器"])
+app.include_router(mapping_router, tags=["Mapping"])
 
 
 @app.get("/")
