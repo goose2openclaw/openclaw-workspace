@@ -5,36 +5,43 @@
       <!-- Logo -->
       <div class="logo-section" @click="toggleSidebar">
         <div class="logo-icon">🪿</div>
-        <span class="logo-text">GO2SE</span>
+        <span class="logo-text">Go2Se 护食</span>
       </div>
 
       <!-- 导航 -->
       <nav class="nav-section">
-        <!-- 总览 -->
-        <router-link to="/dashboard" class="nav-item" :class="{ active: $route.path === '/dashboard' }">
-          <span class="nav-icon">📊</span>
-          <span class="nav-label">总览</span>
+        <!-- 首页纵览 -->
+        <router-link to="/home" class="nav-item" :class="{ active: $route.path === '/home' }">
+          <span class="nav-icon">🏠</span>
+          <span class="nav-label">首页纵览</span>
         </router-link>
 
-        <!-- 市场 (可展开) -->
-        <div class="nav-item has-submenu" @click="toggleSubmenu('market')" :class="{ active: isParentRoute('market') }">
-          <span class="nav-icon">📈</span>
-          <span class="nav-label">市场</span>
-          <span class="submenu-arrow">{{ submenus.market ? '▼' : '▶' }}</span>
-        </div>
-        <div v-if="submenus.market" class="submenu">
-          <router-link to="/market/top20" class="submenu-item">前20主流币</router-link>
-          <router-link to="/market/movers" class="submenu-item">异动币</router-link>
-          <router-link to="/market/exchanges" class="submenu-item">交易所</router-link>
-        </div>
+        <!-- 热点纵览 -->
+        <router-link to="/hot" class="nav-item" :class="{ active: $route.path === '/hot' }">
+          <span class="nav-icon">🔥</span>
+          <span class="nav-label">热点纵览</span>
+        </router-link>
 
-        <!-- 策略 (可展开) -->
-        <div class="nav-item has-submenu" @click="toggleSubmenu('strategies')" :class="{ active: isParentRoute('strategies') }">
-          <span class="nav-icon">⚙️</span>
-          <span class="nav-label">策略</span>
-          <span class="submenu-arrow">{{ submenus.strategies ? '▼' : '▶' }}</span>
+        <!-- 参数仪表盘 -->
+        <router-link to="/dashboard" class="nav-item" :class="{ active: $route.path === '/dashboard' }">
+          <span class="nav-icon">📊</span>
+          <span class="nav-label">参数仪表盘</span>
+        </router-link>
+
+        <!-- 资产看板 -->
+        <router-link to="/assets" class="nav-item" :class="{ active: $route.path === '/assets' }">
+          <span class="nav-icon">💰</span>
+          <span class="nav-label">资产看板</span>
+        </router-link>
+
+        <!-- 北斗七鑫 -->
+        <div class="nav-item has-submenu" @click="toggleSubmenu('beidou')" :class="{ active: isParentRoute('beidou') }">
+          <span class="nav-icon">🔯</span>
+          <span class="nav-label">北斗七鑫</span>
+          <span class="submenu-arrow">{{ submenus.beidou ? '▼' : '▶' }}</span>
         </div>
-        <div v-if="submenus.strategies" class="submenu">
+        <div v-if="submenus.beidou" class="submenu">
+          <router-link to="/market" class="submenu-item">📈 市场行情</router-link>
           <router-link to="/strategies/rabbit" class="submenu-item">🐰 打兔子</router-link>
           <router-link to="/strategies/mole" class="submenu-item">🐹 打地鼠</router-link>
           <router-link to="/strategies/oracle" class="submenu-item">🔮 走着瞧</router-link>
@@ -44,74 +51,84 @@
           <router-link to="/strategies/crowdsource" class="submenu-item">👶 穷孩子</router-link>
         </div>
 
-        <!-- 信号 (可展开) -->
-        <div class="nav-item has-submenu" @click="toggleSubmenu('signals')" :class="{ active: isParentRoute('signals') }">
+        <!-- 投资组合 -->
+        <router-link to="/portfolio" class="nav-item" :class="{ active: $route.path === '/portfolio' }">
+          <span class="nav-icon">📈</span>
+          <span class="nav-label">投资组合</span>
+        </router-link>
+
+        <!-- 策略模型 -->
+        <router-link to="/strategies" class="nav-item" :class="{ active: isParentRoute('strategies') }">
+          <span class="nav-icon">♟️</span>
+          <span class="nav-label">策略模型</span>
+        </router-link>
+
+        <!-- 声纳趋势 -->
+        <router-link to="/sonar" class="nav-item" :class="{ active: $route.path === '/sonar' }">
           <span class="nav-icon">📡</span>
-          <span class="nav-label">信号</span>
-          <span class="submenu-arrow">{{ submenus.signals ? '▼' : '▶' }}</span>
-        </div>
-        <div v-if="submenus.signals" class="submenu">
-          <router-link to="/signals/list" class="submenu-item">信号列表</router-link>
-          <router-link to="/signals/mirofish" class="submenu-item">🧠 MiroFish</router-link>
-          <router-link to="/signals/sonar" class="submenu-item">📡 声纳库</router-link>
-        </div>
-
-        <!-- 交易 (可展开) -->
-        <router-link to="/trading/positions" class="nav-item" :class="{ active: isParentRoute('trading') }">
-          <span class="nav-icon">💹</span>
-          <span class="nav-label">交易</span>
+          <span class="nav-label">声纳趋势</span>
         </router-link>
 
-        <!-- 钱包 (可展开) -->
-        <router-link to="/wallet/assets" class="nav-item" :class="{ active: isParentRoute('wallet') }">
-          <span class="nav-icon">💰</span>
-          <span class="nav-label">钱包</span>
+        <!-- 预言机 -->
+        <router-link to="/oracle" class="nav-item" :class="{ active: $route.path === '/oracle' }">
+          <span class="nav-icon">🔮</span>
+          <span class="nav-label">预言机</span>
         </router-link>
 
-        <!-- 设置 (可展开) -->
-        <router-link to="/settings/trading" class="nav-item" :class="{ active: isParentRoute('settings') }">
-          <span class="nav-icon">⚡</span>
-          <span class="nav-label">设置</span>
+        <!-- 生态工具 -->
+        <router-link to="/ecosystem" class="nav-item" :class="{ active: $route.path === '/ecosystem' }">
+          <span class="nav-icon">🛠️</span>
+          <span class="nav-label">生态工具</span>
+        </router-link>
+
+        <!-- 脚本日志 -->
+        <router-link to="/scripts" class="nav-item" :class="{ active: $route.path === '/scripts' }">
+          <span class="nav-icon">📝</span>
+          <span class="nav-label">脚本日志</span>
+        </router-link>
+
+        <!-- 交易记录 -->
+        <router-link to="/trading/history" class="nav-item" :class="{ active: isParentRoute('trading') }">
+          <span class="nav-icon">📊</span>
+          <span class="nav-label">交易记录</span>
+        </router-link>
+
+        <!-- 分享有礼 -->
+        <router-link to="/referral" class="nav-item" :class="{ active: $route.path === '/referral' }">
+          <span class="nav-icon">🎁</span>
+          <span class="nav-label">分享有礼</span>
+        </router-link>
+
+        <!-- 私募LP -->
+        <router-link to="/private" class="nav-item" :class="{ active: $route.path === '/private' }">
+          <span class="nav-icon">💎</span>
+          <span class="nav-label">私募LP</span>
+        </router-link>
+
+        <!-- 客服中心 -->
+        <router-link to="/support" class="nav-item" :class="{ active: $route.path === '/support' }">
+          <span class="nav-icon">💬</span>
+          <span class="nav-label">客服中心</span>
+        </router-link>
+
+        <!-- 设置中心 -->
+        <router-link to="/settings" class="nav-item" :class="{ active: isParentRoute('settings') }">
+          <span class="nav-icon">⚙️</span>
+          <span class="nav-label">设置中心</span>
         </router-link>
       </nav>
-
-      <!-- 会员等级 -->
-      <div class="sidebar-footer">
-        <div class="member-badge">
-          <span class="member-icon">🏆</span>
-          <span class="member-text">{{ memberLevel }}</span>
-        </div>
-      </div>
     </aside>
 
     <!-- 主内容区 -->
     <main class="main-content">
-      <!-- 面包屑 -->
-      <div v-if="breadcrumbs.length > 1" class="breadcrumbs">
-        <template v-for="(crumb, index) in breadcrumbs" :key="crumb.path">
-          <router-link :to="crumb.path" class="breadcrumb-link">{{ crumb.title }}</router-link>
-          <span v-if="index < breadcrumbs.length - 1" class="breadcrumb-sep">/</span>
-        </template>
-      </div>
-
-      <!-- 页面标题 -->
-      <div class="page-header">
-        <h1 class="page-title">{{ pageTitle }}</h1>
-        <div class="page-actions">
-          <slot name="actions"></slot>
-        </div>
-      </div>
-
       <!-- 页面内容 (支持嵌套路由) -->
-      <div class="page-content">
-        <router-view />
-      </div>
+      <router-view />
     </main>
   </div>
 </template>
 
 <script>
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 
 export default {
@@ -120,15 +137,13 @@ export default {
     const route = useRoute()
     const sidebarExpanded = ref(true)
     const submenus = ref({
-      market: false,
+      beidou: false,
       strategies: false,
       signals: false,
       trading: false,
       wallet: false,
       settings: false,
     })
-
-    const memberLevel = ref('🧑‍💻 游客')
 
     const toggleSidebar = () => {
       sidebarExpanded.value = !sidebarExpanded.value
@@ -142,28 +157,12 @@ export default {
       return route.path.startsWith(`/${parent}`)
     }
 
-    const pageTitle = computed(() => {
-      return route.meta.title || 'GO2SE'
-    })
-
-    const breadcrumbs = computed(() => {
-      const crumbs = [{ path: '/dashboard', title: '首页' }]
-      if (route.meta.parent) {
-        crumbs.push({ path: `/${route.meta.parent.toLowerCase()}`, title: route.meta.parent })
-      }
-      crumbs.push({ path: route.path, title: pageTitle.value })
-      return crumbs
-    })
-
     return {
       sidebarExpanded,
       submenus,
-      memberLevel,
       toggleSidebar,
       toggleSubmenu,
       isParentRoute,
-      pageTitle,
-      breadcrumbs,
     }
   },
 }
@@ -184,6 +183,7 @@ export default {
   transition: width 0.3s;
   position: fixed;
   height: 100vh;
+  overflow-y: auto;
 }
 
 .sidebar.collapsed {
@@ -212,7 +212,7 @@ export default {
 
 .logo-text {
   font-weight: 800;
-  font-size: 1.25rem;
+  font-size: 1rem;
   white-space: nowrap;
   background: linear-gradient(135deg, var(--text-primary), var(--accent-primary));
   -webkit-background-clip: text;
@@ -229,14 +229,26 @@ export default {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.75rem 1rem;
-  margin: 0.2rem 0;
+  padding: 0.65rem 1rem;
+  margin: 0.15rem 0;
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.2s;
   color: var(--text-secondary);
-  position: relative;
   text-decoration: none;
+  position: relative;
+}
+
+.nav-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 3px;
+  background: var(--accent-primary);
+  transform: scaleY(0);
+  transition: transform 0.2s;
 }
 
 .nav-item:hover {
@@ -249,6 +261,10 @@ export default {
   color: var(--accent-primary);
 }
 
+.nav-item.active::before {
+  transform: scaleY(1);
+}
+
 .nav-icon {
   font-size: 1.2rem;
   width: 24px;
@@ -258,13 +274,13 @@ export default {
 
 .nav-label {
   white-space: nowrap;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 500;
 }
 
 .submenu-arrow {
   margin-left: auto;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
 }
 
 .submenu {
@@ -275,11 +291,11 @@ export default {
 
 .submenu-item {
   display: block;
-  padding: 0.5rem 1rem;
-  margin: 0.2rem 0;
+  padding: 0.4rem 0.75rem;
+  margin: 0.1rem 0;
   color: var(--text-secondary);
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   border-radius: 6px;
 }
 
@@ -288,75 +304,52 @@ export default {
   color: var(--accent-primary);
 }
 
-.sidebar-footer {
-  padding: 1rem;
-  border-top: 1px solid var(--border-subtle);
-}
-
-.member-badge {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem;
-  background: var(--bg-elevated);
-  border-radius: 10px;
-}
-
-.member-icon {
-  font-size: 1.2rem;
-}
-
-.member-text {
-  font-size: 0.85rem;
-  font-weight: 600;
-}
-
 .main-content {
   flex: 1;
   margin-left: 220px;
-  padding: 1.5rem;
+  padding: 1rem;
   min-height: 100vh;
+  transition: margin-left 0.3s;
 }
 
-.breadcrumbs {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-  font-size: 0.85rem;
+.sidebar.collapsed + .main-content {
+  margin-left: 68px;
 }
 
-.breadcrumb-link {
-  color: var(--text-secondary);
-  text-decoration: none;
+/* 响应式 */
+@media (max-width: 1400px) {
+  .sidebar {
+    width: 68px;
+  }
+  .logo-text,
+  .nav-label,
+  .submenu {
+    display: none;
+  }
+  .main-content {
+    margin-left: 68px;
+  }
 }
 
-.breadcrumb-link:hover {
-  color: var(--accent-primary);
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 68px;
+  }
+  .logo-text,
+  .nav-label {
+    display: none;
+  }
+  .main-content {
+    margin-left: 68px;
+  }
 }
 
-.breadcrumb-sep {
-  color: var(--text-muted);
-}
-
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-}
-
-.page-title {
-  font-size: 2rem;
-  font-weight: 700;
-}
-
-.page-actions {
-  display: flex;
-  gap: 0.75rem;
-}
-
-.page-content {
-  /* 内容区 */
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+  .main-content {
+    margin-left: 0;
+  }
 }
 </style>

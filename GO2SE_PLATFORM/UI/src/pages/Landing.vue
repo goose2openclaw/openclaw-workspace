@@ -1,12 +1,12 @@
 <template>
-  <div class="landing">
-    <div class="landing-logo">🪿</div>
-    <h1 class="landing-title">GO2SE</h1>
-    <p class="landing-subtitle">北斗七鑫量化投资平台</p>
-    <div class="loading-bar">
-      <div class="loading-progress" :style="{ width: loadingProgress + '%' }"></div>
+  <div class="landing" @click="hideLanding">
+    <div class="bg-mesh"></div>
+    <div class="landing-content">
+      <div class="landing-logo">🪿</div>
+      <h1 class="landing-title">Go2Se 护食的小白鹅</h1>
+      <p class="landing-subtitle">主动捡漏薅羊毛 | Crypto量化AI投资平台</p>
+      <p class="landing-hint">点击任意处进入</p>
     </div>
-    <p class="loading-text">{{ loadingText }}</p>
   </div>
 </template>
 
@@ -19,7 +19,7 @@ export default {
   setup() {
     const router = useRouter()
     const loadingProgress = ref(0)
-    const loadingText = ref('初始化组件...')
+    const loadingText = ref('初始化...')
 
     const steps = [
       { progress: 20, text: '加载配置...' },
@@ -29,7 +29,19 @@ export default {
       { progress: 100, text: '准备就绪!' },
     ]
 
+    const hideLanding = () => {
+      // 动画然后跳转
+      const landing = document.querySelector('.landing')
+      if (landing) {
+        landing.classList.add('hidden')
+        setTimeout(() => {
+          router.push('/home')
+        }, 500)
+      }
+    }
+
     onMounted(() => {
+      // 模拟加载进度
       let i = 0
       const interval = setInterval(() => {
         if (i < steps.length) {
@@ -38,16 +50,14 @@ export default {
           i++
         } else {
           clearInterval(interval)
-          setTimeout(() => {
-            router.push('/dashboard')
-          }, 500)
         }
-      }, 400)
+      }, 300)
     })
 
     return {
       loadingProgress,
       loadingText,
+      hideLanding,
     }
   },
 }
@@ -62,10 +72,34 @@ export default {
   height: 100%;
   background: var(--bg-primary);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   z-index: 9999;
+  cursor: pointer;
+  transition: all 0.8s ease;
+}
+
+.landing.hidden {
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.8);
+}
+
+.bg-mesh {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(ellipse at 15% 15%, rgba(0, 245, 212, 0.06), transparent 50%),
+    radial-gradient(ellipse at 85% 85%, rgba(157, 78, 221, 0.05), transparent 50%);
+  pointer-events: none;
+}
+
+.landing-content {
+  text-align: center;
+  z-index: 1;
 }
 
 .landing-logo {
@@ -77,7 +111,7 @@ export default {
   align-items: center;
   justify-content: center;
   font-size: 4rem;
-  margin-bottom: 2rem;
+  margin: 0 auto 2rem;
   animation: float 3s ease-in-out infinite;
 }
 
@@ -87,7 +121,7 @@ export default {
 }
 
 .landing-title {
-  font-size: 3rem;
+  font-size: 2.5rem;
   font-weight: 800;
   background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-primary) 50%, var(--accent-purple) 100%);
   -webkit-background-clip: text;
@@ -97,8 +131,20 @@ export default {
 
 .landing-subtitle {
   color: var(--text-secondary);
-  font-size: 1.2rem;
-  margin-bottom: 3rem;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+}
+
+.landing-hint {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin-top: 3rem;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
 }
 
 .loading-bar {
@@ -107,6 +153,7 @@ export default {
   background: var(--bg-elevated);
   border-radius: 2px;
   overflow: hidden;
+  margin: 0 auto;
 }
 
 .loading-progress {
