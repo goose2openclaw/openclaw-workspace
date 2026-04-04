@@ -247,8 +247,38 @@ window.NavigationManager = {
         }
     },
     
-    // 获取页面组件 (用于动态加载)
-    getPageComponent(page) {
+    // 信号中心
+        'signals/center': `
+            <div class="signals-center">
+                <div class="page-header">
+                    <h1>📡 信号中心</h1>
+                </div>
+                <div class="loading">加载中...</div>
+            </div>
+        `,
+        
+        // 资产看板V2
+        'assets/v2': `
+            <div class="assets-page">
+                <div class="page-header">
+                    <h1>💰 资产看板</h1>
+                </div>
+                <div class="loading">加载中...</div>
+            </div>
+        `,
+        
+        // 设置V2
+        'settings/v2': `
+            <div class="settings-page">
+                <div class="page-header">
+                    <h1>⚙️ 系统设置</h1>
+                </div>
+                <div class="loading">加载中...</div>
+            </div>
+        `,
+        
+        // 获取页面组件 (用于动态加载)
+        getPageComponent(page) {
         const components = {
             // 投资工具
             'tools/rabbit': this.createToolPage('rabbit', '🐰 打兔子', {
