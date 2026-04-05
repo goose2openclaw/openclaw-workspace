@@ -4041,3 +4041,85 @@ h4 { font-size: var(--font-size-base); }
   .modal-content { width: 95%; max-height: 90vh; }
   .detail-grid { grid-template-columns: 1fr; }
 }
+
+/* ========== Polanyi Round 21-25: 交互直觉优化 ========== */
+/* 按钮点击反馈 */
+.shortcut-btn:active {
+  transform: scale(0.96);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
+/* 卡片hover微交互 */
+.eng-card:hover, .lobster-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+}
+/* 信号强度指示器动画 */
+.signal-strength {
+  animation: signalGlow 1.5s ease-in-out infinite alternate;
+}
+@keyframes signalGlow {
+  0% { box-shadow: 0 0 4px var(--accent-primary); }
+  100% { box-shadow: 0 0 12px var(--accent-primary); }
+}
+
+/* ========== Polanyi Round 26-30: 色彩情绪深化 ========== */
+/* 情感化状态色 */
+.status-positive { color: #00d4aa; }
+.status-negative { color: #ef4444; }
+.status-warning { color: #f59e0b; }
+.status-info { color: #3b82f6; }
+/* 渐变文字 */
+.gradient-text {
+  background: linear-gradient(135deg, #00d4aa, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ========== 移动端优化 ========== */
+@media (max-width: 768px) {
+  .nav-status-bar {
+    padding: 6px 8px;
+    min-height: 44px;
+  }
+  .nav-brand { font-size: var(--font-size-base); }
+  .shortcut-btn {
+    padding: 8px 10px;
+    font-size: 11px;
+  }
+  .shortcut-btn .icon { font-size: 14px; }
+  .modal-content {
+    width: 95%;
+    margin: 10px;
+    max-height: 85vh;
+  }
+  .detail-grid { grid-template-columns: 1fr; }
+}
+
+/* 工具详情 */
+.tool-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.tool-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: var(--bg-tertiary);
+  border-radius: 8px;
+}
+.tool-icon { font-size: 20px; }
+.tool-item span:nth-child(2) { flex: 1; font-weight: 500; }
+
+/* 安全详情 */
+.security-list { display: flex; flex-direction: column; gap: 12px; }
+.security-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: var(--bg-tertiary);
+  border-radius: 8px;
+}
