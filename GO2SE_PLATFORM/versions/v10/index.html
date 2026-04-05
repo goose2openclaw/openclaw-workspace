@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GO2SE - AI优雅薅羊毛 | Crypto量化投资</title>
+  <title>GO2SE - AI自主打工 & Crypto量化投资</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -48,7 +48,7 @@
       </div>
       <div class="splash-text">
         <h1 class="goose-title">🪿 GO2SE</h1>
-        <p class="goose-slogan">AI优雅薅羊毛 & 高频量化</p>
+        <p class="goose-slogan">AI自主打工 & 高频量化</p>
         <p class="goose-slogan-sub">Crypto Quantitative Investment</p>
       </div>
       <div class="progress-container">
@@ -65,68 +65,61 @@
   <div id="app" class="app hidden">
     <!-- 顶头导航栏 -->
     <header class="top-nav" id="topNav">
-      <div class="nav-left">
-        <div class="theme-switcher">
-          <button class="theme-btn active" data-theme="dark" title="深色模式">🌙</button>
-          <button class="theme-btn" data-theme="black" title="暗色模式">⚫</button>
-          <button class="theme-btn" data-theme="geek" title="极客模式">💻</button>
-        </div>
-        <div class="lang-switcher">
-          <button class="lang-btn active" data-lang="zh">中</button>
-          <button class="lang-btn" data-lang="en">EN</button>
-        </div>
-      </div>
-      
-      <!-- 五大模块快捷键 - 固定显示 -->
-      <div class="nav-shortcuts" id="navShortcuts">
-        <button class="shortcut-btn active" data-section="attention" title="attention">🏠 首页</button>
-        <button class="shortcut-btn" data-section="asset" title="asset">💰 资产</button>
-        <button class="shortcut-btn" data-section="beidou" title="beidou">🎯 北斗</button>
-        <button class="shortcut-btn" data-section="engineer" title="engineer">⚙️ 工程</button>
-        <button class="shortcut-btn" data-section="ninja" title="ninja">🥷 专家</button>
-      </div>
-      
-      <!-- 双脑切换 -->
-      <div class="brain-toggle" id="brainToggle">
-        <span class="brain-label" id="brainLabel">🧠左脑</span>
-        <label class="toggle-switch">
-          <input type="checkbox" id="brainSwitch">
-          <span class="toggle-slider"></span>
-        </label>
-        <span class="brain-mode" id="brainMode">普通</span>
-        <kbd class="hotkey">B</kbd>
-      </div>
-      
-      <div class="nav-right">
-        <div class="breathing-light" id="breathingLight" title="系统状态">
-          <span class="light-dot"></span>
-          <span class="light-ring"></span>
-        </div>
-        <div class="im-status" id="imStatus">
-          <span class="im-icon">💬</span>
-          <span class="im-dot online"></span>
-          <span class="im-badge" id="imBadge">3</span>
-        </div>
-        <div class="notification-btn" id="notificationBtn">
-          <span>🔔</span>
-          <span class="notif-badge">5</span>
-        </div>
-        <div class="member-entry">
-          <button class="member-btn" id="memberBtn">
-            <span class="member-icon">👤</span>
-            <span class="member-text">登陆</span>
-            <span class="member-arrow">▼</span>
-          </button>
-          <div class="member-dropdown" id="memberDropdown">
-            <div class="dropdown-item" data-type="tourist"><span>👤</span> 游客</div>
-            <div class="dropdown-item" data-type="subscribe"><span>⭐</span> 订阅</div>
-            <div class="dropdown-item" data-type="member"><span>💎</span> 会员</div>
-            <div class="dropdown-item" data-type="lp"><span>🏆</span> 鹅伙人</div>
-            <div class="dropdown-item expert" data-type="expert"><span>🎯</span> 专家模式</div>
-            <div class="dropdown-divider"></div>
-            <div class="dropdown-item login-item"><span>🔑</span> 注册/登陆</div>
+      <!-- 第一层: 状态栏 -->
+      <div class="nav-status-bar">
+        <div class="nav-left">
+          <span class="nav-brand">🪿 GO2SE</span>
+          <div class="theme-switcher">
+            <button class="theme-btn active" data-theme="dark" title="深色">🌙</button>
+            <button class="theme-btn" data-theme="black" title="暗色">⚫</button>
+            <button class="theme-btn" data-theme="geek" title="极客">💻</button>
+          </div>
+          <div class="lang-switcher">
+            <button class="lang-btn active" data-lang="zh">中</button>
+            <button class="lang-btn" data-lang="en">EN</button>
           </div>
         </div>
+        
+        <!-- 双脑切换 -->
+        <div class="brain-toggle" id="brainToggle">
+          <span class="brain-label" id="brainLabel">🧠左脑</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="brainSwitch">
+            <span class="toggle-slider"></span>
+          </label>
+          <span class="brain-mode" id="brainMode">普通</span>
+          <kbd class="hotkey">B</kbd>
+        </div>
+        
+        <div class="nav-right">
+          <div class="breathing-light" id="breathingLight" title="系统状态">
+            <span class="light-dot"></span>
+            <span class="light-ring"></span>
+          </div>
+          <div class="im-status" id="imStatus">
+            <span class="im-icon">💬</span>
+            <span class="im-dot online"></span>
+          </div>
+          <div class="notification-btn" id="notificationBtn">
+            <span>🔔</span>
+            <span class="notif-badge">5</span>
+          </div>
+          <div class="member-entry">
+            <button class="member-btn" id="memberBtn">
+              <span class="member-icon">👤</span>
+              <span class="member-text">登陆</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 第二层: 快捷键 -->
+      <div class="nav-shortcuts" id="navShortcuts">
+        <button class="shortcut-btn active" data-section="attention">🏠 首页</button>
+        <button class="shortcut-btn" data-section="asset">💰 资产</button>
+        <button class="shortcut-btn" data-section="beidou">🎯 工具</button>
+        <button class="shortcut-btn" data-section="engineer">⚙️ 设定</button>
+        <button class="shortcut-btn" data-section="security">🛡️ 安全</button>
       </div>
     </header>
 
@@ -219,7 +212,7 @@
               </svg>
             </div>
             <h1 class="hero-title">GO2SE <span class="hero-emoji">🪿</span></h1>
-            <p class="hero-slogan">AI优雅薅羊毛 | Crypto量化投资</p>
+            <p class="hero-slogan">AI自主打工 & Crypto量化投资</p>
             <p class="hero-desc">8大核心模块 · 北斗七鑫投资体系 · 25维度全向仿真</p>
           </div>
 
@@ -876,7 +869,7 @@
             </div>
 
             <div class="security-card">
-              <h3>I3 左右脑防崩溃</h3>
+              <h3>左右脑防崩溃</h3>
               <div class="brain-status">
                 <div class="brain-half left">
                   <span class="brain-icon">🧠</span>
@@ -894,7 +887,7 @@
             </div>
 
             <div class="security-card">
-              <h3>I4 资金安全</h3>
+              <h3>资金安全</h3>
               <div class="fund-security">
                 <div class="fund-item"><span class="fund-icon">🔐</span><span>多重签名</span></div>
                 <div class="fund-item"><span class="fund-icon">⏱️</span><span>24h冷却期</span></div>
@@ -903,7 +896,7 @@
             </div>
 
             <div class="security-card">
-              <h3>I5 数据算力安全</h3>
+              <h3>数据算力安全</h3>
               <div class="data-security">
                 <span class="sec-status">加密存储</span>
                 <span class="sec-status">算力隔离</span>
@@ -912,7 +905,7 @@
             </div>
 
             <div class="security-card">
-              <h3>I6 自动全向仿真</h3>
+              <h3>自动全向仿真</h3>
               <div class="auto-sim">
                 <span class="sim-toggle">日常仿真</span>
                 <span class="sim-toggle active">优化前仿真</span>
@@ -921,7 +914,7 @@
             </div>
 
             <div class="security-card full">
-              <h3>I7 客户端适应性</h3>
+              <h3>客户端适应性</h3>
               <div class="client-adaptation">
                 <div class="client-version"><span>v10.0</span><span class="client-status current">当前</span></div>
                 <div class="client-version"><span>v9.0</span><span class="client-status">兼容</span></div>
