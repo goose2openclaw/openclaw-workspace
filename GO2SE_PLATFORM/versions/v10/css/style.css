@@ -3758,3 +3758,198 @@ input[type="checkbox"] {
   z-index: 100;
   background: var(--bg-primary);
 }
+
+/* ========== Responsive Design ========== */
+:root {
+  /* 字体自适应 - 基于视口 */
+  --font-size-xs: clamp(10px, 1.2vw, 12px);
+  --font-size-sm: clamp(11px, 1.4vw, 14px);
+  --font-size-base: clamp(13px, 1.6vw, 16px);
+  --font-size-lg: clamp(15px, 2vw, 18px);
+  --font-size-xl: clamp(18px, 2.5vw, 24px);
+  --font-size-2xl: clamp(24px, 3.5vw, 32px);
+  
+  /* 响应式间距 */
+  --space-xs: clamp(4px, 0.5vw, 8px);
+  --space-sm: clamp(8px, 1vw, 12px);
+  --space-md: clamp(12px, 1.5vw, 20px);
+  --space-lg: clamp(16px, 2vw, 32px);
+  --space-xl: clamp(24px, 3vw, 48px);
+  
+  /* 响应式圆角 */
+  --radius-sm: clamp(4px, 0.5vw, 8px);
+  --radius-md: clamp(6px, 0.8vw, 12px);
+  --radius-lg: clamp(8px, 1vw, 16px);
+}
+
+/* 基础字体响应式 */
+* {
+  font-size: var(--font-size-base);
+}
+
+h1 { font-size: var(--font-size-2xl); }
+h2 { font-size: var(--font-size-xl); }
+h3 { font-size: var(--font-size-lg); }
+h4 { font-size: var(--font-size-base); }
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  :root {
+    --font-size-xs: 10px;
+    --font-size-sm: 11px;
+    --font-size-base: 13px;
+    --font-size-lg: 15px;
+    --font-size-xl: 18px;
+    --font-size-2xl: 24px;
+  }
+  
+  /* 隐藏侧边栏，显示底部导航 */
+  .sidebar {
+    display: none;
+  }
+  
+  /* 底部快捷导航 */
+  .nav-shortcuts {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: auto;
+    transform: none;
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
+    padding: 8px;
+    justify-content: space-around;
+    z-index: 1000;
+  }
+  
+  .shortcut-btn {
+    padding: 8px 12px;
+    font-size: 11px;
+  }
+  
+  /* 全宽内容区 */
+  .main-content {
+    margin-left: 0 !important;
+    padding-bottom: 70px;
+  }
+  
+  /* Header精简 */
+  .top-nav {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .nav-left, .nav-right {
+    padding: 4px 8px;
+  }
+  
+  /* 卡片网格移动端 */
+  .eng-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .asset-overview, .earnings-grid, .lobster-cards {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* 表格滚动 */
+  .config-table {
+    font-size: var(--font-size-xs);
+  }
+  
+  .brain-status-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .brain-vs {
+    transform: rotate(90deg);
+  }
+}
+
+/* 平板适配 */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .sidebar {
+    width: 180px;
+  }
+  
+  .nav-shortcuts {
+    gap: 2px;
+  }
+  
+  .shortcut-btn {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+  
+  .eng-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .lobster-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 大屏优化 */
+@media (min-width: 1440px) {
+  :root {
+    --font-size-base: clamp(14px, 1.4vw, 17px);
+  }
+  
+  .sidebar {
+    width: 240px;
+  }
+  
+  .main-content {
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+}
+
+/* 超宽屏 */
+@media (min-width: 1920px) {
+  :root {
+    --font-size-base: 16px;
+    --font-size-lg: 20px;
+    --font-size-xl: 28px;
+  }
+  
+  .sidebar {
+    width: 280px;
+  }
+  
+  .content-section {
+    max-width: 1800px;
+  }
+}
+
+/* 深色/亮色主题字体微调 */
+[data-theme="dark"] body,
+body.skin-dark {
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+[data-theme="geek"] body {
+  font-family: 'JetBrains Mono', 'SF Mono', monospace;
+}
+
+/* 字体平滑 */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* 图片自适应 */
+img, svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* 容器边界 */
+.content-section {
+  padding: var(--space-md);
+  margin: var(--space-md);
+}
