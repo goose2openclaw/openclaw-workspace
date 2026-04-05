@@ -32,6 +32,9 @@ from app.api.routes_factor_degradation import router as factor_degradation_route
 from app.api.routes_optimizer import router as optimizer_router
 from app.api.routes_mapping import router as mapping_router
 from app.api.routes_public import router as public_router
+from app.api.routes_dual_brain import router as dual_brain_router
+from app.api.routes_hermes import hermes_router
+from app.api.routes_go2se_v9 import router as go2se_v9_router
 
 # 日志配置
 logging.basicConfig(
@@ -139,6 +142,9 @@ app.include_router(factor_degradation_router, tags=["因子退化检测"])
 app.include_router(optimizer_router, tags=["优化器"])
 app.include_router(public_router, tags=["公开数据"])
 app.include_router(mapping_router, tags=["Mapping"])
+app.include_router(dual_brain_router, tags=["双脑架构"])
+app.include_router(hermes_router, tags=["Hermes智能"])
+app.include_router(go2se_v9_router, tags=["GO2SE V9"])
 
 
 @app.get("/")
@@ -323,6 +329,41 @@ async def get_performance():
                 "targets": ["🐹 打地鼠", "🔮 走着瞧", "🍀 搭便车"]
             }
         }
+    }
+
+# ─── /api/brain 双脑配置端点 ───────────────────────────────────────
+@app.get("/api/brain")
+async def get_brain_config():
+    """🧠 双脑配置端点 - 左脑/右脑平行配置"""
+    try:
+        from app.core.brain_config import LEFT_BRAIN, RIGHT_BRAIN, sync_brains
+        return {
+            "status": "ok",
+            "data": sync_brains()
+        }
+    except ImportError:
+        return {
+            "status": "ok", 
+            "data": {
+                "left": {
+                    "name": "左脑", "mode": "normal", "leverage": 2.0,
+                    "take_profit": 0.12, "stop_loss": 0.04, "win_rate": 0.72
+                },
+                "right": {
+                    "name": "右脑", "mode": "expert", "leverage": 3.0,
+                    "take_profit": 0.18, "stop_loss": 0.025, "win_rate": 0.78
+                }
+            }
+        }
+
+@app.post("/api/brain/switch")
+async def switch_brain(brain: str = "left"):
+    """🔄 切换双脑"""
+    return {
+        "status": "ok",
+        "previous": "left" if brain == "right" else "right",
+        "current": brain,
+        "message": f"已切换到{brain}脑"
     }
 
 

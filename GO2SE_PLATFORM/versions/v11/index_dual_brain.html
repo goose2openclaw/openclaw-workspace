@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GO2SE 双脑架构 - 北斗七鑫投资平台</title>
+    <style>
+        :root {
+            --primary: #00d4aa;
+            --secondary: #7c3aed;
+            --accent: #f59e0b;
+            --bg-dark: #0a0e17;
+            --bg-card: #111827;
+            --text-primary: #ffffff;
+            --text-secondary: #9ca3af;
+            --left-brain: #3b82f6;
+            --right-brain: #ef4444;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+        
+        /* 顶部状态栏 */
+        .top-bar {
+            background: linear-gradient(135deg, var(--bg-card) 0%, #1a1f2e 100%);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .platform-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .platform-title h1 {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .goose-icon {
+            font-size: 28px;
+        }
+        
+        /* 双脑状态指示器 */
+        .brain-status-bar {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+        
+        .brain-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .brain-indicator.left {
+            background: rgba(59, 130, 246, 0.2);
+            border: 1px solid var(--left-brain);
+            color: var(--left-brain);
+        }
+        
+        .brain-indicator.right {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid var(--right-brain);
+            color: var(--right-brain);
+        }
+        
+        .brain-indicator.active {
+            animation: pulse 2s infinite;
+        }
+        
+        .brain-indicator.standby {
+            opacity: 0.5;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .brain-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+        
+        .brain-indicator.active .brain-dot {
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        /* 模式切换 */
+        .mode-switcher {
+            display: flex;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 4px;
+        }
+        
+        .mode-btn {
+            padding: 8px 20px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .mode-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 212, 170, 0.3);
+        }
+        
+        .mode-btn:hover:not(.active) {
+            color: var(--text-primary);
+        }
+        
+        /* 主容器 */
+        .main-container {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 24px;
+            padding: 24px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        
+        /* 架构图区域 */
+        .architecture-section {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* 双脑并行架构图 */
+        .brain-architecture {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .brain-row {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+        }
+        
+        .brain-box {
+            flex: 1;
+            max-width: 300px;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px solid;
+        }
+        
+        .brain-box.left-brain {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.05));
+            border-color: var(--left-brain);
+        }
+        
+        .brain-box.right-brain {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.05));
+            border-color: var(--right-brain);
+        }
+        
+        .brain-box h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        
+        .brain-box.left-brain h3 { color: var(--left-brain); }
+        .brain-box.right-brain h3 { color: var(--right-brain); }
+        
+        .brain-box p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+        
+        .brain-stats {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            font-size: 12px;
+        }
+        
+        .brain-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .brain-stat-label {
+            color: var(--text-secondary);
+            font-size: 10px;
+            text-transform: uppercase;
+        }
+        
+        .brain-stat-value {
+            font-weight: 700;
+            font-size: 14px;
+        }
+        
+        /* BrainManager */
+        .brain-manager {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(124, 58, 237, 0.05));
+            border: 2px solid var(--secondary);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+        }
+        
+        .brain-manager h3 {
+            color: var(--secondary);
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+        
+        .brain-manager p {
+            color: var(--text-secondary);
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+        
+        .heartbeat-display {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .heartbeat-icon {
+            font-size: 24px;
+            animation: heartbeat 1s infinite;
+        }
+        
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.1); }
+        }
+        
+        .heartbeat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--danger);
+        }
+        
+        .heartbeat-unit {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        /* 连接线 */
+        .connector {
+            display: flex;
+            justify-content: center;
+            padding: 8px 0;
+        }
+        
+        .connector-line {
+            width: 4px;
+            height: 30px;
+            background: linear-gradient(to bottom, var(--secondary), var(--primary));
+            border-radius: 2px;
+        }
+        
+        /* 钱包架构 */
+        .wallet-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 20px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 12px;
+            margin-top: 16px;
+        }
+        
+        .wallet-node {
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 13px;
+        }
+        
+        .wallet-node.main {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid var(--success);
+            color: var(--success);
+        }
+        
+        .wallet-node.transfer {
+            background: rgba(245, 158, 11, 0.2);
+            border: 1px solid var(--warning);
+            color: var(--warning);
+        }
+        
+        .wallet-node.exchange {
+            background: rgba(59, 130, 246, 0.2);
+            border: 1px solid var(--left-brain);
+            color: var(--left-brain);
+        }
+        
+        .wallet-node .amount {
+            font-size: 16px;
+            font-weight: 700;
+            display: block;
+            margin-top: 4px;
+        }
+        
+        .wallet-arrow {
+            color: var(--text-secondary);
+            font-size: 20px;
+        }
+        
+        /* 龙虾模块 */
+        .lobster-module {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 16px;
+        }
+        
+        .lobster-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .lobster-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+        
+        .lobster-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        
+        .lobster-card h4 {
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+        
+        .lobster-card p {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+        
+        /* 右侧面板 */
+        .side-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .panel-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .panel-card h3 {
+            font-size: 16px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* 配置表 */
+        .config-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .config-table th,
+        .config-table td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 13px;
+        }
+        
+        .config-table th {
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+        
+        .config-table td:first-child {
+            font-weight: 600;
+        }
+        
+        .brain-tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        .brain-tag.left { background: rgba(59, 130, 246, 0.2); color: var(--left-brain); }
+        .brain-tag.right { background: rgba(239, 68, 68, 0.2); color: var(--right-brain); }
+        
+        /* API端点 */
+        .api-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .api-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 6px;
+            margin-bottom: 6px;
+            font-size: 12px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .api-method {
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+        
+        .api-method.get { background: rgba(16, 185, 129, 0.2); color: var(--success); }
+        .api-method.post { background: rgba(59, 130, 246, 0.2); color: var(--left-brain); }
+        
+        /* 切换日志 */
+        .switch-log {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .log-entry {
+            display: flex;
+            gap: 8px;
+            padding: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 12px;
+        }
+        
+        .log-time {
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .log-action {
+            color: var(--primary);
+        }
+        
+        /* 状态指示灯 */
+        .status-light {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        .status-light.online { background: var(--success); box-shadow: 0 0 8px var(--success); }
+        .status-light.offline { background: var(--danger); }
+        .status-light.warning { background: var(--warning); }
+        
+        /* 滚动条 */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <!-- 顶部状态栏 -->
+    <div class="top-bar">
+        <div class="platform-title">
+            <span class="goose-icon">🪿</span>
+            <h1>GO2SE 双脑架构</h1>
+        </div>
+        
+        <div class="brain-status-bar">
+            <div class="brain-indicator left standby" id="left-brain-indicator">
+                <span class="brain-dot"></span>
+                <span>🧠 左脑</span>
+                <span class="brain-label">普通模式</span>
+                <span class="brain-status">standby</span>
+            </div>
+            
+            <div class="mode-switcher">
+                <button class="mode-btn active" data-mode="normal">🟢 普通模式</button>
+                <button class="mode-btn" data-mode="expert">🔴 专家模式</button>
+            </div>
+            
+            <div class="brain-indicator right active" id="right-brain-indicator">
+                <span class="brain-dot"></span>
+                <span>🧠 右脑</span>
+                <span class="brain-label">专家模式</span>
+                <span class="brain-status">active</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 主容器 -->
+    <div class="main-container">
+        <!-- 左侧：架构图 -->
+        <div class="architecture-section">
+            <div class="section-title">
+                <span>🧠</span>
+                <span>双脑并行架构</span>
+            </div>
+            
+            <div class="brain-architecture">
+                <!-- 左脑 -->
+                <div class="brain-row">
+                    <div class="brain-box left-brain">
+                        <h3>🧠 左脑 - 普通模式</h3>
+                        <p>稳健运行 · 低杠杆 · 防守策略</p>
+                        <div class="brain-stats">
+                            <div class="brain-stat">
+                                <span class="brain-stat-label">杠杆</span>
+                                <span class="brain-stat-value">2.0x</span>
+                            </div>
+                            <div class="brain-stat">
+                                <span class="brain-stat-label">止盈</span>
+                                <span class="brain-stat-value">12%</span>
+                            </div>
+                            <div class="brain-stat">
+                                <span class="brain-stat-label">止损</span>
+                                <span class="brain-stat-value">4%</span>
+                            </div>
+                            <div class="brain-stat">
+                                <span class="brain-stat-label">目标胜率</span>
+                                <span class="brain-stat-value">72%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="brain-box right-brain">
+                        <h3>🧠 右脑 - 专家模式</h3>
+                        <p>高收益追求 · 高杠杆 · 进攻策略</p>
+                        <div class="brain-stats">
+                            <div class="brain-stat">
+                                <span class="brain-stat-label">杠杆</span>
+                                <span class="brain-stat-value">3.0x</span>
+                            </div>
+                            <div class="brain-stat">
+                                <span class="brain-stat-label">止盈</span>
+                                <span class="brain-stat-value">18%</span>
+                            </div>
+                            <div class="brain-stat">
+                                <span class="brain-stat-label">止损</span>
+                                <span class="brain-stat-value">2.5%</span>
+                            </div>
+                            <div class="brain-stat">
+                                <span class="brain-stat-label">目标胜率</span>
+                                <span class="brain-stat-value">78%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 连接线 -->
+                <div class="connector">
+                    <div class="connector-line"></div>
+                </div>
+                
+                <!-- BrainManager -->
+                <div class="brain-manager">
+                    <h3>🧠 BrainManager</h3>
+                    <p>心跳监控 · 自动切换 · 防崩溃</p>
+                    <div class="heartbeat-display">
+                        <span class="heartbeat-icon">💓</span>
+                        <span class="heartbeat-value" id="heartbeat-value">76</span>
+                        <span class="heartbeat-unit">BPM</span>
+                    </div>
+                    <div class="brain-manager-stats">
+                        <span class="status-light online"></span> 双脑运行正常
+                        <span style="margin-left: 16px;">上次切换: </span>
+                        <span id="last-switch">2小时前</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 钱包架构 -->
+            <div class="section-title" style="margin-top: 24px;">
+                <span>💰</span>
+                <span>中转钱包架构</span>
+            </div>
+            <div class="wallet-flow">
+                <div class="wallet-node main">
+                    <div>🏦 主钱包</div>
+                    <div class="amount">$85,000</div>
+                    <div style="font-size: 10px; opacity: 0.7;">冷存储</div>
+                </div>
+                <span class="wallet-arrow">→</span>
+                <div class="wallet-node transfer">
+                    <div>🔄 中转钱包</div>
+                    <div class="amount">$10,000</div>
+                    <div style="font-size: 10px; opacity: 0.7;">智能合约隔离</div>
+                </div>
+                <span class="wallet-arrow">→</span>
+                <div class="wallet-node exchange">
+                    <div>📈 交易所</div>
+                    <div class="amount">Binance/Bybit/OKX</div>
+                    <div style="font-size: 10px; opacity: 0.7;">实时交易</div>
+                </div>
+                <span class="wallet-arrow">↩️</span>
+            </div>
+            
+            <!-- 龙虾模块 -->
+            <div class="section-title" style="margin-top: 24px;">
+                <span>🦞</span>
+                <span>龙虾模块</span>
+            </div>
+            <div class="lobster-module">
+                <div class="lobster-card">
+                    <div class="lobster-icon">🔄</div>
+                    <h4>复盘 Retro</h4>
+                    <p>gstack 15人团队评审</p>
+                    <div style="margin-top: 8px;">
+                        <span class="status-light online"></span>
+                        <span style="font-size: 11px; margin-left: 4px;">Sprint周期</span>
+                    </div>
+                </div>
+                <div class="lobster-card">
+                    <div class="lobster-icon">🧪</div>
+                    <h4>仿真 Simulation</h4>
+                    <p>MiroFish 1000智能体</p>
+                    <div style="margin-top: 8px;">
+                        <span class="status-light online"></span>
+                        <span style="font-size: 11px; margin-left: 4px;">自动触发</span>
+                    </div>
+                </div>
+                <div class="lobster-card">
+                    <div class="lobster-icon">⚡</div>
+                    <h4>优化 Optimization</h4>
+                    <p>策略参数优化</p>
+                    <div style="margin-top: 8px;">
+                        <span class="status-light warning"></span>
+                        <span style="font-size: 11px; margin-left: 4px;">每24小时</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 右侧面板 -->
+        <div class="side-panel">
+            <!-- 配置对比 -->
+            <div class="panel-card">
+                <h3><span>📊</span> 左右脑配置对比</h3>
+                <table class="config-table">
+                    <thead>
+                        <tr>
+                            <th>参数</th>
+                            <th><span class="brain-tag left">左脑</span></th>
+                            <th><span class="brain-tag right">右脑</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>模式</td>
+                            <td>普通模式</td>
+                            <td>专家模式</td>
+                        </tr>
+                        <tr>
+                            <td>角色</td>
+                            <td>稳健运行</td>
+                            <td>高收益追求</td>
+                        </tr>
+                        <tr>
+                            <td>杠杆</td>
+                            <td>2.0x</td>
+                            <td>3.0x</td>
+                        </tr>
+                        <tr>
+                            <td>止盈</td>
+                            <td>12%</td>
+                            <td>18%</td>
+                        </tr>
+                        <tr>
+                            <td>止损</td>
+                            <td>4%</td>
+                            <td>2.5%</td>
+                        </tr>
+                        <tr>
+                            <td>目标胜率</td>
+                            <td>72%</td>
+                            <td>78%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- 切换模式 -->
+            <div class="panel-card">
+                <h3><span>🔄</span> 切换模式</h3>
+                <table class="config-table">
+                    <thead>
+                        <tr>
+                            <th>类型</th>
+                            <th>说明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>同模式切换</td>
+                            <td>左脑normal ↔ 右脑normal</td>
+                        </tr>
+                        <tr>
+                            <td>跨模式切换</td>
+                            <td>normal ↔ expert</td>
+                        </tr>
+                        <tr>
+                            <td>自动切换</td>
+                            <td>心跳超时自动切换</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- API端点 -->
+            <div class="panel-card">
+                <h3><span>📡</span> API端点 (18个)</h3>
+                <div class="api-list">
+                    <div class="api-item">
+                        <span class="api-method get">GET</span>
+                        <span>/api/dual-brain/status</span>
+                    </div>
+                    <div class="api-item">
+                        <span class="api-method get">GET</span>
+                        <span>/api/dual-brain/brain-status</span>
+                    </div>
+                    <div class="api-item">
+                        <span class="api-method post">POST</span>
+                        <span>/api/dual-brain/heartbeat</span>
+                    </div>
+                    <div class="api-item">
+                        <span class="api-method post">POST</span>
+                        <span>/api/dual-brain/switch</span>
+                    </div>
+                    <div class="api-item">
+                        <span class="api-method post">POST</span>
+                        <span>/api/dual-brain/switch-brain</span>
+                    </div>
+                    <div class="api-item">
+                        <span class="api-method post">POST</span>
+                        <span>/api/dual-brain/switch-mode</span>
+                    </div>
+                    <div class="api-item">
+                        <span class="api-method get">GET</span>
+                        <span>/api/dual-brain/wallet-status</span>
+                    </div>
+                    <div class="api-item">
+                        <span class="api-method post">POST</span>
+                        <span>/api/dual-brain/transfer-to-exchange</span>
+                    </div>
+                    <div class="api-item">
+                        <span class="api-method post">POST</span>
+                        <span>/api/dual-brain/return-to-main</span>
+                    </div>
+                    <div class="api-item">
+                        <span class="api-method post">POST</span>
+                        <span>/api/dual-brain/lobster/retro</span>
+                    </div>
+                    <div class="api-item">
+                        <span class="api-method post">POST</span>
+                        <span>/api/dual-brain/lobster/simulation</span>
+                    </div>
+                    <div class="api-item">
+                        <span class="api-method post">POST</span>
+                        <span>/api/dual-brain/lobster/optimization</span>
+                    </div>
+                    <div class="api-item">
+                        <span class="api-method post">POST</span>
+                        <span>/api/dual-brain/lobster/full-cycle</span>
+                    </div>
+                    <div class="api-item">
+                        <span class="api-method post">POST</span>
+                        <span>/api/dual-brain/execute-trade</span>
+                    </div>
+                    <div class="api-item">
+                        <span class="api-method post">POST</span>
+                        <span>/api/dual-brain/start</span>
+                    </div>
+                    <div class="api-item">
+                        <span class="api-method post">POST</span>
+                        <span>/api/dual-brain/stop</span>
+                    </div>
+                    <div class="api-item">
+                        <span class="api-method post">POST</span>
+                        <span>/api/dual-brain/reset</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 切换日志 -->
+            <div class="panel-card">
+                <h3><span>📋</span> 切换日志</h3>
+                <div class="switch-log" id="switch-log">
+                    <div class="log-entry">
+                        <span class="log-time">04:32</span>
+                        <span class="log-action">右脑 → 专家模式</span>
+                        <span>激活</span>
+                    </div>
+                    <div class="log-entry">
+                        <span class="log-time">02:15</span>
+                        <span class="log-action">左脑 → 普通模式</span>
+                        <span>激活</span>
+                    </div>
+                    <div class="log-entry">
+                        <span class="log-time">00:47</span>
+                        <span class="log-action">心跳超时自动切换</span>
+                        <span>右脑接管</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 模式切换
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const mode = this.dataset.mode;
+                const leftIndicator = document.getElementById('left-brain-indicator');
+                const rightIndicator = document.getElementById('right-brain-indicator');
+                
+                if (mode === 'normal') {
+                    leftIndicator.classList.add('active');
+                    leftIndicator.classList.remove('standby');
+                    rightIndicator.classList.remove('active');
+                    rightIndicator.classList.add('standby');
+                    document.querySelector('.brain-status').textContent = 'active';
+                } else {
+                    rightIndicator.classList.add('active');
+                    rightIndicator.classList.remove('standby');
+                    leftIndicator.classList.remove('active');
+                    leftIndicator.classList.add('standby');
+                    document.querySelectorAll('.brain-status')[1].textContent = 'active';
+                }
+                
+                addLogEntry(`切换到${mode === 'normal' ? '普通' : '专家'}模式`);
+            });
+        });
+        
+        // 添加日志
+        function addLogEntry(action) {
+            const log = document.getElementById('switch-log');
+            const time = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.innerHTML = `<span class="log-time">${time}</span><span class="log-action">${action}</span><span>完成</span>`;
+            log.insertBefore(entry, log.firstChild);
+        }
+        
+        // 心跳模拟
+        setInterval(() => {
+            const hb = document.getElementById('heartbeat-value');
+            hb.textContent = 70 + Math.floor(Math.random() * 15);
+        }, 1000);
+    </script>
+</body>
+</html>

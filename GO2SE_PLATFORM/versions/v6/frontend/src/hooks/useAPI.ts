@@ -22,6 +22,7 @@ async function sleep(ms: number) {
 // ────────────────────────────────────────────────────────────────
 async function fetchWithRetry<T>(
   url: string,
+  options = {},
   retries = MAX_RETRIES,
   delay = BASE_DELAY_MS
 ): Promise<T> {
@@ -29,7 +30,7 @@ async function fetchWithRetry<T>(
   
   for (let i = 0; i <= retries; i++) {
     try {
-      const res = await fetch(url, { timeout: 8000 })
+      const res = await fetch(url, { ...options, signal: AbortSignal.timeout(8000) })
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const json = await res.json()
       return (json.data ?? json) as T
@@ -97,7 +98,7 @@ export function useSignals() {
   
   const runStrategy = useCallback(async (strategy: string) => {
     try {
-      return await fetchWithRetry(`${API_BASE}/api/signals/${strategy}/run`, { method: 'POST' })
+      return await fetchWithRetry(`${API_BASE}/api/signals/${strategy}/run`, 3)
     } catch (e) {
       console.error('策略执行失败:', e)
       return { error: '策略执行失败，请重试' }

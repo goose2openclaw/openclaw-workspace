@@ -739,6 +739,7 @@
     initSidebar();
     initPinButton();
     initInvestmentMode();
+    initBrainSwitch();
     initSliders();
     initAllocationTabs();
     initSimulatorTabs();
@@ -819,6 +820,88 @@ function initExpertMode() {
 
 // Add to init
 document.addEventListener('DOMContentLoaded', initExpertMode);
+
+// ========== Brain Switch (双脑切换) ==========
+function initBrainSwitch() {
+  const brainSwitch = document.getElementById('brainSwitch');
+  const brainLabel = document.getElementById('brainLabel');
+  const brainMode = document.getElementById('brainMode');
+  
+  if (!brainSwitch || !brainLabel || !brainMode) {
+    console.log('Brain switch elements not found, skipping');
+    return;
+  }
+  
+  // 从API同步状态
+  syncBrainState();
+  
+  // 切换事件
+  brainSwitch.addEventListener('change', async () => {
+    const isRight = brainSwitch.checked;
+    const targetBrain = isRight ? 'right' : 'left';
+    const targetMode = isRight ? 'expert' : 'normal';
+    
+    // 更新UI
+    brainLabel.textContent = isRight ? '🧠右脑' : '🧠左脑';
+    brainMode.textContent = isRight ? '专家' : '普通';
+    
+    // 调用API切换
+    try {
+      const response = await fetch(`${API_BASE}/dual-brain/switch`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ target: targetBrain })
+      });
+      const result = await response.json();
+      
+      if (result.success) {
+        console.log(`✅ 双脑切换成功: ${targetBrain} (${targetMode})`);
+      } else {
+        console.error('❌ 切换失败:', result.error);
+        // 切换失败，恢复原状态
+        brainSwitch.checked = !isRight;
+        brainLabel.textContent = !isRight ? '🧠右脑' : '🧠左脑';
+        brainMode.textContent = !isRight ? '专家' : '普通';
+      }
+    } catch (e) {
+      console.error('❌ 双脑切换API调用失败:', e);
+    }
+  });
+  
+  // 键盘快捷键 B
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'b' || e.key === 'B') {
+      if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+        brainSwitch.checked = !brainSwitch.checked;
+        brainSwitch.dispatchEvent(new Event('change'));
+      }
+    }
+  });
+}
+
+// 同步双脑状态
+async function syncBrainState() {
+  try {
+    const response = await fetch(`${API_BASE}/dual-brain/status`);
+    const data = await response.json();
+    
+    const brainSwitch = document.getElementById('brainSwitch');
+    const brainLabel = document.getElementById('brainLabel');
+    const brainMode = document.getElementById('brainMode');
+    
+    if (brainSwitch && brainLabel && brainMode && data.active_brain) {
+      const isRight = data.active_brain === 'right';
+      brainSwitch.checked = isRight;
+      brainLabel.textContent = isRight ? '🧠右脑' : '🧠左脑';
+      brainMode.textContent = isRight ? '专家' : '普通';
+    }
+  } catch (e) {
+    console.log('Brain state sync skipped (API not available)');
+  }
+}
+
+// API Base
+const API_BASE = 'http://localhost:8004/api';
 // Sidebar 子菜单功能
 function initSidebarSubmenu() {
   const sidebarItems = document.querySelectorAll('.sidebar-item[data-section]');

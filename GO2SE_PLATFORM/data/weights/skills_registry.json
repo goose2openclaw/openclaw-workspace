@@ -5,8 +5,8 @@
     "type": "exchange",
     "enabled": true,
     "base_weight": 0.12,
-    "current_weight": 0.05085780158676339,
-    "last_updated": "2026-04-04T12:03:21.055915",
+    "current_weight": 0.04880382775119615,
+    "last_updated": "2026-04-05T12:03:03.971188",
     "metrics": {
       "latency_ms": 50,
       "error_rate": 0.001
@@ -18,8 +18,8 @@
     "type": "exchange",
     "enabled": true,
     "base_weight": 0.08,
-    "current_weight": 0.02712416084627381,
-    "last_updated": "2026-04-04T12:03:21.055915",
+    "current_weight": 0.027341079972658913,
+    "last_updated": "2026-04-05T12:03:03.971188",
     "metrics": {
       "grid_count": 10,
       "profit": 0.05
@@ -31,8 +31,8 @@
     "type": "exchange",
     "enabled": true,
     "base_weight": 0.08,
-    "current_weight": 0.02712416084627381,
-    "last_updated": "2026-04-04T12:03:21.055915",
+    "current_weight": 0.027341079972658913,
+    "last_updated": "2026-04-05T12:03:03.971188",
     "metrics": {
       "latency_ms": 60,
       "error_rate": 0.002
@@ -44,8 +44,8 @@
     "type": "exchange",
     "enabled": true,
     "base_weight": 0.05,
-    "current_weight": 0.01695260052892113,
-    "last_updated": "2026-04-04T12:03:21.055915",
+    "current_weight": 0.01708817498291182,
+    "last_updated": "2026-04-05T12:03:03.971188",
     "metrics": {
       "latency_ms": 70,
       "error_rate": 0.002
@@ -57,8 +57,8 @@
     "type": "ai",
     "enabled": true,
     "base_weight": 0.15,
-    "current_weight": 0.0645894080151895,
-    "last_updated": "2026-04-04T12:03:21.055915",
+    "current_weight": 0.0620300751879699,
+    "last_updated": "2026-04-05T12:03:03.971188",
     "metrics": {
       "decisions": 500,
       "accuracy": 0.72
@@ -70,8 +70,8 @@
     "type": "ai",
     "enabled": true,
     "base_weight": 0.12,
-    "current_weight": 0.040686241269410714,
-    "last_updated": "2026-04-04T12:03:21.055915",
+    "current_weight": 0.04101161995898837,
+    "last_updated": "2026-04-05T12:03:03.971188",
     "metrics": {
       "signals": 200,
       "win_rate": 0.68
@@ -83,8 +83,8 @@
     "type": "ai",
     "enabled": true,
     "base_weight": 0.1,
-    "current_weight": 0.03390520105784226,
-    "last_updated": "2026-04-04T12:03:21.055915",
+    "current_weight": 0.03417634996582364,
+    "last_updated": "2026-04-05T12:03:03.971188",
     "metrics": {
       "agents": 5,
       "accuracy": 0.7
@@ -96,8 +96,8 @@
     "type": "ai",
     "enabled": true,
     "base_weight": 0.08,
-    "current_weight": 0.02712416084627381,
-    "last_updated": "2026-04-04T12:03:21.055915",
+    "current_weight": 0.027341079972658913,
+    "last_updated": "2026-04-05T12:03:03.971188",
     "metrics": {
       "trades": 100,
       "win_rate": 0.65
@@ -109,8 +109,8 @@
     "type": "ai",
     "enabled": true,
     "base_weight": 0.08,
-    "current_weight": 0.02712416084627381,
-    "last_updated": "2026-04-04T12:03:21.055915",
+    "current_weight": 0.027341079972658913,
+    "last_updated": "2026-04-05T12:03:03.971188",
     "metrics": {
       "signals": 150,
       "accuracy": 0.68
@@ -122,8 +122,8 @@
     "type": "ai",
     "enabled": true,
     "base_weight": 0.06,
-    "current_weight": 0.020343120634705357,
-    "last_updated": "2026-04-04T12:03:21.055915",
+    "current_weight": 0.020505809979494184,
+    "last_updated": "2026-04-05T12:03:03.971188",
     "metrics": {
       "queries": 300,
       "accuracy": 0.75
@@ -135,8 +135,8 @@
     "type": "ai",
     "enabled": true,
     "base_weight": 0.05,
-    "current_weight": 0.01695260052892113,
-    "last_updated": "2026-04-04T12:03:21.055915",
+    "current_weight": 0.01708817498291182,
+    "last_updated": "2026-04-05T12:03:03.971188",
     "metrics": {
       "backtests": 50,
       "accuracy": 0.72
@@ -148,8 +148,8 @@
     "type": "prediction",
     "enabled": true,
     "base_weight": 0.12,
-    "current_weight": 0.05167152641215161,
-    "last_updated": "2026-04-04T12:03:21.055915",
+    "current_weight": 0.05167464114832534,
+    "last_updated": "2026-04-05T12:03:03.971188",
     "metrics": {
       "markets": 6,
       "volume": 10000
@@ -161,8 +161,8 @@
     "type": "prediction",
     "enabled": true,
     "base_weight": 0.08,
-    "current_weight": 0.02712416084627381,
-    "last_updated": "2026-04-04T12:03:21.055915",
+    "current_weight": 0.027341079972658913,
+    "last_updated": "2026-04-05T12:03:03.971188",
     "metrics": {
       "arb_opportunities": 20,
       "profit": 0.03
@@ -174,8 +174,8 @@
     "type": "external",
     "enabled": true,
     "base_weight": 0.15,
-    "current_weight": 0.06662372007866005,
-    "last_updated": "2026-04-04T12:03:21.055915",
+    "current_weight": 0.06510594668489403,
+    "last_updated": "2026-04-05T12:03:03.971188",
     "metrics": {
       "strategies": 4,
       "profit": 0.08
@@ -187,8 +187,8 @@
     "type": "memory",
     "enabled": true,
     "base_weight": 0.08,
-    "current_weight": 0.02712416084627381,
-    "last_updated": "2026-04-04T12:03:21.055915",
+    "current_weight": 0.027341079972658913,
+    "last_updated": "2026-04-05T12:03:03.971188",
     "metrics": {
       "memory_hits": 100,
       "accuracy": 0.85
@@ -200,8 +200,8 @@
     "type": "agent",
     "enabled": true,
     "base_weight": 0.1,
-    "current_weight": 0.03390520105784226,
-    "last_updated": "2026-04-04T12:03:21.055915",
+    "current_weight": 0.03417634996582364,
+    "last_updated": "2026-04-05T12:03:03.971188",
     "metrics": {
       "skills_created": 5,
       "improvements": 20
@@ -213,8 +213,8 @@
     "type": "stock",
     "enabled": true,
     "base_weight": 0.05,
-    "current_weight": 0.01695260052892113,
-    "last_updated": "2026-04-04T12:03:21.055915",
+    "current_weight": 0.01708817498291182,
+    "last_updated": "2026-04-05T12:03:03.971188",
     "metrics": {
       "stocks": 50,
       "accuracy": 0.65
@@ -226,8 +226,8 @@
     "type": "stock",
     "enabled": true,
     "base_weight": 0.04,
-    "current_weight": 0.013562080423136905,
-    "last_updated": "2026-04-04T12:03:21.055915",
+    "current_weight": 0.013670539986329456,
+    "last_updated": "2026-04-05T12:03:03.971188",
     "metrics": {
       "symbols": 5000,
       "latency_ms": 100
@@ -239,8 +239,8 @@
     "type": "stock",
     "enabled": true,
     "base_weight": 0.04,
-    "current_weight": 0.013562080423136905,
-    "last_updated": "2026-04-04T12:03:21.055915",
+    "current_weight": 0.013670539986329456,
+    "last_updated": "2026-04-05T12:03:03.971188",
     "metrics": {
       "analyses": 100,
       "accuracy": 0.62
@@ -252,8 +252,8 @@
     "type": "stock",
     "enabled": true,
     "base_weight": 0.04,
-    "current_weight": 0.013562080423136905,
-    "last_updated": "2026-04-04T12:03:21.055915",
+    "current_weight": 0.013670539986329456,
+    "last_updated": "2026-04-05T12:03:03.971188",
     "metrics": {
       "analyses": 100,
       "accuracy": 0.63
@@ -265,8 +265,8 @@
     "type": "stock",
     "enabled": true,
     "base_weight": 0.03,
-    "current_weight": 0.010171560317352678,
-    "last_updated": "2026-04-04T12:03:21.055915",
+    "current_weight": 0.010252904989747092,
+    "last_updated": "2026-04-05T12:03:03.971188",
     "metrics": {
       "watched": 100,
       "alerts": 50
@@ -278,8 +278,8 @@
     "type": "memory",
     "enabled": true,
     "base_weight": 0.08,
-    "current_weight": 0.02712416084627381,
-    "last_updated": "2026-04-04T12:03:21.055915",
+    "current_weight": 0.027341079972658913,
+    "last_updated": "2026-04-05T12:03:03.971188",
     "metrics": {
       "retrievals": 1000,
       "accuracy": 0.82
@@ -291,8 +291,8 @@
     "type": "crowdsource",
     "enabled": true,
     "base_weight": 0.06,
-    "current_weight": 0.020343120634705357,
-    "last_updated": "2026-04-04T12:03:21.055915",
+    "current_weight": 0.020505809979494184,
+    "last_updated": "2026-04-05T12:03:03.971188",
     "metrics": {
       "tasks": 50,
       "earnings": 0.02
@@ -304,8 +304,8 @@
     "type": "data",
     "enabled": true,
     "base_weight": 0.05,
-    "current_weight": 0.01695260052892113,
-    "last_updated": "2026-04-04T12:03:21.055915",
+    "current_weight": 0.01708817498291182,
+    "last_updated": "2026-04-05T12:03:03.971188",
     "metrics": {
       "datasets": 20,
       "accuracy": 0.78
@@ -317,8 +317,8 @@
     "type": "tool",
     "enabled": true,
     "base_weight": 0.05,
-    "current_weight": 0.01695260052892113,
-    "last_updated": "2026-04-04T12:03:21.055915",
+    "current_weight": 0.01708817498291182,
+    "last_updated": "2026-04-05T12:03:03.971188",
     "metrics": {
       "pages": 500,
       "accuracy": 0.9
@@ -330,8 +330,8 @@
     "type": "tool",
     "enabled": true,
     "base_weight": 0.04,
-    "current_weight": 0.013562080423136905,
-    "last_updated": "2026-04-04T12:03:21.055915",
+    "current_weight": 0.013670539986329456,
+    "last_updated": "2026-04-05T12:03:03.971188",
     "metrics": {
       "investigations": 50,
       "accuracy": 0.85
@@ -343,8 +343,8 @@
     "type": "tool",
     "enabled": true,
     "base_weight": 0.04,
-    "current_weight": 0.013562080423136905,
-    "last_updated": "2026-04-04T12:03:21.055915",
+    "current_weight": 0.013670539986329456,
+    "last_updated": "2026-04-05T12:03:03.971188",
     "metrics": {
       "retrospectives": 20,
       "improvements": 100
@@ -356,8 +356,8 @@
     "type": "ai",
     "enabled": true,
     "base_weight": 0.06,
-    "current_weight": 0.020343120634705357,
-    "last_updated": "2026-04-04T12:03:21.055915",
+    "current_weight": 0.020505809979494184,
+    "last_updated": "2026-04-05T12:03:03.971188",
     "metrics": {
       "strategies": 10,
       "accuracy": 0.7
@@ -369,8 +369,8 @@
     "type": "earning",
     "enabled": true,
     "base_weight": 0.1,
-    "current_weight": 0.03390520105784226,
-    "last_updated": "2026-04-04T12:03:21.055915",
+    "current_weight": 0.03417634996582364,
+    "last_updated": "2026-04-05T12:03:03.971188",
     "metrics": {
       "articles": 50,
       "income": 0.05
@@ -382,8 +382,8 @@
     "type": "earning",
     "enabled": true,
     "base_weight": 0.1,
-    "current_weight": 0.03390520105784226,
-    "last_updated": "2026-04-04T12:03:21.055915",
+    "current_weight": 0.03417634996582364,
+    "last_updated": "2026-04-05T12:03:03.971188",
     "metrics": {
       "contents": 100,
       "income": 0.08
@@ -395,8 +395,8 @@
     "type": "earning",
     "enabled": true,
     "base_weight": 0.08,
-    "current_weight": 0.02712416084627381,
-    "last_updated": "2026-04-04T12:03:21.055915",
+    "current_weight": 0.027341079972658913,
+    "last_updated": "2026-04-05T12:03:03.971188",
     "metrics": {
       "videos": 200,
       "income": 0.03
@@ -408,8 +408,8 @@
     "type": "earning",
     "enabled": true,
     "base_weight": 0.08,
-    "current_weight": 0.02712416084627381,
-    "last_updated": "2026-04-04T12:03:21.055915",
+    "current_weight": 0.027341079972658913,
+    "last_updated": "2026-04-05T12:03:03.971188",
     "metrics": {
       "audio_hours": 100,
       "income": 0.04
@@ -421,8 +421,8 @@
     "type": "earning",
     "enabled": true,
     "base_weight": 0.12,
-    "current_weight": 0.040686241269410714,
-    "last_updated": "2026-04-04T12:03:21.055915",
+    "current_weight": 0.04101161995898837,
+    "last_updated": "2026-04-05T12:03:03.971188",
     "metrics": {
       "scripts": 30,
       "income": 0.1
@@ -434,8 +434,8 @@
     "type": "earning",
     "enabled": true,
     "base_weight": 0.1,
-    "current_weight": 0.03390520105784226,
-    "last_updated": "2026-04-04T12:03:21.055915",
+    "current_weight": 0.03417634996582364,
+    "last_updated": "2026-04-05T12:03:03.971188",
     "metrics": {
       "websites": 20,
       "income": 0.15
@@ -447,8 +447,8 @@
     "type": "earning",
     "enabled": true,
     "base_weight": 0.08,
-    "current_weight": 0.02712416084627381,
-    "last_updated": "2026-04-04T12:03:21.055915",
+    "current_weight": 0.027341079972658913,
+    "last_updated": "2026-04-05T12:03:03.971188",
     "metrics": {
       "apis": 15,
       "income": 0.08
@@ -460,8 +460,8 @@
     "type": "earning",
     "enabled": true,
     "base_weight": 0.06,
-    "current_weight": 0.020343120634705357,
-    "last_updated": "2026-04-04T12:03:21.055915",
+    "current_weight": 0.020505809979494184,
+    "last_updated": "2026-04-05T12:03:03.971188",
     "metrics": {
       "designs": 40,
       "income": 0.05

@@ -11,5 +11,31 @@
       "strategy_sonar": 0.04613715734693038,
       "strategy_leader_v2": 0.04294463083408475
     }
+  },
+  {
+    "timestamp": "2026-04-05T02:10:58.131531",
+    "skills_count": 36,
+    "strategies_count": 14,
+    "confidence": 0.7919272494353543,
+    "top_weights": {
+      "strategy_mirofish": 0.08340838578294661,
+      "strategy_rabbit_v2": 0.08170119660025468,
+      "strategy_rabbit": 0.05662990403157952,
+      "strategy_oracle": 0.04463080291894509,
+      "strategy_leader_v2": 0.04201775825155955
+    }
+  },
+  {
+    "timestamp": "2026-04-05T12:03:03.971188",
+    "skills_count": 36,
+    "strategies_count": 14,
+    "confidence": 0.8039702443542633,
+    "top_weights": {
+      "strategy_mirofish": 0.09209553644324782,
+      "strategy_rabbit_v2": 0.0851209589367068,
+      "strategy_rabbit": 0.05270602659961546,
+      "strategy_sonar": 0.04812199201539074,
+      "strategy_oracle": 0.041437805839977096
+    }
   }
 ]

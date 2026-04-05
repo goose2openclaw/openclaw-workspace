@@ -150,3 +150,71 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
+// ─── 双脑系统 ─────────────────────────────────────────────────────
+let currentBrain = 'left';
+let brainConfigs = null;
+
+async function loadBrainConfigs() {
+  try {
+    const res = await fetch('/api/brain');
+    const data = await res.json();
+    brainConfigs = data.data;
+    return data.data;
+  } catch (e) {
+    console.warn('Brain config load failed:', e);
+    return null;
+  }
+}
+
+async function switchBrain(brain) {
+  try {
+    const res = await fetch('/api/brain/switch', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ brain })
+    });
+    const data = await res.json();
+    if (data.status === 'ok') {
+      currentBrain = brain;
+      updateBrainUI(brain, brainConfigs?.[brain]);
+      // 同步到localStorage
+      localStorage.setItem('go2se_brain', brain);
+    }
+    return data;
+  } catch (e) {
+    console.error('Brain switch failed:', e);
+    return null;
+  }
+}
+
+function updateBrainUI(brain, config) {
+  const label = document.getElementById('brainLabel');
+  const mode = document.getElementById('brainMode');
+  if (label) label.textContent = brain === 'left' ? '🧠左脑' : '🧠右脑';
+  if (mode && config) {
+    mode.textContent = config.mode === 'normal' ? '普通' : '专家';
+  }
+}
+
+function initBrain() {
+  // 恢复保存的脑配置
+  const saved = localStorage.getItem('go2se_brain');
+  if (saved) {
+    currentBrain = saved;
+    updateBrainUI(saved, null);
+  }
+  // 加载配置
+  loadBrainConfigs();
+}
+
+// 双脑初始化
+document.addEventListener('DOMContentLoaded', initBrain);
+
+// 暴露全局
+window.go2se = {
+  ...window.go2se,
+  loadBrainConfigs,
+  switchBrain,
+  getCurrentBrain: () => currentBrain
+};

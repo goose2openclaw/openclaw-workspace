@@ -1,0 +1,88 @@
+{
+  "timestamp": "2026-04-04T17:51:13.237455",
+  "optimization": "\u6536\u76ca\u4f18\u5316",
+  "current_config": {
+    "normal": {
+      "leverage": 1.5,
+      "stop_loss": 0.05,
+      "take_profit": 0.08,
+      "max_position": 0.05,
+      "target_win_rate": 0.7
+    },
+    "expert": {
+      "leverage": 2.0,
+      "stop_loss": 0.03,
+      "take_profit": 0.12,
+      "max_position": 0.1,
+      "target_win_rate": 0.75
+    }
+  },
+  "optimized_config": {
+    "normal": {
+      "leverage": 2.0,
+      "stop_loss": 0.04,
+      "take_profit": 0.12,
+      "max_position": 0.08,
+      "target_win_rate": 0.72,
+      "profit_target": 0.015,
+      "loss_limit": 0.025
+    },
+    "expert": {
+      "leverage": 3.0,
+      "stop_loss": 0.025,
+      "take_profit": 0.18,
+      "max_position": 0.15,
+      "target_win_rate": 0.78,
+      "profit_target": 0.025,
+      "loss_limit": 0.015
+    }
+  },
+  "optimized_weights": {
+    "rabbit": {
+      "weight": 0.3,
+      "leverage": 2.0
+    },
+    "mole": {
+      "weight": 0.25,
+      "leverage": 2.5
+    },
+    "oracle": {
+      "weight": 0.2,
+      "leverage": 1.5
+    },
+    "leader": {
+      "weight": 0.15,
+      "leverage": 1.5
+    },
+    "hitchhiker": {
+      "weight": 0.05,
+      "leverage": 1.0
+    },
+    "airdrop": {
+      "weight": 0.03,
+      "leverage": 1.0
+    },
+    "crowdsourcing": {
+      "weight": 0.02,
+      "leverage": 1.0
+    }
+  },
+  "expected_returns": {
+    "normal": {
+      "final": 17234.620618675333,
+      "return_pct": 72.34620618675334
+    },
+    "expert": {
+      "final": 21613.021154911297,
+      "return_pct": 116.13021154911299
+    }
+  },
+  "improvements": [
+    "\u6760\u6746\u4ece1.5x/2.0x\u63d0\u5347\u52302.0x/3.0x",
+    "\u6b62\u76c8\u4ece8%/12%\u63d0\u5347\u523012%/18%",
+    "\u6b62\u635f\u4ece5%/3%\u6536\u7d27\u52304%/2.5%",
+    "\u9ad8\u6536\u76ca\u7b56\u7565\u6743\u91cd\u589e\u52a0",
+    "\u6253\u5154\u5b50\u6743\u91cd\u63d0\u5347\u523030%",
+    "\u6253\u5730\u9f20\u6760\u6746\u63d0\u5347\u52302.5x"
+  ]
+}

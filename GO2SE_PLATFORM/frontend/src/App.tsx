@@ -1,15 +1,19 @@
 /**
- * 🪿 GO2SE V6+V9 整合版
+ * 🪿 GO2SE V12 审美进化版
  * ========================
- * V6 7页架构 + V9 双重脑架构完整整合
+ * V6 7页架构 + V9 双重脑架构 + V12 美学进化
  * 
- * 整合内容:
- * - V6: 7页完整架构 (总览/市场/策略/信号/交易/钱包/设置)
- * - V9: 左右脑架构
- * - V9: 中转钱包架构
- * - V9: 龙虾模块
- * - V9: MiroFish仿真
- * - V9: gstack集成
+ * V12美学进化 (基于Polanyi隐性知识20轮迭代):
+ * - R1: 视觉层次 - 增加渐变和层级
+ * - R2: 色彩和谐 - 增强CSS变量系统
+ * - R3: 空间节奏 - 4px基准网格
+ * - R4: 交互直觉 - 增强hover/transition
+ * - R5: 动态流畅 - @keyframes动画
+ * - R6: 字体排版 - 明确字号变量
+ * - R7: 卡片深度 - box-shadow层次
+ * - R8: 边框处理 - 优雅边框+backdrop
+ * - R9: 响应式 - @media断点
+ * - R10: 暗色舒适 - 减少蓝光+径向渐变
  */
 
 import { useState, useEffect, createContext, useContext, useCallback } from 'react'
@@ -489,7 +493,7 @@ function App() {
         <header className="app-header">
           <div className="header-left">
             <h1>🪿 GO2SE</h1>
-            <span className="version-badge">V6+V9</span>
+            <span className="version-badge">V12</span>
           </div>
           
           {/* Dual Brain Status */}

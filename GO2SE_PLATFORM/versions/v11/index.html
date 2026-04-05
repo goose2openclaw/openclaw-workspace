@@ -9,6 +9,49 @@
     <link rel="stylesheet" href="styles/animations.css">
     <link rel="stylesheet" href="styles/skins.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <style>
+        .brain-toggle {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 20px;
+            font-size: 13px;
+        }
+        .brain-label { color: #9ca3af; font-weight: 500; }
+        .toggle-switch {
+            position: relative;
+            width: 44px;
+            height: 24px;
+        }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background: #3b82f6;
+            border-radius: 24px;
+            transition: 0.3s;
+        }
+        .toggle-slider:before {
+            content: "";
+            position: absolute;
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background: white;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+        .toggle-switch input:checked + .toggle-slider {
+            background: #ef4444;
+        }
+        .toggle-switch input:checked + .toggle-slider:before {
+            transform: translateX(20px);
+        }
+    </style>
 </head>
 <body class="skin-dark">
     <!-- 启动动画覆盖层 -->
@@ -229,6 +272,15 @@
                 <nav class="breadcrumb" id="breadcrumb">
                     <span class="breadcrumb-item" data-page="dashboard">首页</span>
                 </nav>
+                <!-- 双脑切换 -->
+                <div class="brain-toggle" id="brain-toggle">
+                    <span class="brain-label" id="brain-label">🧠 左脑</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="brain-switch">
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <span class="brain-label" id="brain-mode-label">普通</span>
+                </div>
                 <!-- 快捷操作 -->
                 <div class="top-actions">
                     <button class="btn-icon" id="btn-refresh" title="刷新 (Ctrl+R)">
@@ -282,5 +334,19 @@
     <script src="js/pages/assets_v2.js"></script>
     <script src="js/pages/settings_v2.js"></script>
     <script src="js/pages/public_dashboard.js"></script>
+    <script>
+        const brainSwitch = document.getElementById('brain-switch');
+        const brainLabel = document.getElementById('brain-label');
+        const brainModeLabel = document.getElementById('brain-mode-label');
+        brainSwitch.addEventListener('change', function() {
+            if (this.checked) {
+                brainLabel.textContent = '🧠 右脑';
+                brainModeLabel.textContent = '专家';
+            } else {
+                brainLabel.textContent = '🧠 左脑';
+                brainModeLabel.textContent = '普通';
+            }
+        });
+    </script>
 </body>
 </html>

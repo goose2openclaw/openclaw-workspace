@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GO2SE - AI自主打工 & Crypto量化投资</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- ========== 启动动画 Splash Screen ========== -->
+  <div id="splash" class="splash">
+    <div class="splash-content">
+      <div class="goose-logo">
+        <svg class="goose-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="gooseGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#ffffff"/>
+              <stop offset="50%" style="stop-color:#f0f0f0"/>
+              <stop offset="100%" style="stop-color:#e0e0e0"/>
+            </linearGradient>
+            <filter id="gooseShadow" x="-50%" y="-50%" width="200%" height="200%">
+              <feDropShadow dx="0" dy="10" stdDeviation="15" flood-color="#000" flood-opacity="0.3"/>
+            </filter>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+              <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
+          <ellipse class="goose-body" cx="100" cy="120" rx="55" ry="45" fill="url(#gooseGradient)" filter="url(#gooseShadow)"/>
+          <path class="goose-neck" d="M130 100 Q150 80 145 50 Q140 30 130 25" stroke="url(#gooseGradient)" stroke-width="18" fill="none" stroke-linecap="round"/>
+          <circle class="goose-head" cx="130" cy="30" r="22" fill="url(#gooseGradient)"/>
+          <circle cx="138" cy="26" r="5" fill="#1a1a2e"/>
+          <circle cx="140" cy="24" r="2" fill="#fff"/>
+          <path d="M145 35 L165 38 L145 42 Z" fill="#ff9500"/>
+          <ellipse class="goose-wing" cx="80" cy="110" rx="35" ry="25" fill="url(#gooseGradient)" transform="rotate(-15 80 110)"/>
+          <path d="M85 160 L75 180 M85 160 L85 182 M85 160 L95 180" stroke="#ff9500" stroke-width="4" stroke-linecap="round"/>
+          <path d="M115 160 L105 180 M115 160 L115 182 M115 160 L125 180" stroke="#ff9500" stroke-width="4" stroke-linecap="round"/>
+          <circle class="signal-ring signal-ring-1" cx="130" cy="30" r="35" fill="none" stroke="#00d4ff" stroke-width="2" opacity="0.6"/>
+          <circle class="signal-ring signal-ring-2" cx="130" cy="30" r="50" fill="none" stroke="#00d4ff" stroke-width="1.5" opacity="0.4"/>
+          <circle class="signal-ring signal-ring-3" cx="130" cy="30" r="65" fill="none" stroke="#00d4ff" stroke-width="1" opacity="0.2"/>
+        </svg>
+      </div>
+      <div class="splash-text">
+        <h1 class="goose-title">🪿 GO2SE</h1>
+        <p class="goose-slogan">AI自主打工 & Crypto量化投资</p>
+        <p class="goose-slogan-sub">Crypto Quantitative Investment</p>
+      </div>
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <p class="progress-text" id="progressText">红掌拨清波... 0%</p>
+        <button class="skip-btn" id="skipBtn" style="display:none;">跳过 →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 主应用 ========== -->
+  <div id="app" class="app hidden">
+    <!-- 顶头导航栏 -->
+    <header class="top-nav" id="topNav">
+      <!-- 第一层: 状态栏 -->
+      <div class="nav-status-bar">
+        <div class="nav-left">
+          <span class="nav-brand">🪿 GO2SE</span>
+          <div class="theme-switcher">
+            <button class="theme-btn active" data-theme="dark" title="深色">🌙</button>
+            <button class="theme-btn" data-theme="black" title="暗色">⚫</button>
+            <button class="theme-btn" data-theme="geek" title="极客">💻</button>
+          </div>
+          <div class="lang-switcher">
+            <button class="lang-btn active" data-lang="zh">中</button>
+            <button class="lang-btn" data-lang="en">EN</button>
+          </div>
+        </div>
+        
+        <!-- 双脑切换 -->
+        <div class="brain-toggle" id="brainToggle">
+          <span class="brain-label" id="brainLabel">🧠左脑</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="brainSwitch">
+            <span class="toggle-slider"></span>
+          </label>
+          <span class="brain-mode" id="brainMode">普通</span>
+          <kbd class="hotkey">B</kbd>
+        </div>
+        
+        <div class="nav-right">
+          <div class="breathing-light" id="breathingLight" title="系统状态">
+            <span class="light-dot"></span>
+            <span class="light-ring"></span>
+          </div>
+          <div class="im-status" id="imStatus">
+            <span class="im-icon">💬</span>
+            <span class="im-dot online"></span>
+          </div>
+          <div class="notification-btn" id="notificationBtn">
+            <span>🔔</span>
+            <span class="notif-badge">5</span>
+          </div>
+          <div class="member-entry">
+            <button class="member-btn" id="memberBtn">
+              <span class="member-icon">👤</span>
+              <span class="member-text">登陆</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 第二层: 快捷键 -->
+      <div class="nav-shortcuts" id="navShortcuts">
+        <button class="shortcut-btn active" data-section="attention" onclick="navigateTo('attention')">🏠 首页</button>
+        <button class="shortcut-btn" data-section="asset" onclick="navigateTo('asset')">💰 资产</button>
+        <button class="shortcut-btn" data-section="beidou" onclick="navigateTo('beidou')">🎯 工具</button>
+        <button class="shortcut-btn" data-section="engineer" onclick="navigateTo('engineer')">⚙️ 设定</button>
+        <button class="shortcut-btn" data-section="security" onclick="navigateTo('security')">🛡️ 安全</button>
+      </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="main-content">
+      <!-- 侧边栏 - 8个精简入口 -->
+      <nav class="sidebar" id="sidebar">
+        <div class="sidebar-items">
+          <!-- 🏠 首页 -->
+          <a href="#heroSection" class="sidebar-item active" data-section="heroSection">
+            <span class="item-icon">🏠</span>
+            <span class="item-text">首页</span>
+          </a>
+          
+          <!-- 💰 资产中心 (带子菜单) -->
+          <a href="#asset" class="sidebar-item has-submenu" data-section="asset" data-has-children="true">
+            <span class="item-icon">💰</span>
+            <span class="item-text">资产中心</span>
+          </a>
+          <div id="submenu-asset" class="sidebar-submenu">
+            <div class="sidebar-submenu-item" data-section="asset"><span>📊</span> 资产总览</div>
+            <div class="sidebar-submenu-item" data-section="asset-earnings"><span>💹</span> 投资收益</div>
+            <div class="sidebar-submenu-item" data-section="asset-wallet"><span>💳</span> 钱包架构</div>
+            <div class="sidebar-submenu-item" data-section="asset-risk"><span>🛡️</span> 风险状态</div>
+          </div>
+          
+          <!-- 🎯 交易引擎 (带子菜单) -->
+          <a href="#beidou" class="sidebar-item has-submenu" data-section="beidou" data-has-children="true">
+            <span class="item-icon">🎯</span>
+            <span class="item-text">交易引擎</span>
+          </a>
+          <div id="submenu-beidou" class="sidebar-submenu">
+            <div class="sidebar-submenu-item" data-section="beidou-invest"><span>🐰</span> 打兔子</div>
+            <div class="sidebar-submenu-item" data-section="beidou-mole"><span>🐹</span> 打地鼠</div>
+            <div class="sidebar-submenu-item" data-section="beidou-oracle"><span>🔮</span> 走着瞧</div>
+            <div class="sidebar-submenu-item" data-section="beidou-leader"><span>👑</span> 跟大哥</div>
+            <div class="sidebar-submenu-item" data-section="beidou-hitchhike"><span>🍀</span> 搭便车</div>
+            <div class="sidebar-submenu-item" data-section="beidou-airdrop"><span>💰</span> 薅羊毛</div>
+            <div class="sidebar-submenu-item" data-section="beidou-crowd"><span>👶</span> 穷孩子</div>
+          </div>
+          
+          <!-- 📡 信号策略 (带子菜单) -->
+          <a href="#engineer" class="sidebar-item has-submenu" data-section="engineer" data-has-children="true">
+            <span class="item-icon">📡</span>
+            <span class="item-text">信号策略</span>
+          </a>
+          <div id="submenu-engineer" class="sidebar-submenu">
+            <div class="sidebar-submenu-item" data-section="engineer-signal"><span>📡</span> 市场信号</div>
+            <div class="sidebar-submenu-item" data-section="engineer-strategy"><span>🏆</span> 策略中心</div>
+            <div class="sidebar-submenu-item" data-section="engineer-sim"><span>🔄</span> 仿真引擎</div>
+            <div class="sidebar-submenu-item" data-section="engineer-sonar"><span>📉</span> 声纳库</div>
+          </div>
+          
+          <!-- 🔧 平台 (带子菜单) -->
+          <a href="#settings" class="sidebar-item has-submenu" data-section="settings" data-has-children="true">
+            <span class="item-icon">⚙️</span>
+            <span class="item-text">平台</span>
+          </a>
+          <div id="submenu-settings" class="sidebar-submenu">
+            <div class="sidebar-submenu-item" data-section="customize"><span>🔧</span> 可迭代定制</div>
+            <div class="sidebar-submenu-item" data-section="security"><span>🛡️</span> 安全中心</div>
+            <div class="sidebar-submenu-item" data-section="settings-lp"><span>📈</span> 鹅伙人</div>
+            <div class="sidebar-submenu-item" data-section="settings-sys"><span>📋</span> 系统版本</div>
+            <div class="sidebar-submenu-item" data-section="contact"><span>📞</span> 联系转发</div>
+          </div>
+          
+          <!-- 🥷 工程模式: 仅专家模式可见 -->
+          <a href="#ninja" class="sidebar-item ninja-only" data-section="ninja" style="display:none;">
+            <span class="item-icon">🥷</span>
+            <span class="item-text">工程模式</span>
+          </a>
+        </div>
+        <div class="sidebar-footer">
+          <button class="pin-btn" id="pinBtn" title="置顶当前板块">📌 置顶</button>
+        </div>
+      </nav>
+
+      <!-- 内容区域 -->
+      <div class="content-area" id="contentArea">
+        
+        <!-- ========== 0. 主页介绍 ========== -->
+        <section class="hero-section" id="heroSection">
+          <div class="hero-content">
+            <div class="hero-logo">
+              <svg width="80" height="80" viewBox="0 0 120 120" fill="none">
+                <ellipse cx="60" cy="65" rx="35" ry="28" fill="currentColor"/>
+                <circle cx="85" cy="40" r="18" fill="currentColor"/>
+                <circle cx="90" cy="36" r="4" fill="#0A0E17"/>
+                <path d="M98 42 L108 44 L98 48 Z" fill="#F59E0B"/>
+              </svg>
+            </div>
+            <h1 class="hero-title">GO2SE <span class="hero-emoji">🪿</span></h1>
+            <p class="hero-slogan">AI自主打工 & Crypto量化投资</p>
+            <p class="hero-desc">8大核心模块 · 北斗七鑫投资体系 · 25维度全向仿真</p>
+          </div>
+
+          <!-- 平台/市场/北斗七鑫介绍卡片 -->
+          <div class="intro-cards">
+            <div class="intro-card">
+              <div class="card-icon">🚀</div>
+              <h3>平台介绍</h3>
+              <p>GO2SE是一个基于AI的加密货币量化投资平台，整合7大投资工具和2大打工工具，实现全自动化投资与收益优化。</p>
+            </div>
+            <div class="intro-card">
+              <div class="card-icon">📈</div>
+              <h3>市场介绍</h3>
+              <p>覆盖主流交易所和预测市场，支持多策略并行，实现跨市场套利和风险分散。</p>
+            </div>
+            <div class="intro-card highlight">
+              <div class="card-icon">⭐</div>
+              <h3>北斗七鑫</h3>
+              <p>独创投资体系：5种投资工具 + 2种打工工具，闭环迭代，持续进化。</p>
+              <ul class="card-features">
+                <li>🐰 打兔子 25% | 🐹 打地鼠 20%</li>
+                <li>🔮 走着瞧 15% | 👑 跟大哥 15%</li>
+                <li>🍀 搭便车 10% | 💰 薅羊毛 3% | 👶 穷孩子 2%</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 竞品对比 -->
+          <div class="competitor-section">
+            <h2>📊 竞品对比表现</h2>
+            <div class="competitor-chart">
+              <div class="chart-bar">
+                <span class="bar-label">GO2SE</span>
+                <div class="bar-fill go2se">94.7%</div>
+              </div>
+              <div class="chart-bar">
+                <span class="bar-label">3Commas</span>
+                <div class="bar-fill competitor">62%</div>
+              </div>
+              <div class="chart-bar">
+                <span class="bar-label">HaasOnline</span>
+                <div class="bar-fill competitor">58%</div>
+              </div>
+              <div class="chart-bar">
+                <span class="bar-label">FreqTrade</span>
+                <div class="bar-fill competitor">55%</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== 1. 注意力板块 ========== -->
+        <section class="content-section" id="attention">
+          <div class="section-header">
+            <h2>📌 注意力板块</h2>
+            <div class="section-actions">
+              <button class="action-btn" id="addPinBtn">+ 置顶</button>
+              <button class="action-btn secondary" id="clearPinsBtn">清除</button>
+            </div>
+          </div>
+          <div class="attention-grid" id="attentionGrid">
+            <div class="attention-card hot">
+              <div class="card-tag">🔥 热门</div>
+              <h4>BTC突破新高</h4>
+              <p class="card-meta">$75,145 | +3.62%</p>
+            </div>
+            <div class="attention-card">
+              <div class="card-tag">📢</div>
+              <h4>ETH 2.0升级</h4>
+              <p class="card-meta">预计Q2 2026</p>
+            </div>
+            <div class="attention-card pinned">
+              <div class="card-tag">📌 已置顶</div>
+              <h4>XRP超级碗广告</h4>
+              <p class="card-meta">市场情绪：积极</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== 2. 资产看板 ========== -->
+        <section class="content-section" id="asset">
+          <div class="section-header">
+            <h2>💰 资产看板</h2>
+          </div>
+
+          <!-- 财产总额 -->
+          <div class="asset-overview">
+            <div class="asset-total">
+              <span class="asset-label">财产总额</span>
+              <span class="asset-value">$8,500.00</span>
+              <span class="asset-change positive">+$127.50 (+1.52%)</span>
+            </div>
+            <div class="asset-chart" id="assetChart">
+              <canvas id="portfolioCanvas"></canvas>
+            </div>
+          </div>
+
+          <!-- 收益额 -->
+          <div class="earnings-grid">
+            <div class="earning-card">
+              <h4>💹 投资收益</h4>
+              <div class="earning-value positive">+$85.30</div>
+              <div class="earning-detail">打兔子 +42.50 | 打地鼠 +28.80 | 其他 +14.00</div>
+            </div>
+            <div class="earning-card">
+              <h4>💼 打工收益</h4>
+              <div class="earning-value positive">+$42.20</div>
+              <div class="earning-detail">薅羊毛 +35.00 | 穷孩子 +7.20</div>
+            </div>
+          </div>
+
+          <!-- 钱包架构 -->
+          <div class="wallet-structure">
+            <h3>💳 钱包架构</h3>
+            <div class="wallet-main">
+              <div class="wallet-node primary">
+                <span class="node-icon">🏦</span>
+                <span class="node-name">主钱包</span>
+                <span class="node-balance">$8,500</span>
+              </div>
+            </div>
+            <div class="wallet-children">
+              <div class="wallet-node"><span class="node-icon">🐰</span><span class="node-name">打兔子</span><span class="node-balance">$2,500</span></div>
+              <div class="wallet-node"><span class="node-icon">🐹</span><span class="node-name">打地鼠</span><span class="node-balance">$1,700</span></div>
+              <div class="wallet-node"><span class="node-icon">🔮</span><span class="node-name">走着瞧</span><span class="node-balance">$1,275</span></div>
+              <div class="wallet-node"><span class="node-icon">👑</span><span class="node-name">跟大哥</span><span class="node-balance">$1,275</span></div>
+              <div class="wallet-node"><span class="node-icon">🍀</span><span class="node-name">搭便车</span><span class="node-balance">$850</span></div>
+              <div class="wallet-node"><span class="node-icon">💰</span><span class="node-name">薅羊毛</span><span class="node-balance">$255</span></div>
+              <div class="wallet-node"><span class="node-icon">👶</span><span class="node-name">穷孩子</span><span class="node-balance">$170</span></div>
+            </div>
+            <!-- CEX/DEX API 集成 -->
+            <div class="exchange-api-panel">
+              <h4>📡 交易所API</h4>
+              <div class="api-status-row">
+                <div class="api-item"><span class="api-name">Binance CEX</span><span class="api-dot online"></span></div>
+                <div class="api-item"><span class="api-name">Bybit CEX</span><span class="api-dot online"></span></div>
+                <div class="api-item"><span class="api-name">OKX CEX</span><span class="api-dot online"></span></div>
+                <div class="api-item"><span class="api-name">DEX 合约</span><span class="api-dot standby"></span></div>
+              </div>
+              <div class="profit回流-row">
+                <span>💰 盈利回流:</span>
+                <span class="回流-rate">10%</span>
+                <span class="回流-status">运行中</span>
+              </div>
+            </div>
+            <div class="wallet-connection-status">
+              <span class="status-dot online"></span>
+              <span>连接正常</span>
+            </div>
+          </div>
+
+          <!-- 资产分布 -->
+          <div class="asset-allocation">
+            <h3>📊 资产分布</h3>
+            <div class="allocation-tabs">
+              <button class="tab-btn active" data-tab="invest">投资</button>
+              <button class="tab-btn" data-tab="work">打工</button>
+              <button class="tab-btn" data-tab="margin">保证金</button>
+              <button class="tab-btn" data-tab="temp">暂存</button>
+              <button class="tab-btn" data-tab="internal">调配</button>
+            </div>
+            <div class="allocation-bar">
+              <div class="bar-segment" style="width:25%;background:#00D4AA">🐰 25%</div>
+              <div class="bar-segment" style="width:20%;background:#7C3AED">🐹 20%</div>
+              <div class="bar-segment" style="width:15%;background:#F59E0B">🔮 15%</div>
+              <div class="bar-segment" style="width:15%;background:#EC4899">👑 15%</div>
+              <div class="bar-segment" style="width:10%;background:#06B6D4">🍀 10%</div>
+              <div class="bar-segment" style="width:3%;background:#84CC16">💰 3%</div>
+              <div class="bar-segment" style="width:2%;background:#F472B6">👶 2%</div>
+            </div>
+            <div class="transfer-btns">
+              <button class="transfer-btn">转入</button>
+              <button class="transfer-btn">转出</button>
+            </div>
+          </div>
+
+          <!-- 风险状态 -->
+          <div class="risk-status">
+            <h3>🛡️ 资产风险状态</h3>
+            <div class="risk-meter">
+              <div class="risk-level safe">安全</div>
+              <div class="risk-bar"><div class="risk-fill" style="width:30%"></div></div>
+              <div class="risk-detail">
+                <span>波动率: 12%</span>
+                <span>VaR: $850</span>
+                <span>最大回撤: 5.2%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 模拟器 -->
+          <div class="simulator">
+            <h3>🎮 模拟器</h3>
+            <div class="sim-tabs">
+              <button class="sim-tab active" data-sim="backtest">回测交易</button>
+              <button class="sim-tab" data-sim="paper">模拟交易</button>
+              <button class="sim-tab" data-sim="future">全向仿真</button>
+            </div>
+            <div class="sim-result">
+              <div class="sim-stat"><span>预期收益</span><span class="stat-value positive">+18.5%</span></div>
+              <div class="sim-stat"><span>胜率</span><span class="stat-value">72.3%</span></div>
+              <div class="sim-stat"><span>夏普比率</span><span class="stat-value">1.85</span></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== 3. 北斗七鑫 (投资+打工合并) ========== -->
+        <section class="content-section" id="beidou">
+          <div class="section-header">
+            <h2>🎯 北斗七鑫投资体系</h2>
+          </div>
+
+          <!-- 风格选择 -->
+          <div class="style-selector">
+            <div class="mode-toggle">
+              <button class="mode-btn active" data-mode="normal">普通模式</button>
+              <button class="mode-btn" data-mode="expert">专家模式</button>
+            </div>
+            <div class="style-options">
+              <button class="style-btn" data-style="conservative">保守</button>
+              <button class="style-btn active" data-style="balanced">平衡</button>
+              <button class="style-btn" data-style="aggressive">积极</button>
+            </div>
+          </div>
+
+          <!-- 投资工具 -->
+          <div class="beidou-section">
+            <h3>💹 投资工具 (5种)</h3>
+            <div class="investment-dashboard">
+              <div class="dashboard-tool" data-tool="rabbit">
+                <div class="tool-header">
+                  <span class="tool-icon">🐰</span>
+                  <span class="tool-name">打兔子</span>
+                  <span class="tool-pct">25%</span>
+                </div>
+                <div class="tool-gauge"><div class="gauge-fill" style="--gauge-pct: 25%"></div></div>
+                <div class="tool-slider"><input type="range" min="0" max="50" value="25"></div>
+                <div class="tool-strategies">
+                  <span class="strategy-tag">EMA</span><span class="strategy-tag">MACD</span><span class="strategy-tag">Bollinger</span>
+                </div>
+              </div>
+              <div class="dashboard-tool" data-tool="mole">
+                <div class="tool-header">
+                  <span class="tool-icon">🐹</span>
+                  <span class="tool-name">打地鼠</span>
+                  <span class="tool-pct">20%</span>
+                </div>
+                <div class="tool-gauge"><div class="gauge-fill" style="--gauge-pct: 20%"></div></div>
+                <div class="tool-slider"><input type="range" min="0" max="50" value="20"></div>
+                <div class="tool-strategies">
+                  <span class="strategy-tag">RSI</span><span class="strategy-tag">Volume</span>
+                </div>
+              </div>
+              <div class="dashboard-tool" data-tool="oracle">
+                <div class="tool-header">
+                  <span class="tool-icon">🔮</span>
+                  <span class="tool-name">走着瞧</span>
+                  <span class="tool-pct">15%</span>
+                </div>
+                <div class="tool-gauge"><div class="gauge-fill" style="--gauge-pct: 15%"></div></div>
+                <div class="tool-slider"><input type="range" min="0" max="50" value="15"></div>
+                <div class="tool-strategies">
+                  <span class="strategy-tag">MiroFish</span><span class="strategy-tag">Polymarket</span>
+                </div>
+              </div>
+              <div class="dashboard-tool" data-tool="leader">
+                <div class="tool-header">
+                  <span class="tool-icon">👑</span>
+                  <span class="tool-name">跟大哥</span>
+                  <span class="tool-pct">15%</span>
+                </div>
+                <div class="tool-gauge"><div class="gauge-fill" style="--gauge-pct: 15%"></div></div>
+                <div class="tool-slider"><input type="range" min="0" max="50" value="15"></div>
+                <div class="tool-strategies">
+                  <span class="strategy-tag">Copy</span><span class="strategy-tag">MiroFish</span>
+                </div>
+              </div>
+              <div class="dashboard-tool" data-tool="hitchhike">
+                <div class="tool-header">
+                  <span class="tool-icon">🍀</span>
+                  <span class="tool-name">搭便车</span>
+                  <span class="tool-pct">10%</span>
+                </div>
+                <div class="tool-gauge"><div class="gauge-fill" style="--gauge-pct: 10%"></div></div>
+                <div class="tool-slider"><input type="range" min="0" max="50" value="10"></div>
+                <div class="tool-strategies">
+                  <span class="strategy-tag">Signal</span><span class="strategy-tag">Trust</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 打工工具 -->
+          <div class="beidou-section">
+            <h3>💼 打工工具 (2种)</h3>
+            <div class="work-grid">
+              <div class="work-card">
+                <div class="work-header">
+                  <span class="work-icon">💰</span>
+                  <h3>薅羊毛</h3>
+                  <span class="work-badge">空投猎手</span>
+                </div>
+                <div class="work-body">
+                  <div class="work-status">
+                    <span class="status-label">状态</span>
+                    <span class="status-value active">运行中</span>
+                  </div>
+                  <div class="work-stats">
+                    <div class="stat-item"><span>累计收益</span><span class="value">$255</span></div>
+                    <div class="stat-item"><span>空投数量</span><span class="value">8个</span></div>
+                  </div>
+                  <div class="work-mechanism">
+                    <h4>自寻机制</h4>
+                    <div class="mechanism-tags">
+                      <span class="mech-tag">EvoMap</span>
+                      <span class="mech-tag">Twitter</span>
+                      <span class="mech-tag">Discord</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="work-card">
+                <div class="work-header">
+                  <span class="work-icon">👶</span>
+                  <h3>穷孩子</h3>
+                  <span class="work-badge">众包打工</span>
+                </div>
+                <div class="work-body">
+                  <div class="work-status">
+                    <span class="status-label">状态</span>
+                    <span class="status-value active">运行中</span>
+                  </div>
+                  <div class="work-stats">
+                    <div class="stat-item"><span>累计收益</span><span class="value">$170</span></div>
+                    <div class="stat-item"><span>活跃任务</span><span class="value">3个</span></div>
+                  </div>
+                  <div class="work-growth">
+                    <h4>📈 收益成长</h4>
+                    <div class="growth-chart">
+                      <div class="growth-bar" style="height: 30%"></div>
+                      <div class="growth-bar" style="height: 45%"></div>
+                      <div class="growth-bar" style="height: 60%"></div>
+                      <div class="growth-bar" style="height: 80%"></div>
+                      <div class="growth-bar" style="height: 100%"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- 🦞 龙虾模块: 复盘-仿真-迭代 -->
+          <div class="lobster-module">
+            <h3>🦞 龙虾模块</h3>
+            <div class="lobster-cards">
+              <div class="lobster-card">
+                <div class="lobster-icon">🔄</div>
+                <h4>复盘 Retro</h4>
+                <p>gstack 15人团队评审</p>
+                <span class="lobster-trigger">Sprint周期</span>
+                <button class="lobster-btn">启动复盘</button>
+              </div>
+              <div class="lobster-card">
+                <div class="lobster-icon">🧪</div>
+                <h4>仿真 Simulation</h4>
+                <p>MiroFish 1000智能体</p>
+                <span class="lobster-trigger auto">自动触发</span>
+                <button class="lobster-btn">启动仿真</button>
+              </div>
+              <div class="lobster-card">
+                <div class="lobster-icon">⚡</div>
+                <h4>迭代 Optimization</h4>
+                <p>策略参数优化</p>
+                <span class="lobster-trigger">每24小时</span>
+                <button class="lobster-btn">优化参数</button>
+              </div>
+            </div>
+            <div class="lobster-flow">
+              <span class="flow-step">信号</span>
+              <span class="flow-arrow">→</span>
+              <span class="flow-step">龙虾仿真</span>
+              <span class="flow-arrow">→</span>
+              <span class="flow-step">策略更新</span>
+              <span class="flow-arrow">→</span>
+              <span class="flow-step">执行</span>
+              <span class="flow-arrow">↩️</span>
+              <span class="flow-step">复盘</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== 4. 工善其事 (信号+策略+仿真) ========== -->
+        <section class="content-section" id="engineer">
+          <div class="section-header">
+            <h2>⚙️ 工善其事</h2>
+            <span class="section-subtitle">信号 · 趋势 · 策略 · 仿真 · 自主优化</span>
+          </div>
+
+          <!-- 信号输入 -->
+          <div class="signal-grid">
+            <div class="signal-card">
+              <h3>交易所API</h3>
+              <div class="api-list">
+                <div class="api-item"><span class="api-name">Binance</span><span class="api-status connected">已连接</span></div>
+                <div class="api-item"><span class="api-name">OKX</span><span class="api-status connected">已连接</span></div>
+                <div class="api-item"><span class="api-name">Bybit</span><span class="api-status disconnected">未连接</span></div>
+              </div>
+            </div>
+            <div class="signal-card">
+              <h3>Oracle及市场情绪</h3>
+              <div class="oracle-list">
+                <div class="oracle-item"><span class="oracle-name">MiroFish</span><span class="oracle-signal bull">看涨 72%</span></div>
+                <div class="oracle-item"><span class="oracle-name">CoinGecko</span><span class="oracle-signal neutral">中性</span></div>
+                <div class="oracle-item"><span class="oracle-name">Twitter/KOL</span><span class="oracle-signal bull">积极</span></div>
+              </div>
+            </div>
+            <div class="signal-card full">
+              <h3>仿真信号状态</h3>
+              <div class="signal-status-grid">
+                <div class="sig-level"><span class="sig-label">平台</span><div class="sig-bar"><div class="sig-fill" style="width: 78%"></div></div><span class="sig-pct">78%</span></div>
+                <div class="sig-level"><span class="sig-label">工具</span><div class="sig-bar"><div class="sig-fill" style="width: 82%"></div></div><span class="sig-pct">82%</span></div>
+                <div class="sig-level"><span class="sig-label">策略</span><div class="sig-bar"><div class="sig-fill" style="width: 75%"></div></div><span class="sig-pct">75%</span></div>
+                <div class="sig-level"><span class="sig-label">宏观</span><div class="sig-bar"><div class="sig-fill" style="width: 68%"></div></div><span class="sig-pct">68%</span></div>
+                <div class="sig-level"><span class="sig-label">微观</span><div class="sig-bar"><div class="sig-fill" style="width: 71%"></div></div><span class="sig-pct">71%</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 策略为王 -->
+          <div class="strategy-section">
+            <h3>🏆 策略为王</h3>
+            <div class="strategy-style">
+              <button class="style-btn" data-style="conservative">保守</button>
+              <button class="style-btn active" data-style="balanced">平衡</button>
+              <button class="style-btn" data-style="aggressive">积极</button>
+            </div>
+
+            <div class="strategy-grid">
+              <div class="strategy-card">
+                <h4>策略逻辑架构</h4>
+                <div class="strategy-flow">
+                  <div class="flow-node">信号输入</div>
+                  <div class="flow-arrow">→</div>
+                  <div class="flow-node">声纳库</div>
+                  <div class="flow-arrow">→</div>
+                  <div class="flow-node">MiroFish</div>
+                  <div class="flow-arrow">→</div>
+                  <div class="flow-node">执行</div>
+                </div>
+              </div>
+              <div class="strategy-card">
+                <h4>当前策略组合</h4>
+                <div class="strategy-list">
+                  <div class="strategy-item">
+                    <span class="strat-name">EMA交叉</span>
+                    <span class="strat-type">原创</span>
+                    <span class="strat-winrate">74.5%</span>
+                  </div>
+                  <div class="strategy-item">
+                    <span class="strat-name">RSI超卖</span>
+                    <span class="strat-type">知名</span>
+                    <span class="strat-winrate">68.2%</span>
+                  </div>
+                  <div class="strategy-item">
+                    <span class="strat-name">MACD背离</span>
+                    <span class="strat-type">原创</span>
+                    <span class="strat-winrate">71.8%</span>
+                  </div>
+                </div>
+                <div class="strategy-total">
+                  <span>组合胜率</span>
+                  <span class="total-winrate">72.3%</span>
+                </div>
+              </div>
+              <div class="strategy-card">
+                <h4>声纳库 (123趋势模型)</h4>
+                <div class="sonar-grid">
+                  <div class="sonar-item bull"><span class="sonar-name">EMA20 > EMA50</span><span class="sonar-signal">看涨</span></div>
+                  <div class="sonar-item bull"><span class="sonar-name">MACD > Signal</span><span class="sonar-signal">看涨</span></div>
+                  <div class="sonar-item neutral"><span class="sonar-name">RSI = 55</span><span class="sonar-signal">中性</span></div>
+                  <div class="sonar-item bear"><span class="sonar-name">ADX < 20</span><span class="sonar-signal">看跌</span></div>
+                </div>
+                <button class="more-strategies">查看全部123个趋势 →</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 自主优化 -->
+          <div class="auto-optimize">
+            <h3>🔄 自主优化</h3>
+            <div class="optimize-status">
+              <div class="optimize-item">
+                <span class="opt-icon">✓</span>
+                <span>因子退化度监控</span>
+                <span class="opt-status good">正常</span>
+              </div>
+              <div class="optimize-item">
+                <span class="opt-icon">✓</span>
+                <span>自动优化触发</span>
+                <span class="opt-status good">就绪</span>
+              </div>
+              <div class="optimize-item">
+                <span class="opt-icon">✓</span>
+                <span>版本回滚点</span>
+                <span class="opt-status">2个可用</span>
+              </div>
+            </div>
+            <button class="optimize-btn">运行全向仿真 →</button>
+          </div>
+        </section>
+
+        <!-- ========== 5. 可迭代定制化平台 ========== -->
+        <section class="content-section" id="customize">
+          <div class="section-header">
+            <h2>🔧 可迭代定制化平台</h2>
+          </div>
+
+          <div class="customize-grid">
+            <!-- J1: 竞品集成 -->
+            <div class="customize-card">
+              <h3>竞品集成</h3>
+              <p>一键接入外部平台策略，克隆并优化</p>
+              <div class="competitor-list">
+                <div class="competitor-item">
+                  <span>3Commas - DCA Bot</span>
+                  <button class="add-btn">一键加入</button>
+                </div>
+                <div class="competitor-item">
+                  <span>HaasOnline - SuperGuppy</span>
+                  <button class="add-btn">一键加入</button>
+                </div>
+                <div class="competitor-item">
+                  <span>FreqTrade - Grid</span>
+                  <button class="add-btn">一键加入</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- J2: 竞品监控 -->
+            <div class="customize-card">
+              <h3>竞品监控</h3>
+              <div class="competitor-monitor">
+                <div class="monitor-item">
+                  <span>3Commas胜率</span>
+                  <span class="monitor-val">62%</span>
+                  <span class="monitor-trend up">↑</span>
+                </div>
+                <div class="monitor-item">
+                  <span>HaasOnline胜率</span>
+                  <span class="monitor-val">58%</span>
+                  <span class="monitor-trend down">↓</span>
+                </div>
+              </div>
+              <button class="iterate-btn">自主迭代 ↑</button>
+            </div>
+
+            <!-- J3: 鹅伙人+机器学习(高订Feature)+专家定制 -->
+            <div class="customize-card full">
+              <h3>鹅伙人权益 + 🤖机器学习(高订) + 专家模式</h3>
+              <div class="customization-panel">
+                <div class="custom-section">
+                  <h4>交易习惯学习</h4>
+                  <div class="habit-tags">
+                    <span class="habit-tag active">高频</span>
+                    <span class="habit-tag">杠杆</span>
+                    <span class="habit-tag">套利</span>
+                  </div>
+                </div>
+                <div class="custom-section">
+                  <h4>配置风格</h4>
+                  <div class="style-presets">
+                    <button class="preset-btn active">平衡型</button>
+                    <button class="preset-btn">激进型</button>
+                    <button class="preset-btn">保守型</button>
+                  </div>
+                </div>
+                <div class="custom-section">
+                  <h4>策略倾向</h4>
+                  <div class="strategy-prefs">
+                    <span class="pref-item">趋势跟踪 80%</span>
+                    <span class="pref-item">均值回归 45%</span>
+                    <span class="pref-item">套利 60%</span>
+                  </div>
+                </div>
+                <div class="custom-section">
+                  <h4>🤖 机器学习 (高订Feature)</h4>
+                  <div class="ml-features">
+                    <div class="ml-feature-item">
+                      <span class="ml-icon">📊</span>
+                      <span class="ml-name">因子分析</span>
+                      <span class="ml-badge">高订+</span>
+                    </div>
+                    <div class="ml-feature-item">
+                      <span class="ml-icon">🔮</span>
+                      <span class="ml-name">趋势预测</span>
+                      <span class="ml-badge">高订+</span>
+                    </div>
+                    <div class="ml-feature-item">
+                      <span class="ml-icon">⚡</span>
+                      <span class="ml-name">策略蒸馏</span>
+                      <span class="ml-badge">专家</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="custom-section">
+                  <h4>保密设置</h4>
+                  <div class="privacy-options">
+                    <label><input type="checkbox" checked> 本地化策略</label>
+                    <label><input type="checkbox" checked> 加密传输</label>
+                  </div>
+                </div>
+              </div>
+              <button class="customize-btn">生成自定义专家模式 →</button>
+            </div>
+
+            <!-- 防衰因子 -->
+            <div class="customize-card full">
+              <h3>🛡️ 防衰因子</h3>
+              <div class="anti-decay">
+                <div class="decay-item">
+                  <span>因子退化度</span>
+                  <div class="decay-bar"><div class="decay-fill" style="width: 85%"></div></div>
+                  <span class="decay-status good">正常</span>
+                </div>
+                <div class="decay-item">
+                  <span>策略新鲜度</span>
+                  <div class="decay-bar"><div class="decay-fill" style="width: 92%"></div></div>
+                  <span class="decay-status good">优秀</span>
+                </div>
+                <div class="decay-item">
+                  <span>市场适应性</span>
+                  <div class="decay-bar"><div class="decay-fill" style="width: 78%"></div></div>
+                  <span class="decay-status warn">注意</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== 6. 安全机制 ========== -->
+        <section class="content-section" id="security">
+          <div class="section-header">
+            <h2>🛡️ 安全机制</h2>
+          </div>
+
+          <div class="security-grid">
+            <div class="security-card">
+              <h3>前端安全</h3>
+              <div class="security-items">
+                <div class="security-item"><span class="sec-icon">✓</span><span>XSS防护</span></div>
+                <div class="security-item"><span class="sec-icon">✓</span><span>CSRF Token</span></div>
+                <div class="security-item"><span class="sec-icon">✓</span><span>输入验证</span></div>
+              </div>
+            </div>
+
+            <div class="security-card">
+              <h3>左右脑防崩溃</h3>
+              <div class="brain-status">
+                <div class="brain-half left">
+                  <span class="brain-icon">🧠</span>
+                  <span class="brain-name">左脑</span>
+                  <span class="brain-ver">v10.0.1</span>
+                  <span class="brain-status active">活跃</span>
+                </div>
+                <div class="brain-half right">
+                  <span class="brain-icon">🧠</span>
+                  <span class="brain-name">右脑</span>
+                  <span class="brain-ver">v10.0.0</span>
+                  <span class="brain-status standby">待机</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="security-card">
+              <h3>资金安全</h3>
+              <div class="fund-security">
+                <div class="fund-item"><span class="fund-icon">🔐</span><span>多重签名</span></div>
+                <div class="fund-item"><span class="fund-icon">⏱️</span><span>24h冷却期</span></div>
+                <div class="fund-item"><span class="fund-icon">📊</span><span>实时监控</span></div>
+              </div>
+            </div>
+
+            <div class="security-card">
+              <h3>数据算力安全</h3>
+              <div class="data-security">
+                <span class="sec-status">加密存储</span>
+                <span class="sec-status">算力隔离</span>
+                <span class="sec-status">定期备份</span>
+              </div>
+            </div>
+
+            <div class="security-card">
+              <h3>自动全向仿真</h3>
+              <div class="auto-sim">
+                <span class="sim-toggle">日常仿真</span>
+                <span class="sim-toggle active">优化前仿真</span>
+                <p>所有操作前自动进行安全仿真</p>
+              </div>
+            </div>
+
+            <div class="security-card full">
+              <h3>客户端适应性</h3>
+              <div class="client-adaptation">
+                <div class="client-version"><span>v10.0</span><span class="client-status current">当前</span></div>
+                <div class="client-version"><span>v9.0</span><span class="client-status">兼容</span></div>
+                <div class="client-version"><span>v8.5</span><span class="client-status">兼容</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== 7. 设置 (设置+鹅伙人+系统版本) ========== -->
+        <section class="content-section" id="settings">
+          <div class="section-header">
+            <h2>⚙️ 设置 · 系统 · 联系我</h2>
+          </div>
+
+          <div class="settings-grid">
+            <!-- L1-L4: 设置 -->
+            <div class="settings-card">
+              <h3>L1-L4 基础设置</h3>
+              <div class="wallet-settings">
+                <div class="wallet-row">
+                  <span>主钱包</span>
+                  <span class="wallet-bal">$8,500</span>
+                  <span class="wallet-status connected">已连接</span>
+                </div>
+              </div>
+              <div class="exchange-list">
+                <div class="exchange-item"><span class="ex-name">Binance</span><span class="ex-status connected">✓</span></div>
+                <div class="exchange-item"><span class="ex-name">OKX</span><span class="ex-status connected">✓</span></div>
+                <div class="exchange-item"><span class="ex-name">Telegram</span><span class="ex-status connected">✓</span></div>
+              </div>
+              <button class="wallet-settings-btn">完整设置 →</button>
+            </div>
+
+            <!-- K: 鹅伙人 -->
+            <div class="settings-card">
+              <h3>K 鹅伙人</h3>
+              <p class="lp-desc">招募基金管理人在此host量化群组</p>
+              <div class="lp-features">
+                <div class="lp-feature"><span class="feature-icon">👥</span><span>群组管理</span></div>
+                <div class="lp-feature"><span class="feature-icon">📊</span><span>业绩追踪</span></div>
+                <div class="lp-feature"><span class="feature-icon">🔒</span><span>权限分级</span></div>
+              </div>
+              <div class="lp-levels">
+                <div class="lp-level">
+                  <span class="level-name">普通LP</span>
+                  <span class="level-share">70% 分润</span>
+                </div>
+                <div class="lp-level">
+                  <span class="level-name">高级LP</span>
+                  <span class="level-share">75% 分润</span>
+                </div>
+                <div class="lp-level">
+                  <span class="level-name">战略LP</span>
+                  <span class="level-share">80% 分润</span>
+                </div>
+              </div>
+              <button class="lp-join">加入私募 →</button>
+            </div>
+
+            <!-- M: 系统版本 -->
+            <div class="settings-card full">
+              <h3>M 系统版本</h3>
+              <div class="version-info">
+                <div class="current-version">
+                  <span class="ver-label">当前版本</span>
+                  <span class="ver-number">v10.0.0</span>
+                </div>
+              </div>
+              <div class="brain-backup">
+                <div class="brain-node primary">
+                  <span class="brain-icon">🧠</span>
+                  <span class="brain-name">左脑</span>
+                  <span class="brain-ver">v10.0.1</span>
+                  <button class="sync-btn">同步</button>
+                </div>
+                <div class="brain-node">
+                  <span class="brain-icon">🧠</span>
+                  <span class="brain-name">右脑</span>
+                  <span class="brain-ver">v10.0.0</span>
+                  <button class="sync-btn">同步</button>
+                </div>
+              </div>
+              <div class="best-states">
+                <div class="state-item">
+                  <span class="state-label">最优收益</span>
+                  <span class="state-val">$9,200</span>
+                  <span class="state-date">2026-03-28</span>
+                </div>
+                <div class="state-item">
+                  <span class="state-label">最高胜率</span>
+                  <span class="state-val">76.5%</span>
+                  <span class="state-date">2026-03-25</span>
+                </div>
+                <div class="state-item">
+                  <span class="state-label">最低回撤</span>
+                  <span class="state-val">2.1%</span>
+                  <span class="state-date">2026-03-20</span>
+                </div>
+              </div>
+              <div class="rollback-points">
+                <button class="rollback-btn">回滚到 2026-04-01</button>
+                <button class="rollback-btn">回滚到 2026-03-28</button>
+              </div>
+            </div>
+
+            <!-- O: 联系与转发 (合并到设置) -->
+            <div class="settings-card full">
+              <h3>O 联系与转发</h3>
+              <div class="contact-grid compact">
+                <div class="contact-mini">
+                  <h4>📞 客服</h4>
+                  <div class="support-options">
+                    <button class="support-btn">💬 在线客服</button>
+                    <button class="support-btn">📧 邮件支持</button>
+                  </div>
+                </div>
+                <div class="contact-mini">
+                  <h4>⬇️ 下载</h4>
+                  <div class="download-mini">
+                    <button class="dl-btn">🪟 Windows</button>
+                    <button class="dl-btn">🍎 macOS</button>
+                    <button class="dl-btn">🐧 Linux</button>
+                  </div>
+                </div>
+                <div class="contact-mini">
+                  <h4>🎁 转发有礼</h4>
+                  <div class="referral-link">
+                    <input type="text" readonly value="https://go2se.ai/ref/user123">
+                    <button class="copy-btn">复制</button>
+                  </div>
+                  <p class="referral-hint">邀请好友各获$10</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section> -->
+      </div>
+    </main>
+  </div>
+
+  <!-- 🥷 工程模式 (仅专家模式可见) -->
+  <section class="content-section ninja-only" id="ninja" style="display:none;">
+    <div class="section-header">
+      <h2>🥷 工程模式</h2>
+      <span class="section-tag expert">专家专属</span>
+    </div>
+    
+    <!-- 🧠 双脑控制系统 -->
+    <div class="brain-control-panel">
+      <h3>🧠 双脑控制系统</h3>
+      <div class="brain-status-row">
+        <div class="brain-unit left">
+          <span class="brain-icon">🧠</span>
+          <span class="brain-name">左脑</span>
+          <span class="brain-mode-tag">普通模式</span>
+          <span class="brain-leverage">2.0x</span>
+          <span class="brain-status-dot standby"></span>
+        </div>
+        <div class="brain-vs">VS</div>
+        <div class="brain-unit right active">
+          <span class="brain-icon">🧠</span>
+          <span class="brain-name">右脑</span>
+          <span class="brain-mode-tag">专家模式</span>
+          <span class="brain-leverage">3.0x</span>
+          <span class="brain-status-dot active"></span>
+        </div>
+      </div>
+      <div class="brain-manager-row">
+        <span class="brain-mgr-label">🧠 BrainManager</span>
+        <span class="heartbeat">💓 <span id="heartbeatVal">76</span> BPM</span>
+        <span class="switch-log">上次切换: <span id="lastSwitchTime">2小时前</span></span>
+        <button class="brain-switch-btn" id="brainSwitchBtn">切换脑</button>
+      </div>
+    </div>
+    
+    <div class="eng-grid">
+      <div class="eng-card">
+        <h3>AI Debug</h3>
+        <div class="debug-panel">
+          <textarea class="debug-input" placeholder="描述问题或错误..."></textarea>
+          <button class="debug-run">MiroFish仿真诊断</button>
+        </div>
+        <div class="debug-result">
+          <div class="debug-status">诊断完成</div>
+          <div class="debug-finding">发现3个潜在问题，已自动修复2个</div>
+        </div>
+      </div>
+      <div class="eng-card">
+        <h3>终端 Termux</h3>
+        <div class="terminal-preview">
+          <div class="terminal-header">
+            <span class="term-dot red"></span>
+            <span class="term-dot yellow"></span>
+            <span class="term-dot green"></span>
+            <span class="term-title">GO2SE Terminal</span>
+          </div>
+          <div class="terminal-body">
+            <p class="term-line">$ go2se status</p>
+            <p class="term-line output">System: OK | Signals: 25 | Trades: 0</p>
+            <p class="term-line">$ _</p>
+          </div>
+        </div>
+        <button class="term-btn">打开终端</button>
+      </div>
+      <div class="eng-card">
+        <h3>数据指令通道</h3>
+        <div class="channel-config">
+          <div class="channel-item"><span>API Gateway</span><span class="channel-status">:8004</span></div>
+          <div class="channel-item"><span>WebSocket</span><span class="channel-status">:8005</span></div>
+          <div class="channel-item"><span>Admin API</span><span class="channel-status">:8006</span></div>
+        </div>
+      </div>
+      <div class="eng-card full">
+        <h3>专家全部参数</h3>
+        <div class="expert-params">
+          <div class="param-group">
+            <h4>投资参数</h4>
+            <div class="param-row"><label>总仓位上限</label><input type="range" min="50" max="100" value="80"><span class="param-val">80%</span></div>
+            <div class="param-row"><label>单笔风险</label><input type="range" min="1" max="10" value="5"><span class="param-val">5%</span></div>
+            <div class="param-row"><label>日熔断</label><input type="range" min="5" max="30" value="15"><span class="param-val">15%</span></div>
+          </div>
+          <div class="param-group">
+            <h4>策略参数</h4>
+            <div class="param-row"><label>置信度阈值</label><input type="range" min="50" max="90" value="70"><span class="param-val">70%</span></div>
+            <div class="param-row"><label>仿真迭代</label><input type="range" min="100" max="1000" value="500"><span class="param-val">500</span></div>
+          </div>
+        </div>
+        <button class="param-save">保存参数</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 通知面板 -->
+  <div class="notification-panel hidden" id="notificationPanel">
+    <div class="panel-header">
+      <h3>通知中心</h3>
+      <button class="panel-close" id="panelClose">×</button>
+    </div>
+    <div class="panel-body">
+      <div class="notif-item unread">
+        <span class="notif-icon">🔔</span>
+        <div class="notif-content">
+          <p>系统更新完成</p>
+          <span class="notif-time">5分钟前</span>
+        </div>
+      </div>
+      <div class="notif-item unread">
+        <span class="notif-icon">💰</span>
+        <div class="notif-content">
+          <p>投资收益 +$12.50</p>
+          <span class="notif-time">15分钟前</span>
+        </div>
+      </div>
+      <div class="notif-item">
+        <span class="notif-icon">⚠️</span>
+        <div class="notif-content">
+          <p>风控建议调整仓位</p>
+          <span class="notif-time">1小时前</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script src="js/api-bridge.js"></script>
+  <script>
+    // 双脑切换
+    const brainSwitch = document.getElementById('brainSwitch');
+    const brainLabel = document.getElementById('brainLabel');
+    const brainMode = document.getElementById('brainMode');
+    if (brainSwitch) {
+      brainSwitch.addEventListener('change', function() {
+        if (this.checked) {
+          brainLabel.textContent = '🧠右脑';
+          brainMode.textContent = '专家';
+          brainMode.style.color = '#ef4444';
+        } else {
+          brainLabel.textContent = '🧠左脑';
+          brainMode.textContent = '普通';
+          brainMode.style.color = '#3b82f6';
+        }
+      });
+    }
+    // 心跳模拟
+    setInterval(() => {
+      const hb = document.getElementById('heartbeatVal');
+      if (hb) hb.textContent = 70 + Math.floor(Math.random() * 15);
+    }, 1000);
+    
+    // 键盘快捷键
+    document.addEventListener('keydown', function(e) {
+      // B键 - 双脑切换
+      if (e.key === 'b' || e.key === 'B') {
+        if (brainSwitch) {
+          brainSwitch.checked = !brainSwitch.checked;
+          brainSwitch.dispatchEvent(new Event('change'));
+        }
+      }
+      // 1-5 快捷导航
+      if (e.key >= '1' && e.key <= '5') {
+        const sections = ['attention', 'asset', 'beidou', 'engineer', 'ninja'];
+        const idx = parseInt(e.key) - 1;
+        const btn = document.querySelector(`.shortcut-btn[data-section="${sections[idx]}"]`);
+        if (btn) btn.click();
+      }
+    });
+    
+    // 快捷导航点击
+    document.querySelectorAll('.shortcut-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.shortcut-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        const section = this.dataset.section;
+        const target = document.getElementById(section) || document.querySelector(`[data-section="${section}"]`);
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  </script>
+</body>
+</html>
