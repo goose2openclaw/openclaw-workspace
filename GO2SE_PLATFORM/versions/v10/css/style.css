@@ -3833,3 +3833,71 @@ h4 { font-size: var(--font-size-base); }
 @media (min-width: 1440px) {
   .shortcut-btn { padding: 12px 28px; font-size: var(--font-size-base); }
 }
+
+/* ========== Polanyi Aesthetic Optimizations ========== */
+
+/* 1. 视觉和谐 - 微调渐变方向 */
+.goose-svg {
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+}
+
+/* 2. 空间节奏 - 优化间距呼吸感 */
+.content-section {
+  padding: clamp(16px, 2vw, 24px);
+  margin: clamp(8px, 1vw, 16px);
+  border-radius: 12px;
+}
+
+/* 3. 色彩情绪 - 柔和饱和度 */
+:root {
+  --accent-primary: #00d4aa;
+  --accent-secondary: #7c3aed;
+  --bg-primary: #0a0e17;
+  --bg-secondary: #111827;
+}
+
+/* 4. 交互直觉 - 优化过渡 */
+* {
+  transition: all 0.2s ease-out;
+}
+
+/* 5. 动态流畅 - 按钮悬停效果 */
+.shortcut-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 212, 170, 0.2);
+}
+
+.shortcut-btn.active {
+  box-shadow: 0 2px 16px rgba(0, 212, 170, 0.4);
+}
+
+/* 6. 信号光环动画优化 */
+.signal-ring {
+  animation: signalPulse 2s ease-in-out infinite;
+}
+
+@keyframes signalPulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+/* 7. 加载动画优化 */
+.progress-fill {
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+  animation: progressStripes 1s linear infinite;
+}
+
+@keyframes progressStripes {
+  0% { background-position: 0 0; }
+  100% { background-position: 40px 0; }
+}
+
+/* 8. 卡片阴影层次 */
+.eng-card, .lobster-card, .brain-control-panel {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  transition: box-shadow 0.3s ease;
+}
+
+.eng-card:hover, .lobster-card:hover {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+}
