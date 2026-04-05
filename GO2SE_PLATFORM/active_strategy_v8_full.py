@@ -1,0 +1,295 @@
+#!/usr/bin/env python3
+"""
+🪿 GO2SE 北斗七鑫投资体系 v8.3 - 全工具激活
+==========================================
+5大投资工具 + 2大打工工具
+普通模式/专家模式 × 保守/平滑/积极
+
+投资工具:
+  🐰 打兔子 (25%) - 前20主流加密货币
+  🐹 打地鼠 (20%) - 其他加密货币，火控雷达
+  🔮 走着瞧 (15%) - 预测市场，MiroFish仿真
+  👑 跟大哥 (15%) - 做市协作，MiroFish评估
+  🍀 搭便车 (10%) - 跟单分成，二级分包
+
+打工工具:
+  💰 薅羊毛 (3%) - 空投猎手
+  👶 穷孩子 (2%) - 众包赚钱
+
+风险风格:
+  conservative (保守): 低杠杆，低仓位，高止损
+  smooth (平滑): 中杠杆，中仓位，中止损
+  aggressive (积极): 高杠杆，高仓位，低止损
+"""
+
+import json
+import os
+from datetime import datetime
+
+# ==================== 工具配置 ====================
+TOOLS = {
+    # 投资工具
+    "rabbit": {
+        "name": "🐰 打兔子",
+        "description": "前20主流加密货币，稳定收益",
+        "type": "investment",
+        "weight": 25,
+        "status": "active",
+        "symbols": ["BTC", "ETH", "BNB", "XRP", "SOL", "ADA", "DOGE", "AVAX", "DOT", "LINK"],
+        "conservative": {"leverage": 1, "position": 0.1, "stop_loss": 0.03, "take_profit": 0.08},
+        "smooth": {"leverage": 2, "position": 0.15, "stop_loss": 0.05, "take_profit": 0.12},
+        "aggressive": {"leverage": 3, "position": 0.2, "stop_loss": 0.08, "take_profit": 0.15},
+    },
+    "mole": {
+        "name": "🐹 打地鼠",
+        "description": "其他加密货币，火控雷达锁定异动",
+        "type": "investment",
+        "weight": 20,
+        "status": "active",
+        "symbols": ["ALT", "MEME", "DEGEN", "WIF", "PEPE", "SHIB", "LTC", "BCH", "ATOM", "UNI"],
+        "conservative": {"leverage": 1, "position": 0.08, "stop_loss": 0.05, "take_profit": 0.12},
+        "smooth": {"leverage": 2, "position": 0.12, "stop_loss": 0.08, "take_profit": 0.18},
+        "aggressive": {"leverage": 3, "position": 0.15, "stop_loss": 0.12, "take_profit": 0.25},
+    },
+    "oracle": {
+        "name": "🔮 走着瞧",
+        "description": "预测市场，MiroFish高胜率仿真",
+        "type": "investment",
+        "weight": 15,
+        "status": "active",
+        "symbols": ["POLYMARKET", "AUGUR", "Gnosis"],
+        "conservative": {"leverage": 1, "position": 0.1, "stop_loss": 0.03, "take_profit": 0.08},
+        "smooth": {"leverage": 2, "position": 0.12, "stop_loss": 0.05, "take_profit": 0.12},
+        "aggressive": {"leverage": 2, "position": 0.15, "stop_loss": 0.06, "take_profit": 0.15},
+    },
+    "leader": {
+        "name": "👑 跟大哥",
+        "description": "做市协作，MiroFish综合评估",
+        "type": "investment",
+        "weight": 15,
+        "status": "active",
+        "symbols": ["BTC", "ETH", "SOL"],
+        "conservative": {"leverage": 1, "position": 0.1, "stop_loss": 0.02, "take_profit": 0.05},
+        "smooth": {"leverage": 2, "position": 0.12, "stop_loss": 0.03, "take_profit": 0.08},
+        "aggressive": {"leverage": 3, "position": 0.15, "stop_loss": 0.04, "take_profit": 0.10},
+    },
+    "hitchhiker": {
+        "name": "🍀 搭便车",
+        "description": "跟单分成，二级分包，加强风控",
+        "type": "investment",
+        "weight": 10,
+        "status": "active",
+        "symbols": ["CRYPTO_BIG3", "INDEX"],
+        "conservative": {"leverage": 1, "position": 0.08, "stop_loss": 0.03, "take_profit": 0.06},
+        "smooth": {"leverage": 2, "position": 0.1, "stop_loss": 0.05, "take_profit": 0.10},
+        "aggressive": {"leverage": 2, "position": 0.12, "stop_loss": 0.06, "take_profit": 0.12},
+    },
+    # 打工工具
+    "wool": {
+        "name": "💰 薅羊毛",
+        "description": "空投猎手，只读安全，杜绝授权",
+        "type": "work",
+        "weight": 3,
+        "status": "active",
+        "symbols": ["ETH", "SOL", "APT", "SUI", "ZKSYNC"],
+        "conservative": {"leverage": 1, "position": 0.02, "stop_loss": 0.01, "take_profit": 0.15},
+        "smooth": {"leverage": 1, "position": 0.03, "stop_loss": 0.02, "take_profit": 0.20},
+        "aggressive": {"leverage": 1, "position": 0.05, "stop_loss": 0.02, "take_profit": 0.30},
+    },
+    "poor_kid": {
+        "name": "👶 穷孩子",
+        "description": "众包赚钱，EvoMap隔离保护",
+        "type": "work",
+        "weight": 2,
+        "status": "active",
+        "symbols": ["EVMAP", "CROWD"],
+        "conservative": {"leverage": 1, "position": 0.01, "stop_loss": 0.005, "take_profit": 0.20},
+        "smooth": {"leverage": 1, "position": 0.015, "stop_loss": 0.01, "take_profit": 0.25},
+        "aggressive": {"leverage": 1, "position": 0.02, "stop_loss": 0.01, "take_profit": 0.35},
+    },
+}
+
+# ==================== 双脑模式配置 ====================
+BRAIN_MODES = {
+    "normal": {
+        "name": "左脑 🧠",
+        "mode": "normal",
+        "description": "普通模式 - 稳健投资",
+        "default_style": "smooth",
+        "available_styles": ["conservative", "smooth", "aggressive"],
+        "max_leverage": 2.0,
+        "max_position": 0.25,
+        "base_stop_loss": 0.05,
+        "base_take_profit": 0.12,
+        "win_rate": 0.72,
+    },
+    "expert": {
+        "name": "右脑 🧠",
+        "mode": "expert",
+        "description": "专家模式 - 高收益高风险",
+        "default_style": "aggressive",
+        "available_styles": ["conservative", "smooth", "aggressive"],
+        "max_leverage": 3.0,
+        "max_position": 0.30,
+        "base_stop_loss": 0.025,
+        "base_take_profit": 0.18,
+        "win_rate": 0.78,
+    },
+}
+
+# ==================== 风格推荐配置 ====================
+STYLE_PROFILES = {
+    "conservative": {
+        "name": "保守",
+        "description": "低风险低收益，稳定复利",
+        "leverage_multiplier": 0.5,
+        "position_multiplier": 0.6,
+        "stop_loss_multiplier": 0.6,
+        "take_profit_multiplier": 0.8,
+        "recommended_for": ["新手", "熊市", "高波动期"],
+    },
+    "smooth": {
+        "name": "平滑",
+        "description": "平衡风险收益，稳定增长",
+        "leverage_multiplier": 1.0,
+        "position_multiplier": 1.0,
+        "stop_loss_multiplier": 1.0,
+        "take_profit_multiplier": 1.0,
+        "recommended_for": ["普通投资者", "震荡市", "日常运行"],
+    },
+    "aggressive": {
+        "name": "积极",
+        "description": "高风险高收益，抓住机会",
+        "leverage_multiplier": 1.5,
+        "position_multiplier": 1.3,
+        "stop_loss_multiplier": 1.2,
+        "take_profit_multiplier": 1.3,
+        "recommended_for": ["专业投资者", "牛市", "趋势明确时"],
+    },
+}
+
+# ==================== 生成完整策略 ====================
+def generate_strategy():
+    strategy = {
+        "version": "v8.3-full",
+        "timestamp": datetime.now().isoformat() + "Z",
+        "description": "北斗七鑫投资体系 v8.3 - 全工具激活版",
+        
+        "portfolio": {
+            "总仓位上限": 0.8,
+            "单笔风险上限": 0.05,
+            "日亏损熔断": 0.15,
+            "风控启动阈值": 0.1,
+            "当前仓位": 0.6,
+            "动态调整": "趋势恶化时自动减仓打兔子≤15%，资金转至打地鼠/走着瞧",
+            "自主可调": True,
+        },
+        
+        "brain_modes": BRAIN_MODES,
+        "style_profiles": STYLE_PROFILES,
+        "tools": {},
+        
+        "decision_logic": {
+            "流程": "信号输入 → 深度推理 → 策略匹配 → 风格选择 → 执行",
+            "信号优先级": {
+                "P0_紧急": ["交易所故障", "极端行情", "熔断触发"],
+                "P1_高优先级": ["MiroFish高置信度", "声纳库强趋势", "情绪极端"],
+                "P2_普通": ["技术指标信号", "趋势跟踪", "均值回归"],
+            },
+            "风格自动切换": {
+                "市场波动率>0.3": "建议保守",
+                "市场波动率0.1-0.3": "建议平滑",
+                "市场趋势明确": "建议积极",
+                "MiroFish胜率>0.75": "可切换专家模式",
+            },
+        },
+        
+        "leverage_recommendation": {
+            "conservative": {
+                "打兔子": 1, "打地鼠": 1, "走着瞧": 1, "跟大哥": 1, "搭便车": 1,
+                "薅羊毛": 1, "穷孩子": 1
+            },
+            "smooth": {
+                "打兔子": 2, "打地鼠": 2, "走着瞧": 2, "跟大哥": 2, "搭便车": 2,
+                "薅羊毛": 1, "穷孩子": 1
+            },
+            "aggressive": {
+                "打兔子": 3, "打地鼠": 3, "走着瞧": 2, "跟大哥": 3, "搭便车": 2,
+                "薅羊毛": 1, "穷孩子": 1
+            },
+        },
+        
+        "risk_rules": [
+            {"规则": "R001", "名称": "仓位限制", "条件": "仓位>80%", "动作": "禁止开仓"},
+            {"规则": "R002", "名称": "日内熔断", "条件": "亏损>15%", "动作": "停止交易"},
+            {"规则": "R003", "名称": "单笔风险", "条件": "风险>5%", "动作": "自动止损"},
+            {"规则": "R004", "名称": "波动止损", "条件": "波动>8%", "动作": "触发风控"},
+            {"规则": "R005", "名称": "流动性检查", "条件": "Vol<100K", "动作": "禁止开仓"},
+            {"规则": "R006", "名称": "API故障", "条件": "错误率>1%", "动作": "降级模式"},
+            {"规则": "R007", "名称": "异常检测", "条件": "偏离>3σ", "动作": "人工确认"},
+            {"规则": "R008", "名称": "情绪过热", "条件": "波动>5σ", "动作": "紧急平仓"},
+        ],
+        
+        "api_endpoints": {
+            "get_strategy": "/api/strategy",
+            "get_tools": "/api/strategy/tools",
+            "get_brain_modes": "/api/strategy/brains",
+            "get_styles": "/api/strategy/styles",
+            "set_style": "/api/strategy/style/{style}",
+            "set_brain": "/api/brain/switch",
+            "get_recommendation": "/api/strategy/recommend",
+        },
+    }
+    
+    # 添加工具配置
+    for tool_id, tool_config in TOOLS.items():
+        strategy["tools"][tool_id] = {
+            "name": tool_config["name"],
+            "description": tool_config["description"],
+            "type": tool_config["type"],
+            "weight": tool_config["weight"],
+            "status": tool_config["status"],
+            "symbols": tool_config["symbols"],
+            "parameters": {
+                "conservative": tool_config["conservative"],
+                "smooth": tool_config["smooth"],
+                "aggressive": tool_config["aggressive"],
+            },
+        }
+    
+    return strategy
+
+
+def save_strategy():
+    strategy = generate_strategy()
+    output_path = "/root/.openclaw/workspace/GO2SE_PLATFORM/active_strategy_v8_full.json"
+    
+    with open(output_path, 'w', encoding='utf-8') as f:
+        json.dump(strategy, f, ensure_ascii=False, indent=2)
+    
+    print(f"✅ 策略已保存: {output_path}")
+    print(f"   版本: {strategy['version']}")
+    print(f"   工具数: {len(strategy['tools'])}")
+    print(f"   风控规则: {len(strategy['risk_rules'])}")
+    
+    # 打印工具摘要
+    print("\n📊 7大工具激活状态:")
+    for tool_id, tool in strategy["tools"].items():
+        status = "✅" if tool["status"] == "active" else "❌"
+        print(f"   {status} {tool['name']}: {tool['weight']}%")
+    
+    print("\n🧠 双脑模式:")
+    for mode_id, mode in strategy["brain_modes"].items():
+        print(f"   {mode['name']}: {mode['description']}")
+        print(f"      默认风格: {mode['default_style']} | 最大杠杆: {mode['max_leverage']}x")
+    
+    print("\n📈 风险风格:")
+    for style_id, style in strategy["style_profiles"].items():
+        print(f"   {style['name']}: {style['description']}")
+        print(f"      适合: {', '.join(style['recommended_for'])}")
+    
+    return strategy
+
+
+if __name__ == "__main__":
+    save_strategy()

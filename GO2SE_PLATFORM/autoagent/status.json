@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-04-05T14:55:44.960355",
-  "backend": false,
+  "timestamp": "2026-04-05T15:03:59.658297",
+  "backend": true,
   "frontend": true,
-  "mirofish_score": 0.0,
-  "version": "unknown",
-  "signals": 0
+  "mirofish_score": 97.21,
+  "version": "v7.1.0",
+  "signals": 25
 }

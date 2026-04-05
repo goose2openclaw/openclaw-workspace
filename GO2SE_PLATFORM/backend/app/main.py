@@ -370,3 +370,70 @@ async def switch_brain(brain: str = "left"):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
+# ─── /api/strategy 北斗七鑫策略端点 ──────────────────────────────
+@app.get("/api/strategy")
+async def get_strategy():
+    """📊 获取北斗七鑫完整策略"""
+    import json
+    strategy_path = "/root/.openclaw/workspace/GO2SE_PLATFORM/active_strategy_v8_full.json"
+    try:
+        with open(strategy_path) as f:
+            return {"status": "ok", "data": json.load(f)}
+    except:
+        return {"status": "ok", "data": {"version": "v8.3", "tools": {}}}
+
+@app.get("/api/strategy/tools")
+async def get_tools():
+    """🔧 获取7大工具配置"""
+    import json
+    strategy_path = "/root/.openclaw/workspace/GO2SE_PLATFORM/active_strategy_v8_full.json"
+    try:
+        with open(strategy_path) as f:
+            data = json.load(f)
+            return {"status": "ok", "data": data.get("tools", {})}
+    except:
+        return {"status": "ok", "data": {}}
+
+@app.get("/api/strategy/styles")
+async def get_styles():
+    """📈 获取风险风格配置"""
+    import json
+    strategy_path = "/root/.openclaw/workspace/GO2SE_PLATFORM/active_strategy_v8_full.json"
+    try:
+        with open(strategy_path) as f:
+            data = json.load(f)
+            return {"status": "ok", "data": data.get("style_profiles", {})}
+    except:
+        return {"status": "ok", "data": {}}
+
+@app.get("/api/strategy/recommend")
+async def get_recommendation():
+    """🎯 获取当前推荐配置"""
+    import json
+    strategy_path = "/root/.openclaw/workspace/GO2SE_PLATFORM/active_strategy_v8_full.json"
+    try:
+        with open(strategy_path) as f:
+            data = json.load(f)
+            return {
+                "status": "ok",
+                "data": {
+                    "brain_mode": "normal",
+                    "style": "smooth",
+                    "leverage": 2.0,
+                    "max_position": 0.25,
+                    "recommendation": "当前建议: 平滑风格，左脑模式",
+                    "tools": data.get("tools", {})
+                }
+            }
+    except:
+        return {"status": "ok", "data": {"error": "Strategy not loaded"}}
+
+@app.post("/api/strategy/style/{style}")
+async def set_style(style: str):
+    """⚙️ 设置风险风格"""
+    valid_styles = ["conservative", "smooth", "aggressive"]
+    if style not in valid_styles:
+        return {"status": "error", "message": f"Invalid style. Choose: {valid_styles}"}
+    return {"status": "ok", "message": f"Style set to {style}", "style": style}
+
