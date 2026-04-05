@@ -121,3 +121,32 @@ window.go2se = {
     syncBrainState,
     navigateTo
 };
+
+// 4级弹窗函数
+function openModal(title, contentId) {
+  const overlay = document.getElementById('modal-overlay');
+  const titleEl = document.getElementById('modal-title');
+  const bodyEl = document.getElementById('modal-body');
+  const content = document.getElementById(contentId);
+  if (overlay && titleEl && bodyEl && content) {
+    titleEl.textContent = title;
+    bodyEl.innerHTML = content.innerHTML;
+    overlay.classList.add('active');
+  }
+}
+function closeModal() {
+  const overlay = document.getElementById('modal-overlay');
+  if (overlay) overlay.classList.remove('active');
+}
+
+// 为详情链接绑定弹窗
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('[data-detail]').forEach(el => {
+    el.style.cursor = 'pointer';
+    el.addEventListener('click', () => {
+      const detailId = el.dataset.detail;
+      const title = el.dataset.title || '详情';
+      openModal(title, detailId);
+    });
+  });
+});

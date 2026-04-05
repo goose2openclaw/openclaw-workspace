@@ -1234,5 +1234,54 @@
       });
     });
   </script>
+
+  <!-- 4级弹窗容器 -->
+  <div id="modal-overlay" class="modal-overlay" onclick="closeModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h3 id="modal-title">详情</h3>
+        <button class="modal-close" onclick="closeModal()">×</button>
+      </div>
+      <div class="modal-body" id="modal-body"></div>
+      <div class="modal-footer">
+        <button class="btn-secondary" onclick="closeModal()">关闭</button>
+        <button class="btn-primary" id="modal-confirm">确认</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4级详情数据 -->
+  <div id="detail-modals" style="display:none">
+    <!-- 资产详情 -->
+    <div id="detail-asset-overview">
+      <div class="detail-grid">
+        <div class="detail-item"><label>总资产</label><span class="value">$85,000</span></div>
+        <div class="detail-item"><label>可用资金</label><span class="value">$17,000</span></div>
+        <div class="detail-item"><label>持仓价值</label><span class="value">$68,000</span></div>
+        <div class="detail-item"><label>今日收益</label><span class="value positive">+$2,450</span></div>
+      </div>
+    </div>
+    <!-- 钱包架构详情 -->
+    <div id="detail-asset-wallet">
+      <div class="detail-list">
+        <div class="wallet-item"><span>主钱包</span><span>$85,000</span></div>
+        <div class="wallet-item"><span>打兔子</span><span>$2,500</span></div>
+        <div class="wallet-item"><span>打地鼠</span><span>$3,000</span></div>
+        <div class="wallet-item"><span>走着瞧</span><span>$3,000</span></div>
+        <div class="wallet-item"><span>跟大哥</span><span>$1,500</span></div>
+        <div class="wallet-item"><span>搭便车</span><span>$1,000</span></div>
+        <div class="wallet-item"><span>薅羊毛</span><span>$1,500</span></div>
+        <div class="wallet-item"><span>穷孩子</span><span>$500</span></div>
+      </div>
+    </div>
+    <!-- 风险详情 -->
+    <div id="detail-asset-risk">
+      <div class="risk-meter">
+        <div class="risk-label">风险等级</div>
+        <div class="risk-bar"><div class="risk-fill" style="width:35%"></div></div>
+        <div class="risk-value">中等 (35%)</div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
