@@ -4187,3 +4187,115 @@ h4 { font-size: var(--font-size-base); }
 }
 @keyframes typing { from { width: 0; } to { width: 100%; } }
 @keyframes blink { 50% { border-color: transparent; } }
+
+/* ========== Polanyi Round 36-40: 交互深化 ========== */
+
+/* Header层级优化 - 确保第一层元素正确显示 */
+.nav-status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  min-height: 48px;
+}
+
+.nav-left, .nav-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* 桌面端: 强制显示所有header元素 */
+@media (min-width: 769px) {
+  .nav-status-bar {
+    flex-wrap: nowrap;
+  }
+  .theme-switcher,
+  .lang-switcher {
+    display: flex !important;
+  }
+  .brain-label,
+  .brain-mode {
+    display: inline !important;
+  }
+}
+
+/* 移动端优化: 紧凑模式 */
+@media (max-width: 768px) {
+  .nav-status-bar {
+    padding: 4px 8px;
+    min-height: 40px;
+    flex-wrap: wrap;
+  }
+  .nav-brand {
+    font-size: var(--font-size-sm);
+  }
+  .theme-switcher,
+  .lang-switcher {
+    display: none; /* 移动端隐藏，保留快捷键空间 */
+  }
+  .brain-toggle {
+    padding: 4px 8px;
+  }
+  .brain-label,
+  .brain-mode {
+    display: none; /* 移动端隐藏标签 */
+  }
+  .hotkey {
+    display: none;
+  }
+}
+
+/* 快捷键增强 */
+.shortcut-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 16px;
+  min-width: 60px;
+}
+
+.shortcut-btn .icon {
+  font-size: 18px;
+}
+
+.shortcut-btn .label {
+  font-size: 10px;
+}
+
+/* 平板适配 */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .shortcut-btn {
+    padding: 8px 12px;
+    min-width: 50px;
+  }
+  .shortcut-btn .icon {
+    font-size: 16px;
+  }
+}
+
+/* 呼吸灯优化 */
+.breathing-light {
+  width: 12px;
+  height: 12px;
+}
+.breathing-light .light-dot {
+  width: 8px;
+  height: 8px;
+}
+.breathing-light .light-ring {
+  width: 16px;
+  height: 16px;
+}
+
+/* 通知徽章动画 */
+.notif-badge {
+  animation: badgePulse 2s ease-in-out infinite;
+}
+@keyframes badgePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
