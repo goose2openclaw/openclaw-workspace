@@ -3901,3 +3901,48 @@ h4 { font-size: var(--font-size-base); }
 .eng-card:hover, .lobster-card:hover {
   box-shadow: 0 8px 24px rgba(0,0,0,0.25);
 }
+
+/* ========== Polanyi Round 1-5: 视觉和谐 ========== */
+/* 改善大白鹅SVG阴影 */
+.goose-svg {
+  filter: drop-shadow(0 8px 16px rgba(0,0,0,0.2)) brightness(1.02);
+}
+.signal-ring {
+  stroke: var(--accent-primary);
+}
+
+/* ========== Polanyi Round 6-10: 空间节奏 ========== */
+/* 优化section间距 */
+.content-section {
+  margin: clamp(12px, 1.5vw, 20px);
+  padding: clamp(20px, 2.5vw, 32px);
+}
+/* 卡片间距优化 */
+.eng-grid {
+  gap: clamp(12px, 1.5vw, 20px);
+}
+
+/* ========== Polanyi Round 11-15: 色彩情绪 ========== */
+/* 优化主题色饱和度 */
+:root {
+  --accent-primary: #00d4aa;
+  --accent-secondary: #8b5cf6;
+}
+/* 强化active状态渐变 */
+.shortcut-btn.active {
+  background: linear-gradient(135deg, #00d4aa, #8b5cf6);
+}
+
+/* ========== Polanyi Round 16-20: 动态流畅 ========== */
+/* 平滑过渡优化 */
+.shortcut-btn, .eng-card, .brain-control-panel {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+/* 信号环呼吸动画 */
+.signal-ring {
+  animation: breathe 2.5s ease-in-out infinite;
+}
+@keyframes breathe {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.9; transform: scale(1.08); }
+}
