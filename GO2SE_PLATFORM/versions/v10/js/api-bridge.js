@@ -435,3 +435,161 @@ document.addEventListener('DOMContentLoaded', () => {
   loadBacktestHistory();
   loadSimulationPositions();
 });
+
+// ─── API密钥配置 ─────────────────────────────────────────────────
+const API_KEY = "GO2SE_e083a64d891b45089d6f37acb440435eba401313a1695711";
+
+function getHeaders() {
+  return {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${API_KEY}`
+  };
+}
+
+// ─── 带认证的API调用 ─────────────────────────────────────────────
+async function apiPost(url, data) {
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: getHeaders(),
+      body: JSON.stringify(data)
+    });
+    return await res.json();
+  } catch (e) {
+    console.error('API call failed:', e);
+    return { error: e.message };
+  }
+}
+
+async function apiGet(url) {
+  try {
+    const res = await fetch(url, {
+      method: 'GET',
+      headers: getHeaders()
+    });
+    return await res.json();
+  } catch (e) {
+    console.error('API call failed:', e);
+    return { error: e.message };
+  }
+}
+
+// ─── 更新交易模块使用认证API ──────────────────────────────────────
+async function runBacktest() {
+  const config = {
+    symbol: document.getElementById('bt-symbol')?.value || 'BTC/USDT',
+    start_date: document.getElementById('bt-start')?.value || '2025-01-01',
+    end_date: document.getElementById('bt-end')?.value || '2025-12-31',
+    initial_capital: parseFloat(document.getElementById('bt-capital')?.value) || 10000,
+    leverage: parseFloat(document.getElementById('bt-leverage')?.value) || 1
+  };
+  
+  const resultsEl = document.getElementById('backtestResults');
+  if (resultsEl) resultsEl.innerHTML = '<div class="result-placeholder">⏳ 运行回测中...</div>';
+  
+  const data = await apiPost('/api/backtest', config);
+  
+  if (data.data) {
+    const r = data.data;
+    if (resultsEl) {
+      resultsEl.innerHTML = `
+        <div class="result-grid">
+          <div class="result-item"><label>总收益率</label><span class="value ${r.total_return > 0 ? 'positive' : 'negative'}">${r.total_return?.toFixed(2)}%</span></div>
+          <div class="result-item"><label>交易次数</label><span class="value">${r.total_trades}</span></div>
+          <div class="result-item"><label>胜率</label><span class="value">${r.win_rate?.toFixed(1)}%</span></div>
+          <div class="result-item"><label>最大回撤</label><span class="value negative">${r.max_drawdown?.toFixed(2)}%</span></div>
+          <div class="result-item"><label>夏普比率</label><span class="value">${r.sharpe_ratio?.toFixed(2)}</span></div>
+          <div class="result-item"><label>最终资金</label><span class="value">$${r.final_capital?.toFixed(2)}</span></div>
+        </div>
+      `;
+    }
+  } else if (data.error) {
+    if (resultsEl) resultsEl.innerHTML = `<div class="result-placeholder">❌ ${data.error}</div>`;
+  }
+}
+
+async function loadBacktestHistory() {
+  // 使用公开的历史端点
+  const data = await apiGet('/api/backtest/history');
+  if (data.data) {
+    const body = document.getElementById('historyBody');
+    if (body) {
+      body.innerHTML = data.data.map(h => `
+        <div>
+          <span>${h.symbol || 'BTC'}</span>
+          <span>${h.date || h.start_date || '2025-01-01'}</span>
+          <span class="${(h.return || 0) > 0 ? 'positive' : 'negative'}">${(h.return || 0).toFixed(1)}%</span>
+          <span>${(h.win_rate || 0).toFixed(1)}%</span>
+          <span class="status-${h.status || 'completed'}">${h.status || 'completed'}</span>
+        </div>
+      `).join('');
+    }
+  }
+}
+
+async function runSimulation() {
+  // 创建模拟账户
+  const account = await apiPost('/api/paper/account', { user_type: 'trader', username: 'ui_user' });
+  
+  const config = {
+    symbol: document.getElementById('sim-symbol')?.value || 'BTC/USDT',
+    amount: parseFloat(document.getElementById('sim-amount')?.value) || 1000,
+    leverage: parseFloat(document.getElementById('sim-leverage')?.value) || 2,
+    side: 'buy'
+  };
+  
+  const signalEl = document.getElementById('simSignal');
+  if (signalEl) signalEl.innerHTML = '<div class="signal-placeholder">⏳ 执行信号中...</div>';
+  
+  // 开仓
+  const openResult = await apiPost('/api/paper/position/open', {
+    user_id: account.user_id,
+    symbol: config.symbol,
+    side: config.side,
+    size: config.amount,
+    leverage: config.leverage
+  });
+  
+  if (signalEl) {
+    const signal = openResult.position?.side === 'LONG' ? 'buy' : 'sell';
+    const pnl = openResult.position?.pnl || 0;
+    const signalClass = pnl > 0 ? 'signal-buy' : pnl < 0 ? 'signal-sell' : 'signal-hold';
+    signalEl.innerHTML = `
+      <div class="${signalClass}">
+        ${signal === 'buy' ? '📈' : '📉'} ${signal.toUpperCase()} - ${config.symbol}
+        <br><small>${openResult.position?.entry_price ? '$' + openResult.position.entry_price.toFixed(2) : ''}</small>
+        <br><strong>${pnl > 0 ? '+' : ''}$${pnl?.toFixed(2) || 0}</strong>
+      </div>
+    `;
+  }
+  
+  loadSimulationPositions(account.user_id);
+}
+
+async function loadSimulationPositions(userId) {
+  const portfolio = await apiGet(`/api/paper/portfolio/${userId || 'test'}`);
+  if (portfolio.positions) {
+    const body = document.getElementById('positionsBody');
+    if (body) {
+      body.innerHTML = portfolio.positions.map(p => `
+        <div>
+          <span>${p.symbol}</span>
+          <span>${p.size}</span>
+          <span>$${p.entry_price?.toFixed(0)}</span>
+          <span>$${p.current_price?.toFixed(0)}</span>
+          <span class="${p.pnl > 0 ? 'positive' : 'negative'}">${p.pnl > 0 ? '+' : ''}$${p.pnl?.toFixed(2)}</span>
+          <span>${p.leverage}x</span>
+          <button class="btn-close" onclick="closePosition('${p.position_id}')">平仓</button>
+        </div>
+      `).join('');
+    }
+  }
+}
+
+async function closePosition(positionId) {
+  const result = await apiPost('/api/paper/position/close', { position_id: positionId });
+  if (result.status === 'ok') {
+    alert(`${positionId} 已平仓`);
+    loadSimulationPositions();
+  }
+}
