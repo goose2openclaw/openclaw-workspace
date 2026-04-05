@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-04-05T13:51:48.316440",
+  "timestamp": "2026-04-05T14:25:56.100318",
   "total_tests": 30,
   "passed": 30,
   "failed": 0,
   "warnings": 0,
-  "overall_score": 97.1716022342773,
+  "overall_score": 96.32817402181809,
   "portfolio_config": {
     "总仓位上限": 0.8,
     "单笔风险上限": 0.05,
@@ -65,7 +65,7 @@
       "latency_ms": 0,
       "details": "dry_run模式: 配置上限=80%, 当前=60%, 偏离=20.00% ✅",
       "recommendations": [],
-      "timestamp": "2026-04-05T13:51:47.521872"
+      "timestamp": "2026-04-05T14:25:55.202481"
     },
     {
       "dimension": "A2-投资组风控规则",
@@ -76,7 +76,7 @@
       "latency_ms": 0,
       "details": "止损=10%, 止盈=30%",
       "recommendations": [],
-      "timestamp": "2026-04-05T13:51:47.526308"
+      "timestamp": "2026-04-05T14:25:55.209490"
     },
     {
       "dimension": "A3-投资组合多样化",
@@ -87,7 +87,7 @@
       "latency_ms": 0,
       "details": "工具数=7/7, 总权重=97%, 评估=均衡",
       "recommendations": [],
-      "timestamp": "2026-04-05T13:51:47.526370"
+      "timestamp": "2026-04-05T14:25:55.209564"
     },
     {
       "dimension": "B1-打兔子工具(主流币)",
@@ -100,7 +100,7 @@
       "recommendations": [
         "持续监控表现"
       ],
-      "timestamp": "2026-04-05T13:51:47.542011"
+      "timestamp": "2026-04-05T14:25:55.229669"
     },
     {
       "dimension": "B2-打地鼠工具(异动)",
@@ -111,7 +111,7 @@
       "latency_ms": 0,
       "details": "仓位=22%, 信号=25个, 扫描覆盖=正常",
       "recommendations": [],
-      "timestamp": "2026-04-05T13:51:47.548138"
+      "timestamp": "2026-04-05T14:25:55.235885"
     },
     {
       "dimension": "B3-走着瞧工具(预测)",
@@ -122,7 +122,7 @@
       "latency_ms": 0,
       "details": "预测市场=4, 活跃=6/6",
       "recommendations": [],
-      "timestamp": "2026-04-05T13:51:47.558014"
+      "timestamp": "2026-04-05T14:25:55.245565"
     },
     {
       "dimension": "B4-跟大哥工具(做市)",
@@ -133,7 +133,7 @@
       "latency_ms": 0,
       "details": "Agent总数=540, 平均共识=90, 做市能力=良好",
       "recommendations": [],
-      "timestamp": "2026-04-05T13:51:47.562687"
+      "timestamp": "2026-04-05T14:25:55.253073"
     },
     {
       "dimension": "B5-搭便车工具(跟单)",
@@ -144,7 +144,7 @@
       "latency_ms": 0,
       "details": "仓位=11%, 止损=10%, 跟单风控=已配置",
       "recommendations": [],
-      "timestamp": "2026-04-05T13:51:47.570067"
+      "timestamp": "2026-04-05T14:25:55.259572"
     },
     {
       "dimension": "B6-薅羊毛工具(空投)",
@@ -158,7 +158,7 @@
         "空投注意防范授权陷阱",
         "做好背景调研再参与"
       ],
-      "timestamp": "2026-04-05T13:51:47.570105"
+      "timestamp": "2026-04-05T14:25:55.259621"
     },
     {
       "dimension": "B7-穷孩子工具(众包)",
@@ -171,7 +171,7 @@
       "recommendations": [
         "利用EvoMap工具扩大社交收益"
       ],
-      "timestamp": "2026-04-05T13:51:47.570117"
+      "timestamp": "2026-04-05T14:25:55.259640"
     },
     {
       "dimension": "C1-声纳库趋势模型",
@@ -182,7 +182,7 @@
       "latency_ms": 0,
       "details": "趋势模型=81个, 均准确率=65.8%, [momentum=66%, breakout=66%, reversal=65%]",
       "recommendations": [],
-      "timestamp": "2026-04-05T13:51:47.579157"
+      "timestamp": "2026-04-05T14:25:55.268124"
     },
     {
       "dimension": "B3-走着瞧工具(预测)",
@@ -193,7 +193,7 @@
       "latency_ms": 0,
       "details": "预测市场=4, 活跃=6/6",
       "recommendations": [],
-      "timestamp": "2026-04-05T13:51:47.583200"
+      "timestamp": "2026-04-05T14:25:55.277849"
     },
     {
       "dimension": "C3-MiroFish预测市场",
@@ -204,7 +204,7 @@
       "latency_ms": 0,
       "details": "市场=6/6, Agent=540, 轮次=27",
       "recommendations": [],
-      "timestamp": "2026-04-05T13:51:47.588396"
+      "timestamp": "2026-04-05T14:25:55.284366"
     },
     {
       "dimension": "C4-市场情绪分析",
@@ -215,7 +215,7 @@
       "latency_ms": 0,
       "details": "情绪市场=1, 情绪监控=正常",
       "recommendations": [],
-      "timestamp": "2026-04-05T13:51:47.591820"
+      "timestamp": "2026-04-05T14:25:55.290904"
     },
     {
       "dimension": "C5-多智能体共识",
@@ -226,7 +226,7 @@
       "latency_ms": 0,
       "details": "市场=6, Agent=540, 均=90, 轮次=27",
       "recommendations": [],
-      "timestamp": "2026-04-05T13:51:47.595511"
+      "timestamp": "2026-04-05T14:25:55.296885"
     },
     {
       "dimension": "D1-市场数据源",
@@ -237,18 +237,18 @@
       "latency_ms": 0,
       "details": "数据引擎=ok, 数据源=正常",
       "recommendations": [],
-      "timestamp": "2026-04-05T13:51:47.601192"
+      "timestamp": "2026-04-05T14:25:55.306249"
     },
     {
       "dimension": "D2-算力资源",
       "category": "底层资源",
       "layer": "D",
       "status": "PASS",
-      "score": 69.335485906945,
+      "score": 69.56285278322285,
       "latency_ms": 0,
-      "details": "内存余量=19%(总11382344MB), CPU余量=100%, 算力=充足",
+      "details": "内存余量=20%(总11382344MB), CPU余量=100%, 算力=充足",
       "recommendations": [],
-      "timestamp": "2026-04-05T13:51:48.104898"
+      "timestamp": "2026-04-05T14:25:55.808914"
     },
     {
       "dimension": "D3-策略引擎",
@@ -259,7 +259,7 @@
       "latency_ms": 0,
       "details": "信号=25, 模式=dry_run, 策略引擎=运行中",
       "recommendations": [],
-      "timestamp": "2026-04-05T13:51:48.116993"
+      "timestamp": "2026-04-05T14:25:55.820583"
     },
     {
       "dimension": "D4-资金管理",
@@ -270,7 +270,7 @@
       "latency_ms": 0,
       "details": "仓位上限=60%, 资金分配=合理",
       "recommendations": [],
-      "timestamp": "2026-04-05T13:51:48.122958"
+      "timestamp": "2026-04-05T14:25:55.830475"
     },
     {
       "dimension": "E1-后端API服务",
@@ -278,10 +278,10 @@
       "layer": "E",
       "status": "PASS",
       "score": 100,
-      "latency_ms": 5.437612533569336,
-      "details": "status=healthy, db=ok, 延迟=5ms",
+      "latency_ms": 7.971286773681641,
+      "details": "status=healthy, db=ok, 延迟=8ms",
       "recommendations": [],
-      "timestamp": "2026-04-05T13:51:48.128444"
+      "timestamp": "2026-04-05T14:25:55.838762"
     },
     {
       "dimension": "E2-前端UI服务",
@@ -289,10 +289,10 @@
       "layer": "E",
       "status": "PASS",
       "score": 90,
-      "latency_ms": 8.697271347045898,
-      "details": "响应=5198B, Vite=False, SPA=True, GO2SE=True, 延迟=9ms",
+      "latency_ms": 10.718107223510742,
+      "details": "响应=5198B, Vite=False, SPA=True, GO2SE=True, 延迟=11ms",
       "recommendations": [],
-      "timestamp": "2026-04-05T13:51:48.137448"
+      "timestamp": "2026-04-05T14:25:55.849779"
     },
     {
       "dimension": "E3-数据库",
@@ -303,7 +303,7 @@
       "latency_ms": 0,
       "details": "数据库=ok",
       "recommendations": [],
-      "timestamp": "2026-04-05T13:51:48.141796"
+      "timestamp": "2026-04-05T14:25:55.860376"
     },
     {
       "dimension": "E4-运维脚本",
@@ -314,40 +314,40 @@
       "latency_ms": 0,
       "details": "脚本=7/7",
       "recommendations": [],
-      "timestamp": "2026-04-05T13:51:48.145526"
+      "timestamp": "2026-04-05T14:25:55.871241"
     },
     {
       "dimension": "E5-系统稳定性",
       "category": "运营支撑",
       "layer": "E",
       "status": "PASS",
-      "score": 100.0,
+      "score": 75.0,
       "latency_ms": 0,
       "details": "uvicorn=1, vite=0, node=0, 僵尸=0",
       "recommendations": [],
-      "timestamp": "2026-04-05T13:51:48.183292"
+      "timestamp": "2026-04-05T14:25:55.923372"
     },
     {
       "dimension": "E6-API响应延迟",
       "category": "运营支撑",
       "layer": "E",
       "status": "PASS",
-      "score": 109.0140438079834,
-      "latency_ms": 4.929780960083008,
-      "details": "平均=4.9ms, P95=7.3ms",
+      "score": 108.62457381354437,
+      "latency_ms": 6.877130932278103,
+      "details": "平均=6.9ms, P95=9.1ms",
       "recommendations": [],
-      "timestamp": "2026-04-05T13:51:48.229103"
+      "timestamp": "2026-04-05T14:25:55.986770"
     },
     {
       "dimension": "F1-UI响应性",
       "category": "UI/UX",
       "layer": "F",
       "status": "PASS",
-      "score": 119.38105583190918,
-      "latency_ms": 6.189441680908203,
-      "details": "平均加载=6ms, 响应性=优秀",
+      "score": 119.24031257629395,
+      "latency_ms": 7.596874237060547,
+      "details": "平均加载=8ms, 响应性=优秀",
       "recommendations": [],
-      "timestamp": "2026-04-05T13:51:48.260194"
+      "timestamp": "2026-04-05T14:25:56.024926"
     },
     {
       "dimension": "F2-UI导航结构",
@@ -358,7 +358,7 @@
       "latency_ms": 0,
       "details": "可访问页面=3/3, 导航=正常",
       "recommendations": [],
-      "timestamp": "2026-04-05T13:51:48.272052"
+      "timestamp": "2026-04-05T14:25:56.043336"
     },
     {
       "dimension": "F3-UI组件完整性",
@@ -369,7 +369,7 @@
       "latency_ms": 0,
       "details": "核心组件=5/5, 导航结构=4/4, 组件完整性=完整",
       "recommendations": [],
-      "timestamp": "2026-04-05T13:51:48.278972"
+      "timestamp": "2026-04-05T14:25:56.050282"
     },
     {
       "dimension": "G1-后端前端集成",
@@ -380,7 +380,7 @@
       "latency_ms": 0,
       "details": "前端=True, 后端=True, 数据=True, 集成=正常",
       "recommendations": [],
-      "timestamp": "2026-04-05T13:51:48.297286"
+      "timestamp": "2026-04-05T14:25:56.075432"
     },
     {
       "dimension": "G2-E2E工作流",
@@ -391,7 +391,7 @@
       "latency_ms": 0,
       "details": "工作流=4/4步完成, E2E=正常",
       "recommendations": [],
-      "timestamp": "2026-04-05T13:51:48.316335"
+      "timestamp": "2026-04-05T14:25:56.100140"
     }
   ]
 }

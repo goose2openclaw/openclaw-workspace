@@ -118,6 +118,9 @@
         <button class="shortcut-btn active" data-section="attention" onclick="navigateTo('attention')">🏠 首页</button>
         <button class="shortcut-btn" data-section="asset" onclick="navigateTo('asset')">💰 资产</button>
         <button class="shortcut-btn" data-section="beidou" onclick="navigateTo('beidou')">🎯 工具</button>
+        <button class="shortcut-btn" data-section="backtest" onclick="navigateTo('backtest')">📊 回测</button>
+        <button class="shortcut-btn" data-section="simulation" onclick="navigateTo('simulation')">🎯 模拟</button>
+        <button class="shortcut-btn" data-section="fullsim" onclick="navigateTo('fullsim')">🔬 仿真</button>
         <button class="shortcut-btn" data-section="engineer" onclick="navigateTo('engineer')">⚙️ 设定</button>
         <button class="shortcut-btn" data-section="security" onclick="navigateTo('security')">🛡️ 安全</button>
       </div>
@@ -1234,6 +1237,174 @@
       });
     });
   </script>
+
+  <!-- 回测交易模块 -->
+  <section class="content-section" id="backtest">
+    <div class="section-header">
+      <h2>📊 回测交易</h2>
+      <div class="section-actions">
+        <button class="btn-primary" onclick="runBacktest()">▶ 运行回测</button>
+      </div>
+    </div>
+    <div class="backtest-config">
+      <div class="config-row">
+        <div class="config-item">
+          <label>交易对</label>
+          <select id="bt-symbol">
+            <option value="BTC">BTC</option>
+            <option value="ETH">ETH</option>
+            <option value="SOL">SOL</option>
+            <option value="XRP">XRP</option>
+          </select>
+        </div>
+        <div class="config-item">
+          <label>初始资金</label>
+          <input type="number" id="bt-capital" value="10000">
+        </div>
+        <div class="config-item">
+          <label>杠杆</label>
+          <select id="bt-leverage">
+            <option value="1">1x</option>
+            <option value="2">2x</option>
+            <option value="3">3x</option>
+          </select>
+        </div>
+      </div>
+      <div class="config-row">
+        <div class="config-item">
+          <label>开始日期</label>
+          <input type="date" id="bt-start" value="2024-01-01">
+        </div>
+        <div class="config-item">
+          <label>结束日期</label>
+          <input type="date" id="bt-end" value="2024-12-31">
+        </div>
+      </div>
+    </div>
+    <div class="backtest-results" id="backtestResults">
+      <div class="result-placeholder">点击"运行回测"开始分析</div>
+    </div>
+    <div class="backtest-history">
+      <h3>📜 回测历史</h3>
+      <div class="history-table" id="backtestHistory">
+        <div class="table-header">
+          <span>交易对</span><span>日期</span><span>收益率</span><span>胜率</span><span>状态</span>
+        </div>
+        <div class="table-body" id="historyBody">
+          <!-- 动态填充 -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 模拟交易模块 -->
+  <section class="content-section" id="simulation">
+    <div class="section-header">
+      <h2>🎯 模拟交易</h2>
+      <div class="section-actions">
+        <span class="mode-badge" id="simMode">Paper</span>
+        <button class="btn-primary" onclick="runSimulation()">▶ 执行信号</button>
+      </div>
+    </div>
+    <div class="sim-config">
+      <div class="config-row">
+        <div class="config-item">
+          <label>交易对</label>
+          <select id="sim-symbol">
+            <option value="BTC">BTC</option>
+            <option value="ETH">ETH</option>
+            <option value="SOL">SOL</option>
+          </select>
+        </div>
+        <div class="config-item">
+          <label>金额</label>
+          <input type="number" id="sim-amount" value="1000">
+        </div>
+        <div class="config-item">
+          <label>杠杆</label>
+          <select id="sim-leverage">
+            <option value="1">1x</option>
+            <option value="2" selected>2x</option>
+            <option value="3">3x</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="sim-positions" id="simPositions">
+      <h3>📋 当前持仓</h3>
+      <div class="positions-table">
+        <div class="table-header">
+          <span>交易对</span><span>数量</span><span>入场价</span><span>当前价</span><span>盈亏</span><span>杠杆</span><span>操作</span>
+        </div>
+        <div class="table-body" id="positionsBody">
+          <!-- 动态填充 -->
+        </div>
+      </div>
+    </div>
+    <div class="sim-signal" id="simSignal">
+      <div class="signal-placeholder">等待信号...</div>
+    </div>
+  </section>
+
+  <!-- 全向仿真模块 -->
+  <section class="content-section" id="fullsim">
+    <div class="section-header">
+      <h2>🔬 全向仿真</h2>
+      <div class="section-actions">
+        <span class="sim-badge">MiroFish</span>
+        <button class="btn-primary" onclick="runFullSimulation()">▶ 运行仿真</button>
+      </div>
+    </div>
+    <div class="fullsim-grid">
+      <div class="sim-card" id="simA">
+        <div class="sim-label">A</div>
+        <div class="sim-name">投资组合</div>
+        <div class="sim-score" id="scoreA">--</div>
+        <div class="sim-status" id="statusA">等待</div>
+      </div>
+      <div class="sim-card" id="simB">
+        <div class="sim-label">B</div>
+        <div class="sim-name">投资工具</div>
+        <div class="sim-score" id="scoreB">--</div>
+        <div class="sim-status" id="statusB">等待</div>
+      </div>
+      <div class="sim-card" id="simC">
+        <div class="sim-label">C</div>
+        <div class="sim-name">趋势判断</div>
+        <div class="sim-score" id="scoreC">--</div>
+        <div class="sim-status" id="statusC">等待</div>
+      </div>
+      <div class="sim-card" id="simD">
+        <div class="sim-label">D</div>
+        <div class="sim-name">底层资源</div>
+        <div class="sim-score" id="scoreD">--</div>
+        <div class="sim-status" id="statusD">等待</div>
+      </div>
+      <div class="sim-card" id="simE">
+        <div class="sim-label">E</div>
+        <div class="sim-name">运营支撑</div>
+        <div class="sim-score" id="scoreE">--</div>
+        <div class="sim-status" id="statusE">等待</div>
+      </div>
+      <div class="sim-card" id="simF">
+        <div class="sim-label">F</div>
+        <div class="sim-name">UI/UX</div>
+        <div class="sim-score" id="scoreF">--</div>
+        <div class="sim-status" id="statusF">等待</div>
+      </div>
+      <div class="sim-card" id="simG">
+        <div class="sim-label">G</div>
+        <div class="sim-name">集成测试</div>
+        <div class="sim-score" id="scoreG">--</div>
+        <div class="sim-status" id="statusG">等待</div>
+      </div>
+    </div>
+    <div class="fullsim-total">
+      <div class="total-label">综合评分</div>
+      <div class="total-score" id="totalScore">--</div>
+      <div class="total-status" id="totalStatus">待运行</div>
+    </div>
+  </section>
 
   <!-- 4级弹窗容器 -->
   <div id="modal-overlay" class="modal-overlay" onclick="closeModal()">

@@ -37,5 +37,18 @@
       "strategy_sonar": 0.04812199201539074,
       "strategy_oracle": 0.041437805839977096
     }
+  },
+  {
+    "timestamp": "2026-04-05T14:05:49.549794",
+    "skills_count": 36,
+    "strategies_count": 14,
+    "confidence": 0.8084763243191916,
+    "top_weights": {
+      "strategy_mirofish": 0.0872607249378981,
+      "strategy_rabbit_v2": 0.07256255318417412,
+      "strategy_rabbit": 0.06454818163845936,
+      "strategy_sonar": 0.04554886067680355,
+      "strategy_leader_v2": 0.04517753844302526
+    }
   }
 ]
