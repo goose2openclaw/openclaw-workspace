@@ -3328,3 +3328,380 @@ input[type="checkbox"] {
 .text-center { text-align: center; }
 .mt-4 { margin-top: var(--space-4); }
 .mb-4 { margin-bottom: var(--space-4); }
+
+/* ========== 市场介绍模块 CSS ========== */
+#market {
+    padding: 20px;
+}
+
+.market-tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.market-tool-card {
+    background: var(--bg-secondary, #1a1a2e);
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid var(--border-color, #2a2a4a);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.market-tool-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 212, 170, 0.15);
+}
+
+.tool-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.tool-emoji {
+    font-size: 32px;
+}
+
+.tool-info h3 {
+    margin: 0;
+    font-size: 16px;
+    color: var(--text-primary, #fff);
+}
+
+.tool-position {
+    font-size: 12px;
+    color: var(--text-secondary, #888);
+}
+
+.tool-description {
+    font-size: 13px;
+    color: var(--text-secondary, #888);
+    margin-bottom: 12px;
+}
+
+.btn-more {
+    margin-left: auto;
+    background: transparent;
+    border: 1px solid var(--accent-color, #00D4AA);
+    color: var(--accent-color, #00D4AA);
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s;
+}
+
+.btn-more:hover {
+    background: var(--accent-color, #00D4AA);
+    color: #000;
+}
+
+.tool-opportunities {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.opportunity-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: var(--bg-tertiary, #252540);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.opportunity-item:hover {
+    background: var(--bg-hover, #303050);
+}
+
+.opportunity-item.buy { border-left: 3px solid #00D4AA; }
+.opportunity-item.sell { border-left: 3px solid #EF4444; }
+.opportunity-item.hold { border-left: 3px solid #888; }
+
+.opp-symbol {
+    font-weight: 600;
+    min-width: 50px;
+}
+
+.opp-price {
+    color: var(--text-secondary, #888);
+    font-size: 13px;
+}
+
+.opp-change {
+    margin-left: auto;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.opp-change.positive { color: #00D4AA; }
+.opp-change.negative { color: #EF4444; }
+
+.opp-signal {
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.opp-signal.strong_buy, .opp-signal.buy { background: rgba(0, 212, 170, 0.2); color: #00D4AA; }
+.opp-signal.strong_sell, .opp-signal.sell { background: rgba(239, 68, 68, 0.2); color: #EF4444; }
+.opp-signal.hold { background: rgba(136, 136, 136, 0.2); color: #888; }
+
+.market-section {
+    margin-top: 24px;
+    padding: 16px;
+    background: var(--bg-secondary, #1a1a2e);
+    border-radius: 12px;
+}
+
+.market-section h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    color: var(--text-primary, #fff);
+}
+
+/* 赚钱机会列表 */
+.opportunities-list, .strategies-list, .oracle-hot-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.opportunity-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    background: var(--bg-tertiary, #252540);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.opportunity-row:hover { background: var(--bg-hover, #303050); }
+.opportunity-row.buy { border-left: 3px solid #00D4AA; }
+.opportunity-row.sell { border-left: 3px solid #EF4444; }
+.opportunity-row.hold { border-left: 3px solid #888; }
+
+.opp-category {
+    font-size: 11px;
+    padding: 2px 6px;
+    background: var(--bg-tertiary, #252540);
+    border-radius: 4px;
+    color: var(--text-secondary, #888);
+}
+
+.opp-confidence {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--text-secondary, #888);
+}
+
+/* 策略胜率 */
+.strategy-item {
+    padding: 10px 14px;
+    background: var(--bg-tertiary, #252540);
+    border-radius: 8px;
+}
+
+.strategy-name {
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.strategy-winrate {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+.winrate-bar {
+    height: 6px;
+    background: linear-gradient(90deg, #00D4AA, #7C3AED);
+    border-radius: 3px;
+    max-width: 100%;
+}
+
+.strategy-winrate span {
+    font-size: 14px;
+    font-weight: 600;
+    color: #00D4AA;
+}
+
+.strategy-meta {
+    display: flex;
+    gap: 16px;
+    font-size: 12px;
+    color: var(--text-secondary, #888);
+}
+
+/* Oracle热点 */
+.sentiment-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.sentiment-badge.extremely_bullish { background: rgba(0, 212, 170, 0.2); color: #00D4AA; }
+.sentiment-badge.bullish { background: rgba(0, 212, 170, 0.15); color: #00D4AA; }
+.sentiment-badge.neutral { background: rgba(136, 136, 136, 0.2); color: #888; }
+.sentiment-badge.bearish { background: rgba(239, 68, 68, 0.15); color: #EF4444; }
+.sentiment-badge.extremely_bearish { background: rgba(239, 68, 68, 0.2); color: #EF4444; }
+
+.hot-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+    background: var(--bg-tertiary, #252540);
+    border-radius: 8px;
+}
+
+.hot-topic {
+    flex: 1;
+}
+
+.hot-confidence {
+    color: var(--text-secondary, #888);
+    font-size: 13px;
+}
+
+.hot-source {
+    font-size: 11px;
+    padding: 2px 6px;
+    background: var(--bg-secondary, #1a1a2e);
+    border-radius: 4px;
+    color: var(--text-secondary, #888);
+}
+
+/* 模态框 */
+.market-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: var(--bg-secondary, #1a1a2e);
+    border-radius: 16px;
+    padding: 24px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.modal-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: none;
+    color: var(--text-secondary, #888);
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.modal-close:hover { color: #fff; }
+
+.order-dialog h2, .order-preview h2 {
+    margin-top: 0;
+}
+
+.order-info, .preview-info {
+    background: var(--bg-tertiary, #252540);
+    padding: 16px;
+    border-radius: 8px;
+    margin: 16px 0;
+}
+
+.order-row, .preview-info p {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border-color, #2a2a4a);
+}
+
+.order-row:last-child, .preview-info p:last-child {
+    border-bottom: none;
+}
+
+.order-form {
+    margin: 16px 0;
+}
+
+.order-form label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.order-form input {
+    width: 100%;
+    padding: 10px;
+    background: var(--bg-tertiary, #252540);
+    border: 1px solid var(--border-color, #2a2a4a);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 16px;
+}
+
+.order-actions, .preview-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.btn-confirm, .btn-execute {
+    flex: 1;
+    padding: 12px;
+    background: #00D4AA;
+    border: none;
+    border-radius: 8px;
+    color: #000;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-confirm:hover, .btn-execute:hover { background: #00E4BA; }
+
+.btn-cancel, .btn-back {
+    flex: 1;
+    padding: 12px;
+    background: var(--bg-tertiary, #252540);
+    border: 1px solid var(--border-color, #2a2a4a);
+    border-radius: 8px;
+    color: var(--text-primary, #fff);
+    cursor: pointer;
+}
+
+.btn-cancel:hover, .btn-back:hover { background: var(--bg-hover, #303050); }
+
+.green { color: #00D4AA; }
+.red { color: #EF4444; }
+.gray { color: #888; }
+
+.no-opportunities {
+    text-align: center;
+    padding: 20px;
+    color: var(--text-secondary, #888);
+}

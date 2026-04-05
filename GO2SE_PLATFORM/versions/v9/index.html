@@ -180,6 +180,10 @@
             <span class="item-icon">📞</span>
             <span class="item-text">联系</span>
           </a>
+          <a href="#market" class="sidebar-item" data-section="market">
+            <span class="item-icon">📈</span>
+            <span class="item-text">市场机会</span>
+          </a>
         </div>
         <div class="sidebar-footer">
           <button class="pin-btn" id="pinBtn" title="置顶当前板块">📌 置顶</button>
@@ -259,6 +263,46 @@
                 <span class="bar-label">FreqTrade</span>
                 <div class="bar-fill competitor">55%</div>
               </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== 🪿 市场介绍模块 v1.8.7 ========== -->
+        <section class="content-section" id="market">
+          <div class="section-header">
+            <h2>📈 市场机会 - 北斗七鑫</h2>
+            <div class="section-actions">
+              <button class="action-btn" onclick="MarketModule.loadAllTools()">🔄 刷新</button>
+            </div>
+          </div>
+          
+          <!-- 7+2工具市场数据 -->
+          <div class="market-tools-grid" id="market-tools-grid">
+            <!-- 动态加载 -->
+            <div class="loading">加载中...</div>
+          </div>
+          
+          <!-- 赚钱机会 -->
+          <div class="market-section">
+            <h3>💰 所有赚钱机会</h3>
+            <div class="opportunities-list" id="opportunities-list">
+              <!-- 动态加载 -->
+            </div>
+          </div>
+          
+          <!-- 策略胜率 -->
+          <div class="market-section">
+            <h3>📊 策略胜率</h3>
+            <div class="strategies-list" id="strategies-list">
+              <!-- 动态加载 -->
+            </div>
+          </div>
+          
+          <!-- Oracle热点 -->
+          <div class="market-section">
+            <h3>🔮 Oracle热点</h3>
+            <div class="oracle-hot-list" id="oracle-hot-list">
+              <!-- 动态加载 -->
             </div>
           </div>
         </section>
@@ -1735,5 +1779,6 @@
   </div>
 
   <script src="js/app.js"></script>
+  <script src="../frontend/js/market_module.js"></script>
 </body>
 </html>

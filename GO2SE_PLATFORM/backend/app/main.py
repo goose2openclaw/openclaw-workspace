@@ -35,6 +35,7 @@ from app.api.routes_public import router as public_router
 from app.api.routes_dual_brain import router as dual_brain_router
 from app.api.routes_hermes import hermes_router
 from app.api.routes_go2se_v9 import router as go2se_v9_router
+from app.api.routes_market_module import router as market_module_router
 
 # 日志配置
 logging.basicConfig(
@@ -145,6 +146,7 @@ app.include_router(mapping_router, tags=["Mapping"])
 app.include_router(dual_brain_router, tags=["双脑架构"])
 app.include_router(hermes_router, tags=["Hermes智能"])
 app.include_router(go2se_v9_router, tags=["GO2SE V9"])
+app.include_router(market_module_router, tags=["市场模块"])
 
 
 @app.get("/")
