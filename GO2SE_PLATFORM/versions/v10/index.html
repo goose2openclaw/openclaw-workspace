@@ -14,20 +14,42 @@
   <div id="splash" class="splash">
     <div class="splash-content">
       <div class="goose-logo">
-        <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
-          <ellipse cx="60" cy="65" rx="35" ry="28" fill="currentColor" class="goose-body"/>
-          <circle cx="85" cy="40" r="18" fill="currentColor" class="goose-head"/>
-          <circle cx="90" cy="36" r="4" fill="#0A0E17"/>
-          <circle cx="91" cy="35" r="1.5" fill="white"/>
-          <path d="M98 42 L108 44 L98 48 Z" fill="#F59E0B"/>
-          <ellipse cx="50" cy="60" rx="20" ry="15" fill="currentColor" class="goose-wing" transform="rotate(-20 50 60)"/>
-          <path d="M35 95 L30 110 M40 93 L38 108 M45 92 L45 107" stroke="#EF4444" stroke-width="4" stroke-linecap="round"/>
+        <svg class="goose-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="gooseGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#ffffff"/>
+              <stop offset="50%" style="stop-color:#f0f0f0"/>
+              <stop offset="100%" style="stop-color:#e0e0e0"/>
+            </linearGradient>
+            <filter id="gooseShadow" x="-50%" y="-50%" width="200%" height="200%">
+              <feDropShadow dx="0" dy="10" stdDeviation="15" flood-color="#000" flood-opacity="0.3"/>
+            </filter>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+              <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
+          <ellipse class="goose-body" cx="100" cy="120" rx="55" ry="45" fill="url(#gooseGradient)" filter="url(#gooseShadow)"/>
+          <path class="goose-neck" d="M130 100 Q150 80 145 50 Q140 30 130 25" stroke="url(#gooseGradient)" stroke-width="18" fill="none" stroke-linecap="round"/>
+          <circle class="goose-head" cx="130" cy="30" r="22" fill="url(#gooseGradient)"/>
+          <circle cx="138" cy="26" r="5" fill="#1a1a2e"/>
+          <circle cx="140" cy="24" r="2" fill="#fff"/>
+          <path d="M145 35 L165 38 L145 42 Z" fill="#ff9500"/>
+          <ellipse class="goose-wing" cx="80" cy="110" rx="35" ry="25" fill="url(#gooseGradient)" transform="rotate(-15 80 110)"/>
+          <path d="M85 160 L75 180 M85 160 L85 182 M85 160 L95 180" stroke="#ff9500" stroke-width="4" stroke-linecap="round"/>
+          <path d="M115 160 L105 180 M115 160 L115 182 M115 160 L125 180" stroke="#ff9500" stroke-width="4" stroke-linecap="round"/>
+          <circle class="signal-ring signal-ring-1" cx="130" cy="30" r="35" fill="none" stroke="#00d4ff" stroke-width="2" opacity="0.6"/>
+          <circle class="signal-ring signal-ring-2" cx="130" cy="30" r="50" fill="none" stroke="#00d4ff" stroke-width="1.5" opacity="0.4"/>
+          <circle class="signal-ring signal-ring-3" cx="130" cy="30" r="65" fill="none" stroke="#00d4ff" stroke-width="1" opacity="0.2"/>
         </svg>
       </div>
       <div class="splash-text">
-        <h1 class="goose-title">GO2SE</h1>
-        <p class="goose-slogan">AI优雅薅羊毛</p>
-        <p class="goose-slogan-sub">Crypto量化投资</p>
+        <h1 class="goose-title">🪿 GO2SE</h1>
+        <p class="goose-slogan">AI优雅薅羊毛 & 高频量化</p>
+        <p class="goose-slogan-sub">Crypto Quantitative Investment</p>
       </div>
       <div class="progress-container">
         <div class="progress-bar">
@@ -42,7 +64,7 @@
   <!-- ========== 主应用 ========== -->
   <div id="app" class="app hidden">
     <!-- 顶头导航栏 -->
-    <header class="top-nav">
+    <header class="top-nav" id="topNav">
       <div class="nav-left">
         <div class="theme-switcher">
           <button class="theme-btn active" data-theme="dark" title="深色模式">🌙</button>
@@ -53,24 +75,33 @@
           <button class="lang-btn active" data-lang="zh">中</button>
           <button class="lang-btn" data-lang="en">EN</button>
         </div>
+      </div>
+      
+      <!-- 五大模块快捷键 - 固定显示 -->
+      <div class="nav-shortcuts" id="navShortcuts">
+        <button class="shortcut-btn active" data-section="attention" title="attention">🏠 首页</button>
+        <button class="shortcut-btn" data-section="asset" title="asset">💰 资产</button>
+        <button class="shortcut-btn" data-section="beidou" title="beidou">🎯 北斗</button>
+        <button class="shortcut-btn" data-section="engineer" title="engineer">⚙️ 工程</button>
+        <button class="shortcut-btn" data-section="ninja" title="ninja">🥷 专家</button>
+      </div>
+      
+      <!-- 双脑切换 -->
+      <div class="brain-toggle" id="brainToggle">
+        <span class="brain-label" id="brainLabel">🧠左脑</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="brainSwitch">
+          <span class="toggle-slider"></span>
+        </label>
+        <span class="brain-mode" id="brainMode">普通</span>
+        <kbd class="hotkey">B</kbd>
+      </div>
+      
+      <div class="nav-right">
         <div class="breathing-light" id="breathingLight" title="系统状态">
           <span class="light-dot"></span>
           <span class="light-ring"></span>
         </div>
-      </div>
-      <div class="nav-center">
-        <span class="nav-brand">🪿 GO2SE</span>
-        <!-- 双脑切换 -->
-        <div class="brain-toggle" id="brainToggle">
-          <span class="brain-label" id="brainLabel">🧠左脑</span>
-          <label class="toggle-switch">
-            <input type="checkbox" id="brainSwitch">
-            <span class="toggle-slider"></span>
-          </label>
-          <span class="brain-mode" id="brainMode">普通</span>
-        </div>
-      </div>
-      <div class="nav-right">
         <div class="im-status" id="imStatus">
           <span class="im-icon">💬</span>
           <span class="im-dot online"></span>
@@ -590,7 +621,7 @@
           <!-- 信号输入 -->
           <div class="signal-grid">
             <div class="signal-card">
-              <h3>G1 交易所API</h3>
+              <h3>交易所API</h3>
               <div class="api-list">
                 <div class="api-item"><span class="api-name">Binance</span><span class="api-status connected">已连接</span></div>
                 <div class="api-item"><span class="api-name">OKX</span><span class="api-status connected">已连接</span></div>
@@ -598,7 +629,7 @@
               </div>
             </div>
             <div class="signal-card">
-              <h3>G2 Oracle及市场情绪</h3>
+              <h3>Oracle及市场情绪</h3>
               <div class="oracle-list">
                 <div class="oracle-item"><span class="oracle-name">MiroFish</span><span class="oracle-signal bull">看涨 72%</span></div>
                 <div class="oracle-item"><span class="oracle-name">CoinGecko</span><span class="oracle-signal neutral">中性</span></div>
@@ -606,7 +637,7 @@
               </div>
             </div>
             <div class="signal-card full">
-              <h3>G3 仿真信号状态</h3>
+              <h3>仿真信号状态</h3>
               <div class="signal-status-grid">
                 <div class="sig-level"><span class="sig-label">平台</span><div class="sig-bar"><div class="sig-fill" style="width: 78%"></div></div><span class="sig-pct">78%</span></div>
                 <div class="sig-level"><span class="sig-label">工具</span><div class="sig-bar"><div class="sig-fill" style="width: 82%"></div></div><span class="sig-pct">82%</span></div>
@@ -628,7 +659,7 @@
 
             <div class="strategy-grid">
               <div class="strategy-card">
-                <h4>H1 策略逻辑架构</h4>
+                <h4>策略逻辑架构</h4>
                 <div class="strategy-flow">
                   <div class="flow-node">信号输入</div>
                   <div class="flow-arrow">→</div>
@@ -640,7 +671,7 @@
                 </div>
               </div>
               <div class="strategy-card">
-                <h4>H3 当前策略组合</h4>
+                <h4>当前策略组合</h4>
                 <div class="strategy-list">
                   <div class="strategy-item">
                     <span class="strat-name">EMA交叉</span>
@@ -664,7 +695,7 @@
                 </div>
               </div>
               <div class="strategy-card">
-                <h4>H7 声纳库 (123趋势模型)</h4>
+                <h4>声纳库 (123趋势模型)</h4>
                 <div class="sonar-grid">
                   <div class="sonar-item bull"><span class="sonar-name">EMA20 > EMA50</span><span class="sonar-signal">看涨</span></div>
                   <div class="sonar-item bull"><span class="sonar-name">MACD > Signal</span><span class="sonar-signal">看涨</span></div>
@@ -709,7 +740,7 @@
           <div class="customize-grid">
             <!-- J1: 竞品集成 -->
             <div class="customize-card">
-              <h3>J1 竞品集成</h3>
+              <h3>竞品集成</h3>
               <p>一键接入外部平台策略，克隆并优化</p>
               <div class="competitor-list">
                 <div class="competitor-item">
@@ -729,7 +760,7 @@
 
             <!-- J2: 竞品监控 -->
             <div class="customize-card">
-              <h3>J2 竞品监控</h3>
+              <h3>竞品监控</h3>
               <div class="competitor-monitor">
                 <div class="monitor-item">
                   <span>3Commas胜率</span>
@@ -747,7 +778,7 @@
 
             <!-- J3: 鹅伙人+机器学习(高订Feature)+专家定制 -->
             <div class="customize-card full">
-              <h3>J3 鹅伙人权益 + 🤖机器学习(高订) + 专家模式</h3>
+              <h3>鹅伙人权益 + 🤖机器学习(高订) + 专家模式</h3>
               <div class="customization-panel">
                 <div class="custom-section">
                   <h4>交易习惯学习</h4>
@@ -836,7 +867,7 @@
 
           <div class="security-grid">
             <div class="security-card">
-              <h3>I1 前端安全</h3>
+              <h3>前端安全</h3>
               <div class="security-items">
                 <div class="security-item"><span class="sec-icon">✓</span><span>XSS防护</span></div>
                 <div class="security-item"><span class="sec-icon">✓</span><span>CSRF Token</span></div>
@@ -1069,7 +1100,7 @@
     
     <div class="eng-grid">
       <div class="eng-card">
-        <h3>N1 AI Debug</h3>
+        <h3>AI Debug</h3>
         <div class="debug-panel">
           <textarea class="debug-input" placeholder="描述问题或错误..."></textarea>
           <button class="debug-run">MiroFish仿真诊断</button>
@@ -1080,7 +1111,7 @@
         </div>
       </div>
       <div class="eng-card">
-        <h3>N2 终端 Termux</h3>
+        <h3>终端 Termux</h3>
         <div class="terminal-preview">
           <div class="terminal-header">
             <span class="term-dot red"></span>
@@ -1097,7 +1128,7 @@
         <button class="term-btn">打开终端</button>
       </div>
       <div class="eng-card">
-        <h3>N3 数据指令通道</h3>
+        <h3>数据指令通道</h3>
         <div class="channel-config">
           <div class="channel-item"><span>API Gateway</span><span class="channel-status">:8004</span></div>
           <div class="channel-item"><span>WebSocket</span><span class="channel-status">:8005</span></div>
@@ -1105,7 +1136,7 @@
         </div>
       </div>
       <div class="eng-card full">
-        <h3>N4 专家全部参数</h3>
+        <h3>专家全部参数</h3>
         <div class="expert-params">
           <div class="param-group">
             <h4>投资参数</h4>
@@ -1156,6 +1187,7 @@
   </div>
 
   <script src="js/app.js"></script>
+  <script src="js/api-bridge.js"></script>
   <script>
     // 双脑切换
     const brainSwitch = document.getElementById('brainSwitch');
@@ -1179,6 +1211,35 @@
       const hb = document.getElementById('heartbeatVal');
       if (hb) hb.textContent = 70 + Math.floor(Math.random() * 15);
     }, 1000);
+    
+    // 键盘快捷键
+    document.addEventListener('keydown', function(e) {
+      // B键 - 双脑切换
+      if (e.key === 'b' || e.key === 'B') {
+        if (brainSwitch) {
+          brainSwitch.checked = !brainSwitch.checked;
+          brainSwitch.dispatchEvent(new Event('change'));
+        }
+      }
+      // 1-5 快捷导航
+      if (e.key >= '1' && e.key <= '5') {
+        const sections = ['attention', 'asset', 'beidou', 'engineer', 'ninja'];
+        const idx = parseInt(e.key) - 1;
+        const btn = document.querySelector(`.shortcut-btn[data-section="${sections[idx]}"]`);
+        if (btn) btn.click();
+      }
+    });
+    
+    // 快捷导航点击
+    document.querySelectorAll('.shortcut-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.shortcut-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        const section = this.dataset.section;
+        const target = document.getElementById(section) || document.querySelector(`[data-section="${section}"]`);
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
   </script>
 </body>
 </html>

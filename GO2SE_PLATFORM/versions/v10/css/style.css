@@ -500,7 +500,7 @@ h4 { font-size: var(--text-lg); }
 
 /* ---------- Sidebar ---------- */
 .sidebar {
-  width: 180px;
+  width: 220px;
   background: var(--bg-secondary);
   border-right: 1px solid var(--border-color);
   padding: var(--space-4);
@@ -3706,4 +3706,55 @@ input[type="checkbox"] {
 @keyframes pulse {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.5; transform: scale(1.2); }
+}
+
+/* ========== Nav Shortcuts (Fixed in Header) ========== */
+.nav-shortcuts {
+  display: flex;
+  gap: 4px;
+  position: sticky;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  background: var(--bg-primary);
+  padding: 4px 8px;
+  border-radius: var(--radius-lg);
+}
+.shortcut-btn {
+  padding: 6px 12px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+.shortcut-btn:hover {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+.shortcut-btn.active {
+  background: var(--accent-primary);
+  color: white;
+  border-color: var(--accent-primary);
+}
+
+/* Brain Toggle Hotkey */
+.hotkey {
+  padding: 2px 6px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 4px;
+  font-size: 10px;
+  font-family: var(--font-mono);
+  margin-left: 4px;
+}
+
+/* ========== Sticky Header ========== */
+.top-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg-primary);
 }
