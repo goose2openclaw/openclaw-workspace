@@ -4015,12 +4015,11 @@ img, svg {
   box-shadow: 0 2px 12px rgba(0, 212, 170, 0.3);
 }
 
-/* Mobile: Stack header layers */
+/* Mobile: Keep header intact, only adjust sizing */
 @media (max-width: 768px) {
   .nav-status-bar {
-    flex-wrap: wrap;
-    gap: 8px;
-    padding: 8px;
+    padding: 6px 8px;
+    gap: 6px;
   }
   
   .nav-brand {
@@ -4028,26 +4027,24 @@ img, svg {
   }
   
   .nav-shortcuts {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    top: auto;
-    padding: 8px;
-    justify-content: space-around;
-    border-top: 1px solid var(--border-color);
-    z-index: 1000;
+    padding: 6px 4px;
+    gap: 2px;
+    overflow-x: auto;
   }
   
   .shortcut-btn {
-    padding: 8px 12px;
+    padding: 6px 8px;
     font-size: 11px;
-    flex-direction: column;
-    gap: 2px;
+    white-space: nowrap;
   }
   
-  .main-content {
-    padding-bottom: 70px !important;
+  .brain-toggle {
+    padding: 4px 8px;
+    font-size: 11px;
+  }
+  
+  .theme-switcher, .lang-switcher {
+    padding: 2px;
   }
 }
 
