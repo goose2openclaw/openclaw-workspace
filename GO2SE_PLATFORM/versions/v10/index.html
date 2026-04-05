@@ -60,6 +60,15 @@
       </div>
       <div class="nav-center">
         <span class="nav-brand">🪿 GO2SE</span>
+        <!-- 双脑切换 -->
+        <div class="brain-toggle" id="brainToggle">
+          <span class="brain-label" id="brainLabel">🧠左脑</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="brainSwitch">
+            <span class="toggle-slider"></span>
+          </label>
+          <span class="brain-mode" id="brainMode">普通</span>
+        </div>
       </div>
       <div class="nav-right">
         <div class="im-status" id="imStatus">
@@ -310,6 +319,21 @@
               <div class="wallet-node"><span class="node-icon">💰</span><span class="node-name">薅羊毛</span><span class="node-balance">$255</span></div>
               <div class="wallet-node"><span class="node-icon">👶</span><span class="node-name">穷孩子</span><span class="node-balance">$170</span></div>
             </div>
+            <!-- CEX/DEX API 集成 -->
+            <div class="exchange-api-panel">
+              <h4>📡 交易所API</h4>
+              <div class="api-status-row">
+                <div class="api-item"><span class="api-name">Binance CEX</span><span class="api-dot online"></span></div>
+                <div class="api-item"><span class="api-name">Bybit CEX</span><span class="api-dot online"></span></div>
+                <div class="api-item"><span class="api-name">OKX CEX</span><span class="api-dot online"></span></div>
+                <div class="api-item"><span class="api-name">DEX 合约</span><span class="api-dot standby"></span></div>
+              </div>
+              <div class="profit回流-row">
+                <span>💰 盈利回流:</span>
+                <span class="回流-rate">10%</span>
+                <span class="回流-status">运行中</span>
+              </div>
+            </div>
             <div class="wallet-connection-status">
               <span class="status-dot online"></span>
               <span>连接正常</span>
@@ -513,6 +537,45 @@
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+          
+          <!-- 🦞 龙虾模块: 复盘-仿真-迭代 -->
+          <div class="lobster-module">
+            <h3>🦞 龙虾模块</h3>
+            <div class="lobster-cards">
+              <div class="lobster-card">
+                <div class="lobster-icon">🔄</div>
+                <h4>复盘 Retro</h4>
+                <p>gstack 15人团队评审</p>
+                <span class="lobster-trigger">Sprint周期</span>
+                <button class="lobster-btn">启动复盘</button>
+              </div>
+              <div class="lobster-card">
+                <div class="lobster-icon">🧪</div>
+                <h4>仿真 Simulation</h4>
+                <p>MiroFish 1000智能体</p>
+                <span class="lobster-trigger auto">自动触发</span>
+                <button class="lobster-btn">启动仿真</button>
+              </div>
+              <div class="lobster-card">
+                <div class="lobster-icon">⚡</div>
+                <h4>迭代 Optimization</h4>
+                <p>策略参数优化</p>
+                <span class="lobster-trigger">每24小时</span>
+                <button class="lobster-btn">优化参数</button>
+              </div>
+            </div>
+            <div class="lobster-flow">
+              <span class="flow-step">信号</span>
+              <span class="flow-arrow">→</span>
+              <span class="flow-step">龙虾仿真</span>
+              <span class="flow-arrow">→</span>
+              <span class="flow-step">策略更新</span>
+              <span class="flow-arrow">→</span>
+              <span class="flow-step">执行</span>
+              <span class="flow-arrow">↩️</span>
+              <span class="flow-step">复盘</span>
             </div>
           </div>
         </section>
@@ -975,6 +1038,35 @@
       <h2>🥷 工程模式</h2>
       <span class="section-tag expert">专家专属</span>
     </div>
+    
+    <!-- 🧠 双脑控制系统 -->
+    <div class="brain-control-panel">
+      <h3>🧠 双脑控制系统</h3>
+      <div class="brain-status-row">
+        <div class="brain-unit left">
+          <span class="brain-icon">🧠</span>
+          <span class="brain-name">左脑</span>
+          <span class="brain-mode-tag">普通模式</span>
+          <span class="brain-leverage">2.0x</span>
+          <span class="brain-status-dot standby"></span>
+        </div>
+        <div class="brain-vs">VS</div>
+        <div class="brain-unit right active">
+          <span class="brain-icon">🧠</span>
+          <span class="brain-name">右脑</span>
+          <span class="brain-mode-tag">专家模式</span>
+          <span class="brain-leverage">3.0x</span>
+          <span class="brain-status-dot active"></span>
+        </div>
+      </div>
+      <div class="brain-manager-row">
+        <span class="brain-mgr-label">🧠 BrainManager</span>
+        <span class="heartbeat">💓 <span id="heartbeatVal">76</span> BPM</span>
+        <span class="switch-log">上次切换: <span id="lastSwitchTime">2小时前</span></span>
+        <button class="brain-switch-btn" id="brainSwitchBtn">切换脑</button>
+      </div>
+    </div>
+    
     <div class="eng-grid">
       <div class="eng-card">
         <h3>N1 AI Debug</h3>
@@ -1064,5 +1156,29 @@
   </div>
 
   <script src="js/app.js"></script>
+  <script>
+    // 双脑切换
+    const brainSwitch = document.getElementById('brainSwitch');
+    const brainLabel = document.getElementById('brainLabel');
+    const brainMode = document.getElementById('brainMode');
+    if (brainSwitch) {
+      brainSwitch.addEventListener('change', function() {
+        if (this.checked) {
+          brainLabel.textContent = '🧠右脑';
+          brainMode.textContent = '专家';
+          brainMode.style.color = '#ef4444';
+        } else {
+          brainLabel.textContent = '🧠左脑';
+          brainMode.textContent = '普通';
+          brainMode.style.color = '#3b82f6';
+        }
+      });
+    }
+    // 心跳模拟
+    setInterval(() => {
+      const hb = document.getElementById('heartbeatVal');
+      if (hb) hb.textContent = 70 + Math.floor(Math.random() * 15);
+    }, 1000);
+  </script>
 </body>
 </html>

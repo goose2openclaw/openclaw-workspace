@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GO2SE V6+V9 - 完整整合版</title>
+  <title>GO2SE V9 - 双脑架构</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -480,41 +480,16 @@
       font-size: 1.5rem;
       color: var(--primary);
     }
-  
-        /* Hermes Panel */
-        .hermes-stats { display: flex; justify-content: space-around; margin-bottom: 1rem; }
-        .hermes-btn { flex: 1; min-width: 70px; padding: 0.75rem; background: var(--bg-dark); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; color: var(--text); cursor: pointer; transition: all 0.2s; }
-        .hermes-btn:hover { background: rgba(0,212,170,0.1); border-color: var(--primary); }
-        .hermes-btn.primary { background: var(--primary); color: var(--bg-dark); border-color: var(--primary); }
-    
-</style>
+  </style>
 </head>
 <body>
   <div id="app">
     <header class="header">
       <div class="logo">
         <h1>🪿 GO2SE V9</h1>
-        <span class="version-badge">V6+V9</span>
+        <span class="version-badge">dual-brain</span>
       </div>
       <div class="status-badge" id="status-badge">🧠 左脑</div>
-        <div class="brain-switcher">
-            <div class="brain-indicator active" id="left-brain" onclick="switchBrain('left')">
-                <span class="brain-icon">🧠</span>
-                <span class="brain-label">左脑</span>
-                <span class="brain-mode">普通</span>
-                <div class="health-bar"><div class="health-fill" style="width:100%"></div></div>
-            </div>
-            <div class="switch-arrow">
-                <button onclick="switchBrainToggle()">⬌</button>
-            </div>
-            <div class="brain-indicator" id="right-brain" onclick="switchBrain('right')">
-                <span class="brain-icon">🧠</span>
-                <span class="brain-label">右脑</span>
-                <span class="brain-mode">专家</span>
-                <div class="health-bar"><div class="health-fill" style="width:100%"></div></div>
-            </div>
-        </div>
-
     </header>
     
     <nav class="nav">
@@ -808,96 +783,9 @@
     async function runOpt() { try { await fetch(`${API}/lobster/optimization`, { method: 'POST' }); } catch (e) {} }
     async function runFull() { try { await fetch(`${API}/lobster/full-cycle`, { method: 'POST' }); } catch (e) {} }
     
-    
-    // Hermes functions
-    async function hermesStatus() {
-        try {
-            const res = await fetch('/api/hermes/status');
-            const data = await res.json();
-            document.getElementById('hermes-iterations').textContent = data.stats.total_iterations;
-            document.getElementById('hermes-memory').textContent = data.memory.episodic_size + data.memory.semantic_size;
-            document.getElementById('hermes-skills').textContent = data.memory.skills_count;
-        } catch(e) { console.log('Hermes API not available'); }
-    }
-    
-    async function hermesLearn() {
-        try {
-            await fetch('/api/hermes/learn', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ context: 'GO2SE优化迭代', action: '策略调整', result: '成功', score_delta: 0.05 })
-            });
-            hermesStatus();
-        } catch(e) { console.log('Hermes learn failed'); }
-    }
-    
-    async function hermesIterate() {
-        try {
-            await fetch('/api/hermes/iterate', { method: 'POST' });
-            hermesStatus();
-        } catch(e) { console.log('Hermes iterate failed'); }
-    }
-    
-    // Auto-refresh Hermes status
-    setInterval(hermesStatus, 30000);
-    
-    
-        // Dual Brain functions
-        let activeBrain = 'left';
-        
-        async function switchBrain(target) {
-            try {
-                await fetch('/api/dual-brain/switch', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ target })
-                });
-                activeBrain = target;
-                updateBrainUI();
-                fetchStatus();
-            } catch(e) { console.log('Switch failed'); }
-        }
-        
-        function switchBrainToggle() {
-            switchBrain(activeBrain === 'left' ? 'right' : 'left');
-        }
-        
-        function updateBrainUI() {
-            document.getElementById('left-brain').classList.toggle('active', activeBrain === 'left');
-            document.getElementById('right-brain').classList.toggle('active', activeBrain === 'right');
-            document.getElementById('status-badge').textContent = '🧠 ' + (activeBrain === 'left' ? '左脑' : '右脑');
-        }
-        
-        // Fetch status and update wallet
-        async function fetchStatus() {
-            try {
-                const res = await fetch('/api/dual-brain/status');
-                const data = await res.json();
-                const bm = data.brain_manager || {};
-                
-                // Update brain status
-                document.getElementById('wallet-main').textContent = '$' + (data.wallet?.main_wallet?.balance || 100000).toLocaleString();
-                document.getElementById('wallet-transfer').textContent = '$' + (data.wallet?.transfer_wallet?.balance || 50000).toLocaleString();
-                
-                // Calculate total
-                const main = data.wallet?.main_wallet?.balance || 100000;
-                const transfer = data.wallet?.transfer_wallet?.balance || 50000;
-                document.getElementById('wallet-total').textContent = '$' + (main + transfer).toLocaleString();
-                
-            } catch(e) { console.log('Fetch failed'); }
-        }
-        
-        // Lobster functions
-        async function runRetro() { try { await fetch('/api/dual-brain/lobster/retro', { method: 'POST' }); } catch(e) {} }
-        async function runSim() { try { await fetch('/api/dual-brain/lobster/simulation', { method: 'POST' }); } catch(e) {} }
-        async function runOpt() { try { await fetch('/api/dual-brain/lobster/optimization', { method: 'POST' }); } catch(e) {} }
-        async function runMirofish() { try { await fetch('/api/go2se/v9/scan-and-select', { method: 'POST' }); } catch(e) {} }
-        async function runGstack() { try { await fetch('/api/hermes/iterate', { method: 'POST' }); } catch(e) {} }
-
     // Init
     fetchStatus();
-    setInterval(fetchStatus, 30000);
-    fetchStatus();
+    setInterval(fetchStatus, 5000);
     renderPage();
   </script>
 </body>
