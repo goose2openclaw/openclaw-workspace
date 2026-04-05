@@ -1289,9 +1289,10 @@ class GO2SEFullSimulationV2:
             uvicorn_count = processes.count("uvicorn")
             vite_count = processes.count("vite")
             node_count = processes.count("node")
+            python_http_count = processes.count("http.server")
             zombie_count = processes.count("defunct")
             
-            process_score = 100 if uvicorn_count >= 1 and vite_count >= 1 else 50
+            process_score = 100 if uvicorn_count >= 1 and (vite_count >= 1 or python_http_count >= 1) else 50
             zombie_score = max(0, 100 - zombie_count * 20)
             
             score = (process_score + zombie_score) / 2
