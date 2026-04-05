@@ -4489,3 +4489,368 @@ h4 { font-size: var(--font-size-base); }
   margin-top: 8px;
   opacity: 0.8;
 }
+
+/* ========== 北斗七鑫策略UI ========== */
+.strategy-panel {
+  background: var(--bg-secondary);
+  border-radius: 16px;
+  padding: 20px;
+  margin: 16px 0;
+}
+
+.strategy-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.strategy-title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+}
+
+.strategy-version {
+  font-size: var(--font-size-xs);
+  color: var(--accent-primary);
+  background: rgba(0,212,170,0.1);
+  padding: 4px 12px;
+  border-radius: 12px;
+}
+
+/* 工具卡片 */
+.tool-card {
+  background: var(--bg-tertiary);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  transition: all 0.2s ease;
+}
+
+.tool-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+
+.tool-card.inactive {
+  opacity: 0.5;
+}
+
+.tool-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.tool-card-name {
+  font-weight: 600;
+  font-size: var(--font-size-base);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tool-card-status {
+  font-size: var(--font-size-xs);
+  padding: 2px 8px;
+  border-radius: 8px;
+}
+
+.tool-card-status.active {
+  background: rgba(0,212,170,0.2);
+  color: #00d4aa;
+}
+
+.tool-card-status.inactive {
+  background: rgba(239,68,68,0.2);
+  color: #ef4444;
+}
+
+.tool-card-body {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.tool-param {
+  text-align: center;
+  padding: 8px;
+  background: var(--bg-primary);
+  border-radius: 8px;
+}
+
+.tool-param-label {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.tool-param-value {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  font-family: var(--font-mono);
+}
+
+/* 风格选择器 */
+.style-selector {
+  background: var(--bg-secondary);
+  border-radius: 16px;
+  padding: 16px;
+  margin: 16px 0;
+}
+
+.style-options {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.style-btn {
+  flex: 1;
+  padding: 10px 16px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: var(--font-size-sm);
+}
+
+.style-btn:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+.style-btn.active {
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  border-color: transparent;
+  color: #000;
+  font-weight: 600;
+}
+
+/* 推荐面板 */
+.recommend-panel {
+  background: linear-gradient(135deg, rgba(0,212,170,0.1), rgba(139,92,246,0.1));
+  border: 1px solid var(--accent-primary);
+  border-radius: 16px;
+  padding: 16px;
+  margin: 16px 0;
+}
+
+.recommend-title {
+  font-size: var(--font-size-sm);
+  color: var(--accent-primary);
+  margin-bottom: 12px;
+}
+
+.recommend-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.recommend-item {
+  text-align: center;
+  padding: 12px;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+}
+
+.recommend-item .label {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.recommend-item .value {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--accent-primary);
+}
+
+/* ========== 北斗七鑫控制台 ========== */
+.strategy-badge {
+  padding: 4px 12px;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  color: #000;
+  border-radius: 12px;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+}
+
+.strategy-panel {
+  background: var(--bg-secondary);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border-color);
+}
+
+.strategy-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.strategy-title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+}
+
+.strategy-version {
+  font-size: var(--font-size-xs);
+  color: var(--accent-primary);
+  background: rgba(0,212,170,0.1);
+  padding: 4px 12px;
+  border-radius: 12px;
+}
+
+.mode-style-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.mode-toggle {
+  display: flex;
+  gap: 4px;
+  background: var(--bg-tertiary);
+  padding: 4px;
+  border-radius: 12px;
+}
+
+.mode-btn {
+  padding: 8px 16px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  transition: all 0.2s ease;
+}
+
+.mode-btn:hover {
+  color: var(--text-primary);
+}
+
+.mode-btn.active {
+  background: var(--accent-primary);
+  color: #000;
+  font-weight: 600;
+}
+
+.style-selector-inline {
+  display: flex;
+  gap: 4px;
+  background: var(--bg-tertiary);
+  padding: 4px;
+  border-radius: 12px;
+}
+
+.style-btn {
+  padding: 8px 16px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  transition: all 0.2s ease;
+}
+
+.style-btn:hover {
+  color: var(--text-primary);
+}
+
+.style-btn.active {
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  color: #000;
+  font-weight: 600;
+}
+
+.tools-status-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.tool-status-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 8px;
+  background: var(--bg-tertiary);
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.tool-status-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.tool-status-card .tool-icon {
+  font-size: 24px;
+}
+
+.tool-status-card .tool-name {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+}
+
+.tool-status-card .tool-pct {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  font-family: var(--font-mono);
+}
+
+.tool-status-card .tool-status {
+  font-size: 12px;
+}
+
+.recommend-panel {
+  background: linear-gradient(135deg, rgba(0,212,170,0.1), rgba(139,92,246,0.1));
+  border: 1px solid var(--accent-primary);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.recommend-title {
+  font-size: var(--font-size-sm);
+  color: var(--accent-primary);
+  margin-bottom: 12px;
+}
+
+.recommend-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.recommend-item {
+  text-align: center;
+  padding: 12px;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+}
+
+.recommend-item .label {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.recommend-item .value {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--accent-primary);
+}

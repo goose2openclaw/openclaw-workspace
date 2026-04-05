@@ -270,12 +270,99 @@
         <!-- ========== 1. 注意力板块 ========== -->
         <section class="content-section" id="attention">
           <div class="section-header">
-            <h2>📌 注意力板块</h2>
+            <h2>📌 北斗七鑫控制台</h2>
             <div class="section-actions">
-              <button class="action-btn" id="addPinBtn">+ 置顶</button>
-              <button class="action-btn secondary" id="clearPinsBtn">清除</button>
+              <span class="strategy-badge" id="strategyBadge">v8.3</span>
+              <button class="action-btn" onclick="go2se.loadStrategy()">🔄 刷新</button>
             </div>
           </div>
+          
+          <!-- 策略状态面板 -->
+          <div class="strategy-panel" id="strategyPanel">
+            <div class="strategy-header">
+              <span class="strategy-title">🪿 北斗七鑫投资体系</span>
+              <span class="strategy-version">v8.3-full</span>
+            </div>
+            
+            <!-- 脑模式+风格 -->
+            <div class="mode-style-row">
+              <div class="mode-toggle">
+                <button class="mode-btn active" data-mode="left" onclick="go2se.switchBrainMode('left')">🧠左脑 普通</button>
+                <button class="mode-btn" data-mode="right" onclick="go2se.switchBrainMode('right')">🧠右脑 专家</button>
+              </div>
+              <div class="style-selector-inline">
+                <button class="style-btn" data-style="conservative" onclick="go2se.selectStyle('conservative')">保守</button>
+                <button class="style-btn active" data-style="smooth" onclick="go2se.selectStyle('smooth')">平滑</button>
+                <button class="style-btn" data-style="aggressive" onclick="go2se.selectStyle('aggressive')">积极</button>
+              </div>
+            </div>
+            
+            <!-- 7大工具状态 -->
+            <div class="tools-status-grid" id="toolsStatusGrid">
+              <div class="tool-status-card" data-tool="rabbit">
+                <span class="tool-icon">🐰</span>
+                <span class="tool-name">打兔子</span>
+                <span class="tool-pct">25%</span>
+                <span class="tool-status active">🟢</span>
+              </div>
+              <div class="tool-status-card" data-tool="mole">
+                <span class="tool-icon">🐹</span>
+                <span class="tool-name">打地鼠</span>
+                <span class="tool-pct">20%</span>
+                <span class="tool-status active">🟢</span>
+              </div>
+              <div class="tool-status-card" data-tool="oracle">
+                <span class="tool-icon">🔮</span>
+                <span class="tool-name">走着瞧</span>
+                <span class="tool-pct">15%</span>
+                <span class="tool-status active">🟢</span>
+              </div>
+              <div class="tool-status-card" data-tool="leader">
+                <span class="tool-icon">👑</span>
+                <span class="tool-name">跟大哥</span>
+                <span class="tool-pct">15%</span>
+                <span class="tool-status active">🟢</span>
+              </div>
+              <div class="tool-status-card" data-tool="hitchhiker">
+                <span class="tool-icon">🍀</span>
+                <span class="tool-name">搭便车</span>
+                <span class="tool-pct">10%</span>
+                <span class="tool-status active">🟢</span>
+              </div>
+              <div class="tool-status-card" data-tool="wool">
+                <span class="tool-icon">💰</span>
+                <span class="tool-name">薅羊毛</span>
+                <span class="tool-pct">3%</span>
+                <span class="tool-status active">🟢</span>
+              </div>
+              <div class="tool-status-card" data-tool="poor_kid">
+                <span class="tool-icon">👶</span>
+                <span class="tool-name">穷孩子</span>
+                <span class="tool-pct">2%</span>
+                <span class="tool-status active">🟢</span>
+              </div>
+            </div>
+            
+            <!-- 推荐配置 -->
+            <div class="recommend-panel" id="recommendPanel">
+              <div class="recommend-title">📊 当前推荐配置</div>
+              <div class="recommend-grid">
+                <div class="recommend-item">
+                  <span class="label">脑模式</span>
+                  <span class="value" id="brainModeDisplay">左脑(普通)</span>
+                </div>
+                <div class="recommend-item">
+                  <span class="label">风险风格</span>
+                  <span class="value" id="styleDisplay">平滑</span>
+                </div>
+                <div class="recommend-item">
+                  <span class="label">最大杠杆</span>
+                  <span class="value" id="leverageDisplay">2.0x</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
           <div class="attention-grid" id="attentionGrid">
             <div class="attention-card hot">
               <div class="card-tag">🔥 热门</div>

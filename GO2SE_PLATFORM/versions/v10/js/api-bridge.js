@@ -593,3 +593,195 @@ async function closePosition(positionId) {
     loadSimulationPositions();
   }
 }
+
+// ─── 北斗七鑫策略集成 ─────────────────────────────────────────────
+let strategyData = null;
+let currentStyle = 'smooth';
+let currentBrain = 'left';
+
+async function loadStrategy() {
+  try {
+    const [toolsRes, stylesRes, recommendRes] = await Promise.all([
+      fetch('/api/strategy/tools'),
+      fetch('/api/strategy/styles'),
+      fetch('/api/strategy/recommend')
+    ]);
+    
+    const tools = await toolsRes.json();
+    const styles = await stylesRes.json();
+    const recommend = await recommendRes.json();
+    
+    strategyData = {
+      tools: tools.data || {},
+      styles: styles.data || {},
+      recommend: recommend.data || {}
+    };
+    
+    // 更新UI
+    updateToolsUI(strategyData.tools);
+    updateStylesUI(strategyData.styles);
+    updateRecommendUI(strategyData.recommend);
+    
+    return strategyData;
+  } catch (e) {
+    console.error('Strategy load failed:', e);
+    return null;
+  }
+}
+
+function updateToolsUI(tools) {
+  if (!tools) return;
+  
+  Object.entries(tools).forEach(([id, tool]) => {
+    const card = document.querySelector(`[data-tool="${id}"]`);
+    if (!card) return;
+    
+    const nameEl = card.querySelector('.tool-name');
+    const pctEl = card.querySelector('.tool-pct');
+    const gaugeEl = card.querySelector('.gauge-fill');
+    const statusEl = card.querySelector('.tool-status');
+    
+    if (nameEl) nameEl.textContent = tool.name;
+    if (pctEl) pctEl.textContent = `${tool.weight}%`;
+    if (gaugeEl) gaugeEl.style.setProperty('--gauge-pct', `${tool.weight}%`);
+    
+    // 添加状态
+    if (statusEl) {
+      statusEl.textContent = tool.status === 'active' ? '🟢' : '🔴';
+      statusEl.className = `tool-status ${tool.status === 'active' ? 'active' : 'inactive'}`;
+    }
+  });
+}
+
+function updateStylesUI(styles) {
+  if (!styles) return;
+  
+  const container = document.querySelector('.style-options');
+  if (!container) return;
+  
+  container.innerHTML = Object.entries(styles).map(([id, style]) => `
+    <button class="style-btn ${id === currentStyle ? 'active' : ''}" 
+            data-style="${id}"
+            onclick="selectStyle('${id}')">
+      ${style.emoji || ''} ${style.name}
+    </button>
+  `).join('');
+}
+
+function updateRecommendUI(recommend) {
+  if (!recommend) return;
+  
+  // 更新推荐显示
+  const recommendEl = document.getElementById('strategyRecommend');
+  if (recommendEl) {
+    recommendEl.innerHTML = `
+      <div class="recommend-item">
+        <span class="label">脑模式:</span>
+        <span class="value">${recommend.brain_mode === 'normal' ? '🧠左脑(普通)' : '🧠右脑(专家)'}</span>
+      </div>
+      <div class="recommend-item">
+        <span class="label">风格:</span>
+        <span class="value">${recommend.style || currentStyle}</span>
+      </div>
+      <div class="recommend-item">
+        <span class="label">杠杆:</span>
+        <span class="value">${recommend.leverage || 2}x</span>
+      </div>
+    `;
+  }
+}
+
+async function selectStyle(style) {
+  currentStyle = style;
+  
+  // 更新按钮状态
+  document.querySelectorAll('.style-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.style === style);
+  });
+  
+  // 调用API
+  try {
+    const res = await fetch(`/api/strategy/style/${style}`, { method: 'POST' });
+    const data = await res.json();
+    console.log('Style changed:', data);
+    
+    // 更新工具参数显示
+    if (strategyData?.tools) {
+      updateToolParams(strategyData.tools, style);
+    }
+  } catch (e) {
+    console.error('Style change failed:', e);
+  }
+}
+
+function updateToolParams(tools, style) {
+  Object.entries(tools).forEach(([id, tool]) => {
+    const card = document.querySelector(`[data-tool="${id}"]`);
+    if (!card || !tool.parameters) return;
+    
+    const params = tool.parameters[style];
+    if (!params) return;
+    
+    // 更新显示参数
+    const paramEl = card.querySelector('.tool-params');
+    if (paramEl) {
+      paramEl.innerHTML = `
+        <span>杠杆: ${params.leverage}x</span>
+        <span>止损: ${(params.stop_loss * 100).toFixed(0)}%</span>
+        <span>止盈: ${(params.take_profit * 100).toFixed(0)}%</span>
+      `;
+    }
+  });
+}
+
+async function switchBrainMode(brain) {
+  currentBrain = brain;
+  
+  try {
+    const res = await fetch('/api/brain/switch', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ brain })
+    });
+    const data = await res.json();
+    
+    if (data.status === 'ok') {
+      // 更新UI
+      const label = document.getElementById('brainLabel');
+      const mode = document.getElementById('brainMode');
+      if (label) label.textContent = brain === 'left' ? '🧠左脑' : '🧠右脑';
+      if (mode) mode.textContent = brain === 'left' ? '普通' : '专家';
+      
+      // 更新模式按钮
+      document.querySelectorAll('.mode-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.mode === brain);
+      });
+      
+      console.log('Brain switched:', data.message);
+    }
+  } catch (e) {
+    console.error('Brain switch failed:', e);
+  }
+}
+
+// 初始化策略加载
+document.addEventListener('DOMContentLoaded', () => {
+  // 延迟加载策略
+  setTimeout(loadStrategy, 1000);
+  
+  // 绑定脑模式切换
+  document.querySelectorAll('.mode-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      switchBrainMode(btn.dataset.mode);
+    });
+  });
+});
+
+// 暴露全局
+window.go2se = {
+  ...window.go2se,
+  loadStrategy,
+  selectStyle,
+  switchBrainMode,
+  getStrategy: () => strategyData
+};
