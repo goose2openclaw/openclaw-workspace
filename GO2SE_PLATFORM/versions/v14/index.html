@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GO2SE V14 - 北斗七鑫投资体系</title>
+    <link rel="stylesheet" href="css/style.css?v=2026041401">
+    <style>
+        /* ========== V14 核心布局 ========== */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        :root {
+            --bg-primary: #0A0E17;
+            --bg-secondary: #141923;
+            --bg-tertiary: #1a1f2e;
+            --accent-green: #00D4AA;
+            --accent-purple: #7C3AED;
+            --accent-gold: #F59E0B;
+            --accent-red: #EF4444;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A0AEC0;
+            --text-muted: #718096;
+            --border-color: rgba(255,255,255,0.1);
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        body.light-mode {
+            --bg-primary: #F7FAFC;
+            --bg-secondary: #FFFFFF;
+            --bg-tertiary: #EDF2F7;
+            --text-primary: #1A202C;
+            --text-secondary: #4A5568;
+            --border-color: rgba(0,0,0,0.1);
+        }
+        
+        /* ========== Header ========== */
+        .main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 1000;
+        }
+        
+        .header-left, .header-center, .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+        
+        .logo:hover { background: var(--bg-tertiary); }
+        .logo-icon { font-size: 28px; }
+        .logo-text { font-size: 20px; font-weight: 700; color: var(--accent-green); }
+        .logo-version { font-size: 10px; color: var(--text-muted); }
+        
+        .header-selectors { display: flex; gap: 8px; }
+        .header-select {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        
+        .brain-toggle { display: flex; gap: 4px; background: var(--bg-tertiary); padding: 4px; border-radius: 8px; }
+        .brain-btn {
+            padding: 6px 12px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+        .brain-btn:hover { color: var(--text-primary); }
+        .brain-btn.active { background: var(--accent-purple); color: white; }
+        
+        .status-light {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: var(--bg-tertiary);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .status-light:hover { background: var(--bg-primary); }
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .status-name { font-size: 12px; color: var(--text-secondary); }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .user-mode { font-size: 12px; font-weight: 600; }
+        .admin-level { font-size: 10px; padding: 2px 6px; background: var(--bg-primary); border-radius: 4px; }
+        .user-time { font-size: 11px; color: var(--text-muted); }
+        
+        .header-btn {
+            width: 36px;
+            height: 36px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .header-btn:hover { background: var(--accent-purple); }
+        
+        /* ========== Sidebar ========== */
+        .main-sidebar {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            bottom: 0;
+            width: 200px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            overflow-y: auto;
+            z-index: 900;
+        }
+        
+        .sidebar-header {
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .sidebar-title { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+        
+        .sidebar-section { border-bottom: 1px solid var(--border-color); }
+        
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .sidebar-item:hover { background: var(--bg-tertiary); }
+        .sidebar-item.active { background: rgba(0, 212, 170, 0.1); border-left: 3px solid var(--accent-green); }
+        .sidebar-icon { font-size: 18px; }
+        .sidebar-name { flex: 1; font-size: 14px; }
+        .sidebar-arrow { font-size: 10px; color: var(--text-muted); }
+        
+        .sidebar-subitems { background: var(--bg-primary); }
+        .sidebar-subitem {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px 10px 35px;
+            cursor: pointer;
+            font-size: 13px;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+        }
+        .sidebar-subitem:hover { background: var(--bg-tertiary); color: var(--text-primary); }
+        .sidebar-subitem.active { color: var(--accent-green); background: rgba(0, 212, 170, 0.05); }
+        
+        /* ========== Main Content ========== */
+        .main-content {
+            position: fixed;
+            top: 60px;
+            left: 200px;
+            right: 0;
+            bottom: 0;
+            overflow-y: auto;
+            padding: 20px;
+            background: var(--bg-primary);
+        }
+        
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .content-header h2 { font-size: 24px; color: var(--accent-green); }
+        .content-actions { display: flex; gap: 10px; }
+        .action-btn {
+            padding: 8px 15px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+        .action-btn:hover { background: var(--accent-green); color: #000; }
+        
+        /* ========== Module Grid ========== */
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+        }
+        
+        .module-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .module-card:hover {
+            border-color: var(--accent-green);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0, 212, 170, 0.2);
+        }
+        .module-icon { font-size: 36px; }
+        .module-name { flex: 1; font-size: 16px; font-weight: 600; }
+        .module-arrow { color: var(--text-muted); }
+        
+        /* ========== Module View ========== */
+        .module-view { background: var(--bg-secondary); border-radius: 12px; padding: 20px; }
+        .module-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border-color); }
+        .module-header h3 { font-size: 20px; }
+        .back-btn {
+            padding: 8px 15px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .back-btn:hover { background: var(--accent-green); color: #000; }
+        .module-body { min-height: 400px; }
+        
+        /* ========== Modal ========== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+        .modal-content {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            width: 400px;
+            max-width: 90%;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .modal-header h3 { font-size: 16px; }
+        .modal-header button { background: none; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; }
+        .modal-body { padding: 20px; }
+        .modal-footer { padding: 15px 20px; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; gap: 10px; }
+        .modal-footer button {
+            padding: 10px 20px;
+            background: var(--accent-green);
+            border: none;
+            color: #000;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 5px; }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border-color); }
+        
+        .status-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            margin-bottom: 8px;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .status-option:hover, .status-option.active { background: var(--bg-primary); }
+        
+        /* ========== Panel Styles ========== */
+        .panel-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 14, 23, 0.98);
+            z-index: 1500;
+            overflow: auto;
+        }
+        .panel-container {
+            max-width: 1000px;
+            margin: 30px auto;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+        }
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .panel-header h3 { font-size: 18px; }
+        .panel-close { background: none; border: none; color: var(--text-muted); font-size: 24px; cursor: pointer; }
+        .panel-body { padding: 20px; }
+        
+        /* ========== 4级页面导航 ========== */
+        .level-nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .level-btn {
+            padding: 10px 20px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .level-btn:hover { border-color: var(--accent-green); }
+        .level-btn.active { background: var(--accent-green); color: #000; border-color: var(--accent-green); }
+        
+        /* ========== Footer ========== */
+        .main-footer {
+            position: fixed;
+            bottom: 0;
+            left: 200px;
+            right: 0;
+            height: 40px;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            font-size: 11px;
+            color: var(--text-muted);
+            z-index: 800;
+        }
+        
+        /* ========== Responsive ========== */
+        @media (max-width: 1024px) {
+            .main-sidebar { width: 60px; }
+            .sidebar-name, .sidebar-arrow, .sidebar-title { display: none; }
+            .sidebar-subitem span:last-child { display: none; }
+            .main-content { left: 60px; }
+            .main-footer { left: 60px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header" id="mainHeader"></header>
+    
+    <!-- Sidebar -->
+    <aside class="main-sidebar" id="mainSidebar"></aside>
+    
+    <!-- Content -->
+    <main class="main-content" id="mainContent"></main>
+    
+    <!-- Footer -->
+    <footer class="main-footer">
+        <span>🪿 GO2SE v14 - 北斗七鑫投资体系</span>
+        <span id="footerTime"></span>
+    </footer>
+    
+    <!-- Modal Container -->
+    <div id="modalContainer"></div>
+    
+    <!-- Scripts -->
+    <script src="js/v14-core.js?v=2026041402"></script>
+    <script src="js/v14-modules.js?v=2026041401"></script>
+    <script src="js/macro-micro.js?v=2026041401"></script>
+    <script src="js/trading-modules.js?v=2026041401"></script>
+    <script src="js/asset-distribution.js?v=2026041401"></script>
+    <script src="js/seven-tools.js?v=2026041401"></script>
+    <script src="js/brain-dual.js?v=2026041401"></script>
+    <script src="js/wallet-security.js?v=2026041401"></script>
+    <script src="js/security-module.js?v=2026041401"></script>
+    <script src="js/settings-module.js?v=2026041401"></script>
+    <script src="js/engineer-module.js?v=2026041401"></script>
+    <script src="js/customize-module.js?v=2026041401"></script>
+    
+    <!-- Footer Time Update -->
+    <script>
+        setInterval(function() {
+            var el = document.getElementById('footerTime');
+            if (el) el.textContent = new Date().toLocaleString();
+        }, 1000);
+    </script>
+</body>
+</html>
