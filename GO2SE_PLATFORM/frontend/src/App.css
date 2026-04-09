@@ -783,3 +783,43 @@ body {
 .work-tools {
     border-left: 3px solid #EF4444;
 }
+
+/* 交易面板Tab切换 */
+.trading-section { padding: 20px; }
+.trading-section h2 { margin-bottom: 16px; }
+
+.trading-tabs {
+  display: flex;
+  gap: 4px;
+  background: rgba(255,255,255,0.05);
+  padding: 4px;
+  border-radius: 10px;
+  margin-bottom: 16px;
+}
+.trading-tabs button {
+  flex: 1;
+  padding: 10px 16px;
+  border: none;
+  background: transparent;
+  color: #94A3B8;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+.trading-tabs button:hover { color: white; background: rgba(255,255,255,0.05); }
+.trading-tabs button.active {
+  background: linear-gradient(135deg, #00D4AA, #00A388);
+  color: #0A0E17;
+}
+
+.trading-content {
+  background: rgba(20,25,35,0.8);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 24px;
+  min-height: 300px;
+}
+.trading-content h3 { margin: 0 0 12px 0; }
+.trading-content p { color: #94A3B8; margin: 0; }
