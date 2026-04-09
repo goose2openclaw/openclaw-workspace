@@ -169,3 +169,33 @@ function closeAllStrategies() {
     var panel = document.getElementById('allStrategiesPanel');
     if (panel) panel.style.display = 'none';
 }
+
+// Safety wrapper for module access
+window.getModule = function(moduleName, method, arg) {
+    var module = window[moduleName];
+    if (module && module[method]) {
+        return module[method](arg);
+    }
+    console.warn('Module not ready:', moduleName, method);
+    return null;
+};
+
+// Override inline onclick handlers after DOM load
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+        // Re-attach onclick handlers with safety wrapper
+        document.querySelectorAll('[onclick*="MacroMicro"]').forEach(function(el) {
+            var originalHandler = el.getAttribute('onclick');
+            el.setAttribute('data-original-onclick', originalHandler);
+            el.removeAttribute('onclick');
+            el.addEventListener('click', function() {
+                try {
+                    eval(originalHandler);
+                } catch(e) {
+                    console.error('Handler error:', e);
+                }
+            });
+        });
+        console.log('Module safety wrapper initialized');
+    }, 100);
+});

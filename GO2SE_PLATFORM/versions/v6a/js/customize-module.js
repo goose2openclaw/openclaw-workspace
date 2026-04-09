@@ -1,5 +1,5 @@
 // ========== 可迭代定制化平台模块 ==========
-const CustomizeModule = {
+window.CustomizeModule = {
     state: {
         level: 1,
         activeTab: 'competitor',

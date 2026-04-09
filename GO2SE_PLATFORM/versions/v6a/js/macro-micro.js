@@ -1,5 +1,5 @@
 // ========== 宏观微观模块 ==========
-const MacroMicro = {
+window.MacroMicro = {
     state: {
         level: 1,
         activeTool: null,
@@ -146,10 +146,25 @@ const MacroMicro = {
         ]
     },
 
+    API_BASE: '/api',
+
     init: function() {
         this.loadState();
-        
+        this.fetchSignals();
         console.log('🌐 MacroMicro initialized');
+    },
+
+    fetchSignals: function() {
+        var self = this;
+        fetch(this.API_BASE + '/market/signals/beidou')
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                self.state.signals = data.signals || {};
+                self.state.lastUpdate = new Date().toLocaleTimeString();
+                console.log('📡 MacroMicro signals loaded:', Object.keys(self.state.signals).length);
+                self.renderPanel();
+            })
+            .catch(function(e) { console.error('Signal fetch error:', e); });
     },
 
     loadState: function() {
@@ -493,24 +508,7 @@ const MacroMicro = {
     }
 };
 
-// Auto-init (panel display disabled on load)
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function() { MacroMicro.init(); });
-} else {
-    MacroMicro.init();
-}
-
-
-// Init - Disabled auto-init, call MacroMicro.init() manually when needed
-// // Auto-init restored
-if (document.readyState === 'loading') {
-//     document.addEventListener('DOMContentLoaded', function() { MacroMicro.init(); });
-// } else {
-//     MacroMicro.init();
-// }
-
-
-// Auto-init (panel display disabled on load)
+// Auto-init
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function() { MacroMicro.init(); });
 } else {

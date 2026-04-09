@@ -1,7 +1,7 @@
 // ==========================================================================
 // GO2SE V12 - 交易面板模块 (实时流式)
 // ==========================================================================
-const TradingPanel = {
+window.TradingPanel = {
     state: {
         level: 1,
         activeTab: 'live', // live, backtest, paper, simulation
@@ -65,11 +65,25 @@ const TradingPanel = {
         { step: '执行确认', status: 'pending', tool: 'execute', detail: '待用户确认' }
     ],
 
+    API_BASE: '/api',
+
     init: function() {
         this.loadState();
-        
-        this.startStreaming();
+        this.fetchSignals();
         console.log('⚡ TradingPanel initialized');
+    },
+
+    fetchSignals: function() {
+        var self = this;
+        fetch(this.API_BASE + '/market/signals/beidou')
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                self.state.signals = data.signals || {};
+                self.state.lastUpdate = new Date().toLocaleTimeString();
+                console.log('📡 Trading signals loaded:', Object.keys(self.state.signals).length);
+                self.renderPanel();
+            })
+            .catch(function(e) { console.error('Signal fetch error:', e); });
     },
 
     loadState: function() {
@@ -253,71 +267,6 @@ const TradingPanel = {
         return html;
     },
 
-    // 7工具实时流
-    renderToolStreamContent: function() {
-        html += '<div style="font-size:14px; font-weight:600; margin-bottom:15px;">📋 决策流程</div>';
-        html += '<div style="display:flex; gap:5px; overflow-x:auto; padding-bottom:10px;">';
-        this.decisions.forEach(function(d, i) {
-            var color = d.status === 'completed' ? '#00d4aa' : d.status === 'running' ? '#f59e0b' : '#666';
-            html += '<div style="flex:1; min-width:100px; text-align:center;">';
-            html += '<div style="width:30px; height:30px; border-radius:50%; background:' + color + '; color:#000; display:inline-flex; align-items:center; justify-content:center; font-size:14px; margin-bottom:5px;">' + (d.status === 'completed' ? '✓' : d.status === 'running' ? '⟳' : (i+1)) + '</div>';
-            html += '<div style="font-size:11px; color:' + color + ';">' + d.step + '</div>';
-            html += '</div>';
-            if (i < self.decisions.length - 1) {
-                html += '<div style="flex:0; color:#666; align-self:center;">→</div>';
-            }
-        });
-        html += '</div>';
-        html += '</div>';
-
-        // 7工具实时流
-        html += '<div style="font-size:14px; font-weight:600; margin-bottom:15px;">⚡ 7工具实时流</div>';
-        html += '<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:10px; margin-bottom:20px;">';
-
-        Object.keys(this.tools).forEach(function(key) {
-            var tool = self.tools[key];
-            var stream = self.streams[key] || [];
-            var topItem = stream[0] || {};
-            var statusColor = tool.status === 'scanning' ? '#00d4aa' : tool.status === 'analyzing' ? '#f59e0b' : tool.status === 'running' ? '#7c3aed' : '#666';
-
-            html += '<div onclick="TradingPanel.selectTool(\'' + key + '\')" style="background:rgba(0,0,0,0.4); border:1px solid rgba(124,58,237,0.2); border-radius:10px; padding:12px; cursor:pointer;">';
-            html += '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">';
-            html += '<div style="display:flex; align-items:center; gap:8px;">';
-            html += '<span style="font-size:20px;">' + tool.icon + '</span>';
-            html += '<span style="font-weight:600;">' + tool.name + '</span>';
-            html += '</div>';
-            html += '<span style="font-size:10px; padding:2px 6px; background:rgba(0,0,0,0.5); border-radius:10px; color:' + statusColor + ';">● ' + tool.status + '</span>';
-            html += '</div>';
-
-            // 最新信号
-            if (topItem.symbol) {
-                html += '<div style="padding:8px; background:rgba(0,0,0,0.3); border-radius:6px;">';
-                html += '<div style="display:flex; justify-content:space-between; margin-bottom:5px;">';
-                html += '<span style="font-weight:600;">' + topItem.symbol + '</span>';
-                html += '<span style="color:' + (topItem.change >= 0 ? '#00d4aa' : '#ef4444') + ';">' + (topItem.change >= 0 ? '+' : '') + topItem.change + '%</span>';
-                html += '</div>';
-                html += '<div style="font-size:11px; color:#888;">' + topItem.signal + ' | ' + topItem.confidence + '%置信</div>';
-                html += '</div>';
-            }
-
-            // 小圆点动画
-            html += '<div style="margin-top:8px; display:flex; gap:3px;">';
-            for (var j = 0; j < 5; j++) {
-                html += '<span style="width:4px; height:4px; border-radius:50%; background:' + (j < 3 ? '#00d4aa' : 'rgba(0,212,170,0.3)') + '; animation: pulse 1.5s infinite ' + (j * 0.2) + 's;"></span>';
-            }
-            html += '</div>';
-            html += '</div>';
-        });
-
-        html += '</div>';
-
-        // 操作按钮
-        html += '<button onclick="TradingPanel.navigateLevel(2)" style="width:100%; padding:12px; background:rgba(124,58,237,0.2); border:1px solid #7c3aed; color:#a78bfa; border-radius:8px; cursor:pointer; font-weight:600;">查看详情 →</button>';
-        html += '</div></div></div>';
-
-        return html;
-    },
-
     // Level 2: 工具详情
     renderLevel2: function() {
         var self = this;
@@ -465,13 +414,13 @@ const TradingPanel = {
     selectTab: function(tab) {
         this.state.activeTab = tab;
         this.saveState();
-        this.renderPanel(); // 直接切换Tab并渲染
+        
     },
 
     selectTool: function(toolId) {
         this.state.activeTool = toolId;
         this.saveState();
-        this.renderPanel(); // 直接切换工具并渲染
+        
     },
 
     navigateLevel: function(level) {
@@ -538,4 +487,4 @@ if (document.readyState === 'loading') {
 }
 
 // TradingModules wrapper for compatibility with HTML
-const TradingModules = TradingPanel;
+window.TradingModules = window.TradingPanel;

@@ -1,5 +1,5 @@
 // ========== 🛡️ 安全机制模块 ==========
-const SecurityModule = {
+window.SecurityModule = {
     // 状态管理
     state: {
         level: 1,              // 1: 总览, 2: 详情, 3: 配置, 4: 执行/结果
@@ -534,6 +534,21 @@ const SecurityModule = {
     navigateToLevel(level) {
         this.state.level = level;
         this.render();
+    },
+
+    // Alias for HTML event delegation compatibility
+    navigateLevel(level) {
+        this.navigateToLevel(level);
+    },
+
+    // Alias for closePanel
+    closePanel() {
+        var container = document.getElementById('securityPanelContainer');
+        if (container) {
+            container.style.display = 'none';
+            container.innerHTML = '';
+        }
+        this.state.level = 1;
     },
 
     // 获取子模块图标

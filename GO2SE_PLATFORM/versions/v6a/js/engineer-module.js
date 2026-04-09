@@ -1,5 +1,5 @@
 // ========== 工善其事模块 - Engineer Module ==========
-const EngineerModule = {
+window.EngineerModule = {
     state: {
         level: 1,
         activeSubmodule: 'signal', // signal, strategy, simulation, sonar

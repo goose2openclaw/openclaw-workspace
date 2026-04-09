@@ -1,5 +1,5 @@
 // ========== 钱包解构 + 资产分布模块 (变化触发更新) ==========
-const WalletDeconstruct = {
+window.WalletDeconstruct = {
     state: {
         level: 1,
         activeTab: 'overview',

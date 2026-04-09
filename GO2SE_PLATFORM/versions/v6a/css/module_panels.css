@@ -1,0 +1,48 @@
+/* Module Panel Containers */
+#macroMicroPanelContainer,
+#tradingPanelContainer,
+#securityPanelContainer,
+#engineerPanelContainer,
+#customizePanelContainer,
+#settingsPanelContainer,
+#walletDeconstructContainer {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 14, 23, 0.98);
+    z-index: 10000;
+    overflow: auto;
+    color: #E0E6ED;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+#macroMicroPanelContainer.active,
+#tradingPanelContainer.active,
+#securityPanelContainer.active,
+#engineerPanelContainer.active,
+#customizePanelContainer.active,
+#settingsPanelContainer.active,
+#walletDeconstructContainer.active {
+    display: block;
+}
+
+/* Ensure panels render content */
+#macroMicroPanelContainer > div,
+#tradingPanelContainer > div,
+#securityPanelContainer > div,
+#engineerPanelContainer > div,
+#customizePanelContainer > div,
+#settingsPanelContainer > div,
+#walletDeconstructContainer > div {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: rgba(20, 25, 35, 0.98);
+    border: 1px solid rgba(124, 58, 237, 0.2);
+    border-radius: 15px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    padding: 20px;
+}

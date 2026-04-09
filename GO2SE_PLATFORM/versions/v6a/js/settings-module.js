@@ -1,5 +1,5 @@
 // ========== 设置系统联系我模块 ==========
-const SettingsModule = {
+window.SettingsModule = {
     state: {
         level: 1,
         activeTab: 'settings', // settings, lp, system

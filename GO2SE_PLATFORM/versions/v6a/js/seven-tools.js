@@ -1,5 +1,5 @@
 // ========== 北斗七鑫七大工具完整系统 ==========
-const SevenTools = {
+window.SevenTools = {
     state: {
         activeTool: null,
         level: 1,
@@ -56,12 +56,25 @@ const SevenTools = {
 
     init: function() {
         this.loadState();
+        this.fetchData();
         this.renderToolCards();
         this.renderModeSwitch();
         this.renderCapitalPanel();
         this.renderComputePanel();
         this.renderAPIStatus();
         console.log('🪿 SevenTools initialized');
+    },
+
+    fetchData: function() {
+        var self = this;
+        fetch('/api/market/signals/beidou')
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                self.state.signals = data.signals || {};
+                self.state.lastUpdate = new Date().toLocaleTimeString();
+                self.renderToolCards();
+            })
+            .catch(function(e) { console.log('SevenTools: using cached data'); });
     },
 
     loadState: function() {
@@ -513,22 +526,7 @@ const SevenTools = {
     }
 };
 
-// Auto-init (panel display disabled on load)
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function() { SevenTools.init(); });
-} else {
-    SevenTools.init();
-}
-
-
-// 初始化 - Disabled auto-init
-// // Auto-init restored
-//     document.addEventListener('DOMContentLoaded', function() { SevenTools.init(); });
-// } else {
-//     SevenTools.init();
-// }
-
-// Auto-init (panel display disabled on load)
+// Auto-init
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function() { SevenTools.init(); });
 } else {

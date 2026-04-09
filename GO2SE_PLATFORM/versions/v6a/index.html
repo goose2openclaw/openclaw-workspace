@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="zh-CN" data-theme="dark">
 <head>
+  <script src="js/init_stub.js"></script>
+  <script src="js/init_early.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GO2SE - AI自主打工 & Crypto量化投资</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/module_panels.css">
 </head>
 <body>
   <!-- ========== 启动动画 Splash Screen ========== -->
@@ -223,7 +226,7 @@
               <h3>平台介绍</h3>
               <p>GO2SE是一个基于AI的加密货币量化投资平台，整合7大投资工具和2大打工工具，实现全自动化投资与收益优化。</p>
             </div>
-            <div class="intro-card" id="marketIntroCard" onclick="MacroMicro.navigateLevel(1)" style="cursor:pointer;">
+            <div class="intro-card" id="marketIntroCard" data-module="MacroMicro" data-method="navigateLevel" data-arg="1" style="cursor:pointer;">
               <div class="card-icon">🌐</div>
               <h3>宏观微观</h3>
               <p>7工具市场分析：Top5+异动3 · 已投/在投/关注</p>
@@ -231,7 +234,7 @@
               <p class="card-meta" id="marketSentiment">🌐 点击进入完整面板 →</p>
             </div>
             <!-- 交易面板 - 详细说明 -->
-            <div class="intro-card highlight" id="tradingPanelCard" onclick="TradingPanel.navigateLevel(1)" style="border: 2px solid #7c3aed; background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(0,0,0,0.8)); padding: 25px; min-height:500px; cursor:pointer;">
+            <div class="intro-card highlight" id="tradingPanelCard" data-module="TradingPanel" data-method="navigateLevel" data-arg="1" style="border: 2px solid #7c3aed; background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(0,0,0,0.8)); padding: 25px; min-height:500px; cursor:pointer;">
               <div class="card-icon" style="font-size:28px;">⚡</div>
               <h3 style="font-size:20px; margin:10px 0;">交易面板</h3>
               <p style="font-size:12px; color:#a78bfa; margin-bottom:15px;">4级深度操作：选品 → 荐品 → 确认 → 执行</p>
@@ -307,7 +310,7 @@
             </div>
             
             <!-- 北斗七鑫 -->
-            <div class="intro-card" id="beidouCard" style="border: 1px solid rgba(0,212,170,0.3); background:rgba(0,212,170,0.05); padding: 20px; min-height:400px;">
+            <div class="intro-card" id="beidouCard" data-module="SevenTools" data-method="navigateLevel" data-arg="1" style="border: 1px solid rgba(0,212,170,0.3); background:rgba(0,212,170,0.05); padding: 20px; min-height:400px; cursor:pointer;">
               <div class="card-icon" style="font-size:24px;">⭐</div>
               <h3 style="font-size:18px; margin:10px 0;">北斗七鑫投资体系</h3>
               <p style="font-size:11px; color:#888; margin-bottom:15px;">7大工具 · 5投资 + 2打工</p>
@@ -385,6 +388,40 @@
           </div>
         </section>
 
+        <!-- ========== 模块触发卡片 ========== -->
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:15px; margin:20px 0;">
+          <div class="intro-card" data-module="SevenTools" data-method="navigateLevel" data-arg="1" style="cursor:pointer;">
+            <div class="card-icon">🎯</div>
+            <h3>七大工具</h3>
+            <p>打兔子/打地鼠/走着瞧/跟大哥/搭便车/薅羊毛/穷孩子</p>
+            <p class="card-meta">🎯 点击进入4级面板 →</p>
+          </div>
+          <div class="intro-card" data-module="EngineerModule" data-method="navigateLevel" data-arg="1" style="cursor:pointer;">
+            <div class="card-icon">⚙️</div>
+            <h3>工程模块</h3>
+            <p>信号·趋势·策略·仿真·自主优化</p>
+            <p class="card-meta">⚙️ 点击进入4级面板 →</p>
+          </div>
+          <div class="intro-card" data-module="SecurityModule" data-method="navigateLevel" data-arg="1" style="cursor:pointer;">
+            <div class="card-icon">🛡️</div>
+            <h3>安全中心</h3>
+            <p>API安全·风控规则·监控告警</p>
+            <p class="card-meta">🛡️ 点击进入4级面板 →</p>
+          </div>
+          <div class="intro-card" data-module="CustomizeModule" data-method="navigateLevel" data-arg="1" style="cursor:pointer;">
+            <div class="card-icon">🔧</div>
+            <h3>可迭代定制</h3>
+            <p>自定义参数·界面配置·策略调优</p>
+            <p class="card-meta">🔧 点击进入4级面板 →</p>
+          </div>
+          <div class="intro-card" data-module="SettingsModule" data-method="navigateLevel" data-arg="1" style="cursor:pointer;">
+            <div class="card-icon">📊</div>
+            <h3>系统设置</h3>
+            <p>权重配置·预算分配·交易限制</p>
+            <p class="card-meta">📊 点击进入4级面板 →</p>
+          </div>
+        </div>
+
         <!-- ========== 1. 注意力板块 ========== -->
         <section class="content-section" id="attention">
           <!-- 面包屑导航 -->
@@ -458,7 +495,7 @@
         </section>
 
         <!-- ========== 2. 资产看板 ========== -->
-        <section class="content-section" id="asset" onclick="WalletDeconstruct.navigateLevel(1)" style="cursor:pointer;">
+        <section class="content-section" id="asset" data-module="WalletDeconstruct" data-method="navigateLevel" data-arg="1" style="cursor:pointer;">
           <!-- 面包屑导航 -->
           <div class="breadcrumb-nav" id="breadcrumbAsset">
             <span class="breadcrumb-item" data-level="1" onclick="navigateTo('heroSection')">🏠 首页</span>
@@ -617,13 +654,13 @@
             
             <!-- 面包屑导航 -->
             <div class="trading-breadcrumb breadcrumb-nav">
-              <span class="breadcrumb-item active" data-level="1" onclick="TradingModules.navigateToLevel(1)">📊 功能选择</span>
+              <span class="breadcrumb-item active" data-level="1" data-module="TradingPanel" data-method="navigateLevel" data-arg="1">📊 功能选择</span>
               <span class="breadcrumb-sep">›</span>
-              <span class="breadcrumb-item" data-level="2" onclick="TradingModules.navigateToLevel(2)">⚙️ 参数设置</span>
+              <span class="breadcrumb-item" data-level="2" data-module="TradingPanel" data-method="navigateLevel" data-arg="2">⚙️ 参数设置</span>
               <span class="breadcrumb-sep">›</span>
-              <span class="breadcrumb-item" data-level="3" onclick="TradingModules.navigateToLevel(3)">✓ 执行确认</span>
+              <span class="breadcrumb-item" data-level="3" data-module="TradingPanel" data-method="navigateLevel" data-arg="3">✓ 执行确认</span>
               <span class="breadcrumb-sep">›</span>
-              <span class="breadcrumb-item" data-level="4" onclick="TradingModules.navigateToLevel(4)">📋 结果展示</span>
+              <span class="breadcrumb-item" data-level="4" data-module="TradingPanel" data-method="navigateLevel" data-arg="4">📋 结果展示</span>
             </div>
             
             <!-- 三大功能Tab -->
@@ -655,7 +692,9 @@
             <span class="breadcrumb-sep">›</span>
             <span class="breadcrumb-item" data-level="2" onclick="navigateTo('beidou')">🎯 交易引擎</span>
             <span class="breadcrumb-sep">›</span>
-            <span class="breadcrumb-item" data-level="3">北斗七鑫</span>
+            <span class="breadcrumb-item" data-level="3" data-module="SevenTools" data-method="navigateLevel" data-arg="1">北斗七鑫</span>
+            <span class="breadcrumb-sep">›</span>
+            <span class="breadcrumb-item" data-level="4" data-module="SevenTools" data-method="navigateLevel" data-arg="2">🎯 北斗七鑫投资体系</span>
           </div>
           <div class="section-header">
             <h2>🎯 北斗七鑫投资体系</h2>
@@ -1500,9 +1539,9 @@
     </div>
   </div>
 
-  <script src="js/api-bridge.js?v=2026041301"></script>
-  <script src="js/attention-wallet.js?v=2026041301"></script>
-  <script src="js/trading-modules.js?v=2026041301"></script>
+  <script src="js/api-bridge.js?v=2026040801"></script>
+  <script src="js/attention-wallet.js?v=2026040801"></script>
+  <script src="js/trading-modules.js?v=2026040801"></script>
   <script>
     // ==========================================================================
     // 注意力看板 + 四级页面导航系统
@@ -2109,27 +2148,30 @@
       if (hb) hb.textContent = 70 + Math.floor(Math.random() * 15);
     }, 1000);
   </script>
-  <script src="js/brain-dual.js?v=2026041301"></script>
-  <script src="js/macro-micro.js?v=2026041301"></script>
-  <script src="js/engineer-module.js?v=2026041301"></script>
-  <script src="js/seven-tools.js?v=2026041301"></script>
-  <script src="js/wallet-security.js?v=2026041301"></script>
-  <script src="js/security-module.js?v=2026041301"></script>
-  <script src="js/asset-distribution.js?v=2026041301"></script>
-  <script src="js/customize-module.js?v=2026041301"></script>
-  <script src="js/settings-module.js?v=2026041301"></script>
-  <script src="js/attention-diy.js?v=2026040701"></script>
-  <script src="js/asset-risk.js?v=2026040701"></script>
-  <script src="js/competitor.js?v=2026040701"></script>
-  <script src="js/invest-income.js?v=2026040701"></script>
-  <script src="js/platform-intro.js?v=2026040701"></script>
-  <script src="js/security-mechanism.js?v=2026040701"></script>
-  <script src="js/trading-sim.js?v=2026040701"></script>
-  <script src="js/wallet-arch.js?v=2026040701"></script>
-  <script src="js/work-income.js?v=2026040701"></script>
-  <script src="js/api-bridge-module.js?v=2026040701"></script>
+  <script src="js/brain-dual.js?v=2026040801"></script>
+  <script src="js/macro-micro.js?v=2026040801"></script>
+  <script src="js/engineer-module.js?v=2026040801"></script>
+  <script src="js/seven-tools.js?v=2026040801"></script>
+  <script src="js/wallet-security.js?v=2026040801"></script>
+  <script src="js/security-module.js?v=2026040801"></script>
+  <script src="js/asset-distribution.js?v=2026040801"></script>
+  <script src="js/customize-module.js?v=2026040801"></script>
+  <script src="js/settings-module.js?v=2026040801"></script>
+  <script src="js/attention-diy.js?v=2026040801"></script>
+  <script src="js/asset-risk.js?v=2026040801"></script>
+  <script src="js/competitor.js?v=2026040801"></script>
+  <script src="js/invest-income.js?v=2026040801"></script>
+  <script src="js/platform-intro.js?v=2026040801"></script>
+  <script src="js/security-mechanism.js?v=2026040801"></script>
+  <script src="js/trading-sim.js?v=2026040801"></script>
+  <script src="js/wallet-arch.js?v=2026040801"></script>
+  <script src="js/work-income.js?v=2026040801"></script>
+  <script src="js/api-bridge-module.js?v=2026040801"></script>
 
+  <script src="js/init_fix.js"></script>
   <script src="js/init.js"></script>
   <div id="walletPageContainer"></div>
+  <script src="js/module_debug.js"></script>
+  <script src="js/init_delegate.js"></script>
 </body>
 </html>
