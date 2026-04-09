@@ -65,7 +65,7 @@ window.TradingPanel = {
         { step: '执行确认', status: 'pending', tool: 'execute', detail: '待用户确认' }
     ],
 
-    API_BASE: '/api',
+    API_BASE: 'http://localhost:8004/api',
 
     init: function() {
         this.loadState();
@@ -75,13 +75,27 @@ window.TradingPanel = {
 
     fetchSignals: function() {
         var self = this;
-        fetch(this.API_BASE + '/market/signals/beidou')
+        // 获取统计信息
+        fetch(this.API_BASE + '/stats')
             .then(function(r) { return r.json(); })
             .then(function(data) {
-                self.state.signals = data.signals || {};
-                self.state.lastUpdate = new Date().toLocaleTimeString();
-                console.log('📡 Trading signals loaded:', Object.keys(self.state.signals).length);
-                self.renderPanel();
+                if (data.data) {
+                    self.state.stats = data.data;
+                    self.state.lastUpdate = new Date().toLocaleTimeString();
+                    console.log('📊 Stats loaded:', data.data);
+                }
+            })
+            .catch(function(e) { console.error('Stats fetch error:', e); });
+        
+        // 获取信号列表
+        fetch(this.API_BASE + '/signals')
+            .then(function(r) { return r.json(); })
+            .then(function(data) {
+                if (data.data) {
+                    self.state.signals = data.data;
+                    console.log('📡 Signals loaded:', data.data.length);
+                    self.renderPanel();
+                }
             })
             .catch(function(e) { console.error('Signal fetch error:', e); });
     },
@@ -168,6 +182,24 @@ window.TradingPanel = {
     renderLiveContent: function() {
         var self = this;
         var html = '';
+        
+        // 系统状态卡片
+        var stats = this.state.stats || {};
+        html += '<div style="display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:20px;">';
+        html += '<div style="background:rgba(0,0,0,0.4); border-radius:10px; padding:12px; text-align:center;">';
+        html += '<div style="font-size:18px; font-weight:700; color:#00d4aa;">' + (stats.total_signals || 0) + '</div>';
+        html += '<div style="font-size:11px; color:#888;">总信号</div></div>';
+        html += '<div style="background:rgba(0,0,0,0.4); border-radius:10px; padding:12px; text-align:center;">';
+        html += '<div style="font-size:18px; font-weight:700; color:#f59e0b;">' + (stats.executed_signals || 0) + '</div>';
+        html += '<div style="font-size:11px; color:#888;">已执行</div></div>';
+        html += '<div style="background:rgba(0,0,0,0.4); border-radius:10px; padding:12px; text-align:center;">';
+        html += '<div style="font-size:18px; font-weight:700;">' + (stats.trading_mode || 'dry_run') + '</div>';
+        html += '<div style="font-size:11px; color:#888;">交易模式</div></div>';
+        html += '<div style="background:rgba(0,0,0,0.4); border-radius:10px; padding:12px; text-align:center;">';
+        html += '<div style="font-size:18px; font-weight:700; color:#a78bfa;">' + (stats.version || 'v7.1') + '</div>';
+        html += '<div style="font-size:11px; color:#888;">版本</div></div>';
+        html += '</div>';
+        
         html += '<div style="background:rgba(0,0,0,0.4); border-radius:10px; padding:15px; margin-bottom:20px;">';
         html += '<div style="font-size:14px; font-weight:600; margin-bottom:15px;">📋 决策流程</div>';
         html += '<div style="display:flex; gap:5px; overflow-x:auto; padding-bottom:10px;">';
@@ -183,26 +215,38 @@ window.TradingPanel = {
 
         html += '<div style="font-size:14px; font-weight:600; margin-bottom:15px;">⚡ 7工具实时流</div>';
         html += '<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:10px; margin-bottom:20px;">';
+        
+        // 真实信号数据
+        var signals = this.state.signals || [];
+        var toolSignals = {};
+        signals.forEach(function(s) {
+            if (!toolSignals[s.strategy]) {
+                toolSignals[s.strategy] = [];
+            }
+            toolSignals[s.strategy].push(s);
+        });
+        
         Object.keys(this.tools).forEach(function(key) {
             var tool = self.tools[key];
-            var stream = self.streams[key] || [];
-            var topItem = stream[0] || {};
-            var statusColor = tool.status === 'scanning' ? '#00d4aa' : tool.status === 'analyzing' ? '#f59e0b' : tool.status === 'running' ? '#7c3aed' : '#666';
-            html += '<div onclick="TradingPanel.selectTool(\'' + key + '\')" style="background:rgba(0,0,0,0.4); border:1px solid rgba(124,58,237,0.2); border-radius:10px; padding:12px; cursor:pointer;">';
+            var toolSignalList = toolSignals[key] || [];
+            var topSignal = toolSignalList[0] || {};
+            var statusColor = topSignal.signal === 'buy' ? '#00d4aa' : topSignal.signal === 'sell' ? '#ef4444' : topSignal.signal === 'hold' ? '#f59e0b' : '#666';
+            html += '<div onclick="TradingPanel.selectTool(\'' + key + '\')" style="background:rgba(0,0,0,0.4); border:1px solid rgba(124,58,237,0.2); border-radius:10px; padding:12px; cursor:pointer; transition:all 0.2s;" onmouseover="this.style.borderColor=\'#7c3aed\'" onmouseout="this.style.borderColor=\'rgba(124,58,237,0.2)\'">';
             html += '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">';
             html += '<div style="display:flex; align-items:center; gap:8px;"><span style="font-size:20px;">' + tool.icon + '</span><span style="font-weight:600;">' + tool.name + '</span></div>';
-            html += '<span style="font-size:10px; padding:2px 6px; background:rgba(0,0,0,0.5); border-radius:10px; color:' + statusColor + ';">● ' + tool.status + '</span>';
+            html += '<span style="font-size:10px; padding:2px 6px; background:rgba(0,0,0,0.5); border-radius:10px; color:' + statusColor + ';">' + (topSignal.signal || 'N/A') + '</span>';
             html += '</div>';
-            if (topItem.symbol) {
+            if (topSignal.symbol) {
                 html += '<div style="padding:8px; background:rgba(0,0,0,0.3); border-radius:6px;">';
-                html += '<div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span style="font-weight:600;">' + topItem.symbol + '</span><span style="color:' + (topItem.change >= 0 ? '#00d4aa' : '#ef4444') + ';">' + (topItem.change >= 0 ? '+' : '') + topItem.change + '%</span></div>';
-                html += '<div style="font-size:11px; color:#888;">' + topItem.signal + ' | ' + topItem.confidence + '%置信</div>';
+                html += '<div style="display:flex; justify-content:space-between; margin-bottom:5px;"><span style="font-weight:600;">' + topSignal.symbol + '</span><span style="color:' + statusColor + ';">' + topSignal.confidence + '%</span></div>';
+                html += '<div style="font-size:11px; color:#888; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">' + (topSignal.reason || '') + '</div>';
                 html += '</div>';
             }
-            html += '<div style="margin-top:8px; display:flex; gap:3px;">';
-            for (var j = 0; j < 5; j++) {
-                html += '<span style="width:4px; height:4px; border-radius:50%; background:' + (j < 3 ? '#00d4aa' : 'rgba(0,212,170,0.3)') + ';"></span>';
-            }
+            html += '<div style="margin-top:8px; display:flex; align-items:center; gap:4px;">';
+            html += '<span style="font-size:10px; color:#666;">' + toolSignalList.length + ' 信号</span>';
+            html += '<div style="flex:1; height:4px; background:rgba(0,0,0,0.3); border-radius:2px; margin-left:8px;">';
+            var barWidth = Math.min(100, topSignal.confidence || 0);
+            html += '<div style="width:' + barWidth + '%; height:100%; background:' + statusColor + '; border-radius:2px;"></div>';
             html += '</div></div>';
         });
         html += '</div>';
