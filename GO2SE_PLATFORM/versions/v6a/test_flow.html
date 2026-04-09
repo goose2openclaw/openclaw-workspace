@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body { background: #0a0e17; color: #fff; padding: 20px; font-family: sans-serif; }
+.flow-diagram { display: flex; gap: 10px; margin: 20px 0; flex-wrap: wrap; }
+.flow-step-item {
+    padding: 12px 18px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid #333;
+    border-radius: 10px;
+    text-align: center;
+    min-width: 70px;
+    transition: all 0.3s;
+}
+.flow-step-item.active {
+    background: linear-gradient(135deg,#00d4aa,#00a884);
+    border-color: #00d4aa;
+    box-shadow: 0 0 20px rgba(0,212,170,0.5);
+    animation: glow 1.5s ease-in-out infinite;
+}
+@keyframes glow {
+    0%,100% { box-shadow: 0 0 10px #00d4aa; }
+    50% { box-shadow: 0 0 30px #00d4aa, 0 0 50px rgba(0,212,170,0.5); }
+}
+.flow-icon { font-size: 24px; display: block; }
+.flow-label { font-size: 12px; margin-top: 5px; display: block; }
+</style>
+</head>
+<body>
+<h1>流程动画测试</h1>
+<div class="flow-diagram" id="testFlow">
+    <div class="flow-step-item active" id="f0"><span class="flow-icon">📡</span><span class="flow-label">信号</span></div>
+    <div class="flow-step-item" id="f1"><span class="flow-icon">🔊</span><span class="flow-label">声纳库</span></div>
+    <div class="flow-step-item" id="f2"><span class="flow-icon">🎯</span><span class="flow-label">策略</span></div>
+    <div class="flow-step-item" id="f3"><span class="flow-icon">⚖️</span><span class="flow-label">权重</span></div>
+    <div class="flow-step-item" id="f4"><span class="flow-icon">🔄</span><span class="flow-label">仿真</span></div>
+    <div class="flow-step-item" id="f5"><span class="flow-icon">📊</span><span class="flow-label">复盘</span></div>
+    <div class="flow-step-item" id="f6"><span class="flow-icon">🚀</span><span class="flow-label">执行</span></div>
+</div>
+<script>
+let step = 0;
+setInterval(() => {
+    document.getElementById('f'+step).classList.remove('active');
+    step = (step + 1) % 7;
+    document.getElementById('f'+step).classList.add('active');
+}, 1500);
+</script>
+</body>
+</html>
