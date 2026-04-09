@@ -1,0 +1,92 @@
+{
+  "generated": "2026-03-15T15:08:39.557612",
+  "initial_investment": 1000,
+  "normal_mode": {
+    "conservative": {
+      "24": {
+        "fees_paid": 6.9
+      },
+      "48": {
+        "fees_paid": 15.0
+      },
+      "72": {
+        "fees_paid": 23.7
+      },
+      "154": {
+        "fees_paid": 46.5
+      }
+    },
+    "balanced": {
+      "24": {
+        "fees_paid": 6.0
+      },
+      "48": {
+        "fees_paid": 14.8
+      },
+      "72": {
+        "fees_paid": 22.7
+      },
+      "154": {
+        "fees_paid": 47.0
+      }
+    },
+    "aggressive": {
+      "24": {
+        "fees_paid": 6.8
+      },
+      "48": {
+        "fees_paid": 15.7
+      },
+      "72": {
+        "fees_paid": 21.6
+      },
+      "154": {
+        "fees_paid": 42.3
+      }
+    }
+  },
+  "expert_mode": {
+    "conservative": {
+      "24": {
+        "fees_paid": 5.6
+      },
+      "48": {
+        "fees_paid": 11.9
+      },
+      "72": {
+        "fees_paid": 18.7
+      },
+      "154": {
+        "fees_paid": 37.2
+      }
+    },
+    "balanced": {
+      "24": {
+        "fees_paid": 6.4
+      },
+      "48": {
+        "fees_paid": 11.3
+      },
+      "72": {
+        "fees_paid": 20.3
+      },
+      "154": {
+        "fees_paid": 37.5
+      }
+    },
+    "aggressive": {
+      "24": {
+        "fees_paid": 4.8
+      },
+      "48": {
+        "fees_paid": 11.5
+      },
+      "72": {
+        "fees_paid": 18.2
+      },
+      "154": {
+        "fees_paid": 37.6
+      }
+    }
+  }
+}

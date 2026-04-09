@@ -1,0 +1,62 @@
+{
+  "rsi": {
+    "initial_cash": 100000,
+    "final_equity": 147651.68,
+    "total_pnl": 50040.67,
+    "return_pct": 47.65,
+    "max_drawdown_pct": 11.67,
+    "sharpe_ratio": 2.97,
+    "total_trades": 59,
+    "winning_trades": 30,
+    "losing_trades": 29,
+    "win_rate": 0.508,
+    "avg_win": 4162.72,
+    "avg_loss": -2580.72,
+    "profit_factor": 1.67
+  },
+  "macd": {
+    "initial_cash": 100000,
+    "final_equity": 100000,
+    "total_pnl": 0,
+    "return_pct": 0.0,
+    "max_drawdown_pct": 0,
+    "sharpe_ratio": 0,
+    "total_trades": 0,
+    "winning_trades": 0,
+    "losing_trades": 0,
+    "win_rate": 0,
+    "avg_win": 0,
+    "avg_loss": 0,
+    "profit_factor": 0
+  },
+  "bollinger": {
+    "initial_cash": 100000,
+    "final_equity": 100038.59,
+    "total_pnl": 1442.5,
+    "return_pct": 0.04,
+    "max_drawdown_pct": 20.52,
+    "sharpe_ratio": -0.99,
+    "total_trades": 51,
+    "winning_trades": 20,
+    "losing_trades": 31,
+    "win_rate": 0.392,
+    "avg_win": 2761.08,
+    "avg_loss": -1734.81,
+    "profit_factor": 1.03
+  },
+  "multi": {
+    "initial_cash": 100000,
+    "final_equity": 100000,
+    "total_pnl": 0,
+    "return_pct": 0.0,
+    "max_drawdown_pct": 0,
+    "sharpe_ratio": 0,
+    "total_trades": 0,
+    "winning_trades": 0,
+    "losing_trades": 0,
+    "win_rate": 0,
+    "avg_win": 0,
+    "avg_loss": 0,
+    "profit_factor": 0
+  }
+}

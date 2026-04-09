@@ -1,0 +1,278 @@
+{
+  "version": "2.0",
+  "generated": "2026-03-21T03:15:00",
+  "description": "北斗七鑫完整专家配置 - 高/中/低优先级全覆盖",
+
+  "优先级高": {
+    "api库": {
+      "description": "51个API接口",
+      "交易所": {
+        "tier1": ["binance", "bybit", "okx", "coinbase", "kraken"],
+        "tier2": ["gate", "mexc", "kucoin", "huobi", "bitget"],
+        "tier3": ["bitfinex", "bittrex", "gemini", "poloniex"]
+      },
+      "预测服务": {
+        "polymarket": {"enabled": true, "weight": 1.0},
+        "polymarket_usdt": {"enabled": true, "weight": 0.8},
+        "omen": {"enabled": false, "weight": 0.5},
+        "augur": {"enabled": false, "weight": 0.5},
+        "kalshi": {"enabled": true, "weight": 0.7},
+        "betmgm": {"enabled": false, "weight": 0.3},
+        "predictit": {"enabled": false, "weight": 0.4},
+        "metaculus": {"enabled": true, "weight": 0.6}
+      },
+      "空投服务": {
+        "layerzero": {"enabled": true, "weight": 1.0},
+        "wormhole": {"enabled": true, "weight": 0.9},
+        "stargate": {"enabled": true, "weight": 0.8},
+        "uniswap": {"enabled": true, "weight": 0.8},
+        "aave": {"enabled": true, "weight": 0.7},
+        "optimism": {"enabled": true, "weight": 0.7},
+        "arbitrum": {"enabled": true, "weight": 0.7},
+        "zksync": {"enabled": true, "weight": 0.8},
+        "starknet": {"enabled": true, "weight": 0.7},
+        "scroll": {"enabled": true, "weight": 0.6},
+        "linea": {"enabled": true, "weight": 0.6},
+        "base": {"enabled": true, "weight": 0.7},
+        "mantle": {"enabled": true, "weight": 0.5},
+        "sei": {"enabled": true, "weight": 0.5},
+        "sui": {"enabled": true, "weight": 0.5},
+        "aptos": {"enabled": true, "weight": 0.5},
+        "sei": {"enabled": true, "weight": 0.5},
+        "injective": {"enabled": true, "weight": 0.5}
+      },
+      "众包服务": {
+        "cryptopanic": {"enabled": true, "weight": 1.0},
+        "coinhunt": {"enabled": true, "weight": 0.8},
+        "coinmarketcal": {"enabled": true, "weight": 0.8},
+        "tradingview": {"enabled": true, "weight": 1.0},
+        "twitter_api": {"enabled": true, "weight": 1.0},
+        "reddit_api": {"enabled": true, "weight": 0.8},
+        "telegram_api": {"enabled": true, "weight": 0.7},
+        "google_trends": {"enabled": true, "weight": 0.6},
+        "alternative_me": {"enabled": true, "weight": 0.7},
+        "glassnode": {"enabled": true, "weight": 0.9},
+        "intotheblock": {"enabled": true, "weight": 0.8},
+        "nansen": {"enabled": false, "weight": 0.7},
+        "santiment": {"enabled": false, "weight": 0.6}
+      }
+    },
+
+    "声纳库": {
+      "description": "100+趋势模型",
+      "分类": {
+        "动量模型": {
+          "数量": 15,
+          "示例": ["momentum_bull_1m", "momentum_bull_5m", "momentum_bull_15m", "momentum_bear_1m", "momentum_bear_5m", "momentum_bear_15m", "strong_momentum", "weak_momentum", "acceleration_bull", "acceleration_bear", "momentum_divergence_bull", "momentum_divergence_bear", "hidden_divergence_bull", "hidden_divergence_bear", "momentum_exhaustion"]
+        },
+        "突破模型": {
+          "数量": 15,
+          "示例": ["breakout_up_strong", "breakout_up_weak", "breakout_down_strong", "breakout_down_weak", "breakout_volume_surge", "breakout_resistance", "breakout_support", "false_breakout_up", "false_breakout_down", "breakoutContinuation_bull", "breakoutContinuation_bear", "range_breakout_up", "range_breakout_down", "triangle_breakout_up", "triangle_breakout_down"]
+        },
+        "反转模型": {
+          "数量": 15,
+          "示例": ["reversal_bull_strong", "reversal_bull_weak", "reversal_bear_strong", "reversal_bear_weak", "double_bottom", "double_top", "head_shoulders_bull", "head_shoulders_bear", "wedge_falling_wedge", "wedge_rising_wedge", "bottom_divergence", "top_divergence", "rsi_oversold_bounce", "rsi_overbought_dump", "support_bounce"]
+        },
+        "波动率模型": {
+          "数量": 10,
+          "示例": ["volatility_squeeze", "volatility_expansion", "bb_squeeze_bull", "bb_squeeze_bear", "atr_breakout_up", "atr_breakout_down", "volatility_regime_change", "low_volatility_accumulation", "high_volatility_distribution", "volatility_cluster"]
+        },
+        "成交量模型": {
+          "数量": 10,
+          "示例": ["volume_surge_bull", "volume_surge_bear", "volume_dry_up", "obv_divergence_bull", "obv_divergence_bear", "vwap_rejection", "vwap_bounce", "volume_price_trend_bull", "volume_price_trend_bear", "accumulation_distribution"]
+        },
+        "趋势模型": {
+          "数量": 15,
+          "示例": ["trend_ema_crossover_bull", "trend_ema_crossover_bear", "trend_ma alignment_bull", "trend_ma alignment_bear", "trend_channel_up", "trend_channel_down", "trend_line_break_bull", "trend_line_break_bear", "higher_highs_higher_lows", "lower_highs_lower_lows", "trend_strength_strong", "trend_weakness", "trend_exhaustion_bull", "trend_exhaustion_bear", "trend_reversal_early"]
+        },
+        "宏观模型": {
+          "数量": 10,
+          "示例": ["btc_dominance_up", "btc_dominance_down", "altcoin_season", "btc_season", "fear_greed_extreme_fear", "fear_greed_extreme_greed", "market_sentiment_shift", "sector_rotation_bull", "sector_rotation_bear", "correlation_break"]
+        },
+        "链上模型": {
+          "数量": 10,
+          "示例": ["exchange_netflow_positive", "exchange_netflow_negative", "whale_accumulation", "whale_distribution", "miner_revenue_surge", "hash_rate_change", "difficulty_adjustment_up", "difficulty_adjustment_down", "stablecoin_flows", "nft_market_heat"]
+        }
+      },
+      "信号强度": {
+        "STRONG_BUY": {"probability": [70, 75], "confidence_threshold": 7.0},
+        "BUY": {"probability": [55, 70], "confidence_threshold": 5.0},
+        "NEUTRAL": {"probability": [45, 55], "confidence_threshold": 3.0},
+        "SELL": {"probability": [30, 45], "confidence_threshold": 5.0},
+        "STRONG_SELL": {"probability": [25, 32], "confidence_threshold": 7.0}
+      }
+    },
+
+    "策略库": {
+      "description": "35+子策略",
+      "打兔子": {
+        "数量": 6,
+        "策略": ["momentum_mainstream", "breakout_mainstream", "trend_following", "mean_reversion", "volume_breakout", "multi_timeframe_confirm"]
+      },
+      "打地鼠": {
+        "数量": 6,
+        "策略": ["volatility_breakout", "momentum_ride", "range_trading", "scalping", "news_driven", "whale_tracking"]
+      },
+      "走着燋": {
+        "数量": 6,
+        "策略": ["sentiment_analysis", "event_driven", "probability_arbitrage", "trend_prediction", "social_signals", "news_sentiment"]
+      },
+      "跟大哥": {
+        "数量": 5,
+        "策略": ["whale_follow", "funding_rate_arbitrage", "large_order_follow", "exchange_flow", "smart_money_tracking"]
+      },
+      "搭便车": {
+        "数量": 5,
+        "策略": ["copy_trader_pro", "signal_aggregation", "leaderboard_strategy", "risk_adjusted_copy", "momentum_copy"]
+      },
+      "薅羊毛": {
+        "数量": 4,
+        "策略": ["airdrop_hunter", "snapshot_claimer", "testnet_participation", "governance_participation"]
+      },
+      "穷孩子": {
+        "数量": 3,
+        "策略": ["crowdsource_data", "community_signals", "user_generated_signals"]
+      }
+    },
+
+    "交易所连接": {
+      "realtime": {
+        "price": {
+          "tier1": ["binance", "bybit"],
+          "tier2": ["okx", "gate", "mexc"],
+          "tier3": ["kucoin", "coinbase", "kraken"]
+        },
+        "orderbook": {
+          "tier1": ["binance", "bybit"],
+          "tier2": ["okx", "gate"]
+        },
+        "futures": {
+          "tier1": ["binance", "bybit"],
+          "tier2": ["okx", "deribit"]
+        },
+        "options": {
+          "deribit": {"enabled": true},
+          "cme": {"enabled": false},
+          "cboe": {"enabled": false}
+        }
+      },
+      "api_priority": {
+        "primary": "binance",
+        "fallback": ["bybit", "okx"],
+        "latency_threshold_ms": 500,
+        "retry_count": 3
+      }
+    }
+  },
+
+  "优先级中": {
+    "舆情分析": {
+      "sources": {
+        "twitter": {"enabled": true, "weight": 0.3, "api": "twitter_api"},
+        "reddit": {"enabled": true, "weight": 0.2, "api": "reddit_api"},
+        "telegram": {"enabled": true, "weight": 0.3, "api": "telegram_api"},
+        "news": {"enabled": true, "weight": 0.2, "api": "cryptopanic"}
+      },
+      "keywords": {
+        "bullish": ["moon", "lambo", "fomo", "breakout", "pump", "to the moon", "bullish", "accumulation"],
+        "bearish": ["dump", "scam", "hack", "crash", "rug", "bearish", "distribution", "sell off"]
+      },
+      "thresholds": {
+        "extreme_fear": 20,
+        "extreme_greed": 80,
+        "sentiment_shift": 15
+      }
+    },
+
+    "链上数据": {
+      "sources": {
+        "glassnode": {"enabled": true, "weight": 0.9},
+        "intotheblock": {"enabled": true, "weight": 0.8},
+        "nansen": {"enabled": false, "weight": 0.7},
+        "santiment": {"enabled": false, "weight": 0.6}
+      },
+      "metrics": {
+        "exchange_flows": true,
+        "whale_transactions": true,
+        "miner_metrics": true,
+        "stablecoin_metrics": true,
+        "nft_metrics": false
+      }
+    },
+
+    "预警系统": {
+      "telegram": {
+        "enabled": true,
+        "chat_id": "",
+        "token": ""
+      },
+      "discord": {
+        "enabled": true,
+        "webhook": ""
+      },
+      "email": {
+        "enabled": false,
+        "smtp": "",
+        "to": ""
+      },
+      "pushover": {
+        "enabled": false,
+        "token": ""
+      },
+      "alert_types": {
+        "signal": true,
+        "trade_execution": true,
+        "stop_loss": true,
+        "take_profit": true,
+        "risk_warning": true,
+        "system_error": true
+      }
+    }
+  },
+
+  "优先级低": {
+    "回测配置": {
+      "period": "180d",
+      "commission": 0.001,
+      "slippage": {
+        "normal": 0.0005,
+        "high_frequency": 0.0002,
+        "illiquid": 0.001
+      },
+      "initial_capital": 10000,
+      "benchmark": "BTC",
+      "min_trades": 100,
+      "required_metrics": ["sharpe_ratio", "max_drawdown", "win_rate", "profit_factor", "calmar_ratio"]
+    },
+
+    "交易执行": {
+      "observe_interval_ms": 500,
+      "min_confidence": 5,
+      "max_slippage": 0.002,
+      "timeout_ms": 5000,
+      "retry_count": 3,
+      "high_frequency": {
+        "observe_interval_ms": 200,
+        "min_confidence": 7,
+        "max_position": 0.05,
+        "auto_scale": true
+      },
+      "swing": {
+        "observe_interval_ms": 5000,
+        "min_confidence": 5,
+        "max_position": 0.2,
+        "holding_period_hours": 24
+      }
+    },
+
+    "持仓管理": {
+      "max_daily_trades": 10,
+      "max_open_positions": 5,
+      "max_position_per_trade": 0.2,
+      "max_total_exposure": 0.8,
+      "correlation_check": true,
+      "news_blackout": true,
+      "cooling_period_minutes": 30
+    }
+  }
+}

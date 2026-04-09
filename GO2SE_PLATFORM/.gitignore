@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.Python
+venv/
+venv_new/
+.venv/
+
+# Environment
+.env
+.env.local
+
+# Database
+*.db
+*.sqlite
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build
+dist/
+build/
+*.egg-info/
+
+# gstack venv
+venv_gstack/
+
+# Logs
+*.log
+
+# Node
+frontend/node_modules/
+frontend/package-lock.json
+package-lock.json
+
+# Simulation Results & Large Data Files
+*.json
+!package.json
+
+# Python
+venv/
+venv_new/
+.venv/
+backend/__pycache__/
+backend/*.pyc

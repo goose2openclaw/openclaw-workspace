@@ -1,0 +1,119 @@
+{
+  "last_updated": "2026-03-15T14:58:00Z",
+  "market_data": {
+    "timestamp": "2026-03-15T14:58:00Z",
+    "coins": [
+      {"symbol": "BTC", "price": 71608, "change_24h": 1.40, "change_7d": 5.62, "status": "bullish"},
+      {"symbol": "ETH", "price": 2096, "change_24h": 1.15, "change_7d": 6.45, "status": "stable"},
+      {"symbol": "SOL", "price": 87.94, "change_24h": 1.33, "change_7d": 5.72, "status": "stable"},
+      {"symbol": "XRP", "price": 1.42, "change_24h": 1.98, "change_7d": 4.10, "status": "strong"},
+      {"symbol": "DOGE", "price": 0.0955, "change_24h": 0.89, "change_7d": 4.35, "status": "neutral"},
+      {"symbol": "AVAX", "price": 9.74, "change_24h": 1.96, "change_7d": 8.55, "status": "strong"}
+    ],
+    "fear_greed_index": 28,
+    "fear_greed_label": "Extreme Fear",
+    "btc_position_7d": 76.2,
+    "funding_rate_btc": 0.001
+  },
+  "trading_stats": {
+    "date": "2026-03-15",
+    "trades_today": 9,
+    "win_rate": 66.7,
+    "pnl": 512,
+    "pnl_percent": 5.12,
+    "max_drawdown": -2.1,
+    "open_positions": 4,
+    "max_positions": 5,
+    "daily_trades_limit": 10,
+    "current_drawdown": -0.5,
+    "status": "green"
+  },
+  "membership_data": {
+    "total_members": 9,
+    "active_members": 8,
+    "tiers": {
+      "guest": 2,
+      "subscriber": 4,
+      "member": 2,
+      "vip": 1
+    },
+    "tools_access": {
+      "crowdsource_apis": 8,
+      "airdrop_apis": 11,
+      "prediction_markets": 2
+    }
+  },
+  "strategies": [
+    {"name": "Mainstream", "status": "running", "interval": "30m"},
+    {"name": "Mole", "status": "running", "interval": "15m"},
+    {"name": "Tiered", "status": "running", "interval": "30m"},
+    {"name": "Unified", "status": "running", "interval": "15m"},
+    {"name": "Airdrop", "status": "running", "interval": "30m"},
+    {"name": "PM-Arbitrage", "status": "running", "interval": "30m"}
+  ],
+  "risk_management": {
+    "max_position_percent": 10,
+    "stop_loss_percent": 2,
+    "daily_stop_loss": 5,
+    "emergency_stop": 15,
+    "wallets": [
+      {"name": "众包专用", "balance": "0.5 ETH", "status": "active"},
+      {"name": "空投专用", "balance": "0.3 ETH", "status": "active"},
+      {"name": "测试专用", "balance": "0.1 ETH", "status": "low"}
+    ]
+  },
+  "system_status": {
+    "version": "4.0",
+    "uptime": "25h",
+    "binance_api": "healthy",
+    "openclaw_gateway": "running",
+    "freqtrade_bot": "stopped"
+  },
+  "charts": {
+    "market_overview": {
+      "type": "line",
+      "title": "市场概览 (7日)",
+      "data": [
+        {"date": "2026-03-09", "btc": 67800, "eth": 1970, "sol": 83.2},
+        {"date": "2026-03-10", "btc": 68200, "eth": 1985, "sol": 84.1},
+        {"date": "2026-03-11", "btc": 69100, "eth": 2010, "sol": 85.5},
+        {"date": "2026-03-12", "btc": 70200, "eth": 2045, "sol": 86.2},
+        {"date": "2026-03-13", "btc": 70800, "eth": 2080, "sol": 87.1},
+        {"date": "2026-03-14", "btc": 71000, "eth": 2090, "sol": 87.5},
+        {"date": "2026-03-15", "btc": 71608, "eth": 2096, "sol": 87.9}
+      ]
+    },
+    "trading_performance": {
+      "type": "bar",
+      "title": "交易表现 (本周)",
+      "data": [
+        {"day": "周一", "pnl": 45, "trades": 3},
+        {"day": "周二", "pnl": 120, "trades": 5},
+        {"day": "周三", "pnl": -30, "trades": 4},
+        {"day": "周四", "pnl": 85, "trades": 4},
+        {"day": "周五", "pnl": 512, "trades": 9}
+      ]
+    },
+    "member_distribution": {
+      "type": "pie",
+      "title": "会员分布",
+      "data": [
+        {"tier": "VIP", "count": 1, "color": "#FFD700"},
+        {"tier": "Member", "count": 2, "color": "#4169E1"},
+        {"tier": "Subscriber", "count": 4, "color": "#32CD32"},
+        {"tier": "Guest", "count": 2, "color": "#808080"}
+      ]
+    },
+    "portfolio_allocation": {
+      "type": "doughnut",
+      "title": "仓位分布",
+      "data": [
+        {"strategy": "Mainstream", "allocation": 50, "color": "#FF6B6B"},
+        {"strategy": "Mole", "allocation": 20, "color": "#4ECDC4"},
+        {"strategy": "Prediction", "allocation": 10, "color": "#45B7D1"},
+        {"strategy": "Follow", "allocation": 10, "color": "#96CEB4"},
+        {"strategy": "Reserved", "allocation": 10, "color": "#DDA0DD"}
+      ]
+    }
+  }
+}

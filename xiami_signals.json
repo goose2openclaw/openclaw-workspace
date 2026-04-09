@@ -1,0 +1,23 @@
+{
+  "time": "2026-03-11 00:39:27",
+  "signals": [
+    {
+      "symbol": "FIL/USDT",
+      "action": "SELL",
+      "reason": "\u5f02\u5e38\u4e0b\u8dcc -8.68%",
+      "price": 0.863
+    },
+    {
+      "symbol": "WAVES/USDT",
+      "action": "BUY",
+      "reason": "\u5f02\u5e38\u4e0a\u6da8 +11.97%",
+      "price": 1.076
+    },
+    {
+      "symbol": "ICX/USDT",
+      "action": "BUY",
+      "reason": "\u5f02\u5e38\u4e0a\u6da8 +10.66%",
+      "price": 0.0384
+    }
+  ]
+}

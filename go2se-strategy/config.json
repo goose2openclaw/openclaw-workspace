@@ -1,0 +1,16 @@
+{
+    "algorithm-language": "Python",
+    "parameters": {},
+    "description": "🪿 GO2SE RSI量化交易策略",
+    "data-provider": "quantconnect",
+    "data-cache-provider": "quantconnect",
+    "object-store": "local",
+    "module-manager": "local",
+    "composer": {
+        "local": false,
+        "container": "quantconnect/lean:latest"
+    },
+    "python": {
+        "version": "3.11"
+    }
+}

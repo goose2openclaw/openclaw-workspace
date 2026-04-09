@@ -1,0 +1,258 @@
+{
+  "start_time": "2026-03-12T17:28:15.666696",
+  "iterations": 10,
+  "total_signals": 40,
+  "trades_executed": 18,
+  "pnl": 91.96439324271175,
+  "weights": {
+    "mainstream": 0.35,
+    "mole": 0.3,
+    "airdrop": 0.15,
+    "oracle": 0.1,
+    "copy_trade": 0.1
+  },
+  "best_performers": [
+    {
+      "coin": "ETH",
+      "confidence": 7.5,
+      "potential": 8.2,
+      "timestamp": "2026-03-12T17:28:16.667281"
+    },
+    {
+      "coin": "SOL",
+      "confidence": 6.8,
+      "potential": 12.5,
+      "timestamp": "2026-03-12T17:28:16.667294"
+    },
+    {
+      "coin": "ETH",
+      "confidence": 7.5,
+      "potential": 8.2,
+      "timestamp": "2026-03-12T17:28:23.833267"
+    },
+    {
+      "coin": "SOL",
+      "confidence": 6.8,
+      "potential": 12.5,
+      "timestamp": "2026-03-12T17:28:23.833272"
+    },
+    {
+      "coin": "ETH",
+      "confidence": 7.5,
+      "potential": 8.2,
+      "timestamp": "2026-03-12T22:02:02.534608"
+    },
+    {
+      "coin": "SOL",
+      "confidence": 6.8,
+      "potential": 12.5,
+      "timestamp": "2026-03-12T22:02:02.534630"
+    },
+    {
+      "coin": "ETH",
+      "confidence": 7.5,
+      "potential": 8.2,
+      "timestamp": "2026-03-12T22:07:10.773823"
+    },
+    {
+      "coin": "SOL",
+      "confidence": 6.8,
+      "potential": 12.5,
+      "timestamp": "2026-03-12T22:07:10.773840"
+    },
+    {
+      "coin": "ETH",
+      "confidence": 7.5,
+      "potential": 8.2,
+      "timestamp": "2026-03-12T22:08:23.329165"
+    },
+    {
+      "coin": "SOL",
+      "confidence": 6.8,
+      "potential": 12.5,
+      "timestamp": "2026-03-12T22:08:23.329171"
+    },
+    {
+      "coin": "ETH",
+      "confidence": 7.5,
+      "potential": 8.2,
+      "timestamp": "2026-03-12T22:09:25.398259"
+    },
+    {
+      "coin": "SOL",
+      "confidence": 6.8,
+      "potential": 12.5,
+      "timestamp": "2026-03-12T22:09:25.398267"
+    },
+    {
+      "coin": "ETH",
+      "confidence": 7.5,
+      "potential": 8.2,
+      "timestamp": "2026-03-12T22:10:27.454686"
+    },
+    {
+      "coin": "SOL",
+      "confidence": 6.8,
+      "potential": 12.5,
+      "timestamp": "2026-03-12T22:10:27.454700"
+    },
+    {
+      "coin": "ETH",
+      "confidence": 7.5,
+      "potential": 8.2,
+      "timestamp": "2026-03-12T22:11:34.525379"
+    },
+    {
+      "coin": "SOL",
+      "confidence": 6.8,
+      "potential": 12.5,
+      "timestamp": "2026-03-12T22:11:34.525392"
+    },
+    {
+      "coin": "ETH",
+      "confidence": 7.5,
+      "potential": 8.2,
+      "timestamp": "2026-03-13T22:00:31.212535"
+    },
+    {
+      "coin": "SOL",
+      "confidence": 6.8,
+      "potential": 12.5,
+      "timestamp": "2026-03-13T22:00:31.212559"
+    },
+    {
+      "coin": "ETH",
+      "confidence": 7.5,
+      "potential": 8.2,
+      "timestamp": "2026-03-13T22:05:45.918705"
+    },
+    {
+      "coin": "SOL",
+      "confidence": 6.8,
+      "potential": 12.5,
+      "timestamp": "2026-03-13T22:05:45.918732"
+    }
+  ],
+  "adjustments_log": [
+    {
+      "time": "2026-03-12T17:28:16.667302",
+      "signals": 4,
+      "buy": 2,
+      "weights": {
+        "mainstream": 0.35,
+        "mole": 0.3,
+        "airdrop": 0.15,
+        "oracle": 0.1,
+        "copy_trade": 0.1
+      }
+    },
+    {
+      "time": "2026-03-12T17:28:23.833276",
+      "signals": 4,
+      "buy": 2,
+      "weights": {
+        "mainstream": 0.35,
+        "mole": 0.3,
+        "airdrop": 0.15,
+        "oracle": 0.1,
+        "copy_trade": 0.1
+      }
+    },
+    {
+      "time": "2026-03-12T22:02:02.534647",
+      "signals": 4,
+      "buy": 2,
+      "weights": {
+        "mainstream": 0.35,
+        "mole": 0.3,
+        "airdrop": 0.15,
+        "oracle": 0.1,
+        "copy_trade": 0.1
+      }
+    },
+    {
+      "time": "2026-03-12T22:07:10.773854",
+      "signals": 4,
+      "buy": 2,
+      "weights": {
+        "mainstream": 0.35,
+        "mole": 0.3,
+        "airdrop": 0.15,
+        "oracle": 0.1,
+        "copy_trade": 0.1
+      }
+    },
+    {
+      "time": "2026-03-12T22:08:23.329181",
+      "signals": 4,
+      "buy": 2,
+      "weights": {
+        "mainstream": 0.35,
+        "mole": 0.3,
+        "airdrop": 0.15,
+        "oracle": 0.1,
+        "copy_trade": 0.1
+      }
+    },
+    {
+      "time": "2026-03-12T22:09:25.398273",
+      "signals": 4,
+      "buy": 2,
+      "weights": {
+        "mainstream": 0.35,
+        "mole": 0.3,
+        "airdrop": 0.15,
+        "oracle": 0.1,
+        "copy_trade": 0.1
+      }
+    },
+    {
+      "time": "2026-03-12T22:10:27.454711",
+      "signals": 4,
+      "buy": 2,
+      "weights": {
+        "mainstream": 0.35,
+        "mole": 0.3,
+        "airdrop": 0.15,
+        "oracle": 0.1,
+        "copy_trade": 0.1
+      }
+    },
+    {
+      "time": "2026-03-12T22:11:34.525402",
+      "signals": 4,
+      "buy": 2,
+      "weights": {
+        "mainstream": 0.35,
+        "mole": 0.3,
+        "airdrop": 0.15,
+        "oracle": 0.1,
+        "copy_trade": 0.1
+      }
+    },
+    {
+      "time": "2026-03-13T22:00:31.212577",
+      "signals": 4,
+      "buy": 2,
+      "weights": {
+        "mainstream": 0.35,
+        "mole": 0.3,
+        "airdrop": 0.15,
+        "oracle": 0.1,
+        "copy_trade": 0.1
+      }
+    },
+    {
+      "time": "2026-03-13T22:05:45.918751",
+      "signals": 4,
+      "buy": 2,
+      "weights": {
+        "mainstream": 0.35,
+        "mole": 0.3,
+        "airdrop": 0.15,
+        "oracle": 0.1,
+        "copy_trade": 0.1
+      }
+    }
+  ]
+}

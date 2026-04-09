@@ -1,0 +1,11 @@
+{
+  "name": "管理团队",
+  "id": "management-team",
+  "members": [
+    {"role": "CEO", "name": "首席执行官", "status": "active"},
+    {"role": "CTO", "name": "技术总监", "status": "active"},
+    {"role": "CFO", "name": "财务总监", "status": "pending"}
+  ],
+  "subTeams": ["trading-team"],
+  "created": "2026-03-13"
+}

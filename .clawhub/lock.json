@@ -1,0 +1,453 @@
+{
+  "version": 1,
+  "skills": {
+    "vassili-clawhub-cli": {
+      "version": "1.0.0",
+      "installedAt": 1773023105084
+    },
+    "xiucheng-self-improving-agent": {
+      "version": "1.0.0",
+      "installedAt": 1773278704770
+    },
+    "gog": {
+      "version": "1.0.0",
+      "installedAt": 1773853620873
+    },
+    "openclaw-tavily-search": {
+      "version": "0.1.0",
+      "installedAt": 1773278765138
+    },
+    "skill-vetter": {
+      "version": "1.0.0",
+      "installedAt": 1773109442944
+    },
+    "agent-retro": {
+      "version": "1.0.0",
+      "installedAt": 1773108781622
+    },
+    "obsidian-bases": {
+      "version": "1.0.0",
+      "installedAt": 1773140820905
+    },
+    "skill-manager-all-in-one": {
+      "version": "3.0.4",
+      "installedAt": 1773141002189
+    },
+    "github-ops": {
+      "version": "1.0.0",
+      "installedAt": 1773141006596
+    },
+    "agentic-mcp-server-builder": {
+      "version": "0.1.0",
+      "installedAt": 1773141067184
+    },
+    "obsidian-markdown": {
+      "version": "1.0.0",
+      "installedAt": 1773141120648
+    },
+    "pdf": {
+      "version": "0.1.0",
+      "installedAt": 1773141124243
+    },
+    "powerpoint-pptx": {
+      "version": "1.0.0",
+      "installedAt": 1773141129634
+    },
+    "video-to-text": {
+      "version": "1.0.0",
+      "installedAt": 1773141195922
+    },
+    "frontend-design-3": {
+      "version": "0.1.0",
+      "installedAt": 1773141199655
+    },
+    "scrapling": {
+      "version": "1.0.8",
+      "installedAt": 1773143343467
+    },
+    "capability-evolver": {
+      "version": "1.27.3",
+      "installedAt": 1773143946916
+    },
+    "ralph-loop-agent": {
+      "version": "1.1.0",
+      "installedAt": 1773152046880
+    },
+    "spotify": {
+      "version": "1.0.0",
+      "installedAt": 1773152100645
+    },
+    "slack": {
+      "version": "1.0.0",
+      "installedAt": 1773152105014
+    },
+    "agent-browser": {
+      "version": "0.2.0",
+      "installedAt": 1773152168879
+    },
+    "first-principles-decomposer": {
+      "version": "1.0.0",
+      "installedAt": 1773152228533
+    },
+    "deep-research-pro": {
+      "version": "1.0.2",
+      "installedAt": 1773152345564
+    },
+    "openai-whisper": {
+      "version": "1.0.0",
+      "installedAt": 1773152583876
+    },
+    "ai-web-automation": {
+      "version": "1.0.0",
+      "installedAt": 1773152837244
+    },
+    "todoist": {
+      "version": "0.2.1",
+      "installedAt": 1773152880200
+    },
+    "mh-obsidian": {
+      "version": "1.0.0",
+      "installedAt": 1773152884425
+    },
+    "evomap-tools": {
+      "version": "1.0.0",
+      "installedAt": 1773153421352
+    },
+    "memory-setup": {
+      "version": "1.0.0",
+      "installedAt": 1773155704758
+    },
+    "github-cli": {
+      "version": "1.0.0",
+      "installedAt": 1773156122764
+    },
+    "data-analysis": {
+      "version": "1.0.0",
+      "installedAt": 1773157446489
+    },
+    "agent-reach": {
+      "version": "1.1.0",
+      "installedAt": 1773157923772
+    },
+    "ai-humanizer": {
+      "version": "2.1.0",
+      "installedAt": 1773157930289
+    },
+    "problem-solver-ai": {
+      "version": "1.0.0",
+      "installedAt": 1773158101321
+    },
+    "trading": {
+      "version": "1.0.1",
+      "installedAt": 1773163051019
+    },
+    "crypto-trading-bot": {
+      "version": "1.0.0",
+      "installedAt": 1773163213874
+    },
+    "trading-brain": {
+      "version": "1.0.0",
+      "installedAt": 1773163499929
+    },
+    "polymarket-bot": {
+      "version": "1.0.0",
+      "installedAt": 1773163515263
+    },
+    "binance-spot-trading": {
+      "version": "1.0.0",
+      "installedAt": 1773163639649
+    },
+    "binance-grid-trading": {
+      "version": "1.0.0",
+      "installedAt": 1773163644718
+    },
+    "rho-signals": {
+      "version": "1.0.0",
+      "installedAt": 1773163869884
+    },
+    "polymarket-arbitrage": {
+      "version": "0.1.0",
+      "installedAt": 1773163923130
+    },
+    "pair-trade-screener": {
+      "version": "0.1.0",
+      "installedAt": 1773163928287
+    },
+    "openclaw-anything": {
+      "version": "2.0.0",
+      "installedAt": 1773204367271
+    },
+    "noiz-characteristic-voice": {
+      "version": "1.0.0",
+      "installedAt": 1773205382595
+    },
+    "learn-anything-in-one-hour": {
+      "version": "1.0.0",
+      "installedAt": 1773246673096
+    },
+    "react": {
+      "version": "1.0.4",
+      "installedAt": 1773279378190
+    },
+    "using-superpowers": {
+      "version": "0.1.0",
+      "installedAt": 1773279661588
+    },
+    "skill-creator": {
+      "version": "0.1.0",
+      "installedAt": 1773349164962
+    },
+    "agent-team-orchestration": {
+      "version": "1.0.0",
+      "installedAt": 1773883331198
+    },
+    "frontend-design-pro": {
+      "version": "1.0.0",
+      "installedAt": 1773349267297
+    },
+    "frontend-performance": {
+      "version": "1.0.0",
+      "installedAt": 1773349272398
+    },
+    "brainstorming": {
+      "version": "0.1.0",
+      "installedAt": 1773349343537
+    },
+    "marketing-mode": {
+      "version": "1.0.0",
+      "installedAt": 1773349380844
+    },
+    "seo": {
+      "version": "1.0.3",
+      "installedAt": 1773349573068
+    },
+    "supabase": {
+      "version": "1.0.0",
+      "installedAt": 1773349624521
+    },
+    "tailwind-design-system": {
+      "version": "1.0.0",
+      "installedAt": 1773349691375
+    },
+    "browser": {
+      "version": "1.0.0",
+      "installedAt": 1773349751552
+    },
+    "parallel": {
+      "version": "1.2.1",
+      "installedAt": 1773350167708
+    },
+    "gpu-cli": {
+      "version": "1.1.1",
+      "installedAt": 1773350583987
+    },
+    "sub-agent-factory": {
+      "version": "1.1.0",
+      "installedAt": 1773411845164
+    },
+    "ai-persona-os": {
+      "version": "1.6.2",
+      "installedAt": 1773411965707
+    },
+    "telegram-bot": {
+      "version": "1.0.0",
+      "installedAt": 1773414422322
+    },
+    "quant-trading-system": {
+      "version": "6.0.0",
+      "installedAt": 1773519253544
+    },
+    "trading-devbox": {
+      "version": "0.1.0",
+      "installedAt": 1773545404904
+    },
+    "awesome-openclaw-skills": {
+      "version": "1.0.0",
+      "installedAt": 1773837489403
+    },
+    "openclaw-optimizer-pro": {
+      "version": "1.1.3",
+      "installedAt": 1773837846447
+    },
+    "workbuddy-add-memory": {
+      "version": "3.0.1",
+      "installedAt": 1773840212110
+    },
+    "memos-cli": {
+      "version": "0.1.0",
+      "installedAt": 1773840558558
+    },
+    "cli-anything": {
+      "version": "0.1.0",
+      "installedAt": 1773841096303
+    },
+    "multi-search-engine": {
+      "version": "2.0.1",
+      "installedAt": 1773841562931
+    },
+    "runesleo-systematic-debugging": {
+      "version": "3.0.0",
+      "installedAt": 1773842900303
+    },
+    "vibe-coding": {
+      "version": "1.0.0",
+      "installedAt": 1773843328040
+    },
+    "next-best-practices": {
+      "version": "0.1.0",
+      "installedAt": 1773844212770
+    },
+    "worldmonitor-intelligence-dashboard": {
+      "version": "1.0.0",
+      "installedAt": 1773844562660
+    },
+    "ui-ux-pro-max": {
+      "version": "0.1.0",
+      "installedAt": 1773844595541
+    },
+    "structure-thinking": {
+      "version": "1.0.0",
+      "installedAt": 1773844621468
+    },
+    "e2e-testing-patterns": {
+      "version": "1.0.0",
+      "installedAt": 1773847441150
+    },
+    "pls-audit-website": {
+      "version": "1.0.0",
+      "installedAt": 1773848044350
+    },
+    "social-insights": {
+      "version": "1.1.1",
+      "installedAt": 1773850681928
+    },
+    "stock-analysis": {
+      "version": "6.2.0",
+      "installedAt": 1773851344114
+    },
+    "akshare-stock": {
+      "version": "1.0.1",
+      "installedAt": 1773851541841
+    },
+    "stock-watcher": {
+      "version": "1.0.0",
+      "installedAt": 1773851595752
+    },
+    "stock-monitor": {
+      "version": "1.3.0",
+      "installedAt": 1773851701632
+    },
+    "tushare-stock-skill": {
+      "version": "1.0.3",
+      "installedAt": 1773851724110
+    },
+    "china-stock-analysis": {
+      "version": "1.0.0",
+      "installedAt": 1773851828840
+    },
+    "byterover": {
+      "version": "2.1.0",
+      "installedAt": 1773852433384
+    },
+    "mh-wacli": {
+      "version": "1.0.0",
+      "installedAt": 1773852507490
+    },
+    "ontology": {
+      "version": "1.0.4",
+      "installedAt": 1773852548795
+    },
+    "proactive-agent-skill": {
+      "version": "1.0.0",
+      "installedAt": 1773852607500
+    },
+    "aoms": {
+      "version": "1.1.0",
+      "installedAt": 1773852867670
+    },
+    "x-article-reader": {
+      "version": "0.1.1",
+      "installedAt": 1773853687676
+    },
+    "a2a-protocol": {
+      "version": "1.0.1",
+      "installedAt": 1773853872296
+    },
+    "pls-canvas-design": {
+      "version": "1.0.0",
+      "installedAt": 1773853943583
+    },
+    "exa-web-search-free": {
+      "version": "1.0.1",
+      "installedAt": 1773854664102
+    },
+    "easyclaw": {
+      "version": "0.0.2",
+      "installedAt": 1773854721772
+    },
+    "tldr": {
+      "version": "1.0.1",
+      "installedAt": 1773854724065
+    },
+    "git-essentials": {
+      "version": "1.0.0",
+      "installedAt": 1773854763751
+    },
+    "git-sync-daemon": {
+      "version": "1.0.0",
+      "installedAt": 1773854835602
+    },
+    "turix-cua": {
+      "version": "1.0.8",
+      "installedAt": 1773854836681
+    },
+    "docker-essentials": {
+      "version": "1.0.0",
+      "installedAt": 1773854897242
+    },
+    "github-pr-manager": {
+      "version": "1.0.0",
+      "installedAt": 1773854949876
+    },
+    "debug-pro": {
+      "version": "1.0.0",
+      "installedAt": 1773854963404
+    },
+    "nextjs": {
+      "version": "1.1.0",
+      "installedAt": 1773855002813
+    },
+    "kesslerio-stealth-browser": {
+      "version": "1.0.0",
+      "installedAt": 1773855018854
+    },
+    "public-apis-skill-creator": {
+      "version": "1.0.0",
+      "installedAt": 1773855074215
+    },
+    "git-crypt-backup": {
+      "version": "1.0.0",
+      "installedAt": 1773855076918
+    },
+    "autoresearch": {
+      "version": "1.0.2",
+      "installedAt": 1773855089262
+    },
+    "agency-agents": {
+      "version": "1.0.2",
+      "installedAt": 1773855187117
+    },
+    "self-improving": {
+      "version": "1.2.16",
+      "installedAt": 1773855860150
+    },
+    "self-improving-proactive-agent": {
+      "version": "1.0.0",
+      "installedAt": 1773855867221
+    },
+    "pua": {
+      "version": "1.1.3",
+      "installedAt": 1773879013324
+    }
+  }
+}

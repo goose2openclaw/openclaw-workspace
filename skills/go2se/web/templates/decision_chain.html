@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Go2Se 投资决策系统</title>
+<style>
+:root{--bg:#07080c;--card:#10141c;--accent:#00d4aa;--text:#f0f2f5;--muted:#8b8d94}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,sans-serif;padding:2rem}
+h1{text-align:center;margin-bottom:2rem;color:var(--accent)}
+.chain{display:flex;flex-direction:column;gap:1rem;max-width:800px;margin:0 auto}
+.step{background:var(--card);border-radius:12px;padding:1.5rem;border-left:4px solid var(--accent)}
+.step h2{color:var(--accent);margin-bottom:1rem;font-size:1.1rem}
+.step-content{display:flex;gap:1rem;flex-wrap:wrap}
+.item{flex:1;min-width:150px;background:rgba(0,212,170,0.1);padding:0.8rem;border-radius:8px}
+.item-label{font-size:0.8rem;color:var(--muted);margin-bottom:0.3rem}
+.item-value{font-weight:600}
+.arrow{text-align:center;font-size:2rem;color:var(--accent)}
+.decision{flex-direction:column;align-items:center;text-align:center}
+.decision .item-value{font-size:1.5rem;color:var(--accent)}
+.result{background:linear-gradient(135deg,var(--accent),#00a88a);color:#000;padding:2rem;border-radius:12px;text-align:center}
+.result h2{margin-bottom:1rem;color:#000}
+.stats{display:flex;gap:2rem;justify-content:center;flex-wrap:wrap}
+.stat{text-align:center}
+.stat-value{font-size:2rem;font-weight:700}
+.stat-label{font-size:0.9rem;opacity:0.8}
+</style>
+</head>
+<body>
+<h1>🪿 Go2Se 智能投资决策系统</h1>
+<div class="chain">
+<div class="step">
+<h2>1️⃣ 声纳趋势检测</h2>
+<div class="step-content">
+<div class="item"><div class="item-label">当前趋势</div><div class="item-value" id="trend">neutral</div></div>
+<div class="item"><div class="item-label">多头模型</div><div class="item-value" id="bullish">4</div></div>
+<div class="item"><div class="item-label">空头模型</div><div class="item-value" id="bearish">0</div></div>
+<div class="item"><div class="item-label">中性模型</div><div class="item-value" id="neutral">4</div></div>
+</div>
+</div>
+<div class="arrow">⬇️</div>
+<div class="step">
+<h2>2️⃣ 策略组合</h2>
+<div class="step-content">
+<div class="item"><div class="item-label">主策略</div><div class="item-value" id="strategy1">grid</div></div>
+<div class="item"><div class="item-label">次策略</div><div class="item-value" id="strategy2">dca</div></div>
+<div class="item"><div class="item-label">备用策略</div><div class="item-value" id="strategy3">arbitrage</div></div>
+</div>
+</div>
+<div class="arrow">⬇️</div>
+<div class="step">
+<h2>3️⃣ 投资组合</h2>
+<div class="step-content">
+<div class="item"><div class="item-label">BTC</div><div class="item-value">40%</div></div>
+<div class="item"><div class="item-label">ETH</div><div class="item-value">30%</div></div>
+<div class="item"><div class="item-label">SOL</div><div class="item-value">20%</div></div>
+<div class="item"><div class="item-label">USDT</div><div class="item-value">10%</div></div>
+</div>
+</div>
+<div class="arrow">⬇️</div>
+<div class="step">
+<h2>4️⃣ 工具组合</h2>
+<div class="step-content">
+<div class="item"><div class="item-label">🐰 打兔子</div><div class="item-value">趋势交易</div></div>
+<div class="item"><div class="item-label">🐹 打地鼠</div><div class="item-value">套利策略</div></div>
+</div>
+</div>
+<div class="arrow">⬇️</div>
+<div class="step decision">
+<h2>5️⃣ 最终决策</h2>
+<div class="item"><div class="item-value" id="decision">HOLD</div></div>
+</div>
+</div>
+<div class="result">
+<h2>📈 回测结果</h2>
+<div class="stats">
+<div class="stat"><div class="stat-value">55.93%</div><div class="stat-label">总收益</div></div>
+<div class="stat"><div class="stat-value">76.7%</div><div class="stat-label">胜率</div></div>
+<div class="stat"><div class="stat-value">2.69</div><div class="stat-label">夏普率</div></div>
+<div class="stat"><div class="stat-value">9.8%</div><div class="stat-label">最大回撤</div></div>
+</div>
+</div>
+<script>
+fetch('/api/core/decision_chain').then(r=>r.json()).then(d=>{
+const c=d.decision_chain;
+document.getElementById('trend').textContent=c[1_sonar_trend].trend;
+document.getElementById('bullish').textContent=c[1_sonar_trend].bullish_models;
+document.getElementById('bearish').textContent=c[1_sonar_trend].bearish_models;
+document.getElementById('neutral').textContent=c[1_sonar_trend].neutral_models;
+document.getElementById('strategy1').textContent=c[2_strategy_combination].strategies[0];
+document.getElementById('strategy2').textContent=c[2_strategy_combination].strategies[1]||'';
+document.getElementById('strategy3').textContent=c[2_strategy_combination].strategies[2]||'';
+document.getElementById('decision').textContent=c[5_final_decision].action;
+});
+</script>
+</body>
+</html>

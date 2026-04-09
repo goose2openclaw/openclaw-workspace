@@ -1,0 +1,552 @@
+{
+  "version": 1,
+  "updated": "2026-03-31T04:36:53.766Z",
+  "toolStats": {
+    "exec": {
+      "totalAcrossSessions": 3036,
+      "uniqueSessions": 16,
+      "successRate": 1,
+      "commonArgs": [
+        "curl",
+        "--max-time",
+        "http",
+        "//localhost",
+        "18789/",
+        "head",
+        "200",
+        "command",
+        "18789/api/v1/status",
+        "300",
+        "grep",
+        "(gateway.*down|ws.*close|connection.*lost|disconnect|offline)\\",
+        "/tmp/openclaw/",
+        "(webchat|ws.*connect|ws.*open)\\",
+        "2>/dev/",
+        "bash",
+        "/root/.openclaw/workspace/go2se_platform/scripts/cron_guardian.sh",
+        "2>&1",
+        "sleep",
+        "100"
+      ],
+      "commonErrors": [],
+      "lastSeen": "2026-03-31T04:36:28.785Z",
+      "sessionList": [
+        "agent:main:main",
+        "agent:main:cron:fb92b8a8-3a42-469d-967d-f47c7ac9bff5",
+        "agent:main:subagent:af00ffbc-fec9-45a2-ada6-32997564f2a1",
+        "agent:main:subagent:12bcb30e-eb03-49cf-9a23-e10a65c3dd20",
+        "agent:main:subagent:a97d01a9-889b-4a11-8628-e02939f541c0",
+        "agent:main:subagent:f4dd5216-3bf4-4223-a73b-ebfc4e9d02f6",
+        "agent:main:subagent:5fe0b13f-01c5-4d38-a25f-4609a911e54b",
+        "agent:main:subagent:be6263a5-17ed-40da-ae18-6d13efda3982",
+        "agent:main:cron:a84bb9a4-4dcd-456a-8d22-f24c94fe89ca",
+        "agent:main:cron:0f2d9027-b6e8-4c46-989c-1ffffec11ebe",
+        "agent:main:subagent:6f8d871e-e4ff-4375-9960-5f5122815c19",
+        "agent:main:subagent:77fb5ccb-11e7-4099-9b9f-e50b960c1a27",
+        "agent:main:cron:05c7cf2a-96c0-4238-956d-9e8635c9adf4",
+        "agent:main:subagent:9fef1549-5687-48ef-8370-898ff3de9a11",
+        "agent:main:subagent:2855fec7-7e01-4ddb-afd1-b276147b2155",
+        "agent:main:cron:2370faa3-9cf3-4f0e-a6e6-92ed2c4d7004"
+      ]
+    },
+    "read": {
+      "totalAcrossSessions": 205,
+      "uniqueSessions": 11,
+      "successRate": 0.95,
+      "commonArgs": [
+        "/root/.openclaw/workspace/go2se_platform/scripts/health_check.sh",
+        "file",
+        "/root/.openclaw/workspace/skills/capability-evolver/skill.md",
+        "/root/.openclaw/workspace/go2se_platform/scripts/validate_startup.sh",
+        "limit",
+        "/root/.openclaw/workspace/go2se_platform/iteration_log.md",
+        "/root/.openclaw/workspace/go2se_platform/index.html",
+        "/root/.openclaw/workspace/go2se_platform/frontend/index.html",
+        "/root/.openclaw/workspace/go2se_platform/backend/app/api/routes_expert.py",
+        "/root/.openclaw/workspace/go2se_platform/backend/app/main.py",
+        "141",
+        "/root/.openclaw/workspace/go2se_platform/backend/app/api/routes_expe",
+        "165",
+        "path",
+        "/root/.openclaw/workspace/go2se_platform/frontend/src/app.tsx",
+        "/root/.openclaw/workspace/go2se_platform/backend.log",
+        "/root/.openclaw/workspace/go2se_platform/backend/app/core/risk_manager.py",
+        "offset",
+        "443",
+        "/root/.openclaw/workspace/heartbeat.md"
+      ],
+      "commonErrors": [
+        "ENOENT: no such file or directory, access '/root/.openclaw/w",
+        "EISDIR: illegal operation on a directory, read"
+      ],
+      "lastSeen": "2026-03-31T04:13:14.641Z",
+      "sessionList": [
+        "agent:main:main",
+        "agent:main:subagent:a97d01a9-889b-4a11-8628-e02939f541c0",
+        "agent:main:subagent:af00ffbc-fec9-45a2-ada6-32997564f2a1",
+        "agent:main:cron:a84bb9a4-4dcd-456a-8d22-f24c94fe89ca",
+        "agent:main:subagent:f4dd5216-3bf4-4223-a73b-ebfc4e9d02f6",
+        "agent:main:subagent:5fe0b13f-01c5-4d38-a25f-4609a911e54b",
+        "agent:main:subagent:be6263a5-17ed-40da-ae18-6d13efda3982",
+        "agent:main:cron:0f2d9027-b6e8-4c46-989c-1ffffec11ebe",
+        "agent:main:cron:fb92b8a8-3a42-469d-967d-f47c7ac9bff5",
+        "agent:main:subagent:6f8d871e-e4ff-4375-9960-5f5122815c19",
+        "agent:main:subagent:2855fec7-7e01-4ddb-afd1-b276147b2155"
+      ]
+    },
+    "edit": {
+      "totalAcrossSessions": 122,
+      "uniqueSessions": 5,
+      "successRate": 0.95,
+      "commonArgs": [
+        "-80",
+        "file",
+        "/root/.openclaw/workspace/go2se_platform/iteration_log.md",
+        "old_string",
+        "go2se",
+        "平台迭代日志\\n\\n",
+        "/root/.openclaw/workspace/go2se_platform/backend/app/main.py",
+        "oldtext",
+        "from",
+        "app.core.conf",
+        "path",
+        "erro",
+        "/root/.openclaw/workspace/go2se_platform/backend/app/core/risk_manager.py",
+        "/root/.openclaw/workspace/go2se_platform/frontend/src/app.tsx",
+        "const",
+        "api_base",
+        "/root/.openclaw/workspace/go2se_platform/frontend/index.html",
+        "newtext",
+        "<!doctype",
+        "html>\\n<"
+      ],
+      "commonErrors": [
+        "Missing required parameter: path alias. Supply correct param",
+        "Could not find the exact text in /root/.openclaw/workspace/G",
+        "Could not find the exact text in /root/.openclaw/workspace/m"
+      ],
+      "lastSeen": "2026-03-31T04:23:30.825Z",
+      "sessionList": [
+        "agent:main:cron:fb92b8a8-3a42-469d-967d-f47c7ac9bff5",
+        "agent:main:main",
+        "agent:main:cron:a84bb9a4-4dcd-456a-8d22-f24c94fe89ca",
+        "agent:main:cron:0f2d9027-b6e8-4c46-989c-1ffffec11ebe",
+        "agent:main:subagent:2855fec7-7e01-4ddb-afd1-b276147b2155"
+      ]
+    },
+    "write": {
+      "totalAcrossSessions": 94,
+      "uniqueSessions": 10,
+      "successRate": 1,
+      "commonArgs": [
+        "市场情报",
+        "比特币\\n\\n###",
+        "价格走势\\n-",
+        "当前区间",
+        "$60",
+        "000-$74",
+        "000",
+        "path",
+        "/root/.openclaw/workspace/memory/2026-03-30.md",
+        "content",
+        "市场情报收集",
+        "2026-03-30\\n\\n**收集时间*",
+        "/root/.openclaw/workspace/go2se_platform/v7_iteration_20260331_034808.md",
+        "/root/.openclaw/workspace/memory/2026-03-31.md",
+        "2026-03-31",
+        "市场情报\\n\\n##",
+        "采集时间\\n20",
+        "/root/.openclaw/workspace/memory/capability-evolution-2026-03-31.md",
+        "capabilit",
+        "/root/.openclaw/workspace/go2se_platform/v7_iteration_20260331_042000.md"
+      ],
+      "commonErrors": [],
+      "lastSeen": "2026-03-31T04:23:56.819Z",
+      "sessionList": [
+        "agent:main:cron:fb92b8a8-3a42-469d-967d-f47c7ac9bff5",
+        "agent:main:cron:0f2d9027-b6e8-4c46-989c-1ffffec11ebe",
+        "agent:main:subagent:f4dd5216-3bf4-4223-a73b-ebfc4e9d02f6",
+        "agent:main:subagent:5fe0b13f-01c5-4d38-a25f-4609a911e54b",
+        "agent:main:main",
+        "agent:main:cron:a84bb9a4-4dcd-456a-8d22-f24c94fe89ca",
+        "agent:main:subagent:77fb5ccb-11e7-4099-9b9f-e50b960c1a27",
+        "agent:main:subagent:6f8d871e-e4ff-4375-9960-5f5122815c19",
+        "agent:main:subagent:9fef1549-5687-48ef-8370-898ff3de9a11",
+        "agent:main:subagent:2855fec7-7e01-4ddb-afd1-b276147b2155"
+      ]
+    },
+    "web_search": {
+      "totalAcrossSessions": 73,
+      "uniqueSessions": 1,
+      "successRate": 0.81,
+      "commonArgs": [
+        "count",
+        "fear",
+        "greed",
+        "index",
+        "bitcoin",
+        "btc",
+        "latest",
+        "news",
+        "price",
+        "action",
+        "ethereum",
+        "eth",
+        "developments",
+        "crypto",
+        "market",
+        "macro",
+        "trend",
+        "outlook",
+        "march",
+        "2026"
+      ],
+      "commonErrors": [
+        "DuckDuckGo returned a bot-detection challenge.",
+        "This operation was aborted",
+        "fetch failed"
+      ],
+      "lastSeen": "2026-03-31T03:54:16.571Z",
+      "sessionList": [
+        "agent:main:cron:0f2d9027-b6e8-4c46-989c-1ffffec11ebe"
+      ]
+    },
+    "subagents": {
+      "totalAcrossSessions": 9,
+      "uniqueSessions": 2,
+      "successRate": 1,
+      "commonArgs": [
+        "action",
+        "list",
+        "recentminutes",
+        "120"
+      ],
+      "commonErrors": [],
+      "lastSeen": "2026-03-30T13:11:43.588Z",
+      "sessionList": [
+        "agent:main:cron:a84bb9a4-4dcd-456a-8d22-f24c94fe89ca",
+        "agent:main:main"
+      ]
+    },
+    "browser": {
+      "totalAcrossSessions": 1,
+      "uniqueSessions": 1,
+      "successRate": 1,
+      "commonArgs": [
+        "action",
+        "status",
+        "target",
+        "host"
+      ],
+      "commonErrors": [],
+      "lastSeen": "2026-03-29T16:21:22.509Z",
+      "sessionList": [
+        "agent:main:main"
+      ]
+    },
+    "web_fetch": {
+      "totalAcrossSessions": 16,
+      "uniqueSessions": 1,
+      "successRate": 0.44,
+      "commonArgs": [
+        "url",
+        "https",
+        "//crypto.com/us/market-updates/march-2026-fomc-recap-btc-eth-price",
+        "maxchars",
+        "3000",
+        "//en.cryptonomist.ch/2026/03/25/crypto-market-march-2026-outlook/",
+        "//coinmarketcap.com/cmc-ai/ethereum/latest-updates/",
+        "//www.coindesk.com/markets/2026/03/20/crypto-market-steadies-as-derivatives-signal-cau",
+        "//coinmarketcap.com/cmc-ai/bitcoin/latest-updates/",
+        "//coinmarketcap.com/",
+        "//cryptopanic.com/",
+        "//www.coingecko.com/en/",
+        "//www.coingecko.com/en",
+        "//decrypt.co/news",
+        "//decrypt.co/news/bitcoin",
+        "//cointelegraph.com/news",
+        "//decrypt.co/362727/coinbase-robinhood-figure-stocks-60-off-bernstein-says-buy-dip",
+        "//www.theblock.co/"
+      ],
+      "commonErrors": [
+        "Web fetch failed (404): SECURITY NOTICE: The following conte",
+        "fetch failed",
+        "Web fetch failed (403): SECURITY NOTICE: The following conte"
+      ],
+      "lastSeen": "2026-03-31T03:55:32.176Z",
+      "sessionList": [
+        "agent:main:cron:0f2d9027-b6e8-4c46-989c-1ffffec11ebe"
+      ]
+    },
+    "gateway": {
+      "totalAcrossSessions": 5,
+      "uniqueSessions": 2,
+      "successRate": 0.8,
+      "commonArgs": [
+        "action",
+        "config.get",
+        "config.patch",
+        "path",
+        "channels.telegram.commands.native",
+        "raw",
+        "false",
+        "note",
+        "telegra",
+        "channels\\",
+        "telegram\\",
+        "commands\\",
+        "native\\",
+        "plugins\\",
+        "entries\\",
+        "aceforge\\",
+        "enabled\\"
+      ],
+      "commonErrors": [
+        "config.patch raw must be an object"
+      ],
+      "lastSeen": "2026-03-31T04:36:17.811Z",
+      "sessionList": [
+        "agent:main:cron:a84bb9a4-4dcd-456a-8d22-f24c94fe89ca",
+        "agent:main:main"
+      ]
+    },
+    "cron": {
+      "totalAcrossSessions": 6,
+      "uniqueSessions": 2,
+      "successRate": 0.83,
+      "commonArgs": [
+        "ceo自动迭代评估",
+        "schedule",
+        "kind",
+        "cron",
+        "expr",
+        "*/2",
+        "list",
+        "includedisabled",
+        "true",
+        "update",
+        "jobid",
+        "fb92b8a8-3a42-469d-967d-f47c7ac9bff5",
+        "patch",
+        "payload",
+        "text",
+        "执行平台迭代",
+        "agentt",
+        "action",
+        "fcdcafd0-a114-49cb-aff8-d85711ebb15c",
+        "system"
+      ],
+      "commonErrors": [
+        "Error: isolated/current/session cron jobs require payload.ki"
+      ],
+      "lastSeen": "2026-03-31T04:09:16.876Z",
+      "sessionList": [
+        "agent:main:main",
+        "agent:main:cron:fb92b8a8-3a42-469d-967d-f47c7ac9bff5"
+      ]
+    },
+    "session_status": {
+      "totalAcrossSessions": 2,
+      "uniqueSessions": 1,
+      "successRate": 1,
+      "commonArgs": [
+        "model",
+        "minimax-cn/minimax-m2.7"
+      ],
+      "commonErrors": [],
+      "lastSeen": "2026-03-30T04:22:39.244Z",
+      "sessionList": [
+        "agent:main:main"
+      ]
+    },
+    "sessions_yield": {
+      "totalAcrossSessions": 1,
+      "uniqueSessions": 1,
+      "successRate": 1,
+      "commonArgs": [],
+      "commonErrors": [],
+      "lastSeen": "2026-03-30T02:41:35.997Z",
+      "sessionList": [
+        "agent:main:main"
+      ]
+    },
+    "memory_search": {
+      "totalAcrossSessions": 2,
+      "uniqueSessions": 2,
+      "successRate": 1,
+      "commonArgs": [
+        "query",
+        "声纳库",
+        "趋势模型",
+        "xiami",
+        "100个模型",
+        "maxresults",
+        "btc",
+        "eth",
+        "crypto",
+        "market",
+        "trends",
+        "recent"
+      ],
+      "commonErrors": [],
+      "lastSeen": "2026-03-30T08:22:06.671Z",
+      "sessionList": [
+        "agent:main:main",
+        "agent:main:cron:0f2d9027-b6e8-4c46-989c-1ffffec11ebe"
+      ]
+    },
+    "agents_list": {
+      "totalAcrossSessions": 1,
+      "uniqueSessions": 1,
+      "successRate": 1,
+      "commonArgs": [],
+      "commonErrors": [],
+      "lastSeen": "2026-03-31T04:04:36.199Z",
+      "sessionList": [
+        "agent:main:cron:a84bb9a4-4dcd-456a-8d22-f24c94fe89ca"
+      ]
+    }
+  },
+  "correctionClusters": {},
+  "crossSessionChains": {
+    "exec→edit→write": {
+      "occurrences": 3,
+      "sessions": [
+        "agent:main:cron:fb92b8a8-3a42-469d-967d-f47c7ac9bff5",
+        "agent:main:main"
+      ]
+    },
+    "edit→write→exec": {
+      "occurrences": 3,
+      "sessions": [
+        "agent:main:cron:fb92b8a8-3a42-469d-967d-f47c7ac9bff5",
+        "agent:main:main"
+      ]
+    },
+    "exec→edit→read": {
+      "occurrences": 7,
+      "sessions": [
+        "agent:main:main",
+        "agent:main:cron:fb92b8a8-3a42-469d-967d-f47c7ac9bff5",
+        "agent:main:cron:a84bb9a4-4dcd-456a-8d22-f24c94fe89ca"
+      ]
+    },
+    "edit→read→exec": {
+      "occurrences": 8,
+      "sessions": [
+        "agent:main:main",
+        "agent:main:cron:fb92b8a8-3a42-469d-967d-f47c7ac9bff5",
+        "agent:main:cron:a84bb9a4-4dcd-456a-8d22-f24c94fe89ca"
+      ]
+    },
+    "process→exec→edit": {
+      "occurrences": 2,
+      "sessions": [
+        "agent:main:cron:a84bb9a4-4dcd-456a-8d22-f24c94fe89ca",
+        "agent:main:main"
+      ]
+    },
+    "process→exec→read": {
+      "occurrences": 3,
+      "sessions": [
+        "agent:main:subagent:be6263a5-17ed-40da-ae18-6d13efda3982",
+        "agent:main:subagent:5fe0b13f-01c5-4d38-a25f-4609a911e54b",
+        "agent:main:cron:0f2d9027-b6e8-4c46-989c-1ffffec11ebe"
+      ]
+    },
+    "exec→read→process": {
+      "occurrences": 4,
+      "sessions": [
+        "agent:main:subagent:5fe0b13f-01c5-4d38-a25f-4609a911e54b",
+        "agent:main:main",
+        "agent:main:cron:fb92b8a8-3a42-469d-967d-f47c7ac9bff5"
+      ]
+    },
+    "exec→process→read": {
+      "occurrences": 8,
+      "sessions": [
+        "agent:main:cron:fb92b8a8-3a42-469d-967d-f47c7ac9bff5",
+        "agent:main:main"
+      ]
+    },
+    "read→edit→exec": {
+      "occurrences": 21,
+      "sessions": [
+        "agent:main:cron:fb92b8a8-3a42-469d-967d-f47c7ac9bff5",
+        "agent:main:main",
+        "agent:main:cron:a84bb9a4-4dcd-456a-8d22-f24c94fe89ca"
+      ]
+    },
+    "exec→write→read": {
+      "occurrences": 5,
+      "sessions": [
+        "agent:main:main",
+        "agent:main:cron:0f2d9027-b6e8-4c46-989c-1ffffec11ebe"
+      ]
+    },
+    "exec→read→edit": {
+      "occurrences": 19,
+      "sessions": [
+        "agent:main:main",
+        "agent:main:cron:fb92b8a8-3a42-469d-967d-f47c7ac9bff5"
+      ]
+    },
+    "write→read→edit": {
+      "occurrences": 7,
+      "sessions": [
+        "agent:main:main",
+        "agent:main:cron:a84bb9a4-4dcd-456a-8d22-f24c94fe89ca"
+      ]
+    },
+    "exec→edit→process": {
+      "occurrences": 5,
+      "sessions": [
+        "agent:main:main",
+        "agent:main:subagent:2855fec7-7e01-4ddb-afd1-b276147b2155",
+        "agent:main:cron:fb92b8a8-3a42-469d-967d-f47c7ac9bff5"
+      ]
+    },
+    "edit→exec→write": {
+      "occurrences": 5,
+      "sessions": [
+        "agent:main:cron:fb92b8a8-3a42-469d-967d-f47c7ac9bff5",
+        "agent:main:main"
+      ]
+    },
+    "exec→process→edit": {
+      "occurrences": 3,
+      "sessions": [
+        "agent:main:main",
+        "agent:main:subagent:2855fec7-7e01-4ddb-afd1-b276147b2155"
+      ]
+    },
+    "exec→read→write": {
+      "occurrences": 3,
+      "sessions": [
+        "agent:main:cron:a84bb9a4-4dcd-456a-8d22-f24c94fe89ca",
+        "agent:main:main"
+      ]
+    },
+    "edit→exec→read": {
+      "occurrences": 3,
+      "sessions": [
+        "agent:main:main",
+        "agent:main:cron:fb92b8a8-3a42-469d-967d-f47c7ac9bff5"
+      ]
+    },
+    "write→exec→edit": {
+      "occurrences": 3,
+      "sessions": [
+        "agent:main:main",
+        "agent:main:cron:a84bb9a4-4dcd-456a-8d22-f24c94fe89ca"
+      ]
+    },
+    "write→read→exec": {
+      "occurrences": 2,
+      "sessions": [
+        "agent:main:subagent:2855fec7-7e01-4ddb-afd1-b276147b2155",
+        "agent:main:cron:0f2d9027-b6e8-4c46-989c-1ffffec11ebe"
+      ]
+    }
+  }
+}

@@ -1,0 +1,207 @@
+{
+  "iteration": 1,
+  "start_time": "2026-03-12T17:27:01.509398",
+  "performance": {
+    "total_trades": 0,
+    "win_rate": 0.55,
+    "total_pnl": 0,
+    "best_strategy": "mainstream",
+    "strategy_weights": {
+      "mainstream": 0.4,
+      "mole": 0.3,
+      "airdrop": 0.13,
+      "oracle": 0.11,
+      "copy_trade": 0.1
+    }
+  },
+  "market_data": {
+    "timestamp": "2026-03-12T17:27:01.511612",
+    "markets": [
+      {
+        "id": "mainstream",
+        "name": "\u4e3b\u6d41\u5e01",
+        "coins": [
+          "BTC",
+          "ETH",
+          "SOL"
+        ],
+        "volatility": 0.65,
+        "trend": "bullish"
+      },
+      {
+        "id": "altcoin",
+        "name": "\u5c71\u5be8\u5e01",
+        "coins": [
+          "PEPE",
+          "WIF",
+          "BONK"
+        ],
+        "volatility": 0.85,
+        "trend": "bullish"
+      },
+      {
+        "id": "prediction",
+        "name": "\u9884\u6d4b\u5e02\u573a",
+        "coins": [
+          "TRUMP",
+          "BTC-\u672b\u6765"
+        ],
+        "volatility": 0.45,
+        "trend": "neutral"
+      },
+      {
+        "id": "copy_trade",
+        "name": "\u8ddf\u5355",
+        "coins": [
+          "top_traders"
+        ],
+        "volatility": 0.35,
+        "trend": "bullish"
+      },
+      {
+        "id": "market_maker",
+        "name": "\u505a\u5e02",
+        "coins": [
+          "stable_pairs"
+        ],
+        "volatility": 0.15,
+        "trend": "neutral"
+      },
+      {
+        "id": "airdrop",
+        "name": "\u7a7a\u6295",
+        "coins": [
+          "new_tokens"
+        ],
+        "volatility": 0.95,
+        "trend": "bullish"
+      },
+      {
+        "id": "crowdsource",
+        "name": "\u4f17\u5305",
+        "coins": [
+          "signals"
+        ],
+        "volatility": 0.55,
+        "trend": "bullish"
+      }
+    ],
+    "overall_sentiment": "bullish",
+    "fear_greed_index": 51
+  },
+  "signals": [
+    {
+      "coin": "BTC",
+      "market": "mainstream",
+      "action": "HOLD",
+      "confidence": 5.9,
+      "potential": 3.54,
+      "risk": "high",
+      "timestamp": "2026-03-12T17:27:01.512169"
+    },
+    {
+      "coin": "ETH",
+      "market": "mainstream",
+      "action": "BUY",
+      "confidence": 8.9,
+      "potential": 13.95,
+      "risk": "medium",
+      "timestamp": "2026-03-12T17:27:01.512248"
+    },
+    {
+      "coin": "SOL",
+      "market": "mainstream",
+      "action": "BUY",
+      "confidence": 7.4,
+      "potential": 7.79,
+      "risk": "medium",
+      "timestamp": "2026-03-12T17:27:01.512259"
+    },
+    {
+      "coin": "PEPE",
+      "market": "altcoin",
+      "action": "BUY",
+      "confidence": 7.4,
+      "potential": 8.56,
+      "risk": "medium",
+      "timestamp": "2026-03-12T17:27:01.512264"
+    },
+    {
+      "coin": "WIF",
+      "market": "altcoin",
+      "action": "SELL",
+      "confidence": 3.8,
+      "potential": 9.2,
+      "risk": "low",
+      "timestamp": "2026-03-12T17:27:01.512269"
+    },
+    {
+      "coin": "BONK",
+      "market": "altcoin",
+      "action": "BUY",
+      "confidence": 7.4,
+      "potential": 13.47,
+      "risk": "medium",
+      "timestamp": "2026-03-12T17:27:01.512274"
+    },
+    {
+      "coin": "TRUMP",
+      "market": "prediction",
+      "action": "BUY",
+      "confidence": 8.4,
+      "potential": 7.7,
+      "risk": "medium",
+      "timestamp": "2026-03-12T17:27:01.512280"
+    },
+    {
+      "coin": "BTC-\u672b\u6765",
+      "market": "prediction",
+      "action": "HOLD",
+      "confidence": 5.9,
+      "potential": 14.24,
+      "risk": "medium",
+      "timestamp": "2026-03-12T17:27:01.512284"
+    },
+    {
+      "coin": "top_traders",
+      "market": "copy_trade",
+      "action": "BUY",
+      "confidence": 8.0,
+      "potential": 1.62,
+      "risk": "medium",
+      "timestamp": "2026-03-12T17:27:01.512289"
+    },
+    {
+      "coin": "stable_pairs",
+      "market": "market_maker",
+      "action": "SELL",
+      "confidence": 4.4,
+      "potential": 6.2,
+      "risk": "low",
+      "timestamp": "2026-03-12T17:27:01.512294"
+    },
+    {
+      "coin": "new_tokens",
+      "market": "airdrop",
+      "action": "SELL",
+      "confidence": 3.6,
+      "potential": 4.84,
+      "risk": "low",
+      "timestamp": "2026-03-12T17:27:01.512298"
+    },
+    {
+      "coin": "signals",
+      "market": "crowdsource",
+      "action": "HOLD",
+      "confidence": 5.7,
+      "potential": 14.3,
+      "risk": "high",
+      "timestamp": "2026-03-12T17:27:01.512302"
+    }
+  ],
+  "adjustments": [
+    "mainstream: 0.35\u21920.40249999999999997",
+    "airdrop: 0.15\u21920.1275",
+    "oracle: 0.1\u21920.11499999999999999"
+  ]
+}

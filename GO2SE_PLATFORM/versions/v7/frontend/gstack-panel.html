@@ -1,0 +1,757 @@
+<!--
+GO2SE v7 — gstack Commands Panel
+侧边栏gstack命令面板组件
+
+Usage:
+    <div id="gstack-panel"></div>
+    <script src="gstack-panel.js"></script>
+    <script>
+        initGstackPanel('gstack-panel', { apiBase: '/api/gstack' });
+    </script>
+-->
+
+<div class="gstack-container">
+    <!-- Header -->
+    <div class="gstack-header">
+        <div class="gstack-logo">
+            <span class="logo-icon">🪿</span>
+            <span class="logo-text">GO2SE <span class="version">v7</span></span>
+        </div>
+        <span class="gstack-badge">+gstack</span>
+    </div>
+    
+    <!-- Main Navigation -->
+    <nav class="main-nav">
+        <a href="#dashboard" class="nav-item active" data-page="dashboard">
+            <span class="icon">📊</span>
+            <span class="label">总览</span>
+        </a>
+        <a href="#market" class="nav-item" data-page="market">
+            <span class="icon">📈</span>
+            <span class="label">市场</span>
+        </a>
+        <a href="#strategy" class="nav-item" data-page="strategy">
+            <span class="icon">🎯</span>
+            <span class="label">策略</span>
+        </a>
+        <a href="#signals" class="nav-item" data-page="signals">
+            <span class="icon">🔔</span>
+            <span class="label">信号</span>
+        </a>
+        <a href="#trading" class="nav-item" data-page="trading">
+            <span class="icon">💱</span>
+            <span class="label">交易</span>
+        </a>
+        <a href="#wallet" class="nav-item" data-page="wallet">
+            <span class="icon">💰</span>
+            <span class="label">钱包</span>
+        </a>
+        <a href="#settings" class="nav-item" data-page="settings">
+            <span class="icon">⚙️</span>
+            <span class="label">设置</span>
+        </a>
+    </nav>
+    
+    <!-- Divider -->
+    <div class="divider">
+        <span class="divider-text">🔧 gstack Commands</span>
+    </div>
+    
+    <!-- gstack Commands Panel -->
+    <div class="gstack-commands" id="gstack-commands">
+        <!-- Loading State -->
+        <div class="loading-commands">
+            <span class="spinner">⏳</span>
+            <span>加载gstack命令...</span>
+        </div>
+    </div>
+    
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+        <button class="action-btn" onclick="showGstackHelp()" title="gstack帮助">
+            ❓
+        </button>
+        <button class="action-btn" onclick="refreshGstackStatus()" title="刷新状态">
+            🔄
+        </button>
+    </div>
+</div>
+
+<!-- gstack Command Modal -->
+<div class="gstack-modal" id="gstack-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="modal-title">gstack Command</h3>
+            <button class="close-btn" onclick="closeModal()">×</button>
+        </div>
+        <div class="modal-body" id="modal-body">
+            <!-- Dynamic content -->
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" onclick="closeModal()">关闭</button>
+            <button class="btn-primary" id="modal-action">运行</button>
+        </div>
+    </div>
+</div>
+
+<!-- Strategy Flow Modal -->
+<div class="gstack-modal" id="strategy-flow-modal">
+    <div class="modal-content modal-large">
+        <div class="modal-header">
+            <h3>🎯 策略开发流水线</h3>
+            <button class="close-btn" onclick="closeStrategyModal()">×</button>
+        </div>
+        <div class="modal-body">
+            <div class="flow-idea">
+                <label>策略想法:</label>
+                <textarea id="strategy-idea" placeholder="描述你的交易策略想法..."></textarea>
+            </div>
+            <div class="flow-steps" id="flow-steps">
+                <!-- Steps will be rendered here -->
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" onclick="closeStrategyModal()">取消</button>
+            <button class="btn-primary" onclick="runStrategyFlow()">🚀 启动流水线</button>
+        </div>
+    </div>
+</div>
+
+<style>
+/* gstack Container */
+.gstack-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: linear-gradient(180deg, #0A0E17 0%, #1a1f2e 100%);
+    color: #E2E8F0;
+    font-family: 'Inter', -apple-system, sans-serif;
+}
+
+/* Header */
+.gstack-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.gstack-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logo-icon {
+    font-size: 24px;
+}
+
+.logo-text {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.logo-text .version {
+    font-size: 10px;
+    background: linear-gradient(135deg, #00D4AA, #7C3AED);
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 4px;
+}
+
+.gstack-badge {
+    font-size: 10px;
+    background: linear-gradient(135deg, #7C3AED, #00D4AA);
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+/* Main Navigation */
+.main-nav {
+    padding: 12px 8px;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    color: #94A3B8;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.nav-item:hover {
+    background: rgba(255,255,255,0.05);
+    color: #E2E8F0;
+}
+
+.nav-item.active {
+    background: linear-gradient(135deg, rgba(0,212,170,0.2), rgba(124,58,237,0.2));
+    color: #00D4AA;
+}
+
+.nav-item .icon {
+    font-size: 18px;
+}
+
+.nav-item .label {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* Divider */
+.divider {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    margin: 8px 0;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(255,255,255,0.1);
+}
+
+.divider-text {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #64748B;
+    padding: 0 12px;
+}
+
+/* gstack Commands */
+.gstack-commands {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px;
+}
+
+.gstack-category {
+    margin-bottom: 16px;
+}
+
+.category-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #64748B;
+}
+
+.category-commands {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.gstack-cmd {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    background: transparent;
+    border: none;
+    width: 100%;
+    text-align: left;
+    color: #CBD5E1;
+}
+
+.gstack-cmd:hover {
+    background: rgba(124,58,237,0.15);
+    color: #fff;
+}
+
+.gstack-cmd .cmd-icon {
+    font-size: 14px;
+    width: 24px;
+    text-align: center;
+}
+
+.gstack-cmd .cmd-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.gstack-cmd .cmd-name {
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+    color: #00D4AA;
+}
+
+.gstack-cmd .cmd-desc {
+    font-size: 10px;
+    color: #64748B;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.gstack-cmd .cmd-badge {
+    font-size: 9px;
+    padding: 2px 4px;
+    border-radius: 3px;
+    background: rgba(255,255,255,0.1);
+}
+
+.gstack-cmd .cmd-badge.browser {
+    background: rgba(59,130,246,0.3);
+    color: #60A5FA;
+}
+
+.gstack-cmd .cmd-badge.git {
+    background: rgba(34,197,94,0.3);
+    color: #4ADE80;
+}
+
+/* Loading */
+.loading-commands {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    color: #64748B;
+    gap: 12px;
+}
+
+.spinner {
+    font-size: 24px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Quick Actions */
+.quick-actions {
+    display: flex;
+    gap: 8px;
+    padding: 12px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.action-btn {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.05);
+    color: #94A3B8;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+    background: rgba(124,58,237,0.2);
+    color: #fff;
+}
+
+/* Modal */
+.gstack-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.gstack-modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: #1a1f2e;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.modal-large {
+    max-width: 700px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #fff;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: #64748B;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+.close-btn:hover {
+    color: #fff;
+}
+
+.modal-body {
+    padding: 20px;
+    overflow-y: auto;
+    max-height: calc(80vh - 130px);
+}
+
+.modal-footer {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    padding: 16px 20px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.btn-primary, .btn-secondary {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #00D4AA, #00B894);
+    color: #0A0E17;
+    border: none;
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,212,170,0.3);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: #94A3B8;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.btn-secondary:hover {
+    background: rgba(255,255,255,0.05);
+    color: #fff;
+}
+
+/* Flow Steps */
+.flow-idea {
+    margin-bottom: 20px;
+}
+
+.flow-idea label {
+    display: block;
+    font-size: 12px;
+    color: #94A3B8;
+    margin-bottom: 8px;
+}
+
+.flow-idea textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: #0A0E17;
+    color: #E2E8F0;
+    font-size: 14px;
+    resize: vertical;
+}
+
+.flow-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.flow-step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.flow-step.completed {
+    border-color: rgba(0,212,170,0.3);
+    background: rgba(0,212,170,0.05);
+}
+
+.flow-step.pending {
+    opacity: 0.5;
+}
+
+.flow-step .step-status {
+    font-size: 18px;
+}
+
+.flow-step .step-info {
+    flex: 1;
+}
+
+.flow-step .step-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #E2E8F0;
+}
+
+.flow-step .step-desc {
+    font-size: 12px;
+    color: #64748B;
+}
+</style>
+
+<script>
+// === Global State ===
+let gstackCommands = {};
+let currentModalCommand = null;
+
+// === Initialize ===
+async function initGstackPanel(containerId, options = {}) {
+    const apiBase = options.apiBase || '/api/gstack';
+    const container = document.getElementById(containerId);
+    
+    try {
+        // Fetch commands
+        const response = await fetch(`${apiBase}/commands`);
+        const data = await response.json();
+        
+        if (data.available) {
+            gstackCommands = data.commands;
+            renderCommands(container);
+        } else {
+            container.innerHTML = `
+                <div class="loading-commands">
+                    <span>⚠️</span>
+                    <span>gstack未安装</span>
+                    <small>${data.error}</small>
+                </div>
+            `;
+        }
+    } catch (err) {
+        container.innerHTML = `
+            <div class="loading-commands">
+                <span>❌</span>
+                <span>加载失败</span>
+                <small>${err.message}</small>
+            </div>
+        `;
+    }
+}
+
+function renderCommands(container) {
+    // Group by category
+    const grouped = {};
+    gstackCommands.forEach(cmd => {
+        if (!grouped[cmd.category]) {
+            grouped[cmd.category] = [];
+        }
+        grouped[cmd.category].push(cmd);
+    });
+    
+    // Category icons
+    const icons = {
+        startup: '🎯',
+        ceo: '👔',
+        eng: '⚙️',
+        design: '🎨',
+        code: '🔍',
+        security: '🛡️',
+        qa: '🧪',
+        deploy: '🚀',
+        monitor: '📊',
+        tools: '🔧',
+        safety: '⚠️'
+    };
+    
+    let html = '';
+    for (const [category, commands] of Object.entries(grouped)) {
+        html += `
+            <div class="gstack-category">
+                <div class="category-header">
+                    <span>${icons[category] || '📦'}</span>
+                    <span>${category.toUpperCase()}</span>
+                </div>
+                <div class="category-commands">
+                    ${commands.map(cmd => `
+                        <button class="gstack-cmd" onclick="showCommandModal('${cmd.name}')">
+                            <span class="cmd-icon">${icons[cmd.category] || '📦'}</span>
+                            <span class="cmd-info">
+                                <span class="cmd-name">${cmd.name}</span>
+                                <span class="cmd-desc">${cmd.description}</span>
+                            </span>
+                            ${cmd.requires_browser ? '<span class="cmd-badge browser">🌐</span>' : ''}
+                            ${cmd.requires_git ? '<span class="cmd-badge git">📦</span>' : ''}
+                        </button>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    }
+    
+    container.innerHTML = html;
+}
+
+// === Modal Functions ===
+async function showCommandModal(command) {
+    currentModalCommand = command;
+    
+    try {
+        const response = await fetch(`/api/gstack/help/${command.replace('/', '')}`);
+        const data = await response.json();
+        
+        if (data.error) {
+            alert(data.error);
+            return;
+        }
+        
+        document.getElementById('modal-title').textContent = `${data.name} — ${data.category}`;
+        document.getElementById('modal-body').innerHTML = `
+            <p><strong>描述:</strong> ${data.description}</p>
+            <p><strong>分类:</strong> ${data.category}</p>
+            <p><strong>需要浏览器:</strong> ${data.requires_browser ? '✅' : '❌'}</p>
+            <p><strong>需要Git:</strong> ${data.requires_git ? '✅' : '❌'}</p>
+            <hr style="border-color: rgba(255,255,255,0.1); margin: 16px 0;">
+            <pre style="background: #0A0E17; padding: 12px; border-radius: 8px; font-size: 11px; overflow-x: auto; max-height: 300px;">${escapeHtml(data.skill_preview || 'No documentation available')}</pre>
+        `;
+        
+        document.getElementById('gstack-modal').classList.add('active');
+    } catch (err) {
+        alert('Error loading command: ' + err.message);
+    }
+}
+
+function closeModal() {
+    document.getElementById('gstack-modal').classList.remove('active');
+    currentModalCommand = null;
+}
+
+// === Strategy Flow ===
+function showStrategyFlowModal() {
+    document.getElementById('strategy-flow-modal').classList.add('active');
+    
+    // Initialize steps
+    const steps = [
+        { name: 'office-hours', label: '🎯 策略构思', desc: 'YC创业导师6问' },
+        { name: 'plan-ceo-review', label: '👔 CEO评审', desc: '找10星策略方向' },
+        { name: 'plan-eng-review', label: '⚙️ 工程评审', desc: '锁定技术架构' }
+    ];
+    
+    const stepsContainer = document.getElementById('flow-steps');
+    stepsContainer.innerHTML = steps.map((step, i) => `
+        <div class="flow-step pending" id="step-${step.name}">
+            <span class="step-status">${i + 1}</span>
+            <div class="step-info">
+                <div class="step-name">${step.label}</div>
+                <div class="step-desc">${step.desc}</div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function closeStrategyModal() {
+    document.getElementById('strategy-flow-modal').classList.remove('active');
+}
+
+async function runStrategyFlow() {
+    const idea = document.getElementById('strategy-idea').value;
+    
+    if (!idea.trim()) {
+        alert('请输入策略想法');
+        return;
+    }
+    
+    try {
+        const response = await fetch('/api/gstack/strategy-flow', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ idea })
+        });
+        
+        const data = await response.json();
+        
+        // Update step statuses
+        data.steps.forEach((step, i) => {
+            const el = document.getElementById(`step-${step.step}`);
+            if (el) {
+                el.className = `flow-step ${step.status === '✅' ? 'completed' : ''}`;
+                el.querySelector('.step-status').textContent = step.status;
+            }
+        });
+        
+        if (data.ready_for_implementation) {
+            alert('🎉 策略开发流程完成！准备进入实现阶段。');
+        }
+    } catch (err) {
+        alert('Error: ' + err.message);
+    }
+}
+
+// === Utility Functions ===
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+async function refreshGstackStatus() {
+    try {
+        const response = await fetch('/api/gstack/status');
+        const data = await response.json();
+        alert(`gstack状态: ${data.status}\n命令数: ${data.total_commands}`);
+    } catch (err) {
+        alert('Error: ' + err.message);
+    }
+}
+
+function showGstackHelp() {
+    alert('🪿 GO2SE v7 + gstack\n\n29个专家角色帮你开发交易策略！\n\n使用方法:\n1. 点击侧边栏命令运行\n2. 使用 /office-hours 构思策略\n3. 使用策略流水线快速开发\n\n安装来源: github.com/garrytan/gstack');
+}
+
+// === Auto-initialize ===
+document.addEventListener('DOMContentLoaded', function() {
+    const panel = document.getElementById('gstack-commands');
+    if (panel) {
+        initGstackPanel('gstack-commands');
+    }
+});
+</script>

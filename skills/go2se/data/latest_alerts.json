@@ -1,0 +1,37 @@
+{
+  "timestamp": "2026-03-17T16:37:24.494138",
+  "summary": {
+    "total_anomalies": 19,
+    "top_gainers": [
+      {
+        "symbol": "BAN/USDT",
+        "exchange": "mexc",
+        "change": 25.4
+      },
+      {
+        "symbol": "ZEC/USDT",
+        "exchange": "binance",
+        "change": 13.7
+      }
+    ],
+    "top_losers": [
+      {
+        "symbol": "PIPPIN/USDT",
+        "exchange": "mexc",
+        "change": -58.7
+      },
+      {
+        "symbol": "GALAXIS/USDT",
+        "exchange": "mexc",
+        "change": -18.2
+      },
+      {
+        "symbol": "NOS/USDT",
+        "exchange": "mexc",
+        "change": -16.6
+      }
+    ]
+  },
+  "scan_type": "go2se_system",
+  "status": "completed"
+}

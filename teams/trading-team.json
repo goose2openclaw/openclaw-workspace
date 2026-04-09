@@ -1,0 +1,12 @@
+{
+  "name": "交易团队",
+  "id": "trading-team",
+  "members": [
+    {"role": "Analyst", "name": "市场分析师", "status": "active"},
+    {"role": "Strategist", "name": "策略师", "status": "active"},
+    {"role": "RiskManager", "name": "风控师", "status": "active"},
+    {"role": "Trader", "name": "交易员", "status": "active"}
+  ],
+  "workflow": "市场分析 → 策略制定 → 风险审核 → 执行交易",
+  "created": "2026-03-13"
+}
