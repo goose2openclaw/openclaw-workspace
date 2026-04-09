@@ -253,8 +253,8 @@ const TradingPanel = {
         return html;
     },
 
-        // 决策流程
-        html += '<div style="background:rgba(0,0,0,0.4); border-radius:10px; padding:15px; margin-bottom:20px;">';
+    // 7工具实时流
+    renderToolStreamContent: function() {
         html += '<div style="font-size:14px; font-weight:600; margin-bottom:15px;">📋 决策流程</div>';
         html += '<div style="display:flex; gap:5px; overflow-x:auto; padding-bottom:10px;">';
         this.decisions.forEach(function(d, i) {
@@ -465,13 +465,13 @@ const TradingPanel = {
     selectTab: function(tab) {
         this.state.activeTab = tab;
         this.saveState();
-        
+        this.renderPanel(); // 直接切换Tab并渲染
     },
 
     selectTool: function(toolId) {
         this.state.activeTool = toolId;
         this.saveState();
-        
+        this.renderPanel(); // 直接切换工具并渲染
     },
 
     navigateLevel: function(level) {
