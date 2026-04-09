@@ -66,9 +66,7 @@ interface PortfolioStats {
 }
 
 function App() {
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'tools' | 'trends' | 'signals' | 'portfolio' | 'settings' | 'trading'>('dashboard');
-  // 交易面板子Tab - 支持直接切换
-  const [tradingTab, setTradingTab] = useState<'live' | 'backtest' | 'simulate' | 'emulate'>('live');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'tools' | 'trends' | 'signals' | 'portfolio' | 'settings'>('dashboard');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
@@ -428,25 +426,6 @@ function App() {
     </div>
   );
 
-  // 交易面板 - Tab直接切换
-  const renderTrading = () => (
-    <div className="trading-section">
-      <h2>📊 交易面板</h2>
-      <div className="trading-tabs">
-        <button className={tradingTab === 'live' ? 'active' : ''} onClick={() => setTradingTab('live')}>⚡ 实时流</button>
-        <button className={tradingTab === 'backtest' ? 'active' : ''} onClick={() => setTradingTab('backtest')}>📈 回测</button>
-        <button className={tradingTab === 'simulate' ? 'active' : ''} onClick={() => setTradingTab('simulate')}>🎮 模拟</button>
-        <button className={tradingTab === 'emulate' ? 'active' : ''} onClick={() => setTradingTab('emulate')}>🔮 仿真</button>
-      </div>
-      <div className="trading-content">
-        {tradingTab === 'live' && <div className="panel-live"><h3>⚡ 实时流交易</h3><p>实时行情监控中...</p></div>}
-        {tradingTab === 'backtest' && <div className="panel-backtest"><h3>📈 回测</h3><p>历史数据回测分析</p></div>}
-        {tradingTab === 'simulate' && <div className="panel-simulate"><h3>🎮 模拟交易</h3><p>Paper Trading模拟</p></div>}
-        {tradingTab === 'emulate' && <div className="panel-emulate"><h3>🔮 MiroFish仿真</h3><p>AI驱动的仿真预测</p></div>}
-      </div>
-    </div>
-  );
-
   const renderSettings = () => (
     <div className="settings-section">
       <h2>⚙️ 系统设置</h2>
@@ -496,7 +475,6 @@ function App() {
         <div className="nav-tabs">
           <button className={activeTab === 'dashboard' ? 'active' : ''} onClick={() => setActiveTab('dashboard')}>总览</button>
           <button className={activeTab === 'tools' ? 'active' : ''} onClick={() => setActiveTab('tools')}>工具</button>
-          <button className={activeTab === 'trading' ? 'active' : ''} onClick={() => setActiveTab('trading')}>交易</button>
           <button className={activeTab === 'trends' ? 'active' : ''} onClick={() => setActiveTab('trends')}>趋势</button>
           <button className={activeTab === 'signals' ? 'active' : ''} onClick={() => setActiveTab('signals')}>信号</button>
           <button className={activeTab === 'portfolio' ? 'active' : ''} onClick={() => setActiveTab('portfolio')}>组合</button>
@@ -521,7 +499,6 @@ function App() {
           <>
             {activeTab === 'dashboard' && renderDashboard()}
             {activeTab === 'tools' && renderTools()}
-            {activeTab === 'trading' && renderTrading()}
             {activeTab === 'trends' && renderTrends()}
             {activeTab === 'signals' && renderSignals()}
             {activeTab === 'portfolio' && renderPortfolio()}
