@@ -128,24 +128,61 @@ window.TradingSimV2 = {
     fetchPrices: function() {
         var self = this;
         // 模拟行情数据 (实际应调用API)
+        // 打兔子: 前20主流加密货币
         this.state.prices = {
-            BTCUSDT: { price: 75145.50, change: 3.62, high24h: 76500, low24h: 74200, volume: 28500000000 },
-            ETHUSDT: { price: 3215.80, change: 2.85, high24h: 3280, low24h: 3150, volume: 15200000000 },
-            SOLUSDT: { price: 178.45, change: 5.42, high24h: 185, low24h: 170, volume: 8500000000 },
-            BNBUSDT: { price: 598.20, change: 1.23, high24h: 605, low24h: 592, volume: 1200000000 },
-            PEPEUSDT: { price: 0.00001234, change: 12.5, high24h: 0.000014, low24h: 0.000011, volume: 520000000 },
-            SHIBUSDT: { price: 0.00002567, change: 8.3, high24h: 0.000028, low24h: 0.000024, volume: 380000000 }
+            // 主流币 (打兔子 - 25%仓位)
+            BTCUSDT: { price: 75145.50, change: 3.62, high24h: 76500, low24h: 74200, volume: 28500000000, tool: 'rabbit' },
+            ETHUSDT: { price: 3215.80, change: 2.85, high24h: 3280, low24h: 3150, volume: 15200000000, tool: 'rabbit' },
+            BNBUSDT: { price: 598.20, change: 1.23, high24h: 605, low24h: 592, volume: 1200000000, tool: 'rabbit' },
+            SOLUSDT: { price: 178.45, change: 5.42, high24h: 185, low24h: 170, volume: 8500000000, tool: 'rabbit' },
+            XRPUSDT: { price: 0.5823, change: 1.45, high24h: 0.60, low24h: 0.57, volume: 1200000000, tool: 'rabbit' },
+            ADAUSDT: { price: 0.4521, change: 2.12, high24h: 0.47, low24h: 0.44, volume: 450000000, tool: 'rabbit' },
+            DOGEUSDT: { price: 0.1256, change: 3.85, high24h: 0.13, low24h: 0.12, volume: 890000000, tool: 'rabbit' },
+            AVAXUSDT: { price: 35.42, change: 4.21, high24h: 36.5, low24h: 34.8, volume: 520000000, tool: 'rabbit' },
+            DOTUSDT: { price: 7.23, change: 1.92, high24h: 7.45, low24h: 7.10, volume: 320000000, tool: 'rabbit' },
+            LINKUSDT: { price: 14.56, change: 2.78, high24h: 14.9, low24h: 14.2, volume: 410000000, tool: 'rabbit' },
+            MATICUSDT: { price: 0.7234, change: 1.56, high24h: 0.75, low24h: 0.71, volume: 280000000, tool: 'rabbit' },
+            LTCUSDT: { price: 83.25, change: 1.34, high24h: 85.0, low24h: 82.0, volume: 350000000, tool: 'rabbit' },
+            UNIUSDT: { price: 9.87, change: 2.45, high24h: 10.1, low24h: 9.65, volume: 180000000, tool: 'rabbit' },
+            ATOMUSDT: { price: 8.92, change: 1.78, high24h: 9.15, low24h: 8.75, volume: 210000000, tool: 'rabbit' },
+            // 主流币 (打兔子)
+            ETCUSDT: { price: 26.45, change: 2.15, high24h: 27.0, low24h: 25.9, volume: 195000000, tool: 'rabbit' },
+            XLMUSDT: { price: 0.1089, change: 1.23, high24h: 0.112, low24h: 0.107, volume: 92000000, tool: 'rabbit' },
+            BCHUSDT: { price: 478.50, change: 2.67, high24h: 490, low24h: 470, volume: 280000000, tool: 'rabbit' },
+            ALGOUSDT: { price: 0.1823, change: 1.45, high24h: 0.188, low24h: 0.179, volume: 78000000, tool: 'rabbit' },
+            VETUSDT: { price: 0.0234, change: 1.89, high24h: 0.024, low24h: 0.023, volume: 65000000, tool: 'rabbit' },
+            ICPUSDT: { price: 12.34, change: 3.21, high24h: 12.7, low24h: 12.0, volume: 145000000, tool: 'rabbit' },
+            // Meme币/新币 (打地鼠 - 20%仓位)
+            PEPEUSDT: { price: 0.00001234, change: 12.5, high24h: 0.000014, low24h: 0.000011, volume: 520000000, tool: 'mole' },
+            SHIBUSDT: { price: 0.00002567, change: 8.3, high24h: 0.000028, low24h: 0.000024, volume: 380000000, tool: 'mole' },
+            FLOKIUSDT: { price: 0.0001823, change: 15.2, high24h: 0.00020, low24h: 0.00017, volume: 250000000, tool: 'mole' }
         };
     },
 
     fetchSignals: function() {
         var self = this;
-        // 模拟信号数据
+        // 模拟信号数据 - 打兔子覆盖前20主流币
         this.state.signals = [
-            { id: 1, symbol: 'BTCUSDT', tool: 'rabbit', type: 'EMA金叉', confidence: 92, action: 'BUY', price: 75145, target: 78000, stop: 73500, time: new Date().toISOString() },
-            { id: 2, symbol: 'ETHUSDT', tool: 'oracle', type: 'MiroFish预测', confidence: 78, action: 'BUY', price: 3215, target: 3400, stop: 3100, time: new Date().toISOString() },
-            { id: 3, symbol: 'SOLUSDT', tool: 'mole', type: '成交量异常', confidence: 75, action: 'BUY', price: 178, target: 195, stop: 168, time: new Date().toISOString() },
-            { id: 4, symbol: 'PEPEUSDT', tool: 'mole', type: '布林带突破', confidence: 72, action: 'BUY', price: 0.00001234, target: 0.000014, stop: 0.000011, time: new Date().toISOString() }
+            // 打兔子信号 (主流币)
+            { id: 1, symbol: 'BTCUSDT', tool: 'rabbit', type: 'EMA金叉', confidence: 92, action: 'BUY', price: 75145.50, target: 78000, stop: 73500, time: new Date().toISOString() },
+            { id: 2, symbol: 'ETHUSDT', tool: 'rabbit', type: 'MACD多头', confidence: 88, action: 'BUY', price: 3215.80, target: 3400, stop: 3100, time: new Date().toISOString() },
+            { id: 3, symbol: 'BNBUSDT', tool: 'rabbit', type: '趋势确认', confidence: 85, action: 'BUY', price: 598.20, target: 630, stop: 580, time: new Date().toISOString() },
+            { id: 4, symbol: 'SOLUSDT', tool: 'rabbit', type: 'RSI超买', confidence: 82, action: 'BUY', price: 178.45, target: 195, stop: 168, time: new Date().toISOString() },
+            { id: 5, symbol: 'XRPUSDT', tool: 'rabbit', type: '成交量放大', confidence: 80, action: 'BUY', price: 0.5823, target: 0.62, stop: 0.55, time: new Date().toISOString() },
+            { id: 6, symbol: 'ADAUSDT', tool: 'rabbit', type: '布林带中轨支撑', confidence: 78, action: 'BUY', price: 0.4521, target: 0.48, stop: 0.43, time: new Date().toISOString() },
+            { id: 7, symbol: 'DOGEUSDT', tool: 'rabbit', type: 'Meme热潮', confidence: 75, action: 'BUY', price: 0.1256, target: 0.14, stop: 0.11, time: new Date().toISOString() },
+            { id: 8, symbol: 'AVAXUSDT', tool: 'rabbit', type: '趋势跟踪', confidence: 82, action: 'BUY', price: 35.42, target: 38.5, stop: 33.0, time: new Date().toISOString() },
+            { id: 9, symbol: 'LINKUSDT', tool: 'rabbit', type: 'AI板块联动', confidence: 79, action: 'BUY', price: 14.56, target: 15.5, stop: 13.8, time: new Date().toISOString() },
+            { id: 10, symbol: 'DOTUSDT', tool: 'rabbit', type: '技术突破', confidence: 77, action: 'BUY', price: 7.23, target: 7.70, stop: 6.85, time: new Date().toISOString() },
+            { id: 11, symbol: 'MATICUSDT', tool: 'rabbit', type: 'Polygon生态', confidence: 74, action: 'BUY', price: 0.7234, target: 0.78, stop: 0.68, time: new Date().toISOString() },
+            { id: 12, symbol: 'LTCUSDT', tool: 'rabbit', type: '减半行情', confidence: 81, action: 'BUY', price: 83.25, target: 90.0, stop: 78.0, time: new Date().toISOString() },
+            { id: 13, symbol: 'ATOMUSDT', tool: 'rabbit', type: 'Cosmos生态', confidence: 76, action: 'BUY', price: 8.92, target: 9.50, stop: 8.40, time: new Date().toISOString() },
+            { id: 14, symbol: 'UNIUSDT', tool: 'rabbit', type: 'DeFi复苏', confidence: 73, action: 'BUY', price: 9.87, target: 10.50, stop: 9.30, time: new Date().toISOString() },
+            { id: 15, symbol: 'ICPUSDT', tool: 'rabbit', type: 'AI叙事', confidence: 71, action: 'BUY', price: 12.34, target: 13.50, stop: 11.50, time: new Date().toISOString() },
+            // 打地鼠信号 (Meme/新币)
+            { id: 16, symbol: 'PEPEUSDT', tool: 'mole', type: 'Meme热潮', confidence: 68, action: 'BUY', price: 0.00001234, target: 0.000015, stop: 0.000010, time: new Date().toISOString() },
+            { id: 17, symbol: 'SHIBUSDT', tool: 'mole', type: '社区热度', confidence: 65, action: 'BUY', price: 0.00002567, target: 0.000030, stop: 0.000020, time: new Date().toISOString() },
+            { id: 18, symbol: 'FLOKIUSDT', tool: 'mole', type: 'Viral传播', confidence: 70, action: 'BUY', price: 0.0001823, target: 0.00022, stop: 0.00015, time: new Date().toISOString() }
         ];
     },
 
@@ -404,11 +441,19 @@ window.TradingSimV2 = {
     // ========================
     detectTool: function(symbol) {
         // 根据symbol特征检测工具
-        var stablecoins = ['USDT', 'BUSD', 'USDC'];
-        var isStable = stablecoins.some(function(s) { return symbol.indexOf(s) !== -1; });
-        if (symbol.indexOf('BTC') !== -1) return 'rabbit';
-        if (symbol.indexOf('ETH') !== -1) return 'oracle';
-        if (!isStable && Math.random() > 0.7) return 'mole';
+        // 打兔子: 前20主流加密货币
+        var rabbitCoins = ['BTC', 'ETH', 'BNB', 'SOL', 'XRP', 'ADA', 'DOGE', 'AVAX', 'DOT', 'LINK', 'MATIC', 'LTC', 'UNI', 'ATOM', 'ETC', 'XLM', 'BCH', 'ALGO', 'VET', 'ICP'];
+        // 打地鼠: Meme币/新币
+        var moleCoins = ['PEPE', 'SHIB', 'FLOKI', 'BONK', 'WIF', 'MAGA'];
+        // 走着瞧: 预测市场
+        var oracleCoins = ['BTC', 'ETH'];
+
+        for (var i = 0; i < rabbitCoins.length; i++) {
+            if (symbol.indexOf(rabbitCoins[i]) !== -1) return 'rabbit';
+        }
+        for (var i = 0; i < moleCoins.length; i++) {
+            if (symbol.indexOf(moleCoins[i]) !== -1) return 'mole';
+        }
         return 'rabbit';
     },
 
