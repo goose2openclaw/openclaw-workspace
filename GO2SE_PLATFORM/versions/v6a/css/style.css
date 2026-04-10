@@ -6804,3 +6804,474 @@ h4 { font-size: var(--font-size-base); }
 }
 .modal-stat-value {
   font-size: 24px;
+
+/* ========================
+   交易仿真模块 V2 样式
+   ======================== */
+
+/* 头部 */
+.sim-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.sim-header h2 {
+    margin: 0;
+    font-size: 20px;
+    color: #fff;
+}
+
+/* 模式切换器 */
+.mode-switcher {
+    display: flex;
+    gap: 8px;
+}
+
+.mode-switcher button {
+    padding: 8px 16px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 6px;
+    color: #aaa;
+    cursor: pointer;
+    font-size: 13px;
+    transition: all 0.2s;
+}
+
+.mode-switcher button:hover {
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+}
+
+.mode-switcher button.active {
+    background: #00D4AA;
+    border-color: #00D4AA;
+    color: #0a0e17;
+    font-weight: 600;
+}
+
+/* Tab栏 */
+.sim-tabs {
+    display: flex;
+    gap: 4px;
+    padding: 12px 20px;
+    background: rgba(0,0,0,0.2);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.sim-tabs button {
+    padding: 10px 20px;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    color: #888;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.sim-tabs button:hover {
+    background: rgba(255,255,255,0.05);
+    color: #fff;
+}
+
+.sim-tabs button.active {
+    background: rgba(0, 212, 170, 0.2);
+    color: #00D4AA;
+}
+
+/* 仿真面板 */
+.sim-panel {
+    padding: 20px;
+}
+
+/* 资金卡片 */
+.capital-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.capital-card {
+    background: linear-gradient(135deg, #1e1e2e 0%, #2a2a3e 100%);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+}
+
+.capital-card .label {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.capital-card .value {
+    font-size: 24px;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+    color: #fff;
+}
+
+.capital-card.positive .value { color: #00D4AA; }
+.capital-card.negative .value { color: #ff6b6b; }
+
+/* 统计网格 */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.stat-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+}
+
+.stat-label {
+    font-size: 11px;
+    color: #666;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+
+.stat-value {
+    font-size: 18px;
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+    color: #fff;
+}
+
+.stat-value.positive { color: #00D4AA; }
+.stat-value.negative { color: #ff6b6b; }
+
+/* 行情表格 */
+.price-section h3 {
+    font-size: 16px;
+    color: #fff;
+    margin-bottom: 12px;
+}
+
+.price-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(255,255,255,0.02);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.price-table th,
+.price-table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.price-table th {
+    background: rgba(0,0,0,0.2);
+    color: #888;
+    font-size: 11px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.price-table td {
+    color: #ddd;
+    font-size: 14px;
+}
+
+.price-table .price {
+    font-family: 'JetBrains Mono', monospace;
+    color: #fff;
+}
+
+.price-table .positive { color: #00D4AA; }
+.price-table .negative { color: #ff6b6b; }
+
+/* 信号面板 */
+.signals-panel {
+    padding: 20px;
+}
+
+.signals-panel h3 {
+    font-size: 16px;
+    color: #fff;
+    margin-bottom: 16px;
+}
+
+.signal-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+}
+
+.signal-card.buy {
+    border-left: 3px solid #00D4AA;
+}
+
+.signal-card.sell {
+    border-left: 3px solid #ff6b6b;
+}
+
+.signal-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.signal-symbol {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.signal-action {
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.signal-action.buy {
+    background: rgba(0, 212, 170, 0.2);
+    color: #00D4AA;
+}
+
+.signal-action.sell {
+    background: rgba(255, 107, 107, 0.2);
+    color: #ff6b6b;
+}
+
+.signal-confidence {
+    margin-left: auto;
+    background: rgba(124, 58, 237, 0.3);
+    color: #a78bfa;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.signal-detail {
+    margin-bottom: 12px;
+}
+
+.signal-type {
+    color: #888;
+    font-size: 13px;
+}
+
+.signal-prices {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 12px;
+    font-size: 13px;
+    color: #aaa;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+/* 持仓/历史面板 */
+.portfolio-panel {
+    padding: 20px;
+}
+
+.portfolio-panel h3 {
+    font-size: 16px;
+    color: #fff;
+    margin-bottom: 16px;
+}
+
+.portfolio-panel h4 {
+    font-size: 14px;
+    color: #888;
+    margin: 20px 0 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.positions-table,
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.positions-table th,
+.positions-table td,
+.history-table th,
+.history-table td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 13px;
+}
+
+.positions-table th,
+.history-table th {
+    background: rgba(0,0,0,0.2);
+    color: #666;
+    font-size: 11px;
+    text-transform: uppercase;
+}
+
+.positions-table td,
+.history-table td {
+    color: #ccc;
+}
+
+.positions-table .long { color: #00D4AA; }
+.positions-table .short { color: #ff6b6b; }
+
+.empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+    font-size: 14px;
+}
+
+/* 按钮 */
+.btn-primary {
+    background: linear-gradient(135deg, #00D4AA 0%, #00a884 100%);
+    color: #0a0e17;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 212, 170, 0.3);
+}
+
+.btn-sm {
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-buy {
+    background: rgba(0, 212, 170, 0.2);
+    color: #00D4AA;
+}
+
+.btn-sell {
+    background: rgba(255, 107, 107, 0.2);
+    color: #ff6b6b;
+}
+
+.btn-close {
+    background: rgba(255, 193, 7, 0.2);
+    color: #ffc107;
+}
+
+.badge {
+    display: inline-block;
+    padding: 4px 10px;
+    background: rgba(124, 58, 237, 0.2);
+    color: #a78bfa;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+/* Toast */
+.sim-toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: rgba(0, 0, 0, 0.9);
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    z-index: 10000;
+    opacity: 0;
+    transition: all 0.3s;
+}
+
+.sim-toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+/* 回测表格 */
+.backtest-results {
+    padding: 20px;
+}
+
+.backtest-results h3 {
+    font-size: 18px;
+    color: #fff;
+    margin-bottom: 16px;
+}
+
+.backtest-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.backtest-table th,
+.backtest-table td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.backtest-table th {
+    background: rgba(0,0,0,0.3);
+    color: #888;
+    font-size: 11px;
+    text-transform: uppercase;
+}
+
+.backtest-table td {
+    color: #ccc;
+}
+
+.backtest-table td.positive { color: #00D4AA; }
+.backtest-table td.negative { color: #ff6b6b; }
+
+/* 响应式 */
+@media (max-width: 768px) {
+    .capital-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .mode-switcher {
+        flex-wrap: wrap;
+    }
+}
+
+/* 仿真V2容器 */
+.sim-container {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+#simV2 {
+    background: linear-gradient(135deg, #0a0e17 0%, #1a1a2e 100%);
+}
+
