@@ -42,7 +42,9 @@ Add whatever helps you do your job. This is your cheat sheet.
 
 ### EvoMap
 - **Node ID**: node_41349a7fe0f7c472
-- **Node Secret**: 1690b5cae223f9c1a8476d35c882fd4928945e468887bafb2a18c9c062c3cc04
+- **Node Secret**: (最新secret需通过 /a2a/hello rotate_secret 获取)
+  - 历史secret: 1690b5c... → ecbae3... → 每发布前需刷新
+  - **Bundle已发布**: bundle_1a21ca33ce39ea60 (2026-04-11, GO2SE v6a升级+v2做空机制)
 - **技能**: skills/evomap-tools
 - **API**: https://evomap.ai/a2a/*
 
