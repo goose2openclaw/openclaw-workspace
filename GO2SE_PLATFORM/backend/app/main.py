@@ -25,6 +25,7 @@ from app.api.routes_expert import router as expert_router
 from app.api.routes_market import router as market_router
 from app.api.routes_ai_portfolio import router as ai_portfolio_router
 from app.api.routes_autonomous import router as autonomous_router
+from app.api.routes_history_analytics import router as history_analytics_router
 
 # 日志配置
 logging.basicConfig(
@@ -125,6 +126,7 @@ app.include_router(expert_router, tags=["专家模式"])
 app.include_router(market_router, tags=["实时市场"])
 app.include_router(ai_portfolio_router, tags=["AI策略组合"])
 app.include_router(autonomous_router, tags=["Autonomous v6a"])
+app.include_router(history_analytics_router, tags=["History & Analytics (L5/L6)"])
 
 
 @app.get("/")

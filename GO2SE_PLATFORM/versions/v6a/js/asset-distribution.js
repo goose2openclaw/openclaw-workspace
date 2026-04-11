@@ -5,7 +5,22 @@ window.WalletDeconstruct = {
         activeTab: 'overview',
         lastUpdate: null,
         changeTriggers: [],
-        isWatching: false
+        isWatching: false,
+        // L5 历史记录
+        history: [],
+        stats: {
+            todayOps: 0,
+            weekOps: 0,
+            totalOps: 0,
+            successRate: 0
+        },
+        // L6 数据分析
+        analytics: {
+            totalProfit: 0,
+            returnRate: 0,
+            maxDrawdown: 0,
+            sharpeRatio: 0
+        }
     },
 
     // 钱包解构配置
@@ -96,9 +111,138 @@ window.WalletDeconstruct = {
         else if (this.state.level === 2) html = this.renderLevel2();
         else if (this.state.level === 3) html = this.renderLevel3();
         else if (this.state.level === 4) html = this.renderLevel4();
+        else if (this.state.level === 5) html = this.renderLevel5();
+        else if (this.state.level === 6) html = this.renderLevel6();
 
         container.innerHTML = html;
         container.style.display = 'block';
+    },
+
+    // Level 5: 历史记录
+    renderLevel5: function() {
+        var self = this;
+        var html = '<div style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(10,14,23,0.98); z-index:10000; overflow:auto;">';
+        html += '<div style="max-width:900px; margin:0 auto; background:rgba(20,25,35,0.98); border:1px solid rgba(59,130,246,0.3); border-radius:15px; margin-top:30px; margin-bottom:30px;">';
+
+        // Header with breadcrumb
+        html += '<div style="padding:20px; border-bottom:1px solid rgba(255,255,255,0.1);">';
+        html += '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">';
+        html += '<div><span style="font-size:28px;">📜</span> <span style="font-size:18px; font-weight:700;">历史记录</span> <span style="font-size:12px; color:#3b82f6; margin-left:10px;">● L5</span></div>';
+        html += '<button onclick="WalletDeconstruct.closePanel()" style="background:none; border:none; color:#888; font-size:24px; cursor:pointer;">✕</button>';
+        html += '</div>';
+
+        // Breadcrumb
+        html += '<div style="display:flex; gap:8px;">';
+        [1,2,3,4,5,6].forEach(function(lv) {
+            var labels = {1:'总览',2:'详情',3:'设置',4:'执行',5:'历史',6:'分析'};
+            var colors = {1:'#00d4aa',2:'#7c3aed',3:'#f59e0b',4:'#ef4444',5:'#3b82f6',6:'#ec4899'};
+            var icons = {1:'📊',2:'🔍',3:'⚙️',4:'▶️',5:'📜',6:'📈'};
+            var isActive = self.state.level === lv;
+            html += '<button onclick="WalletDeconstruct.navigateLevel(' + lv + ')" style="padding:6px 12px; background:' + (isActive ? colors[lv] : 'rgba(255,255,255,0.1)') + '; color:' + (isActive ? '#000' : '#fff') + '; border:none; border-radius:6px; cursor:pointer; font-size:12px;">' + icons[lv] + ' ' + labels[lv] + '</button>';
+        });
+        html += '</div>';
+        html += '</div>';
+
+        html += '<div style="padding:20px;">';
+
+        // 历史统计
+        html += '<div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; margin-bottom:20px;">';
+        html += '<div style="background:rgba(0,0,0,0.3); border-radius:8px; padding:15px; text-align:center;"><div style="font-size:11px; color:#888;">今日操作</div><div style="font-size:24px; font-weight:700; color:#3b82f6;">' + this.state.stats.todayOps + '</div></div>';
+        html += '<div style="background:rgba(0,0,0,0.3); border-radius:8px; padding:15px; text-align:center;"><div style="font-size:11px; color:#888;">本周操作</div><div style="font-size:24px; font-weight:700; color:#3b82f6;">' + this.state.stats.weekOps + '</div></div>';
+        html += '<div style="background:rgba(0,0,0,0.3); border-radius:8px; padding:15px; text-align:center;"><div style="font-size:11px; color:#888;">总操作</div><div style="font-size:24px; font-weight:700; color:#3b82f6;">' + this.state.stats.totalOps + '</div></div>';
+        html += '<div style="background:rgba(0,0,0,0.3); border-radius:8px; padding:15px; text-align:center;"><div style="font-size:11px; color:#888;">成功率</div><div style="font-size:24px; font-weight:700; color:#00d4aa;">' + this.state.stats.successRate + '%</div></div>';
+        html += '</div>';
+
+        // 历史列表
+        html += '<div style="background:rgba(0,0,0,0.3); border-radius:10px; padding:15px;">';
+        html += '<div style="font-size:14px; font-weight:600; margin-bottom:15px;">📜 最近操作记录</div>';
+
+        var historyItems = this.state.history || [];
+        if (historyItems.length === 0) {
+            html += '<div style="text-align:center; padding:40px; color:#888;">暂无历史记录</div>';
+        } else {
+            historyItems.forEach(function(item) {
+                html += '<div style="display:flex; justify-content:space-between; padding:12px; border-bottom:1px solid rgba(255,255,255,0.1);">';
+                html += '<div><span style="color:' + (item.success ? '#00d4aa' : '#ef4444') + ';">' + (item.success ? '✅' : '❌') + '</span> ' + item.action + '</div>';
+                html += '<div style="color:#888; font-size:12px;">' + item.time + '</div>';
+                html += '</div>';
+            });
+        }
+        html += '</div>';
+
+        html += '</div>'; // padding
+        html += '</div>'; // container
+        html += '</div>'; // fixed
+        return html;
+    },
+
+    // Level 6: 数据分析
+    renderLevel6: function() {
+        var self = this;
+        var html = '<div style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(10,14,23,0.98); z-index:10000; overflow:auto;">';
+        html += '<div style="max-width:900px; margin:0 auto; background:rgba(20,25,35,0.98); border:1px solid rgba(236,72,153,0.3); border-radius:15px; margin-top:30px; margin-bottom:30px;">';
+
+        // Header with breadcrumb
+        html += '<div style="padding:20px; border-bottom:1px solid rgba(255,255,255,0.1);">';
+        html += '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">';
+        html += '<div><span style="font-size:28px;">📈</span> <span style="font-size:18px; font-weight:700;">数据分析</span> <span style="font-size:12px; color:#ec4899; margin-left:10px;">● L6</span></div>';
+        html += '<button onclick="WalletDeconstruct.closePanel()" style="background:none; border:none; color:#888; font-size:24px; cursor:pointer;">✕</button>';
+        html += '</div>';
+
+        // Breadcrumb
+        html += '<div style="display:flex; gap:8px;">';
+        [1,2,3,4,5,6].forEach(function(lv) {
+            var labels = {1:'总览',2:'详情',3:'设置',4:'执行',5:'历史',6:'分析'};
+            var colors = {1:'#00d4aa',2:'#7c3aed',3:'#f59e0b',4:'#ef4444',5:'#3b82f6',6:'#ec4899'};
+            var icons = {1:'📊',2:'🔍',3:'⚙️',4:'▶️',5:'📜',6:'📈'};
+            var isActive = self.state.level === lv;
+            html += '<button onclick="WalletDeconstruct.navigateLevel(' + lv + ')" style="padding:6px 12px; background:' + (isActive ? colors[lv] : 'rgba(255,255,255,0.1)') + '; color:' + (isActive ? '#000' : '#fff') + '; border:none; border-radius:6px; cursor:pointer; font-size:12px;">' + icons[lv] + ' ' + labels[lv] + '</button>';
+        });
+        html += '</div>';
+        html += '</div>';
+
+        html += '<div style="padding:20px;">';
+
+        // 分析指标卡片
+        html += '<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:12px; margin-bottom:20px;">';
+        html += '<div style="background:linear-gradient(135deg, rgba(0,212,170,0.2), rgba(0,0,0,0.3)); border-radius:10px; padding:16px;"><div style="font-size:11px; color:#888; margin-bottom:5px;">总收益</div><div style="font-size:24px; font-weight:700; color:#00d4aa;">+$' + this.state.analytics.totalProfit.toLocaleString() + '</div></div>';
+        html += '<div style="background:linear-gradient(135deg, rgba(124,58,237,0.2), rgba(0,0,0,0.3)); border-radius:10px; padding:16px;"><div style="font-size:11px; color:#888; margin-bottom:5px;">收益率</div><div style="font-size:24px; font-weight:700; color:#7c3aed;">' + this.state.analytics.returnRate + '%</div></div>';
+        html += '<div style="background:linear-gradient(135deg, rgba(239,68,68,0.2), rgba(0,0,0,0.3)); border-radius:10px; padding:16px;"><div style="font-size:11px; color:#888; margin-bottom:5px;">最大回撤</div><div style="font-size:24px; font-weight:700; color:#ef4444;">-' + this.state.analytics.maxDrawdown + '%</div></div>';
+        html += '<div style="background:linear-gradient(135deg, rgba(245,158,11,0.2), rgba(0,0,0,0.3)); border-radius:10px; padding:16px;"><div style="font-size:11px; color:#888; margin-bottom:5px;">夏普比率</div><div style="font-size:24px; font-weight:700; color:#f59e0b;">' + this.state.analytics.sharpeRatio + '</div></div>';
+        html += '</div>';
+
+        // 图表区域
+        html += '<div style="background:rgba(0,0,0,0.3); border-radius:10px; padding:20px; margin-bottom:15px;">';
+        html += '<div style="font-size:14px; font-weight:600; margin-bottom:15px;">📊 收益曲线</div>';
+        html += '<div id="profitChart" style="height:200px; display:flex; align-items:center; justify-content:center; color:#888;">';
+        html += '<div style="text-align:center;"><div style="font-size:48px; margin-bottom:10px;">📈</div><div>Chart.js 图表区域</div><div style="font-size:12px; margin-top:5px;">建议使用 echarts 或 chart.js 渲染</div></div>';
+        html += '</div>';
+        html += '</div>';
+
+        // 工具分布
+        html += '<div style="background:rgba(0,0,0,0.3); border-radius:10px; padding:20px;">';
+        html += '<div style="font-size:14px; font-weight:600; margin-bottom:15px;">🐰 工具收益分布</div>';
+        var tools = [
+            {name:'打兔子', profit:12500, color:'#00d4aa'},
+            {name:'打地鼠', profit:8300, color:'#7c3aed'},
+            {name:'走着瞧', profit:5200, color:'#f59e0b'},
+            {name:'跟大哥', profit:3100, color:'#3b82f6'},
+            {name:'搭便车', profit:1800, color:'#ec4899'}
+        ];
+        var maxProfit = Math.max.apply(null, tools.map(function(t){return t.profit}));
+        tools.forEach(function(tool) {
+            var pct = (tool.profit / maxProfit * 100).toFixed(1);
+            html += '<div style="margin-bottom:12px;">';
+            html += '<div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span>' + tool.name + '</span><span style="color:' + tool.color + ';">+$' + tool.profit.toLocaleString() + '</span></div>';
+            html += '<div style="height:8px; background:rgba(255,255,255,0.1); border-radius:4px; overflow:hidden;"><div style="height:100%; width:' + pct + '%; background:' + tool.color + ';"></div></div>';
+            html += '</div>';
+        });
+        html += '</div>';
+
+        html += '</div>'; // padding
+        html += '</div>'; // container
+        html += '</div>'; // fixed
+        return html;
     },
 
     // Level 1: 总览
