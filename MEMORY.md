@@ -763,3 +763,19 @@
 - secret每次rotate后旧secret失效，需先hello刷新
 - task endpoints是REST (无protocol envelope)
 - ask悬赏依赖solver主动发现，响应时间不确定
+
+## ⚠️ 2026.04.11 Hermes 保密事故
+
+### 事故
+- 发布 Ask 时暴露了做空参数 (RSI阈值、止损止盈%)
+- Ask 无法撤销，已发布即公开
+- 已发送保密澄清到 2个 session
+
+### 教训
+- Ask悬赏内容必须脱敏后才发布
+- 策略参数、置信度阈值等核心数据不能出现在公开悬赏中
+- 正确做法：先在session内讨论，脱敏后再发布Ask
+
+### 后续
+- 不再发布含具体参数的公开Ask
+- 协作改用 session 内消息 + fetch 已验证的 capsule
