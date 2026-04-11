@@ -11,7 +11,10 @@ const BrainDual = {
         retroResults: [],
         simulationResults: [],
         optimizationResults: [],
-        history: []
+        history: [],
+        // L5/L6 Analytics
+        stats: { today: 12, week: 45, total: 312, successRate: 85 },
+        analytics: { totalProfit: 45600, returnRate: 45.6, maxDrawdown: 9.8, sharpeRatio: 2.45, tradeCount: 312, winRate: 75, avgProfit: 146, profitFactor: 2.1 }
     },
 
     // 7工具 × 左右脑配置
@@ -68,6 +71,8 @@ const BrainDual = {
         const level2Detail = this.level === 2 ? this.getLevel2HTML() : '';
         const level3Settings = this.level === 3 ? this.getLevel3HTML() : '';
         const level4Results = this.level === 4 ? this.getLevel4HTML() : '';
+        const level5History = this.level === 5 ? this.getLevel5HTML() : '';
+        const level6Analytics = this.level === 6 ? this.getLevel6HTML() : '';
 
         return `
             <div class="bd-container">
@@ -82,6 +87,10 @@ const BrainDual = {
                     <span class="bd-bread-item ${this.level === 3 ? 'active' : ''}" onclick="BrainDual.setLevel(3)">设置</span>
                     <span class="bd-bread-sep">›</span>
                     <span class="bd-bread-item ${this.level === 4 ? 'active' : ''}" onclick="BrainDual.setLevel(4)">执行</span>
+                    <span class="bd-bread-sep">›</span>
+                    <span class="bd-bread-item ${this.level === 5 ? 'active' : ''}" onclick="BrainDual.setLevel(5)">📜历史</span>
+                    <span class="bd-bread-sep">›</span>
+                    <span class="bd-bread-item ${this.level === 6 ? 'active' : ''}" onclick="BrainDual.setLevel(6)">📈分析</span>
                 </div>
 
                 <!-- Part选择器 -->
@@ -959,6 +968,87 @@ const BrainDual = {
         const config = this.getToolConfig(toolId);
         if (!config) return null;
         return config[this.state.mode];
+    },
+
+    // Level 5: 历史记录
+    getLevel5HTML() {
+        const stats = this.state.stats || { today: 0, week: 0, total: 0, successRate: 0 };
+        const history = this.state.history || [];
+        
+        return `
+            <div style="padding:20px;">
+                <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; margin-bottom:20px;">
+                    <div style="background:rgba(0,0,0,0.3); border-radius:8px; padding:15px; text-align:center;">
+                        <div style="font-size:11px; color:#888; margin-bottom:5px;">今日切换</div>
+                        <div style="font-size:24px; font-weight:700; color:#3b82f6;">${stats.today}</div>
+                    </div>
+                    <div style="background:rgba(0,0,0,0.3); border-radius:8px; padding:15px; text-align:center;">
+                        <div style="font-size:11px; color:#888; margin-bottom:5px;">本周切换</div>
+                        <div style="font-size:24px; font-weight:700; color:#3b82f6;">${stats.week}</div>
+                    </div>
+                    <div style="background:rgba(0,0,0,0.3); border-radius:8px; padding:15px; text-align:center;">
+                        <div style="font-size:11px; color:#888; margin-bottom:5px;">总切换</div>
+                        <div style="font-size:24px; font-weight:700; color:#3b82f6;">${stats.total}</div>
+                    </div>
+                    <div style="background:rgba(0,0,0,0.3); border-radius:8px; padding:15px; text-align:center;">
+                        <div style="font-size:11px; color:#888; margin-bottom:5px;">成功率</div>
+                        <div style="font-size:24px; font-weight:700; color:#00d4aa;">${stats.successRate}%</div>
+                    </div>
+                </div>
+                <div style="background:rgba(0,0,0,0.3); border-radius:10px; padding:15px;">
+                    <div style="font-size:14px; font-weight:600; margin-bottom:15px;">📜 切换历史</div>
+                    ${history.length === 0 ? '<div style="text-align:center; padding:40px; color:#888;">暂无切换记录</div>' : history.slice(0, 15).map(h => `
+                        <div style="display:flex; justify-content:space-between; padding:12px; border-bottom:1px solid rgba(255,255,255,0.1);">
+                            <div><span style="color:#7c3aed; margin-right:8px;">🧠</span>${h.type || '脑切换'}</div>
+                            <div style="color:#888; font-size:12px;">${h.time || ''}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+    },
+
+    // Level 6: 数据分析
+    getLevel6HTML() {
+        const a = this.state.analytics || { totalProfit: 0, returnRate: 0, maxDrawdown: 0, sharpeRatio: 0, tradeCount: 0, winRate: 0, avgProfit: 0, profitFactor: 0 };
+        
+        return `
+            <div style="padding:20px;">
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(140px, 1fr)); gap:12px; margin-bottom:20px;">
+                    <div style="background:linear-gradient(135deg, rgba(0,212,170,0.2), rgba(0,0,0,0.3)); border-radius:10px; padding:16px;">
+                        <div style="font-size:11px; color:#888; margin-bottom:5px;">脑收益</div>
+                        <div style="font-size:22px; font-weight:700; color:#00d4aa;">+$${a.totalProfit.toLocaleString()}</div>
+                    </div>
+                    <div style="background:linear-gradient(135deg, rgba(124,58,237,0.2), rgba(0,0,0,0.3)); border-radius:10px; padding:16px;">
+                        <div style="font-size:11px; color:#888; margin-bottom:5px;">收益率</div>
+                        <div style="font-size:22px; font-weight:700; color:#7c3aed;">${a.returnRate}%</div>
+                    </div>
+                    <div style="background:linear-gradient(135deg, rgba(239,68,68,0.2), rgba(0,0,0,0.3)); border-radius:10px; padding:16px;">
+                        <div style="font-size:11px; color:#888; margin-bottom:5px;">最大回撤</div>
+                        <div style="font-size:22px; font-weight:700; color:#ef4444;">-${a.maxDrawdown}%</div>
+                    </div>
+                    <div style="background:linear-gradient(135deg, rgba(245,158,11,0.2), rgba(0,0,0,0.3)); border-radius:10px; padding:16px;">
+                        <div style="font-size:11px; color:#888; margin-bottom:5px;">夏普比率</div>
+                        <div style="font-size:22px; font-weight:700; color:#f59e0b;">${a.sharpeRatio}</div>
+                    </div>
+                </div>
+                <div style="background:rgba(0,0,0,0.3); border-radius:10px; padding:20px; margin-bottom:15px;">
+                    <div style="font-size:14px; font-weight:600; margin-bottom:15px;">📊 脑表现</div>
+                    <div style="height:150px; display:flex; align-items:center; justify-content:center; color:#888; background:rgba(0,0,0,0.2); border-radius:8px;">
+                        <div style="text-align:center;"><div style="font-size:40px; margin-bottom:10px;">🧠</div><div>Chart.js / ECharts</div></div>
+                    </div>
+                </div>
+                <div style="background:rgba(0,0,0,0.3); border-radius:10px; padding:20px;">
+                    <div style="font-size:14px; font-weight:600; margin-bottom:15px;">📈 脑统计</div>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
+                        <div style="display:flex; justify-content:space-between; padding:10px; background:rgba(0,0,0,0.2); border-radius:6px;"><span style="color:#888;">切换次数</span><span style="font-weight:600;">${a.tradeCount}</span></div>
+                        <div style="display:flex; justify-content:space-between; padding:10px; background:rgba(0,0,0,0.2); border-radius:6px;"><span style="color:#888;">胜率</span><span style="font-weight:600; color:#00d4aa;">${a.winRate}%</span></div>
+                        <div style="display:flex; justify-content:space-between; padding:10px; background:rgba(0,0,0,0.2); border-radius:6px;"><span style="color:#888;">平均收益</span><span style="font-weight:600;">$${a.avgProfit}</span></div>
+                        <div style="display:flex; justify-content:space-between; padding:10px; background:rgba(0,0,0,0.2); border-radius:6px;"><span style="color:#888;">盈亏比</span><span style="font-weight:600;">${a.profitFactor}</span></div>
+                    </div>
+                </div>
+            </div>
+        `;
     }
 };
 
