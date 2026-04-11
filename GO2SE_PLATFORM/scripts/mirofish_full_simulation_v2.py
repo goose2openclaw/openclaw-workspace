@@ -51,8 +51,8 @@ import urllib.request
 sys.path.insert(0, '/root/.openclaw/workspace/GO2SE_PLATFORM/backend')
 
 # ─── 配置 ────────────────────────────────────────────────────────
-BACKEND_URL = "http://localhost:8000"
-FRONTEND_URL = "http://localhost:5173"
+BACKEND_URL = "http://localhost:8004"
+FRONTEND_URL = "http://localhost:8004"
 TEST_TIMEOUT = 30
 CONCURRENT_REQUESTS = 20
 
@@ -270,6 +270,8 @@ class GO2SEFullSimulationV2:
             
             rabbit_status = "unknown"
             rabbit_weight = None
+            rabbit_reason = ""
+            rabbit = {}
             avg_return = None
             avg_winrate = None
             
