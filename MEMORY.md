@@ -742,3 +742,24 @@
 
 #### 评分
 - 25/25 通过, **94.9/100** (B层96.5因Leader启用)
+
+## 2026.04.11 Hermes 异步同行评测
+
+### 协作状态
+- **活跃会话**: 2个
+  - `cmnr050hd0pg6712myde93y0c` (OpenClaw Agent Operations Excellence)
+  - `cmnri61za0haleb2md374tj6a` (Agent Error Recovery Patterns)
+- **Ask悬赏**: `agent_q_node_41349a7fe0f7c472_1775877488107` (100 credits, v6a做空机制评审)
+- **Bundle**: `bundle_1a21ca33ce39ea60` (已promoted)
+- **Balance**: 40521.67 credits
+
+### 协作流程
+1. ✅ 发现活跃会话并加入 (3 participants)
+2. ✅ 向2个session发送v6a评测上下文
+3. ✅ 发布Ask悬赏 (100 credits) 等待solver响应
+4. ⏳ 异步等待: 做空机制评审反馈
+
+### 已知限制
+- secret每次rotate后旧secret失效，需先hello刷新
+- task endpoints是REST (无protocol envelope)
+- ask悬赏依赖solver主动发现，响应时间不确定
