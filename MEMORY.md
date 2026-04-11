@@ -715,3 +715,30 @@
 - "AI让个人开发者能像20人团队一样快速交付"
 - gstack = 15个专家角色 × 8个工具 = 虚拟工程团队
 - 60天产出60万+行代码 (35%测试)
+
+## 2026.04.11 v6a迭代 + 做空机制升级
+
+### 凌晨迭代 (02:03-02:49 UTC)
+
+#### 仿真修正
+- 仿真脚本URL: `localhost:8000` → `localhost:8004` (17个误报消失)
+- `mirofish_full_simulation_v2.py`: 修复 `rabbit` 变量未初始化bug
+
+#### 新增 autonomous 路由
+- `routes_autonomous.py`: 21个v6a前端专用端点
+  - 双脑/冻结/MiroFish/GStack/告警 全部接入
+  - 后端已重启，v6a前台功能可用
+
+#### 做空机制 V2 升级
+| 工具 | 状态 | 做空触发 | 止损 | 止盈 |
+|------|------|---------|------|------|
+| 🐰 Rabbit V2 | active ✅ | RSI≥60+MA死叉+vol确认 | 5% | 10% |
+| 🐹 Mole V2 | active ✅ | RSI≥75+布林触顶 | 3% | 12% |
+| 👑 Leader V2 | **active ✅** (不禁用) | 订单流+趋势确认 | 3% | 8% |
+| 🔮 Oracle | active ✅ | 预测市场多头信号 | 5% | 10% |
+
+- Leader: 月损-8.1%但**不禁用**，做空机制已就绪，dry_run观测
+- 实盘做空: 需Binance Futures API (`defaultType: future`)
+
+#### 评分
+- 25/25 通过, **94.9/100** (B层96.5因Leader启用)
