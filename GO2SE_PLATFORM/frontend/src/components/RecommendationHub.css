@@ -1,0 +1,278 @@
+/* RecommendationHub.css - 三位一体自适应决策 */
+.recommendation-hub {
+  padding: 0;
+}
+
+.rh-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.rh-title {
+  margin: 0;
+}
+
+.rh-tabs {
+  display: flex;
+  gap: 4px;
+  background: rgba(255,255,255,0.05);
+  padding: 4px;
+  border-radius: 10;
+}
+
+.rh-tab-btn {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8;
+  background: transparent;
+  color: #9CA3AF;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.rh-tab-btn.active {
+  background: linear-gradient(135deg, #3B82F6, #1D4ED8);
+  color: white;
+}
+
+.rh-refresh-btn {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 8;
+  background: linear-gradient(135deg, #10B981, #059669);
+  color: white;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.rh-refresh-btn:disabled {
+  background: #374151;
+  cursor: not-allowed;
+}
+
+.rh-update-time {
+  font-size: 11px;
+  color: #6B7280;
+}
+
+.rh-advantage-banner {
+  padding: 10px 16px;
+  background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(139,92,246,0.15));
+  border-radius: 12;
+  margin-bottom: 16px;
+  border: 1px solid rgba(59,130,246,0.2);
+}
+
+.rh-advantage-label {
+  font-size: 11px;
+  color: #A78BFA;
+  margin-bottom: 4px;
+}
+
+.rh-advantage-text {
+  font-size: 13px;
+  color: #E5E7EB;
+}
+
+.rh-advantage-formula {
+  font-size: 11px;
+  color: #6B7280;
+  margin-top: 4px;
+  font-family: monospace;
+}
+
+.rh-decision-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  border-radius: 12;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.rh-decision-bar.long {
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.rh-decision-bar.short {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.rh-decision-bar.hold {
+  background: rgba(156, 163, 175, 0.08);
+  border: 1px solid rgba(156, 163, 175, 0.2);
+}
+
+.rh-decision-inner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rh-decision-label {
+  font-size: 12px;
+  color: #9CA3AF;
+}
+
+.rh-decision-direction {
+  font-size: 20px;
+  font-weight: 700;
+  padding: 4px 14px;
+  border-radius: 8px;
+}
+
+.rh-decision-direction.long {
+  background: rgba(16, 185, 129, 0.13);
+  color: #10B981;
+}
+
+.rh-decision-direction.short {
+  background: rgba(239, 68, 68, 0.13);
+  color: #EF4444;
+}
+
+.rh-decision-direction.hold {
+  background: rgba(156, 163, 175, 0.13);
+  color: #9CA3AF;
+}
+
+.rh-confidence {
+  font-size: 12px;
+  color: #6B7280;
+}
+
+.rh-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.rh-metric-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.rh-metric-label {
+  font-size: 11px;
+  color: #6B7280;
+  margin-bottom: 4px;
+}
+
+.rh-metric-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: #E5E7EB;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.rh-metric-value.positive { color: #10B981; }
+.rh-metric-value.negative { color: #EF4444; }
+
+.rh-section {
+  margin-top: 16px;
+}
+
+.rh-section-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #9CA3AF;
+  margin-bottom: 10px;
+}
+
+.rh-tool-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rh-tool-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 12px;
+}
+
+.rh-tool-weight {
+  min-width: 52px;
+  font-weight: 600;
+  color: #3B82F6;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.rh-tool-name {
+  flex: 1;
+  color: #E5E7EB;
+}
+
+.rh-tool-conf {
+  color: #6B7280;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.rh-tool-rec {
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.rh-tool-rec.buy {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10B981;
+}
+
+.rh-tool-rec.sell {
+  background: rgba(239, 68, 68, 0.15);
+  color: #EF4444;
+}
+
+.rh-tool-rec.hold {
+  background: rgba(156, 163, 175, 0.15);
+  color: #9CA3AF;
+}
+
+.rh-divider {
+  height: 1px;
+  background: rgba(255,255,255,0.06);
+  margin: 12px 0;
+}
+
+.rh-compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+
+.rh-compare-table th {
+  color: #6B7280;
+  font-weight: 500;
+  text-align: left;
+  padding: 6px 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.rh-compare-table td {
+  color: #E5E7EB;
+  padding: 6px 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+
+.rh-compare-table tr:hover td {
+  background: rgba(255,255,255,0.02);
+}

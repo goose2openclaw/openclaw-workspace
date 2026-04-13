@@ -25,6 +25,12 @@ from app.api.routes_expert import router as expert_router
 from app.api.routes_market import router as market_router
 from app.api.routes_ai_portfolio import router as ai_portfolio_router
 from app.api.routes_autonomous import router as autonomous_router
+from app.api.routes_integration import router as integration_router
+from app.api.routes_short_selling import router as short_router
+from app.api.routes_sim_trading import router as sim_router
+from app.api.routes_airdrop_crowd import router as earn_router
+from app.api.routes_earn_scanner import router as earn_scanner_router
+from app.api.routes_quant import router as quant_router
 from app.api.routes_history_analytics import router as history_analytics_router
 
 # 日志配置
@@ -126,6 +132,12 @@ app.include_router(expert_router, tags=["专家模式"])
 app.include_router(market_router, tags=["实时市场"])
 app.include_router(ai_portfolio_router, tags=["AI策略组合"])
 app.include_router(autonomous_router, tags=["Autonomous v6a"])
+app.include_router(integration_router, tags=["智能集成"])
+app.include_router(short_router, tags=["做空机制+强化推荐"])
+app.include_router(sim_router, tags=["模拟交易V2"])
+app.include_router(earn_router, tags=["薅羊毛+穷孩子V2"])
+app.include_router(earn_scanner_router, tags=["薅羊毛+穷孩子V3-找单抢单"])
+app.include_router(quant_router, tags=["十大量化策略-打工加密货币"])
 app.include_router(history_analytics_router, tags=["History & Analytics (L5/L6)"])
 
 
@@ -222,6 +234,14 @@ if os.path.exists(dist_path):
         return FileResponse(os.path.join(dist_path, "index.html"))
 
     logger.info(f"✅ React静态文件已挂载: /app")
+
+# v6a 静态文件挂载
+v6a_js_path = os.path.join(os.path.dirname(__file__), "v6a_js")
+v6a_css_path = os.path.join(os.path.dirname(__file__), "v6a_css")
+if os.path.exists(v6a_js_path):
+    app.mount("/v6a/js", StaticFiles(directory=v6a_js_path), name="v6a-js")
+if os.path.exists(v6a_css_path):
+    app.mount("/v6a/css", StaticFiles(directory=v6a_css_path), name="v6a-css")
 
 # ─── /api/performance 端点 ──────────────────────────────────────────
 @app.get("/api/performance")

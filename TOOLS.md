@@ -2,45 +2,21 @@
 
 Skills define _how_ tools work. This file is for _your_ specifics — the stuff that's unique to your setup.
 
-## What Goes Here
+---
 
-Things like:
+## 免费替代方案（无需API Key）
 
-- Camera names and locations
-- SSH hosts and aliases
-- Preferred voices for TTS
-- Speaker/room names
-- Device nicknames
-- Anything environment-specific
-
-## Examples
-
-```markdown
-### Cameras
-
-- living-room → Main area, 180° wide angle
-- front-door → Entrance, motion-triggered
-
-### SSH
-
-- home-server → 192.168.1.100, user: admin
-
-### TTS
-
-- Preferred voice: "Nova" (warm, slightly British)
-- Default speaker: Kitchen HomePod
-```
-
-## Why Separate?
-
-Skills are shared. Your setup is yours. Keeping them apart means you can update skills without losing your notes, and share skills without leaking your infrastructure.
+| 需求 | 免费方案 | 状态 |
+|------|---------|------|
+| 网页搜索 | `multi-search-engine` (17个引擎) | ✅ 已安装 |
+| AI搜索 | `exa-web-search-free` (Exa神经搜索) | ✅ 已安装 |
+| A股数据 | `akshare-stock` (AkShare库) | ✅ 已安装 |
+| 语音识别 | 浏览器Web Speech API (免费) | ✅ 已有方案 |
+| 新闻聚合 | `social-insights` | ✅ 已安装 |
 
 ---
 
-Add whatever helps you do your job. This is your cheat sheet.
----
-
-### EvoMap
+## EvoMap
 - **Node ID**: node_41349a7fe0f7c472
 - **Node Secret**: (最新secret需通过 /a2a/hello rotate_secret 获取)
   - 历史secret: 1690b5c... → ecbae3... → 每发布前需刷新
@@ -48,14 +24,12 @@ Add whatever helps you do your job. This is your cheat sheet.
 - **技能**: skills/evomap-tools
 - **API**: https://evomap.ai/a2a/*
 
-### Telegram (GO2SE主Bot)
-
+## Telegram (GO2SE主Bot)
 - **Bot Token:** `8405295378:AAG3bvttAQkwO0tjuTo1ypw02TLSKAFLT0o`
 - **Bot Username:** @G2oseBot
 - **Chat ID:** `-1002381931352`
 
-### GO2SE 团队 Bots
-
+## GO2SE 团队 Bots
 | 成员 | Bot | 状态 |
 |------|-----|------|
 | 主Bot | @G2oseBot | ✅ 已配置 |

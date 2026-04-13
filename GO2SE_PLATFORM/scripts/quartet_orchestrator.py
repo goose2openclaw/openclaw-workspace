@@ -177,36 +177,27 @@ def check_gstack() -> Dict:
 
 
 def check_openclaw() -> Dict:
-    """检查OpenClaw编排系统"""
+    """检查OpenClaw编排系统(使用缓存避免网络超时)"""
     result = {"status": "unknown", "cron_jobs": 0, "details": []}
     
-    try:
-        # 检查Cron任务
-        proc = subprocess.run(
-            ["openclaw", "cron", "list", "--json"],
-            capture_output=True, text=True, timeout=20
-        )
-        if proc.returncode == 0:
-            data = json.loads(proc.stdout)
+    # 读取本地缓存的cron状态
+    cron_cache = Path("/tmp/go2se_cron_state.json")
+    if cron_cache.exists():
+        try:
+            with open(cron_cache) as f:
+                data = json.load(f)
             jobs = data.get("jobs", [])
             result["cron_jobs"] = len(jobs)
-            
-            # 统计各状态
             errors = sum(1 for j in jobs if j.get("state", {}).get("lastRunStatus") == "error")
             active = sum(1 for j in jobs if j.get("enabled"))
-            result["details"].append(f"Cron任务: {len(jobs)}个 (运行中:{active}, 错误:{errors})")
-            
-            result["status"] = "healthy" if errors == 0 else "degraded"
-        else:
-            result["details"].append("Cron: 命令失败")
+            result["details"].append(f"Cron任务: {len(jobs)}个 (运行中:{active}, 错误:{errors}) [缓存]")
+            result["status"] = "degraded"  # 默认降级因为用缓存
+        except:
+            result["details"].append("Cron缓存读取失败")
             result["status"] = "degraded"
-            
-    except subprocess.TimeoutExpired:
-        result["status"] = "timeout"
-        result["details"].append("Cron命令超时")
-    except Exception as e:
-        result["status"] = "down"
-        result["details"].append(str(e)[:50])
+    else:
+        result["details"].append("Cron状态: 无缓存")
+        result["status"] = "degraded"
     
     # 检查资源监控状态
     resource_state = Path("/tmp/go2se_resource_config.json")

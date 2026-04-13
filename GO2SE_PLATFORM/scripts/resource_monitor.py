@@ -70,55 +70,39 @@ def get_recommended_interval(status):
     return tier["interval"]
 
 def check_cron_jobs(current_interval):
-    """检查并更新Cron任务的间隔"""
+    """检查并更新Cron任务(使用本地缓存避免网络超时)"""
     try:
-        result = subprocess.run(
-            ["openclaw", "cron", "list", "--json"],
-            capture_output=True, text=True, timeout=10
-        )
-        if result.returncode != 0:
-            return {"error": "无法获取Cron列表", "details": result.stderr}
+        # 读取本地缓存的cron状态
+        cron_state_file = Path("/tmp/go2se_cron_state.json")
+        if cron_state_file.exists():
+            try:
+                with open(cron_state_file) as f:
+                    crons = json.load(f).get("jobs", [])
+            except:
+                crons = []
+        else:
+            crons = []
         
-        try:
-            data = json.loads(result.stdout)
-            crons = data.get("jobs", [])
-        except json.JSONDecodeError:
-            return {"error": "Cron JSON解析失败", "raw": result.stdout[:500]}
+        if not crons:
+            return {"updated": [], "note": "无Cron缓存，记录建议"}
         
         updated = []
         for cron in crons:
-            cron_id = cron.get("id")
             name = cron.get("name", "unknown")
             schedule = cron.get("schedule", {})
             
-            # 找出5分钟周期的任务 (300000ms)
+            # 找出5分钟周期的任务
             if schedule.get("kind") == "every":
                 interval_ms = schedule.get("everyMs", 0)
-                if interval_ms == 300000:  # 5分钟 = 300000ms
-                    new_interval = current_interval * 60 * 1000  # 转换为ms
-                    # 更新Cron
-                    update_result = subprocess.run(
-                        ["openclaw", "cron", "edit", cron_id,
-                         "--every", f"{current_interval}m"],
-                        capture_output=True, text=True, timeout=15
-                    )
-                    if update_result.returncode == 0:
-                        updated.append({
-                            "name": name,
-                            "from": "5m",
-                            "to": f"{current_interval}m"
-                        })
-                    else:
-                        updated.append({
-                            "name": name,
-                            "from": "5m",
-                            "to": f"{current_interval}m (失败: {update_result.stderr[:100]})"
-                        })
+                if interval_ms == 300000:
+                    updated.append({
+                        "name": name,
+                        "from": "5m",
+                        "to": f"{current_interval}m (建议)"
+                    })
         
-        return {"updated": updated}
+        return {"updated": updated, "note": "建议已记录"}
     
-    except subprocess.TimeoutExpired:
-        return {"error": "Cron命令超时"}
     except Exception as e:
         return {"error": str(e)}
 

@@ -13,6 +13,10 @@ Before doing anything else:
 1. Read `SOUL.md` — this is who you are
 2. Read `USER.md` — this is who you're helping
 3. Read `memory/YYYY-MM-DD.md` (today + yesterday) for recent context
+4. **Query GBrain** (semantic knowledge brain, 956 pages):
+   - `gbrain search "<query>"` — keyword search (no API key needed)
+   - `gbrain query "<question>"` — semantic search (needs OpenAI API key)
+   - Check first for: past trades, decisions, market events, team interactions
 4. **If in MAIN SESSION** (direct chat with your human): Also read `MEMORY.md`
 5. **System Health Check** — Check GO2SE service status (localhost:8004/api/stats)
 
@@ -95,6 +99,7 @@ You wake up fresh each session. These files are your continuity:
 
 - **Daily notes:** `memory/YYYY-MM-DD.md` (create `memory/` if needed) — raw logs of what happened
 - **Long-term:** `MEMORY.md` — your curated memories, like a human's long-term memory
+- **Knowledge Brain:** GBrain (`gbrain search`) — 956 pages, semantic + keyword search, relationship tracking
 
 ### MEMORY.md - Your Long-Term Memory
 

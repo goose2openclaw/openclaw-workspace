@@ -3,18 +3,69 @@
 🪿 GO2SE Autonomous Router - v6a 前台对接层
 ============================================
 将 /autonomous/* 前端调用映射到实际的 v7 后端路由
-保证 v6a 前端完整功能可用
+保证 v6a 前台完整功能可用
+
+CSO 安全加固: 审计日志记录所有状态变更操作
 """
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel
 from typing import Optional, List, Dict, Any
 from datetime import datetime
 import logging
+import json
+import threading
+import os
 
 logger = logging.getLogger("go2se.autonomous")
 
+AUDIT_LOG_FILE = "/tmp/go2se_audit.log"
+_audit_lock = threading.Lock()
+
 router = APIRouter(prefix="/autonomous", tags=["Autonomous"])
+
+
+def audit_log(action: str, actor: str, target: str, details: Dict, risk_level: str = "LOW") -> None:
+    """
+    审计日志写入 (线程安全)
+    action: 操作类型 (BRAIN_SWITCH, FREEZE_ACTIVATE, PRE_DECISION...)
+    actor: 调用来源 (web_ui, telegram, cron...)
+    target: 目标资源
+    details: 附加详情
+    risk_level: LOW / MEDIUM / HIGH / CRITICAL
+    """
+    entry = {
+        "timestamp": datetime.utcnow().isoformat() + "Z",
+        "action": action,
+        "actor": actor,
+        "target": target,
+        "risk_level": risk_level,
+        "details": details
+    }
+    with _audit_lock:
+        try:
+            with open(AUDIT_LOG_FILE, "a") as f:
+                f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+        except Exception:
+            pass
+
+
+def get_audit_entries(limit: int = 50) -> List[Dict]:
+    """读取最近的审计日志"""
+    entries = []
+    if not os.path.exists(AUDIT_LOG_FILE):
+        return entries
+    try:
+        with open(AUDIT_LOG_FILE, "r") as f:
+            lines = f.readlines()
+        for line in lines[-limit:]:
+            try:
+                entries.append(json.loads(line.strip()))
+            except Exception:
+                continue
+    except Exception:
+        pass
+    return entries
 
 
 # ─── 双脑系统 ─────────────────────────────────────────────────────────────
@@ -58,12 +109,22 @@ async def dual_brain_brief():
 
 
 @router.post("/dual-brain/switch")
-async def dual_brain_switch(body: DualBrainSwitch):
+async def dual_brain_switch(body: DualBrainSwitch, request: Request):
     """切换活跃脑"""
     valid_sides = ["left", "right"]
     if body.target not in valid_sides:
         raise HTTPException(status_code=400, detail="Invalid brain side")
-    
+
+    # 审计日志
+    client_ip = request.headers.get("x-forwarded-for", request.headers.get("x-real-ip", "unknown"))
+    audit_log(
+        action="BRAIN_SWITCH",
+        actor=f"{client_ip}",
+        target=f"brain:{body.target}",
+        details={"requested_side": body.target},
+        risk_level="MEDIUM"
+    )
+
     return {
         "success": True,
         "active_side": body.target,
@@ -123,6 +184,17 @@ class FreezeAction(BaseModel):
     reason: Optional[str] = ""
 
 
+@router.get("/audit/log")
+async def get_audit_log(limit: int = 50):
+    """获取审计日志 (最近N条)"""
+    entries = get_audit_entries(limit)
+    return {
+        "total": len(entries),
+        "entries": entries,
+        "log_file": AUDIT_LOG_FILE
+    }
+
+
 @router.get("/freeze")
 async def freeze_status():
     """冻结状态"""
@@ -135,8 +207,18 @@ async def freeze_status():
 
 
 @router.post("/freeze")
-async def freeze_activate(body: FreezeAction):
+async def freeze_activate(body: FreezeAction, request: Request):
     """激活/关闭冻结保护"""
+    client_ip = request.headers.get("x-forwarded-for", request.headers.get("x-real-ip", "unknown"))
+    risk = "CRITICAL" if body.action == "activate" else "HIGH"
+    audit_log(
+        action="FREEZE_TOGGLE",
+        actor=f"{client_ip}",
+        target=f"freeze:{body.action}",
+        details={"reason": body.reason, "action": body.action},
+        risk_level=risk
+    )
+
     if body.action == "activate":
         logger.warning(f"🛡️ Freeze activated: {body.reason}")
         return {
@@ -217,11 +299,20 @@ async def mirofish_degradation():
 
 
 @router.post("/mirofish/pre-decision")
-async def mirofish_pre_decision(body: dict):
+async def mirofish_pre_decision(body: dict, request: Request):
     """MiroFish 预决策"""
+    client_ip = request.headers.get("x-forwarded-for", request.headers.get("x-real-ip", "unknown"))
     symbol = body.get("symbol", "BTCUSDT")
     action = body.get("action", "HOLD")
     confidence = body.get("confidence", 0.5)
+
+    audit_log(
+        action="MIROFISH_PRE_DECISION",
+        actor=f"{client_ip}",
+        target=f"symbol:{symbol}",
+        details={"action": action, "confidence": confidence},
+        risk_level="HIGH"
+    )
     
     adjusted_action = action
     adjusted_confidence = min(confidence + 0.1, 1.0)
