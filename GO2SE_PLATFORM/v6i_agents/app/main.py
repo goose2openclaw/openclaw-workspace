@@ -189,14 +189,14 @@ class AutonomousSwitchEngine:
                     position_pct=lev["max_position_pct"],
                     stop_loss_pct=lev["stop_loss_pct"],
                     take_profit_pct=lev["take_profit_pct"],
-                    mode="normal"
+                    mode=mode
                 )
             else:
                 return TradingSignal(
                     symbol=symbol, direction=TradeDirection.HOLD,
                     confidence=confidence,
                     reason=f"⏸️ 置信度 {confidence} < {RISK_CONFIG['min_confidence_long']}，观望",
-                    regime=regime, mode="normal"
+                    regime=regime, mode=mode
                 )
 
         # ── 专家模式: 做多/做空/观望 ──
@@ -390,8 +390,10 @@ async def risk_config():
 async def switch_analyze(
     symbol: str = "BTC/USDT",
     confidence: float = 70.0,
-    mode: str = "normal"
+    mode: str = None
 ):
+    if mode is None:
+        mode = switch_engine.mode  # 继承引擎当前模式
     """
     自主多空切换分析
     mode: normal(仅做多) / expert(做多+做空)
