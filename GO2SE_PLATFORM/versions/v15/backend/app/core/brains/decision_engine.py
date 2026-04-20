@@ -165,7 +165,7 @@ class DecisionEngine:
 
         # 6. 止损止盈
         stop_loss, take_profit = self._compute_sl_tp(
-            direction, inp.regime, confidence
+            direction, inp.regime, confidence, leverage
         )
 
         # 7. 生成推理
@@ -242,23 +242,31 @@ class DecisionEngine:
             return 1, 0.0
 
         # 置信度 → 杠杆档位
-        if confidence >= 0.90:
-            leverage = 10
-        elif confidence >= 0.85:
-            leverage = 5
-        elif confidence >= 0.75:
-            leverage = 3
-        elif confidence >= 0.60:
-            leverage = 2
+        if direction == "SHORT":
+            # 做空杠杆档位 (更低门槛, bear市场conf<0.50是常态)
+            if confidence >= 0.40:
+                leverage = 5
+            elif confidence >= 0.30:
+                leverage = 3
+            elif confidence >= 0.20:
+                leverage = 2
+            else:
+                leverage = 1
         else:
-            leverage = 1
+            # 做多杠杆档位
+            if confidence >= 0.90:
+                leverage = 10
+            elif confidence >= 0.85:
+                leverage = 5
+            elif confidence >= 0.75:
+                leverage = 3
+            elif confidence >= 0.60:
+                leverage = 2
+            else:
+                leverage = 1
 
         # 熊市做多限制杠杆
         if regime == "bear" and direction == "LONG":
-            leverage = min(leverage, 3)
-
-        # 做空限制杠杆
-        if direction == "SHORT":
             leverage = min(leverage, 3)
 
         # 仓位: 置信度 × 基础仓位
@@ -268,7 +276,7 @@ class DecisionEngine:
         return leverage, position
 
     def _compute_sl_tp(
-        self, direction: str, regime: str, confidence: float
+        self, direction: str, regime: str, confidence: float, leverage: int = 1
     ) -> Tuple[float, float]:
         """计算止损止盈"""
         base_sl = 3.0
@@ -281,6 +289,14 @@ class DecisionEngine:
         elif confidence >= 0.75:
             base_sl = 3.5
             base_tp = 15.0
+
+        # 做空高杠杆: 紧止损宽止盈
+        if direction == "SHORT" and leverage >= 5:
+            base_sl = 2.5
+            base_tp = 15.0
+        elif direction == "SHORT":
+            base_sl = 3.0
+            base_tp = 12.0
 
         # 震荡市 → 收紧
         if regime == "volatile":
