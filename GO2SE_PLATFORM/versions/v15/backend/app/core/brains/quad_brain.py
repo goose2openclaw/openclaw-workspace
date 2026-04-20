@@ -53,7 +53,7 @@ DELTA_CONFIG = BrainConfig(
     description="MiroFish下脑: 25维仿真, 风险熔断保护"
 )
 ALL_BRAINS = {b: c for b, c in zip(BrainType, [ALPHA_CONFIG, BETA_CONFIG, GAMMA_CONFIG, DELTA_CONFIG])}
-BRAIN_WEIGHTS = {BrainType.ALPHA: 0.20, BrainType.BETA: 0.25, BrainType.GAMMA: 0.30, BrainType.DELTA: 0.25}
+BRAIN_WEIGHTS = {BrainType.ALPHA: 0.30, BrainType.BETA: 0.25, BrainType.GAMMA: 0.20, BrainType.DELTA: 0.15}  # 🐰 v6蒸馏: MiroFish 30%, External 25%, Historical 20%, ML 15%
 
 @dataclass
 class BrainSignal:

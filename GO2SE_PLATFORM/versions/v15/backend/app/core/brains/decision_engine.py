@@ -83,9 +83,9 @@ RSI_RISK = {
 }
 
 # ─── 决策阈值 ────────────────────────────────────────────────────
-THRESHOLD_LONG  = 0.75   # Final > 0.70 → LONG
-THRESHOLD_SHORT = 0.25   # Final < 0.30 → SHORT
-THRESHOLD_ENGAGE = 0.60  # confidence < 0.60 → 降低仓位
+THRESHOLD_LONG  = 0.65   # 🐰 v6蒸馏: rabbit V3阈值 W>0.65→LONG (原0.75)
+THRESHOLD_SHORT = 0.40   # 🐰 v6蒸馏: rabbit V3阈值 W<0.40→SHORT (原0.25)
+THRESHOLD_ENGAGE = 0.55  # 🐰 v6蒸馏: rabbit V3 min_confidence=0.60 (原0.60)
 
 @dataclass
 class DecisionInput:
@@ -120,10 +120,8 @@ class DecisionEngine:
         self.history: List[DecisionOutput] = []
 
     def decide(self, inp: DecisionInput) -> DecisionOutput:
-        # 1. 计算 MiroFish 综合系数
         mi = self._compute_mirofish_multiplier(inp.mirofish_scores)
-
-        # 2. 计算风险调整系数
+        mi = min(mi, 1.20)
         ri = self._compute_risk_factor(inp.regime, inp.rsi, inp.volatility)
 
         w_sum = 0.0
@@ -132,43 +130,37 @@ class DecisionEngine:
             w = inp.brain_weights.get(brain_name, 0.25)
             w_sum += w * signal
             w_total += w
+
         if w_total > 0:
             direction_sign = 1 if w_sum > 0 else (-1 if w_sum < 0 else 0)
             signal_strength = abs(w_sum / w_total)
         else:
             direction_sign = 0
             signal_strength = 0.0
-        mi_capped = min(mi, 1.20)
-        final_score = direction_sign * signal_strength * mi_capped * ri
+
+        final_score = direction_sign * signal_strength * mi * ri
         final_score = max(-1.0, min(1.0, final_score))
 
-        # 4. 确定方向 + 置信度 (弱信号 → 低置信度 → 低杠杆)
         signal_abs = abs(final_score)
-        if signal_abs < 0.20:
-            # 死区: 弱信号 → HOLD，低置信度
+        if signal_abs < 0.05:
             direction = "HOLD"
-            confidence = signal_abs  # 0.0-0.2
+            confidence = signal_abs
+        elif signal_abs < THRESHOLD_SHORT:
+            direction = "HOLD"
+            confidence = signal_abs
         elif final_score > THRESHOLD_LONG:
             direction = "LONG"
             confidence = min(1.0, signal_abs)
-        elif final_score < THRESHOLD_SHORT:
+        else:
             direction = "SHORT"
             confidence = min(1.0, signal_abs)
-        else:
-            direction = "HOLD"
-            confidence = 1.0 - abs(signal_abs - 0.5) * 2
 
-        # 5. 计算杠杆和仓位
         leverage, position = self._compute_leverage_position(
             direction, confidence, inp.regime, inp.rsi
         )
-
-        # 6. 止损止盈
         stop_loss, take_profit = self._compute_sl_tp(
             direction, inp.regime, confidence, leverage
         )
-
-        # 7. 生成推理
         reasoning = self._generate_reasoning(
             final_score, direction, mi, ri,
             inp.brain_votes, inp.mirofish_scores
@@ -183,14 +175,9 @@ class DecisionEngine:
             stop_loss_pct=round(stop_loss, 2),
             take_profit_pct=round(take_profit, 2),
             reasoning=reasoning,
-            components={
-                "mi": round(mi, 4),
-                "ri": round(ri, 4),
-                "brain_votes": inp.brain_votes,
-                "mirofish_scores": inp.mirofish_scores,
-            }
+            components={"mi": round(mi, 4), "ri": round(ri, 4),
+                         "brain_votes": inp.brain_votes}
         )
-
         self.history.append(result)
         return result
 
@@ -270,7 +257,7 @@ class DecisionEngine:
             leverage = min(leverage, 3)
 
         # 仓位: 置信度 × 基础仓位
-        base_position = min(60.0, confidence * 80.0)
+        base_position = min(40.0, confidence * 60.0)  # 🐰 v6蒸馏: rabbit V3 max_pos=5%, 降低仓位上限到40%
         position = base_position
 
         return leverage, position
@@ -279,8 +266,8 @@ class DecisionEngine:
         self, direction: str, regime: str, confidence: float, leverage: int = 1
     ) -> Tuple[float, float]:
         """计算止损止盈"""
-        base_sl = 3.0
-        base_tp = 12.0
+        base_sl = 5.0   # 🐰 v6蒸馏: rabbit V3保守止损5%
+        base_tp = 8.0   # 🐰 v6蒸馏: rabbit V3保守止盈8%
 
         # 高置信度 → 宽止损窄止盈(让利润奔跑)
         if confidence >= 0.85:
