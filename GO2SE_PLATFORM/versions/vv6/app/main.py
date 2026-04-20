@@ -16,13 +16,16 @@ from enum import Enum
 from typing import Optional, Dict, Any
 from dataclasses import dataclass, field
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 import asyncio
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic_settings import BaseSettings
 from pydantic import BaseModel as PydanticBaseModel
 
 # Fix import path: add parent dir so mirofish_client (in app/) is importable
-import pathlib, sys
+import pathlib
+from pathlib import Path, sys
 _app_dir = pathlib.Path(__file__).parent.resolve()
 if str(_app_dir) not in sys.path:
     sys.path.insert(0, str(_app_dir))
@@ -52,6 +55,14 @@ logging.basicConfig(
 logger = logging.getLogger("go2se_vv6")
 
 app = FastAPI(title=settings.APP_NAME, version=settings.APP_VERSION)
+
+# ── 静态文件服务 ───────────────────────────────────────────────
+import pathlib
+from pathlib import Path
+frontend_dir = pathlib.Path(__file__).parent.parent
+if (Path(__file__).parent.parent / "index.html").exists():
+    app.mount("/static", StaticFiles(directory=frontend_dir, html=True), name="static")
+
 ALLOWED_ORIGINS = [
     "http://localhost:8000",  # v6a frontend
     "http://localhost:8001",  # v6i
@@ -404,7 +415,8 @@ AGENTS = {
 # ─── API 路由 ─────────────────────────────────────────────
 @app.get("/")
 async def root():
-    return {"name": settings.APP_NAME, "version": settings.APP_VERSION, "status": "running"}
+    from fastapi.responses import FileResponse
+    return FileResponse(str(Path(__file__).parent.parent / "index.html"))
 
 @app.get("/health")
 async def health():

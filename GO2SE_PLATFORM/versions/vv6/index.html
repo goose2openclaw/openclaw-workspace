@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GO2SE vv6 - 🦞 Lobster 普通模式</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    :root {
+      --primary: #00d4aa;
+      --primary-dim: rgba(0,212,170,0.15);
+      --primary-glow: rgba(0,212,170,0.4);
+      --accent: #ff6b35;
+      --accent-dim: rgba(255,107,53,0.15);
+      --bg: #0a0f1a;
+      --card-bg: #111827;
+      --card-border: rgba(0,212,170,0.2);
+      --text: #e2e8f0;
+      --text-dim: #64748b;
+      --signal-long: #00d4aa;
+      --signal-short: #ff4757;
+      --signal-hold: #64748b;
+      -- regime-bull: #00d4aa;
+      --regime-bear: #ff4757;
+      --regime-neutral: #fbbf24;
+    }
+    [data-theme="black"] { --bg: #000; --card-bg: #0a0a0a; }
+    [data-theme="geek"] { --bg: #0d1117; --card-bg: #161b22; }
+
+    .lobster-bg {
+      position: fixed; inset: 0; z-index: -1;
+      background: radial-gradient(ellipse at 20% 80%, rgba(0,212,170,0.06) 0%, transparent 60%),
+                  radial-gradient(ellipse at 80% 20%, rgba(0,180,150,0.04) 0%, transparent 50%),
+                  var(--bg);
+    }
+    .nav-brand { color: var(--primary) !important; }
+    .brain-toggle { background: var(--primary-dim) !important; border-color: var(--primary-glow) !important; }
+    .brain-mode { color: var(--primary) !important; }
+    .section-header h2 { color: var(--primary) !important; }
+    .signal-badge.long { background: var(--primary-dim) !important; color: var(--signal-long) !important; border-color: var(--signal-long) !important; }
+    .signal-badge.short { background: var(--accent-dim) !important; color: var(--signal-short) !important; border-color: var(--signal-short) !important; }
+    .signal-badge.hold { background: rgba(100,116,139,0.15) !important; color: var(--signal-hold) !important; border-color: var(--signal-hold) !important; }
+    .mi-score { color: var(--primary) !important; font-family: 'JetBrains Mono', monospace; }
+    .regime-badge.bull { background: rgba(0,212,170,0.15); color: var(--regime-bull); border-color: var(--regime-bull); }
+    .regime-badge.bear { background: rgba(255,71,87,0.15); color: var(--regime-bear); border-color: var(--regime-bear); }
+    .regime-badge.neutral { background: rgba(251,191,36,0.15); color: var(--regime-neutral); border-color: var(--regime-neutral); }
+    .lobster-eye {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #ff6b35, #c0392b);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; box-shadow: 0 0 12px rgba(255,107,53,0.4);
+    }
+    .lobster-logo { display: flex; align-items: center; gap: 12px; }
+    .lobster-logo-text { font-size: 18px; font-weight: 700; color: var(--primary); }
+    .lobster-logo-sub { font-size: 11px; color: var(--text-dim); }
+    .signal-feed-item { border-left: 3px solid var(--primary); transition: all 0.3s; }
+    .signal-feed-item:hover { background: var(--primary-dim); }
+    .signal-feed-item.short { border-left-color: var(--accent); }
+    .signal-feed-item.hold { border-left-color: var(--text-dim); }
+    .metric-card { background: var(--card-bg); border: 1px solid var(--card-border); }
+    .metric-card .metric-value { color: var(--primary); }
+    .btn-primary { background: var(--primary) !important; color: #000 !important; }
+    .btn-primary:hover { box-shadow: 0 0 20px var(--primary-glow) !important; }
+    .sidebar-item.active { background: var(--primary-dim) !important; border-color: var(--primary) !important; }
+    .sidebar-item.active .item-icon { filter: drop-shadow(0 0 4px var(--primary)); }
+    .pin-btn.active { color: var(--primary) !important; }
+  </style>
+</head>
+<body>
+  <div class="lobster-bg"></div>
+
+  <!-- ========== 启动动画 Splash ========== -->
+  <div id="splash" class="splash">
+    <div class="splash-content">
+      <div class="lobster-logo" style="margin-bottom:16px;">
+        <div class="lobster-eye">🦞</div>
+        <div>
+          <div class="lobster-logo-text">GO2SE vv6</div>
+          <div class="lobster-logo-sub">Lobster · 普通模式</div>
+        </div>
+      </div>
+      <div class="progress-container">
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <p class="progress-text" id="progressText">稳健输出... 0%</p>
+        <button class="skip-btn" id="skipBtn" style="display:none;">跳过 →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 主应用 ========== -->
+  <div id="app" class="app hidden">
+    <header class="top-nav" id="topNav">
+      <div class="nav-status-bar">
+        <div class="nav-left">
+          <div class="lobster-logo" style="margin-right:16px;">
+            <div class="lobster-eye" style="width:36px;height:36px;font-size:16px;">🦞</div>
+            <div>
+              <div style="font-size:14px;font-weight:700;color:var(--primary);">vv6</div>
+              <div style="font-size:10px;color:var(--text-dim);">Lobster普通</div>
+            </div>
+          </div>
+          <div class="theme-switcher">
+            <button class="theme-btn active" data-theme="dark" title="深色">🌙</button>
+            <button class="theme-btn" data-theme="black" title="暗色">⚫</button>
+            <button class="theme-btn" data-theme="geek" title="极客">💻</button>
+          </div>
+          <div class="lang-switcher">
+            <button class="lang-btn active" data-lang="zh">中</button>
+            <button class="lang-btn" data-lang="en">EN</button>
+          </div>
+        </div>
+
+        <!-- 模式切换 -->
+        <div class="brain-toggle" id="brainToggle">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:16px;">🦞</span>
+            <span class="brain-mode" id="brainMode" style="font-size:12px;font-weight:600;">普通模式</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;margin-left:12px;">
+            <span style="font-size:11px;color:var(--text-dim);">切换</span>
+            <kbd class="hotkey" style="background:var(--primary);color:#000;">B</kbd>
+          </div>
+        </div>
+
+        <div class="nav-right">
+          <div class="breathing-light" id="breathingLight" title="系统状态">
+            <span class="light-dot" style="background:var(--primary);"></span>
+            <span class="light-ring" style="border-color:var(--primary);"></span>
+          </div>
+          <div class="notification-btn" id="notificationBtn">
+            <span>🔔</span>
+            <span class="notif-badge" id="notifBadge">0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-shortcuts" id="navShortcuts">
+        <button class="shortcut-btn active" data-section="signalBoard" onclick="navigateTo('signalBoard')">🏠 信号板</button>
+        <button class="shortcut-btn" data-section="marketData" onclick="navigateTo('marketData')">📊 市场</button>
+        <button class="shortcut-btn" data-section="position" onclick="navigateTo('position')">💰 持仓</button>
+        <button class="shortcut-btn" data-section="history" onclick="navigateTo('history')">📜 记录</button>
+        <button class="shortcut-btn" data-section="settings" onclick="navigateTo('settings')">⚙️ 设置</button>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <nav class="sidebar" id="sidebar">
+        <div class="sidebar-items">
+          <a href="#signalBoard" class="sidebar-item active" data-section="signalBoard">
+            <span class="item-icon">🏠</span><span class="item-text">信号板</span>
+          </a>
+          <a href="#marketData" class="sidebar-item" data-section="marketData">
+            <span class="item-icon">📊</span><span class="item-text">市场数据</span>
+          </a>
+          <a href="#position" class="sidebar-item" data-section="position">
+            <span class="item-icon">💰</span><span class="item-text">持仓管理</span>
+          </a>
+          <a href="#history" class="sidebar-item" data-section="history">
+            <span class="item-icon">📜</span><span class="item-text">交易记录</span>
+          </a>
+          <a href="#settings" class="sidebar-item" data-section="settings">
+            <span class="item-icon">⚙️</span><span class="item-text">系统设置</span>
+          </a>
+        </div>
+        <div class="sidebar-footer">
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;">
+            <div class="breathing-light" style="position:static;"><span class="light-dot" style="background:var(--primary);width:8px;height:8px;"></span></div>
+            <span id="backendStatus" style="font-size:11px;color:var(--text-dim);">连接中...</span>
+          </div>
+        </div>
+      </nav>
+
+      <div class="content-wrapper">
+        <!-- ========== 1. 信号看板 ========== -->
+        <section class="content-section" id="signalBoard">
+          <div class="section-header">
+            <h2>📡 vv6 信号看板</h2>
+            <div class="section-actions">
+              <span class="section-tag" id="modeTag" style="background:var(--primary-dim);color:var(--primary);border:1px solid var(--primary);">普通模式</span>
+              <button class="pin-btn" data-section="signalBoard" data-title="信号看板" onclick="togglePin(this)">📌</button>
+              <button class="action-btn secondary" onclick="refreshSignal()" title="刷新">🔄</button>
+            </div>
+          </div>
+
+          <!-- 核心指标卡 -->
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:20px;">
+            <div class="metric-card" style="padding:16px;border-radius:12px;">
+              <div style="font-size:11px;color:var(--text-dim);margin-bottom:6px;">当前信号</div>
+              <div class="signal-badge" id="currentSignal" style="display:inline-block;padding:6px 14px;border-radius:20px;border:1px solid;font-size:16px;font-weight:700;">加载中</div>
+            </div>
+            <div class="metric-card" style="padding:16px;border-radius:12px;">
+              <div style="font-size:11px;color:var(--text-dim);margin-bottom:6px;">市场阶段</div>
+              <div class="regime-badge" id="regimeBadge" style="display:inline-block;padding:6px 14px;border-radius:20px;border:1px solid;font-size:14px;font-weight:600;">--</div>
+            </div>
+            <div class="metric-card" style="padding:16px;border-radius:12px;">
+              <div style="font-size:11px;color:var(--text-dim);margin-bottom:6px;">恐惧贪婪指数</div>
+              <div style="font-size:24px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--primary);" id="fearGreedVal">--</div>
+              <div style="font-size:11px;color:var(--text-dim);" id="fearGreedLabel">--</div>
+            </div>
+            <div class="metric-card" style="padding:16px;border-radius:12px;">
+              <div style="font-size:11px;color:var(--text-dim);margin-bottom:6px;">MiroFish Mi</div>
+              <div class="mi-score" style="font-size:28px;font-weight:700;" id="miScore">--</div>
+              <div style="font-size:11px;color:var(--text-dim);">系统信心指数</div>
+            </div>
+          </div>
+
+          <!-- 信号推送区 -->
+          <div id="signalFeed" style="display:flex;flex-direction:column;gap:8px;">
+            <div style="text-align:center;padding:40px;color:var(--text-dim);">
+              <div style="font-size:32px;margin-bottom:8px;">📡</div>
+              <div>正在连接信号源...</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== 2. 市场数据 ========== -->
+        <section class="content-section" id="marketData">
+          <div class="section-header">
+            <h2>📊 市场数据</h2>
+            <div class="section-actions">
+              <button class="pin-btn" data-section="marketData" data-title="市场数据" onclick="togglePin(this)">📌</button>
+              <button class="action-btn secondary" onclick="refreshMarket()">🔄</button>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;">
+            <div class="metric-card" style="padding:20px;border-radius:12px;">
+              <div style="font-size:13px;font-weight:600;margin-bottom:16px;color:var(--text);">🌡️ 恐惧贪婪指数</div>
+              <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
+                <div id="fearGauge" style="font-size:48px;font-weight:800;color:var(--primary);font-family:'JetBrains Mono',monospace;">--</div>
+                <div>
+                  <div id="fearLabel" style="font-size:14px;color:var(--text-dim);">--</div>
+                  <div style="font-size:12px;color:var(--text-dim);">范围: 0-100</div>
+                </div>
+              </div>
+              <div style="height:8px;background:#1e293b;border-radius:4px;overflow:hidden;">
+                <div id="fearBar" style="height:100%;background:linear-gradient(90deg,#ff4757,#fbbf24,#00d4aa);width:45%;transition:width 0.5s;"></div>
+              </div>
+            </div>
+            <div class="metric-card" style="padding:20px;border-radius:12px;">
+              <div style="font-size:13px;font-weight:600;margin-bottom:16px;color:var(--text);">📈 市场趋势</div>
+              <div id="trendDisplay" style="font-size:32px;font-weight:700;color:var(--primary);margin-bottom:8px;">--</div>
+              <div style="font-size:12px;color:var(--text-dim);">趋势方向</div>
+              <div style="margin-top:16px;padding:12px;background:rgba(0,212,170,0.05);border-radius:8px;border:1px solid var(--card-border);">
+                <div style="font-size:11px;color:var(--text-dim);margin-bottom:4px;">TOP GAINER</div>
+                <div id="topGainer" style="font-size:14px;font-weight:600;color:#00d4aa;">--</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== 3. 持仓管理 ========== -->
+        <section class="content-section" id="position">
+          <div class="section-header">
+            <h2>💰 持仓管理</h2>
+            <div class="section-actions">
+              <span class="section-tag expert">普通模式</span>
+              <button class="pin-btn" data-section="position" data-title="持仓管理" onclick="togglePin(this)">📌</button>
+            </div>
+          </div>
+          <div class="metric-card" style="padding:24px;border-radius:12px;text-align:center;">
+            <div style="font-size:48px;margin-bottom:12px;">🦞</div>
+            <div style="font-size:16px;font-weight:600;color:var(--text);margin-bottom:8px;">vv6 Lobster 持仓</div>
+            <div style="font-size:13px;color:var(--text-dim);margin-bottom:20px;">普通模式仅做多，风险可控</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+              <div style="padding:12px;background:rgba(0,212,170,0.05);border-radius:8px;">
+                <div style="font-size:11px;color:var(--text-dim);">方向</div>
+                <div id="posDirection" style="font-size:18px;font-weight:700;color:var(--primary);">--</div>
+              </div>
+              <div style="padding:12px;background:rgba(0,212,170,0.05);border-radius:8px;">
+                <div style="font-size:11px;color:var(--text-dim);">仓位</div>
+                <div id="posPct" style="font-size:18px;font-weight:700;color:var(--text);">--</div>
+              </div>
+              <div style="padding:12px;background:rgba(0,212,170,0.05);border-radius:8px;">
+                <div style="font-size:11px;color:var(--text-dim);">止损</div>
+                <div id="posSL" style="font-size:18px;font-weight:700;color:#ff4757;">--</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== 4. 交易记录 ========== -->
+        <section class="content-section" id="history">
+          <div class="section-header">
+            <h2>📜 交易记录</h2>
+            <div class="section-actions">
+              <button class="pin-btn" data-section="history" data-title="交易记录" onclick="togglePin(this)">📌</button>
+            </div>
+          </div>
+          <div id="tradeHistory" style="display:flex;flex-direction:column;gap:8px;">
+            <div style="text-align:center;padding:40px;color:var(--text-dim);">
+              <div style="font-size:32px;margin-bottom:8px;">📜</div>
+              <div>暂无交易记录</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== 5. 系统设置 ========== -->
+        <section class="content-section" id="settings">
+          <div class="section-header">
+            <h2>⚙️ 系统设置</h2>
+            <div class="section-actions">
+              <button class="pin-btn" data-section="settings" data-title="系统设置" onclick="togglePin(this)">📌</button>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <div class="metric-card" style="padding:20px;border-radius:12px;">
+              <div style="font-size:13px;font-weight:600;margin-bottom:16px;">🎛️ 交易模式</div>
+              <div style="display:flex;gap:8px;margin-bottom:16px;">
+                <button class="btn-primary" style="flex:1;padding:10px;border-radius:8px;border:none;cursor:pointer;font-weight:600;" id="modeNormalBtn" onclick="setMode('normal')">普通模式</button>
+                <button style="flex:1;padding:10px;border-radius:8px;border:1px solid var(--card-border);background:transparent;cursor:pointer;color:var(--text-dim);" id="modeExpertBtn" onclick="setMode('expert')">专家模式</button>
+              </div>
+              <div style="font-size:12px;color:var(--text-dim);line-height:1.6;">
+                <div>🦞 <b>普通模式</b>: 仅做多，稳定收益</div>
+                <div>⚡ <b>专家模式</b>: 多空自动切换</div>
+              </div>
+            </div>
+            <div class="metric-card" style="padding:20px;border-radius:12px;">
+              <div style="font-size:13px;font-weight:600;margin-bottom:16px;">🔄 自动刷新</div>
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+                <button class="toggle-btn active" id="autoRefreshToggle" onclick="toggleAutoRefresh(this)">开</button>
+                <span style="font-size:12px;color:var(--text-dim);">30秒自动刷新</span>
+              </div>
+              <div style="font-size:12px;color:var(--text-dim);">
+                <div>后端: <span id="backendPort" style="color:var(--primary);">localhost:8006</span></div>
+                <div>API: <span style="color:var(--primary);">/api/switch/analyze</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/api-bridge.js"></script>
+  <script src="js/init.js"></script>
+</body>
+</html>

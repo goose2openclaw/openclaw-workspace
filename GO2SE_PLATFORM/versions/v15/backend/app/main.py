@@ -9,6 +9,8 @@ v15 = v13双脑 × v6i自主切换 × MiroFish25维
 """
 
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional, Dict, List
@@ -23,7 +25,7 @@ from .core.brains.quad_brain import (
 from .core.brains.decision_engine import DecisionEngine, DecisionInput, MIROFISH_DIMENSION_WEIGHTS
 
 app = FastAPI(
-    title="GO2SE v15 北斗七鑫",
+
     version="15.0.0",
     description="v13双脑 × v6i自主切换 × MiroFish25维"
 )
@@ -35,6 +37,14 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# ── 静态文件服务 ───────────────────────────────────────────────
+import pathlib
+from pathlib import Path
+_frontend_dir = pathlib.Path(__file__).parent.parent.parent
+if (Path(__file__).parent.parent.parent / "index.html").exists():
+    app.mount("/static", StaticFiles(directory=_frontend_dir, html=True), name="static")
+
 
 # ─── 全局引擎 ────────────────────────────────────
 quad_brain = QuadBrainEngine()
@@ -50,6 +60,10 @@ def detect_regime(symbol: str = "BTC/USDT") -> str:
     return rng.choices(regimes, weights=weights)[0]
 
 # ─── 路由 ────────────────────────────────────────
+
+@app.get("/")
+async def root():
+    return FileResponse(str(Path(__file__).parent.parent.parent / "index.html"))
 
 @app.get("/health")
 def health():

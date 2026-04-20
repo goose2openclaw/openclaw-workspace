@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GO2SE v15 - 🧠 四脑决策系统</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    :root {
+      --primary: #a855f7;
+      --primary-dim: rgba(168,85,247,0.15);
+      --primary-glow: rgba(168,85,247,0.4);
+      --accent: #fbbf24;
+      --accent-dim: rgba(251,191,36,0.15);
+      --bg: #0a0a14;
+      --card-bg: #12121f;
+      --card-border: rgba(168,85,247,0.2);
+      --text: #e2e8f0;
+      --text-dim: #64748b;
+      --signal-long: #22c55e;
+      --signal-short: #f43f5e;
+      --signal-hold: #64748b;
+      --alpha: #a855f7;
+      --beta: #3b82f6;
+      --gamma: #f59e0b;
+      --delta: #06b6d4;
+    }
+    [data-theme="black"] { --bg: #000; --card-bg: #08080f; }
+    [data-theme="geek"] { --bg: #0d0d1a; --card-bg: #111120; }
+
+    .neural-bg {
+      position: fixed; inset: 0; z-index: -1;
+      background: radial-gradient(ellipse at 80% 10%, rgba(168,85,247,0.08) 0%, transparent 50%),
+                  radial-gradient(ellipse at 20% 90%, rgba(251,191,36,0.04) 0%, transparent 50%),
+                  var(--bg);
+    }
+    .nav-brand { color: var(--primary) !important; }
+    .section-header h2 { color: var(--primary) !important; }
+    .signal-badge.long { background: rgba(34,197,94,0.15) !important; color: var(--signal-long) !important; border-color: var(--signal-long) !important; }
+    .signal-badge.short { background: rgba(244,63,94,0.15) !important; color: var(--signal-short) !important; border-color: var(--signal-short) !important; }
+    .signal-badge.hold { background: rgba(100,116,139,0.15) !important; color: var(--signal-hold) !important; border-color: var(--signal-hold) !important; }
+    .mi-score { color: var(--primary) !important; font-family: 'JetBrains Mono', monospace; }
+    .brain-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 16px; }
+    .brain-card.alpha { border-color: var(--alpha); box-shadow: 0 0 20px rgba(168,85,247,0.1); }
+    .brain-card.beta { border-color: var(--beta); box-shadow: 0 0 20px rgba(59,130,246,0.1); }
+    .brain-card.gamma { border-color: var(--gamma); box-shadow: 0 0 20px rgba(245,158,11,0.1); }
+    .brain-card.delta { border-color: var(--delta); box-shadow: 0 0 20px rgba(6,182,212,0.1); }
+    .brain-name { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+    .brain-weight { font-size: 28px; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+    .brain-vote { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 12px; display: inline-block; }
+    .btn-primary { background: var(--primary) !important; color: #fff !important; }
+    .btn-primary:hover { box-shadow: 0 0 20px var(--primary-glow) !important; }
+    .sidebar-item.active { background: var(--primary-dim) !important; border-color: var(--primary) !important; }
+    .metric-card { background: var(--card-bg); border: 1px solid var(--card-border); }
+    .metric-card .metric-value { color: var(--primary); }
+    .rsi-extreme { animation: rsiPulse 1s ease-in-out infinite; }
+    @keyframes rsiPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(244,63,94,0.4); }
+      50% { box-shadow: 0 0 20px 4px rgba(244,63,94,0.2); }
+    }
+    .final-score-bar { height: 6px; background: #1e293b; border-radius: 3px; overflow: hidden; margin-top: 8px; }
+    .final-score-fill { height: 100%; border-radius: 3px; transition: width 0.5s; background: linear-gradient(90deg, var(--primary), var(--accent)); }
+    .dimension-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .dimension-item { padding: 6px 8px; background: rgba(168,85,247,0.05); border: 1px solid rgba(168,85,247,0.1); border-radius: 6px; text-align: center; }
+    .dimension-item .dim-name { font-size: 9px; color: var(--text-dim); }
+    .dimension-item .dim-val { font-size: 13px; font-weight: 700; font-family: 'JetBrains Mono', monospace; color: var(--primary); }
+    .quad-brain-visual { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .brain-connector { display: flex; justify-content: center; align-items: center; margin-bottom: 16px; }
+    .brain-connector-line { height: 2px; background: linear-gradient(90deg, var(--alpha), var(--beta), var(--gamma), var(--delta)); width: 80%; border-radius: 1px; position: relative; }
+    .brain-connector-line::after { content: '🧠'; position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); font-size: 20px; background: var(--card-bg); padding: 0 8px; }
+  </style>
+</head>
+<body>
+  <div class="neural-bg"></div>
+
+  <!-- ========== 启动动画 Splash ========== -->
+  <div id="splash" class="splash">
+    <div class="splash-content">
+      <div style="font-size:56px;margin-bottom:12px;filter:drop-shadow(0 0 20px rgba(168,85,247,0.6));">🧠</div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:700;color:var(--primary);margin-bottom:4px;">GO2SE v15</div>
+      <div style="font-size:13px;color:var(--text-dim);margin-bottom:20px;letter-spacing:2px;">QUAD-BRAIN DECISION SYSTEM</div>
+      <div class="progress-container">
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <p class="progress-text" id="progressText">四脑同步中... 0%</p>
+        <button class="skip-btn" id="skipBtn" style="display:none;">跳过 →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 主应用 ========== -->
+  <div id="app" class="app hidden">
+    <header class="top-nav" id="topNav">
+      <div class="nav-status-bar">
+        <div class="nav-left">
+          <div style="display:flex;align-items:center;gap:12px;margin-right:16px;">
+            <span style="font-size:28px;filter:drop-shadow(0 0 8px rgba(168,85,247,0.5));">🧠</span>
+            <div>
+              <div style="font-size:16px;font-weight:700;color:var(--primary);font-family:'Space Grotesk',sans-serif;">v15</div>
+              <div style="font-size:10px;color:var(--text-dim);">四脑决策</div>
+            </div>
+          </div>
+          <div class="theme-switcher">
+            <button class="theme-btn active" data-theme="dark" title="深色">🌙</button>
+            <button class="theme-btn" data-theme="black" title="暗色">⚫</button>
+            <button class="theme-btn" data-theme="geek" title="极客">💻</button>
+          </div>
+          <div class="lang-switcher">
+            <button class="lang-btn active" data-lang="zh">中</button>
+            <button class="lang-btn" data-lang="en">EN</button>
+          </div>
+        </div>
+
+        <div class="brain-toggle" id="brainToggle" style="background:var(--primary-dim);border-color:var(--primary-glow);">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:16px;">🧠</span>
+            <span class="brain-mode" id="brainMode" style="font-size:12px;font-weight:600;color:var(--primary);">四脑同步</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;margin-left:12px;">
+            <kbd class="hotkey" style="background:var(--primary);color:#fff;">B</kbd>
+          </div>
+        </div>
+
+        <div class="nav-right">
+          <div class="breathing-light" id="breathingLight" title="系统状态">
+            <span class="light-dot" style="background:var(--primary);"></span>
+            <span class="light-ring" style="border-color:var(--primary);"></span>
+          </div>
+          <div class="notification-btn" id="notificationBtn">
+            <span>🔔</span>
+            <span class="notif-badge" id="notifBadge">0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-shortcuts" id="navShortcuts">
+        <button class="shortcut-btn active" data-section="decisionCenter" onclick="navigateTo('decisionCenter')">🧠 决策中心</button>
+        <button class="shortcut-btn" data-section="brainVisual" onclick="navigateTo('brainVisual')">🔬 四脑可视化</button>
+        <button class="shortcut-btn" data-section="mirofish25d" onclick="navigateTo('mirofish25d')">🌊 MiroFish</button>
+        <button class="shortcut-btn" data-section="history" onclick="navigateTo('history')">📜 记录</button>
+        <button class="shortcut-btn" data-section="settings" onclick="navigateTo('settings')">⚙️ 设置</button>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <nav class="sidebar" id="sidebar">
+        <div class="sidebar-items">
+          <a href="#decisionCenter" class="sidebar-item active" data-section="decisionCenter">
+            <span class="item-icon">🧠</span><span class="item-text">决策中心</span>
+          </a>
+          <a href="#brainVisual" class="sidebar-item" data-section="brainVisual">
+            <span class="item-icon">🔬</span><span class="item-text">四脑可视化</span>
+          </a>
+          <a href="#mirofish25d" class="sidebar-item" data-section="mirofish25d">
+            <span class="item-icon">🌊</span><span class="item-text">MiroFish 25D</span>
+          </a>
+          <a href="#history" class="sidebar-item" data-section="history">
+            <span class="item-icon">📜</span><span class="item-text">交易记录</span>
+          </a>
+          <a href="#settings" class="sidebar-item" data-section="settings">
+            <span class="item-icon">⚙️</span><span class="item-text">系统设置</span>
+          </a>
+        </div>
+        <div class="sidebar-footer">
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;">
+            <div class="breathing-light" style="position:static;"><span class="light-dot" style="background:var(--primary);width:8px;height:8px;"></span></div>
+            <span id="backendStatus" style="font-size:11px;color:var(--text-dim);">连接中...</span>
+          </div>
+        </div>
+      </nav>
+
+      <div class="content-wrapper">
+        <!-- ========== 1. 决策中心 ========== -->
+        <section class="content-section" id="decisionCenter">
+          <div class="section-header">
+            <h2>🧠 v15 四脑决策中心</h2>
+            <div class="section-actions">
+              <span class="section-tag" style="background:var(--primary-dim);color:var(--primary);border:1px solid var(--primary);">RSI Extreme</span>
+              <button class="pin-btn" data-section="decisionCenter" data-title="决策中心" onclick="togglePin(this)">📌</button>
+              <button class="action-btn secondary" onclick="v15Bridge.refreshAll()" title="刷新">🔄</button>
+            </div>
+          </div>
+
+          <!-- 四脑投票卡 -->
+          <div class="quad-brain-visual">
+            <div class="brain-card alpha">
+              <div class="brain-name" style="color:var(--alpha);">Alpha 层</div>
+              <div class="brain-weight" id="alphaWeight" style="color:var(--alpha);">0.85</div>
+              <div class="brain-vote" id="alphaVote" style="background:rgba(168,85,247,0.2);color:var(--alpha);">●</div>
+              <div style="font-size:11px;color:var(--text-dim);margin-top:8px;">position×risk</div>
+            </div>
+            <div class="brain-card beta">
+              <div class="brain-name" style="color:var(--beta);">Beta 层</div>
+              <div class="brain-weight" id="betaWeight" style="color:var(--beta);">0.80</div>
+              <div class="brain-vote" id="betaVote" style="background:rgba(59,130,246,0.2);color:var(--beta);">●</div>
+              <div style="font-size:11px;color:var(--text-dim);margin-top:8px;">momentum×trend</div>
+            </div>
+            <div class="brain-card gamma">
+              <div class="brain-name" style="color:var(--gamma);">Gamma 层</div>
+              <div class="brain-weight" id="gammaWeight" style="color:var(--gamma);">0.70</div>
+              <div class="brain-vote" id="gammaVote" style="background:rgba(245,158,11,0.2);color:var(--gamma);">●</div>
+              <div style="font-size:11px;color:var(--text-dim);margin-top:8px;">mirofish×sentiment</div>
+            </div>
+            <div class="brain-card delta">
+              <div class="brain-name" style="color:var(--delta);">Delta 层</div>
+              <div class="brain-weight" id="deltaWeight" style="color:var(--delta);">0.60</div>
+              <div class="brain-vote" id="deltaVote" style="background:rgba(6,182,212,0.2);color:var(--delta);">●</div>
+              <div style="font-size:11px;color:var(--text-dim);margin-top:8px;">macro×regime</div>
+            </div>
+          </div>
+
+          <!-- 核心指标 -->
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px;">
+            <div class="metric-card" style="padding:16px;border-radius:12px;">
+              <div style="font-size:11px;color:var(--text-dim);margin-bottom:6px;">最终决策</div>
+              <div class="signal-badge" id="finalSignal" style="display:inline-block;padding:6px 14px;border-radius:20px;border:1px solid;font-size:16px;font-weight:700;">--</div>
+            </div>
+            <div class="metric-card" style="padding:16px;border-radius:12px;">
+              <div style="font-size:11px;color:var(--text-dim);margin-bottom:6px;">Final Score</div>
+              <div id="finalScore" style="font-size:28px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--primary);">--</div>
+              <div class="final-score-bar"><div class="final-score-fill" id="finalScoreBar" style="width:0%"></div></div>
+            </div>
+            <div class="metric-card" style="padding:16px;border-radius:12px;">
+              <div style="font-size:11px;color:var(--text-dim);margin-bottom:6px;">Fused Mi</div>
+              <div class="mi-score" style="font-size:28px;font-weight:700;" id="fusedMi">--</div>
+            </div>
+            <div class="metric-card" style="padding:16px;border-radius:12px;" id="rsiCard">
+              <div style="font-size:11px;color:var(--text-dim);margin-bottom:6px;">RSI</div>
+              <div id="rsiDisplay" style="font-size:28px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--text);">--</div>
+              <div style="font-size:11px;color:var(--text-dim);" id="rsiLabel">--</div>
+            </div>
+          </div>
+
+          <!-- 决策理由 -->
+          <div id="reasoningBox" class="metric-card" style="padding:16px;border-radius:12px;margin-bottom:16px;border-left:3px solid var(--primary);">
+            <div style="font-size:11px;color:var(--text-dim);margin-bottom:6px;">决策理由</div>
+            <div id="reasoningText" style="font-size:13px;color:var(--text);line-height:1.6;">--</div>
+          </div>
+        </section>
+
+        <!-- ========== 2. 四脑可视化 ========== -->
+        <section class="content-section" id="brainVisual">
+          <div class="section-header">
+            <h2>🔬 四脑可视化</h2>
+            <div class="section-actions">
+              <span class="section-tag" style="background:var(--primary-dim);color:var(--primary);border:1px solid var(--primary);">v15.3</span>
+              <button class="pin-btn" data-section="brainVisual" data-title="四脑可视化" onclick="togglePin(this)">📌</button>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <div class="metric-card" style="padding:20px;border-radius:12px;">
+              <div style="font-size:13px;font-weight:600;margin-bottom:16px;color:var(--text);">1000-Agent 聚合</div>
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+                <div style="font-size:36px;font-weight:800;color:var(--primary);font-family:'JetBrains Mono',monospace;" id="agentCount">1000</div>
+                <div>
+                  <div style="font-size:12px;color:var(--text-dim);">虚拟智能体</div>
+                  <div style="font-size:11px;color:var(--primary);">7大原型</div>
+                </div>
+              </div>
+              <div style="font-size:12px;color:var(--text-dim);line-height:1.8;">
+                <div>兔子型: <span style="color:var(--alpha);" id="rabbitCount">-</span></div>
+                <div> Mole型: <span style="color:var(--beta);" id="moleCount">-</span></div>
+                <div> 预言型: <span style="color:var(--gamma);" id="oracleCount">-</span></div>
+                <div> 领导者: <span style="color:var(--delta);" id="leaderCount">-</span></div>
+              </div>
+            </div>
+            <div class="metric-card" style="padding:20px;border-radius:12px;">
+              <div style="font-size:13px;font-weight:600;margin-bottom:16px;color:var(--text);">Mi 融合计算</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div style="padding:12px;background:rgba(168,85,247,0.05);border-radius:8px;text-align:center;">
+                  <div style="font-size:10px;color:var(--text-dim);">Platform Mi</div>
+                  <div id="platformMi" style="font-size:20px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--primary);">--</div>
+                </div>
+                <div style="padding:12px;background:rgba(251,191,36,0.05);border-radius:8px;text-align:center;">
+                  <div style="font-size:10px;color:var(--text-dim);">Local Mi</div>
+                  <div id="localMi" style="font-size:20px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--accent);">--</div>
+                </div>
+              </div>
+              <div style="margin-top:12px;padding:12px;background:rgba(34,197,94,0.05);border-radius:8px;border:1px solid rgba(34,197,94,0.2);text-align:center;">
+                <div style="font-size:10px;color:var(--text-dim);">Fused Mi</div>
+                <div style="font-size:24px;font-weight:700;font-family:'JetBrains Mono',monospace;color:#22c55e;">0.4×P + 0.6×L</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== 3. MiroFish 25D ========== -->
+        <section class="content-section" id="mirofish25d">
+          <div class="section-header">
+            <h2>🌊 MiroFish 25D 系统</h2>
+            <div class="section-actions">
+              <span class="section-tag" style="background:var(--accent-dim);color:var(--accent);border:1px solid var(--accent);">1000-Agent</span>
+              <button class="pin-btn" data-section="mirofish25d" data-title="MiroFish" onclick="togglePin(this)">📌</button>
+            </div>
+          </div>
+          <div class="metric-card" style="padding:20px;border-radius:12px;margin-bottom:16px;">
+            <div style="font-size:13px;font-weight:600;margin-bottom:16px;color:var(--text);">25维度准确度</div>
+            <div class="dimension-grid" id="dimensionGrid">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="metric-card" style="padding:16px;border-radius:12px;text-align:center;">
+              <div style="font-size:11px;color:var(--text-dim);">学习状态</div>
+              <div id="learningStatus" style="font-size:18px;font-weight:700;color:var(--primary);margin-top:4px;">运行中</div>
+            </div>
+            <div class="metric-card" style="padding:16px;border-radius:12px;text-align:center;">
+              <div style="font-size:11px;color:var(--text-dim);">聚合胜率</div>
+              <div id="agentAccuracy" style="font-size:18px;font-weight:700;color:#22c55e;margin-top:4px;">73.8%</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== 4. 交易记录 ========== -->
+        <section class="content-section" id="history">
+          <div class="section-header">
+            <h2>📜 交易记录</h2>
+            <div class="section-actions">
+              <button class="pin-btn" data-section="history" data-title="交易记录" onclick="togglePin(this)">📌</button>
+            </div>
+          </div>
+          <div id="tradeHistory" style="display:flex;flex-direction:column;gap:8px;">
+            <div style="text-align:center;padding:40px;color:var(--text-dim);">
+              <div style="font-size:32px;margin-bottom:8px;">📜</div>
+              <div>暂无交易记录</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ========== 5. 系统设置 ========== -->
+        <section class="content-section" id="settings">
+          <div class="section-header">
+            <h2>⚙️ 系统设置</h2>
+            <div class="section-actions">
+              <span class="section-tag" style="background:var(--primary-dim);color:var(--primary);border:1px solid var(--primary);">v15.3</span>
+              <button class="pin-btn" data-section="settings" data-title="系统设置" onclick="togglePin(this)">📌</button>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <div class="metric-card" style="padding:20px;border-radius:12px;">
+              <div style="font-size:13px;font-weight:600;margin-bottom:16px;">🔄 自动刷新</div>
+              <div style="display:flex;align-items:center;gap:12px;">
+                <button class="toggle-btn active" id="autoRefreshToggle" onclick="toggleAutoRefresh(this)">开</button>
+                <span style="font-size:12px;color:var(--text-dim);">30秒自动刷新</span>
+              </div>
+              <div style="margin-top:16px;font-size:12px;color:var(--text-dim);">
+                <div>后端: <span style="color:var(--primary);">localhost:8015</span></div>
+                <div>决策端点: <span style="color:var(--primary);">/api/decision/eq</span></div>
+                <div>MiroFish: <span style="color:var(--primary);">localhost:8020</span></div>
+              </div>
+            </div>
+            <div class="metric-card" style="padding:20px;border-radius:12px;">
+              <div style="font-size:13px;font-weight:600;margin-bottom:16px;">🎯 RSI Extreme</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;color:var(--text-dim);">
+                <div>SHORT触发: <span style="color:#f43f5e;">RSI &gt; 75</span></div>
+                <div>LONG触发: <span style="color:#22c55e;">RSI &lt; 28</span></div>
+                <div>最大杠杆: <span style="color:var(--primary);">5x</span></div>
+                <div>止盈(做空): <span style="color:var(--primary);">8%</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/api-bridge.js"></script>
+  <script src="js/init.js"></script>
+</body>
+</html>
