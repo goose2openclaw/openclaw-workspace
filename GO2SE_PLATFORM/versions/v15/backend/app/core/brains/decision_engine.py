@@ -219,7 +219,7 @@ class DecisionEngine:
         mi = self._compute_mirofish_multiplier(
             inp.mirofish_scores, brain_factors
         )
-        mi = min(mi, 1.20)
+        mi = min(mi, 1.35)  # v15.1: 放开封顶，允许更大信号增强
 
         # Ri: 风险系数 (含RSI, R1修复)
         ri = self._compute_risk_factor(inp.regime, inp.rsi, inp.volatility)
