@@ -12,7 +12,7 @@ from typing import Dict, List, Optional
 
 # ─── 配置 ───────────────────────────────────────────────
 V6A_URL = "http://localhost:8000"
-VV6_URL = "http://localhost:8001"
+VV6_URL = "http://localhost:8006"  # vv6 self
 HISTORY_FILE = "/tmp/go2se_perf_history.json"
 STATE_FILE  = "/tmp/go2se_autonomous_state.json"
 LOG_FILE    = "/tmp/go2se_autonomous.log"
