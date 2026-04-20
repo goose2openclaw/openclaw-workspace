@@ -126,16 +126,20 @@ class DecisionEngine:
         # 2. 计算风险调整系数
         ri = self._compute_risk_factor(inp.regime, inp.rsi, inp.volatility)
 
-        # 3. 计算加权决策分数
-        weighted_num = 0.0
-        weighted_den = 0.0
-
+        w_sum = 0.0
+        w_total = 0.0
         for brain_name, signal in inp.brain_votes.items():
             w = inp.brain_weights.get(brain_name, 0.25)
-            weighted_num += w * signal * mi * ri
-            weighted_den += abs(w * mi * ri)
-
-        final_score = weighted_num / weighted_den if weighted_den > 0 else 0.0
+            w_sum += w * signal
+            w_total += w
+        if w_total > 0:
+            direction_sign = 1 if w_sum > 0 else (-1 if w_sum < 0 else 0)
+            signal_strength = abs(w_sum / w_total)
+        else:
+            direction_sign = 0
+            signal_strength = 0.0
+        mi_capped = min(mi, 1.20)
+        final_score = direction_sign * signal_strength * mi_capped * ri
         final_score = max(-1.0, min(1.0, final_score))
 
         # 4. 确定方向
@@ -206,9 +210,8 @@ class DecisionEngine:
             return 1.0
 
         mi = weighted_sum / total_weight
-        # 映射到 0.5-1.5 范围
-        mi = 0.5 + mi  # 0.5 + (0-1) = 0.5-1.5
-        return mi
+        mi = 0.5 + mi
+        return min(mi, 1.20)
 
     def _compute_risk_factor(
         self, regime: str, rsi: float, volatility: float
