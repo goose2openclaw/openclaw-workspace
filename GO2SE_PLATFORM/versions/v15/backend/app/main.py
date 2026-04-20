@@ -324,6 +324,8 @@ def decision_eq(request: Dict):
         "reasoning": result.reasoning,
         "components": {
             "mi": result.components.get("mi"),
+            "platform_mi": result.components.get("platform_mi"),
+            "fused_mi": result.components.get("fused_mi"),
             "ri": result.components.get("ri"),
             "mi_capped_1_20": True,
         }

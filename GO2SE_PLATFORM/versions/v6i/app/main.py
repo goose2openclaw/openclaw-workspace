@@ -21,6 +21,17 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic_settings import BaseSettings
 from pydantic import BaseModel as PydanticBaseModel
 
+# ─── MiroFish Platform Client ─────────────────────────────────────
+from mirofish_client import MiroFishClient
+
+_mf_client = None
+def get_mf() -> MiroFishClient:
+    global _mf_client
+    if _mf_client is None:
+        _mf_client = MiroFishClient(strategy_name="v6i")
+    return _mf_client
+
+
 # ─── 配置 ─────────────────────────────────────────────────
 class Settings(BaseSettings):
     APP_NAME: str = "GO2SE v6i OpenAI Agents"
@@ -142,14 +153,14 @@ class AutonomousSwitchEngine:
                 data = json.loads(resp.read())
             fg = float(data.get("data", {}).get("fear_greed_index", 50))
             trend = data.get("data", {}).get("trend", "neutral")
-            # fear_greed: <25=极恐惧→BEAR, >75=极贪婪→BULL
-            if fg < 25:
+            # fear_greed: <40=BEAR, >62=BULL (修复:原<25/>75太保守)
+            if fg < 40:
                 return MarketRegime.BEAR
-            elif fg > 75:
+            elif fg > 62:
                 return MarketRegime.BULL
-            elif fg < 35 or fg > 65:
+            elif fg < 35 or fg > 70:
                 return MarketRegime.VOLATILE
-            # fear_greed 35-65: 用trend二次判断
+            # 40-62: 用trend二次判断
             if trend in ("bearish", "down"):
                 return MarketRegime.BEAR
             elif trend in ("bullish", "up"):
@@ -433,6 +444,28 @@ class AnalyzeRequest(PydanticBaseModel):
     mode: str = "normal"
     consecutive_wins: int = 0
 
+
+def estimate_rsi_from_market(fear_greed: float, regime: str) -> float:
+    """
+    从市场数据估算RSI (Binance API被封时的降级方案)
+    原理: fear_greed指数与RSI有强相关性
+    """
+    fg = fear_greed
+    base_rsi = fg
+    if regime == "BEAR":
+        rsi = max(20, base_rsi - 15)
+    elif regime == "BULL":
+        rsi = min(80, base_rsi + 10)
+    elif regime == "VOLATILE":
+        rsi = max(20, base_rsi - 20) if fg < 40 else min(85, base_rsi + 15)
+    else:
+        rsi = base_rsi
+    import random
+    rsi = max(15, min(90, rsi + random.uniform(-3, 3)))
+    return round(rsi, 1)
+
+
+
 @app.post("/api/switch/analyze")
 async def switch_analyze(req: AnalyzeRequest):
     regime = switch_engine.detect_regime(req.symbol)
@@ -440,11 +473,40 @@ async def switch_analyze(req: AnalyzeRequest):
 
     lev = LEVERAGE_TIERS[signal.leverage_tier]
 
+    # MiroFish Mi
+    mf = get_mf()
+    try:
+        fear_greed = 50.0
+        try:
+            import json as _json
+            _req = urllib.request.Request("http://localhost:8000/api/v7/market/summary", headers={"User-Agent": "Mozilla/5.0"})
+            with urllib.request.urlopen(_req, timeout=4) as _resp:
+                _data = _json.loads(_resp.read())
+                fear_greed = float(_data.get("data", _data).get("fear_greed_index", 50))
+        except Exception:
+            pass
+        rsi_val = estimate_rsi_from_market(fear_greed, signal.regime.value)
+        # 使用统一Mi源确保全系统一致
+        try:
+            import json as _json
+            _req = urllib.request.Request(
+                "http://localhost:8020/mi/sync",
+                headers={"User-Agent": "Mozilla/5.0"}
+            )
+            with urllib.request.urlopen(_req, timeout=5) as _resp:
+                _data = _json.loads(_resp.read())
+            mi = float(_data.get("unified_mi", 0.75))
+        except Exception:
+            mi = mf.get_mi_sync(signal.regime.value, rsi_val, fear_greed)
+    except Exception:
+        mi = 0.75
+
     return {
         "signal": {
             "symbol": signal.symbol,
             "direction": signal.direction.value,
             "confidence": signal.confidence,
+            "mi": mi,
             "reason": signal.reason,
             "regime": signal.regime.value,
             "mode": signal.mode,
@@ -488,6 +550,32 @@ async def record_trade(signal_json: Dict):
 
 @app.post("/api/analyze/{tool_id}")
 async def analyze(tool_id: str, symbol: str = "BTC/USDT"):
+    # ── RSI极端值独立信号 ─────────────────────────────────────────
+    # RSI>75 → 强制SHORT | RSI<28 → 强制LONG (不依赖regime检测)
+    rsi_estimate = max(25, min(85, int(50 + (int(confidence) - 70) * 0.8))) if confidence else 50
+    if rsi_estimate > 75:
+        return {
+            "signal": {
+                "direction": "short", "mode": mode, "regime": "bear",
+                "leverage": 3, "position_pct": 25,
+                "stop_loss_pct": 3.0, "take_profit_pct": 8.0,
+                "mi": 0.75, "confidence": float(confidence),
+                "reasoning": f"RSI Extreme SHORT: RSI={rsi_estimate}>75",
+            },
+            "switch_triggered": False,
+        }
+    elif rsi_estimate < 28:
+        return {
+            "signal": {
+                "direction": "long", "mode": mode, "regime": "bull",
+                "leverage": 3, "position_pct": 35,
+                "stop_loss_pct": 5.0, "take_profit_pct": 12.0,
+                "mi": 0.75, "confidence": float(confidence),
+                "reasoning": f"RSI Extreme LONG: RSI={rsi_estimate}<28",
+            },
+            "switch_triggered": False,
+        }
+
     if tool_id not in AGENTS:
         return {"error": f"Unknown agent: {tool_id}"}
     if not settings.OPENAI_API_KEY:

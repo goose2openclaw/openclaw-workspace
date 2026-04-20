@@ -21,6 +21,20 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic_settings import BaseSettings
 from pydantic import BaseModel as PydanticBaseModel
 
+# Fix import path: add parent dir so mirofish_client (in app/) is importable
+import pathlib, sys
+_app_dir = pathlib.Path(__file__).parent.resolve()
+if str(_app_dir) not in sys.path:
+    sys.path.insert(0, str(_app_dir))
+from mirofish_client import MiroFishClient
+
+_mf_client = None
+def get_mf() -> MiroFishClient:
+    global _mf_client
+    if _mf_client is None:
+        _mf_client = MiroFishClient(strategy_name="vv6")
+    return _mf_client
+
 # ─── 配置 ─────────────────────────────────────────────────
 class Settings(BaseSettings):
     APP_NAME: str = "GO2SE vv6 OpenAI Agents"
@@ -145,9 +159,9 @@ class AutonomousSwitchEngine:
                 data = json.loads(resp.read())
             fg = float(data.get("data", {}).get("fear_greed_index", 50))
             trend = data.get("data", {}).get("trend", "neutral")
-            if fg < 25: return MarketRegime.BEAR
-            elif fg > 75: return MarketRegime.BULL
-            elif fg < 35 or fg > 65: return MarketRegime.VOLATILE
+            if fg < 40: return MarketRegime.BEAR   # 原来<25太极端，fear=45应触发BEAR
+            elif fg > 62: return MarketRegime.BULL   # 原来>75太保守
+            elif fg < 35 or fg > 70: return MarketRegime.VOLATILE
             if trend in ("bearish", "down"): return MarketRegime.BEAR
             elif trend in ("bullish", "up"): return MarketRegime.BULL
             else: return MarketRegime.NEUTRAL
@@ -440,11 +454,41 @@ async def switch_analyze(req: AnalyzeRequest):
 
     lev = LEVERAGE_TIERS[signal.leverage_tier]
 
+    # MiroFish Mi 调整
+    mf = get_mf()
+    try:
+        # 从MiroFish Platform获取真实Mi (使用v6a fear_greed)
+        import urllib.request, json as _json
+        try:
+            _req = urllib.request.Request("http://localhost:8000/api/v7/market/summary", headers={"User-Agent": "Mozilla/5.0"})
+            with urllib.request.urlopen(_req, timeout=4) as _resp:
+                _data = _json.loads(_resp.read())
+                fear_greed = float(_data.get("data", _data).get("fear_greed_index", 50))
+        except Exception:
+            fear_greed = 50.0
+        regime_str = signal.regime.value
+        rsi_val = 50.0
+        # 使用统一Mi源确保全系统一致
+        try:
+            import json as _json
+            _req = urllib.request.Request(
+                "http://localhost:8020/mi/sync",
+                headers={"User-Agent": "Mozilla/5.0"}
+            )
+            with urllib.request.urlopen(_req, timeout=5) as _resp:
+                _data = _json.loads(_resp.read())
+            mi = float(_data.get("unified_mi", 0.75))
+        except Exception:
+            mi = mf.get_mi_sync(regime_str, rsi_val, fear_greed)
+    except Exception:
+        mi = 0.75
+
     return {
         "signal": {
             "symbol": signal.symbol,
             "direction": signal.direction.value,
             "confidence": signal.confidence,
+            "mi": mi,
             "reason": signal.reason,
             "regime": signal.regime.value,
             "mode": signal.mode,
@@ -461,6 +505,11 @@ async def switch_analyze(req: AnalyzeRequest):
             "daily_loss_pct": round(switch_engine.daily_loss, 2),
             "daily_loss_limit": RISK_CONFIG["daily_loss_limit_pct"],
             "熔断触发": switch_engine.daily_loss >= RISK_CONFIG["daily_loss_limit_pct"],
+        },
+        "mirofish": {
+            "mi": mi,
+            "source": "vv6",
+            "regime": signal.regime.value,
         }
     }
 
@@ -488,6 +537,32 @@ async def record_trade(signal_json: Dict):
 
 @app.post("/api/analyze/{tool_id}")
 async def analyze(tool_id: str, symbol: str = "BTC/USDT"):
+    # ── RSI极端值独立信号 ─────────────────────────────────────────
+    # RSI>75 → 强制SHORT | RSI<28 → 强制LONG (不依赖regime检测)
+    rsi_estimate = max(25, min(85, int(50 + (int(confidence) - 70) * 0.8))) if confidence else 50
+    if rsi_estimate > 75:
+        return {
+            "signal": {
+                "direction": "short", "mode": mode, "regime": "bear",
+                "leverage": 3, "position_pct": 25,
+                "stop_loss_pct": 3.0, "take_profit_pct": 8.0,
+                "mi": 0.75, "confidence": float(confidence),
+                "reasoning": f"RSI Extreme SHORT: RSI={rsi_estimate}>75",
+            },
+            "switch_triggered": False,
+        }
+    elif rsi_estimate < 28:
+        return {
+            "signal": {
+                "direction": "long", "mode": mode, "regime": "bull",
+                "leverage": 3, "position_pct": 35,
+                "stop_loss_pct": 5.0, "take_profit_pct": 12.0,
+                "mi": 0.75, "confidence": float(confidence),
+                "reasoning": f"RSI Extreme LONG: RSI={rsi_estimate}<28",
+            },
+            "switch_triggered": False,
+        }
+
     # 路由修复: /api/analyze/all → 委托给 analyze_all
     if tool_id == "all":
         results = {}

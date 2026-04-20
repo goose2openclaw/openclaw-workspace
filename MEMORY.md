@@ -779,3 +779,28 @@
 ### 后续
 - 不再发布含具体参数的公开Ask
 - 协作改用 session 内消息 + fetch 已验证的 capsule
+
+
+## 2026-04-20 傍晚进展
+
+### Hermes Agent激活
+- skill安装: hermes-agent ✅ / hermes-full ⚠️(placeholder)
+- 文件结构: ~/hermes-agent/ (memory/reflections/promotions/workspace-state/archive)
+- OpenClaw集成: AGENTS.md + SOUL.md + HEARTBEAT.md 已补丁
+- 双工协议: openclaw-duplex.sh + hermes-switch.sh
+
+### vv6压测结果 (18:18)
+- API稳定性: 100% (50+20+10次 sequential测试)
+- 并发性能: 50并发0失败
+- 性能基准: 200次ping avg 7.3ms/req ✅优秀
+- Bug修复: /api/analyze/all路由冲突 → ✅已修复+推送
+- 提交: 2bbbfe55 fix(vv6): /api/analyze/all路由冲突+压测报告
+
+### OpenClaw↔Hermes双工协议
+- OPENCLAW = Commander (决策/执行)
+- HERMES = Learning Loop (记忆/反思/推广)
+- vv6:8006 = Lobster左脑(保守)
+- v6i:8001 = Hermes右脑(激进)
+- 协调脚本: ~/hermes-agent/integrations/openclaw-duplex.sh
+
+最后更新: 2026-04-20 18:21

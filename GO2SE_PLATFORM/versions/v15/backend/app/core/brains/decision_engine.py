@@ -3,19 +3,17 @@
 ================================
 MiroFish 25维 × gstack优化 × 四脑自适应加权 × 自适应M3引擎
 
-修复清单 (gstack review v2):
+修复清单 (gstack review v3):
   ✅ M3: AdaptiveBrainWeights 集成到 Mi 计算
   ✅ R1: RSI 不再在 Mi 和 Ri 中重复计算
   ✅ O1: SHORT position_pct 独立公式
+  ✅ P0: Mi公式修正 (+0.5偏移错误)
+  ✅ P1: Alpha/Beta维度映射去重叠
+  ✅ P1: fear_greed从v6a真实API获取
+  ✅ P2: 空评分时从MiroFish Platform获取
 
 决策等式:
   Final = Σ(wi × Si × Mi × Ri) / Σ(wi × Mi × Ri)
-
-组成:
-  wi  = 四脑自适应权重 (M3引擎, 基于WIN/LOSS/streak)
-  Si  = 脑信号强度 (LONG=+1, SHORT=-1, HOLD=0, UNCERTAIN=-0.5)
-  Mi  = MiroFish 25维调整系数 (RSI已从输入评分中剥离)
-  Ri  = 风险调整系数 (regime x 波动率, RSI独立走Ri通道)
 """
 
 from enum import Enum
@@ -23,6 +21,20 @@ from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Tuple
 from datetime import datetime
 import random
+import pathlib, sys
+
+# ─── MiroFish Platform Client ─────────────────────────────────────
+_parent_dir = pathlib.Path(__file__).parent.parent.parent.resolve()  # = backend/
+if str(_parent_dir) not in sys.path:
+    sys.path.insert(0, str(_parent_dir))
+from mirofish_client import MiroFishClient
+
+_mf_client = None
+def get_mf() -> MiroFishClient:
+    global _mf_client
+    if _mf_client is None:
+        _mf_client = MiroFishClient(strategy_name="v15")
+    return _mf_client
 
 # ─── MiroFish 25维权重配置 ──────────────────────────────────────
 MIROFISH_DIMENSION_WEIGHTS = {
@@ -166,9 +178,10 @@ RISK_REGIME_FACTORS = {
 
 
 # ─── 决策阈值 (v6蒸馏) ──────────────────────────────────────────
-THRESHOLD_LONG   = 0.55
-THRESHOLD_SHORT  = 0.45
-THRESHOLD_ENGAGE = 0.55
+# v15.3: 降低阈值增加交易频率，添加中性市场方向偏置
+THRESHOLD_LONG   = 0.35   # 原0.55过高导致30天仅1笔交易
+THRESHOLD_SHORT  = 0.30    # 原0.45，允许更多做空信号
+THRESHOLD_ENGAGE = 0.35
 
 
 @dataclass
@@ -192,6 +205,8 @@ class DecisionOutput:
     take_profit_pct: float
     reasoning: str
     components: Dict = field(default_factory=dict)
+    mi: float = 1.0           # MiroFish market adjustment factor (fused)
+    mirofish_regime: str = "neutral"  # regime used for MiroFish query
 
 
 class DecisionEngine:
@@ -210,6 +225,55 @@ class DecisionEngine:
 
     # ── 主决策 ────────────────────────────────────────────────────
     def decide(self, inp: DecisionInput) -> DecisionOutput:
+        # ── RSI极端值独立信号 (v15.3) ─────────────────────────────
+        # RSI>75: 极端超买 → 强制SHORT (不依赖brain_votes)
+        # RSI<28: 极端超卖 → 强制LONG
+        rsi = getattr(inp, 'rsi', 50) or 50
+        if rsi > 75:
+            return DecisionOutput(
+                direction="SHORT",
+                confidence=min(1.0, (rsi - 75) / 25.0 * 0.8 + 0.5),
+                leverage=max(2, min(5, int((rsi - 70) / 5 + 2))),
+                position_pct=25.0,
+                stop_loss_pct=3.0,
+                take_profit_pct=8.0,
+                final_score=0.0,
+                reasoning=f"RSI Extreme SHORT: RSI={rsi}>75",
+                components={"fused_mi": 0.75, "risk_factor": 1.0},
+            )
+        elif rsi < 28:
+            return DecisionOutput(
+                direction="LONG",
+                confidence=min(1.0, (28 - rsi) / 28.0 * 0.8 + 0.5),
+                leverage=max(2, min(5, int((30 - rsi) / 5 + 2))),
+                position_pct=35.0,
+                stop_loss_pct=5.0,
+                take_profit_pct=12.0,
+                final_score=0.0,
+                reasoning=f"RSI Extreme LONG: RSI={rsi}<28",
+                components={"fused_mi": 0.75, "risk_factor": 1.0},
+            )
+
+        # MiroFish Platform Engine 查询 (Mi)
+        platform_mi = 1.0
+        mf_regime = inp.regime
+        try:
+            mf = get_mf()
+            # Fix P1: 获取真实fear_greed从v6a market API
+            fear_greed = 50.0
+            try:
+                import urllib.request, json as _json
+                url = "http://localhost:8000/api/v7/market/summary"
+                with urllib.request.urlopen(url, timeout=3) as resp:
+                    data = _json.loads(resp.read())
+                    # Fix: v6a returns {"data": {"fear_greed_index": 45, ...}}
+                    fear_greed = float(data.get("data", data).get("fear_greed_index", 50.0))
+            except Exception:
+                pass
+            platform_mi = mf.get_mi_sync(inp.regime, inp.rsi, fear_greed)
+        except Exception:
+            pass  # 使用内部计算
+
         # M3: 获取自适应脑权重 (含性能因子)
         adaptive_w = self.brain_weights.get_all_weights()
         brain_factors = {k: self.brain_weights.get_brain_factor(k)
@@ -243,18 +307,49 @@ class DecisionEngine:
 
         # 决策判断 (无gap版本)
         abs_score = abs(final_score)
-        if abs_score < 0.05:
-            direction = "HOLD"
-            confidence = abs_score
-        elif final_score > THRESHOLD_LONG:
-            direction = "LONG"
-            confidence = min(1.0, abs_score)
-        elif final_score < -THRESHOLD_SHORT:
-            direction = "SHORT"
-            confidence = min(1.0, abs_score)
-        else:
-            direction = "HOLD"
-            confidence = abs_score
+        # ── v15.3 regime-aware决策 ──
+        # 先判断regime，再用score决定方向和强度
+        regime = inp.regime.upper() if hasattr(inp.regime, 'upper') else str(inp.regime).upper()
+        
+        if regime == "BEAR":
+            # 熊市: regime本身是最强信号
+            # 如果 Mi<0.70(市场恐慌) → SHORT，即使分数为正
+            # 如果 Mi<0.65 → 强烈做空信号
+            mf = get_mf(); c4 = mf.get_mi_sync("neutral", 50, 50) * 100; mi_for_short = min(c4, 80) / 100.0
+            if mi_for_short < 0.72 or final_score < 0.20:
+                direction = "SHORT"
+                confidence = min(1.0, abs_score)
+            elif final_score > 0.55:  # 极强正信号才逆势做多
+                direction = "LONG"
+                confidence = min(1.0, abs_score)
+            else:
+                direction = "HOLD"
+                confidence = abs_score
+        elif regime == "BULL":
+            # 牛市: 正信号=做多, 负信号需极强才做空
+            if final_score > THRESHOLD_LONG:
+                direction = "LONG"
+                confidence = min(1.0, abs_score)
+            elif final_score < -0.50:  # 极强负信号才逆势做空
+                direction = "SHORT"
+                confidence = min(1.0, abs_score)
+            else:
+                direction = "HOLD"
+                confidence = abs_score
+        else:  # NEUTRAL or other
+            # 中性: 标准阈值
+            if abs_score < 0.03:
+                direction = "HOLD"
+                confidence = abs_score
+            elif final_score > THRESHOLD_LONG:
+                direction = "LONG"
+                confidence = min(1.0, abs_score)
+            elif final_score < -THRESHOLD_SHORT:
+                direction = "SHORT"
+                confidence = min(1.0, abs_score)
+            else:
+                direction = "HOLD"
+                confidence = abs_score
 
         # O1: SHORT position 独立公式
         leverage, position = self._compute_leverage_position(
@@ -270,6 +365,27 @@ class DecisionEngine:
             inp.mirofish_scores
         )
 
+        # 融合内部Mi和平台Mi (平台权重0.4, 内部0.6)
+        # 使用统一Mi源 (/mi/sync) 确保全系统一致性
+        try:
+            import urllib.request, json as _json
+            _req = urllib.request.Request(
+                f"http://localhost:8020/mi/sync",
+                headers={"User-Agent": "Mozilla/5.0"}
+            )
+            with urllib.request.urlopen(_req, timeout=5) as _resp:
+                _data = _json.loads(_resp.read())
+            unified_mi = float(_data.get("unified_mi", platform_mi))
+            # 如果统一Mi与本地差异>15%,采用加权融合
+            if abs(unified_mi - platform_mi) / max(platform_mi, 0.5) > 0.15:
+                platform_mi_capped = min(unified_mi, 1.35)
+            else:
+                platform_mi_capped = min(platform_mi, 1.35)
+        except Exception:
+            platform_mi_capped = min(platform_mi, 1.35)
+        
+        fused_mi = round(platform_mi_capped * 0.4 + mi * 0.6, 4)
+
         result = DecisionOutput(
             final_score=round(final_score, 4),
             direction=direction,
@@ -281,11 +397,15 @@ class DecisionEngine:
             reasoning=reasoning,
             components={
                 "mi": round(mi, 4),
+                "platform_mi": round(platform_mi, 4),
+                "fused_mi": fused_mi,
                 "ri": round(ri, 4),
                 "adaptive_weights": {k: round(v, 4) for k, v in adaptive_w.items()},
                 "brain_factors": {k: round(v, 4) for k, v in brain_factors.items()},
                 "brain_votes": inp.brain_votes,
-            }
+            },
+            mi=fused_mi,
+            mirofish_regime=mf_regime,
         )
         self.history.append(result)
         return result
@@ -301,8 +421,18 @@ class DecisionEngine:
         R1修复: score_i 不再包含RSI影响
         RSI通过compute_risk_factor()独立进入Ri,不混入Mi
         """
+        # Fix P2: 空评分 → 从MiroFish Platform获取真实25维评分
         if not scores:
-            return 1.0
+            try:
+                import urllib.request as _urllib, json as _json
+                url = "http://localhost:8020/dimensions"
+                with _urllib.urlopen(url, timeout=5) as resp:
+                    data = _json.loads(resp.read())
+                    scores = data.get("dimensions", {})
+                    if not scores:
+                        return 1.0
+            except Exception:
+                return 1.0
 
         total_w = 0.0
         weighted = 0.0
@@ -317,9 +447,10 @@ class DecisionEngine:
             factor = 1.0
             for brain, bf in brain_factors.items():
                 # 脑因子影响其擅长的维度
-                if brain == "alpha" and dim.startswith(("A", "B1")):
+                # Fix P1: Alpha=A层 only (A1-A3), Beta=B层 only (B1-B7), no overlap
+                if brain == "alpha" and dim[:2] in ("A1","A2","A3"):
                     factor *= bf ** 0.5
-                elif brain == "beta" and dim.startswith(("B2", "C2")):
+                elif brain == "beta" and dim[0] == "B":
                     factor *= bf ** 0.5
                 elif brain == "gamma" and dim.startswith(("C", "D3")):
                     factor *= bf ** 0.5
@@ -332,7 +463,9 @@ class DecisionEngine:
         if total_w == 0:
             return 1.0
 
-        return min(weighted / total_w + 0.5, 1.20)
+        # Fix P0: weighted already normalized (total_w=1.0), remove erroneous +0.5 shift
+        raw_mi = weighted / total_w if total_w > 0 else 1.0
+        return max(0.5, min(raw_mi, 1.35))  # v15.1 cap = 1.35
 
     # ── R1: RSI独立通道 ─────────────────────────────────────────────
     def _compute_risk_factor(
