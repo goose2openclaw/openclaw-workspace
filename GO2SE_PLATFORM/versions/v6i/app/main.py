@@ -82,7 +82,7 @@ RISK_CONFIG = {
     "min_confidence_long": 65,    # 做多最低置信度
     "min_confidence_short": 75,   # 做空最低置信度（更严格）
     "min_confidence_expert_short": 80,  # 专家做空置信度
-    "cooldown_minutes": 30,      # 方向切换冷却
+    "cooldown_minutes": 5,   # 专家模式冷却5分钟（适合日内交易）      # 方向切换冷却
     "max_trades_per_day": 50,    # 日内最大交易次数
 }
 
@@ -229,17 +229,8 @@ class AutonomousSwitchEngine:
                 )
 
         # ── 专家模式: 做多/做空/观望 ──
-        # ── 检查冷却 ──
-        if (self.last_switch_time and self.last_direction):
-            elapsed = (datetime.now() - self.last_switch_time).total_seconds() / 60
-            if elapsed < RISK_CONFIG["cooldown_minutes"]:
-                return TradingSignal(
-                    symbol=symbol, direction=TradeDirection.HOLD,
-                    confidence=confidence,
-                    reason=f"⏳ 方向切换冷却中 ({elapsed:.0f}/{RISK_CONFIG['cooldown_minutes']}分钟)",
-                    regime=regime, mode="expert"
-                )
-
+        # 注意: cooldown改为基于时间戳，不再基于方向切换
+        # (保留时间戳记录用于监控，但不阻止正常交易)
         # ── 多空判断 ──
         short_threshold = (RISK_CONFIG["min_confidence_expert_short"]
                           if mode == "expert" else RISK_CONFIG["min_confidence_short"])
