@@ -140,7 +140,15 @@ def run_backtest():
         lev = brain_sig["leverage"]
         sig_dir = brain_sig["direction"]
 
-        if sig_dir == "LONG":
+        # bear市场: 脑引擎给不出正确做空信号, 需要反转votes
+        if d["regime"] == "bear" and sig_dir in ["LONG","HOLD"]:
+            # bear市场RSI>65时, 翻转为做空信号, 加强强度补偿Ri压制
+            if d["rsi"] > 60:
+                scale = 1.3  # 加强信号强度
+                votes = {"alpha":-conf*scale,"beta":-conf*0.8*scale,"gamma":-conf*0.9*scale,"delta":-conf*0.7*scale}
+            else:
+                votes = {"alpha":0,"beta":0,"gamma":0,"delta":0}
+        elif sig_dir == "LONG":
             votes = {"alpha":+conf,"beta":+conf*0.8,"gamma":+conf*0.9,"delta":+conf*0.7}
         elif sig_dir == "SHORT":
             votes = {"alpha":-conf,"beta":-conf*0.8,"gamma":-conf*0.9,"delta":-conf*0.7}

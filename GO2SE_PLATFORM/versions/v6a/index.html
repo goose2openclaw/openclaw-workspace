@@ -2186,5 +2186,77 @@
   <div id="walletPageContainer"></div>
   <script src="js/module_debug.js"></script>
   <script src="js/init_delegate.js"></script>
+
+<!-- API状态面板 -->
+<div class="api-status-panel" id="apiStatusOverlay" style="display:none;">
+  <div class="api-status-title">🔗 系统状态</div>
+  <div id="apiStatusRowsOverlay"></div>
+</div>
+
+<script>
+// ── 多端口API状态监控 ──
+(function() {
+var BACKENDS = [
+  { name: "v6a",   url: "http://localhost:8000/",        label: "v6a(前端)" },
+  { name: "v6i",   url: "http://localhost:8001/",         label: "v6i" },
+  { name: "vv6",   url: "http://localhost:8006/",         label: "vv6" },
+  { name: "v13",   url: "http://localhost:8004/",         label: "v13(后端)" },
+  { name: "v15",   url: "http://localhost:8015/health",    label: "v15" },
+];
+
+function renderApiStatus(results) {
+  var panel = document.getElementById("apiStatusOverlay");
+  var rows = document.getElementById("apiStatusRowsOverlay");
+  if (!panel || !rows) return;
+  var html = "";
+  var allOnline = true;
+  results.forEach(function(r) {
+    if (!r.online) allOnline = false;
+    html += '<div class="api-status-row">' +
+      '<span class="api-status-name">' + r.label + '</span>' +
+      '<span class="api-status-badge ' + (r.online ? "online" : "offline") + '">' +
+      '<span class="api-dot-sm"></span>' + (r.online ? "在线" : "离线") + '</span></div>';
+  });
+  rows.innerHTML = html;
+  panel.style.display = "block";
+  var dot = document.querySelector(".light-dot");
+  if (dot) {
+    dot.style.background = allOnline ? "var(--accent-success)" : "var(--accent-danger)";
+    dot.classList.toggle("pulsing", allOnline);
+  }
+}
+
+async function checkBackends() {
+  var results = await Promise.all(BACKENDS.map(async function(b) {
+    try {
+      var r = await fetch(b.url, { method: "GET", signal: AbortSignal.timeout(2000) });
+      var text = await r.text();
+      return { name: b.name, label: b.label, url: b.url, online: r.ok && text.length > 0 };
+    } catch(e) { return { name: b.name, label: b.label, url: b.url, online: false }; }
+  }));
+  renderApiStatus(results);
+}
+
+checkBackends();
+setInterval(checkBackends, 15000);
+
+setTimeout(function() {
+  var panel = document.getElementById("apiStatusOverlay");
+  if (panel) {
+    panel.style.display = "block";
+    setTimeout(function() { if (panel) panel.style.display = "none"; }, 6000);
+  }
+}, 2000);
+
+document.addEventListener("click", function(e) {
+  var light = document.querySelector(".breathing-light");
+  if (light && light.contains(e.target)) {
+    var panel = document.getElementById("apiStatusOverlay");
+    if (panel) panel.style.display = panel.style.display === "none" ? "block" : "none";
+  }
+});
+})();
+</script>
+
 </body>
 </html>
