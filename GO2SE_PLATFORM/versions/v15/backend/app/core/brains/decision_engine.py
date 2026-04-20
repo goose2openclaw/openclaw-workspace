@@ -83,8 +83,8 @@ RSI_RISK = {
 }
 
 # ─── 决策阈值 ────────────────────────────────────────────────────
-THRESHOLD_LONG  = 0.70   # Final > 0.70 → LONG
-THRESHOLD_SHORT = 0.30   # Final < 0.30 → SHORT
+THRESHOLD_LONG  = 0.75   # Final > 0.70 → LONG
+THRESHOLD_SHORT = 0.25   # Final < 0.30 → SHORT
 THRESHOLD_ENGAGE = 0.60  # confidence < 0.60 → 降低仓位
 
 @dataclass
@@ -142,16 +142,21 @@ class DecisionEngine:
         final_score = direction_sign * signal_strength * mi_capped * ri
         final_score = max(-1.0, min(1.0, final_score))
 
-        # 4. 确定方向
-        if final_score > THRESHOLD_LONG:
+        # 4. 确定方向 + 置信度 (弱信号 → 低置信度 → 低杠杆)
+        signal_abs = abs(final_score)
+        if signal_abs < 0.20:
+            # 死区: 弱信号 → HOLD，低置信度
+            direction = "HOLD"
+            confidence = signal_abs  # 0.0-0.2
+        elif final_score > THRESHOLD_LONG:
             direction = "LONG"
-            confidence = min(1.0, final_score)
+            confidence = min(1.0, signal_abs)
         elif final_score < THRESHOLD_SHORT:
             direction = "SHORT"
-            confidence = min(1.0, 1.0 - final_score)
+            confidence = min(1.0, signal_abs)
         else:
             direction = "HOLD"
-            confidence = 1.0 - abs(final_score - 0.5) * 2
+            confidence = 1.0 - abs(signal_abs - 0.5) * 2
 
         # 5. 计算杠杆和仓位
         leverage, position = self._compute_leverage_position(

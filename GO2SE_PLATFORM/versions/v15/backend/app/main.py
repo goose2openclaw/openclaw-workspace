@@ -20,6 +20,7 @@ from .core.brains.quad_brain import (
     ALL_BRAINS, BRAIN_WEIGHTS, BrainSignal,
     adaptive_weights
 )
+from .core.brains.decision_engine import DecisionEngine, DecisionInput, MIROFISH_DIMENSION_WEIGHTS
 
 app = FastAPI(
     title="GO2SE v15 北斗七鑫",
@@ -281,6 +282,51 @@ def mirofish_score():
             "MiroFish 25维优化评分",
             "动态杠杆 (2x-10x)",
         ],
+    }
+
+
+# ── v15 决策等式引擎 API ───────────────────────────────────
+decision_engine = DecisionEngine()
+
+@app.post("/api/decision/eq")
+def decision_eq(request: Dict):
+    """
+    v15 优化决策等式:
+      Final = sign(Σwi×Si) × |Σwi×Si/Σwi| × min(Mi,1.20) × Ri
+
+    Request body:
+    {
+      "brain_votes": {"alpha": 1.0, "beta": 0.8, "gamma": 0.9, "delta": 0.7},
+      "brain_weights": {"alpha": 0.25, "beta": 0.25, "gamma": 0.30, "delta": 0.20},
+      "mirofish_scores": {...25 dimensions...},
+      "regime": "bull",
+      "rsi": 45.0,
+      "volatility": 1.0
+    }
+    """
+    inp = DecisionInput(
+        brain_votes=request.get("brain_votes", {"alpha": 1.0, "beta": 0.8, "gamma": 0.9, "delta": 0.7}),
+        brain_weights=request.get("brain_weights", {"alpha": 0.25, "beta": 0.25, "gamma": 0.30, "delta": 0.20}),
+        mirofish_scores=request.get("mirofish_scores", {}),
+        regime=request.get("regime", "bull"),
+        rsi=request.get("rsi", 50.0),
+        volatility=request.get("volatility", 1.0),
+    )
+    result = decision_engine.decide(inp)
+    return {
+        "final_score": result.final_score,
+        "direction": result.direction,
+        "confidence": result.confidence,
+        "leverage": result.leverage,
+        "position_pct": result.position_pct,
+        "stop_loss_pct": result.stop_loss_pct,
+        "take_profit_pct": result.take_profit_pct,
+        "reasoning": result.reasoning,
+        "components": {
+            "mi": result.components.get("mi"),
+            "ri": result.components.get("ri"),
+            "mi_capped_1_20": True,
+        }
     }
 
 # ── 版本信息 ──────────────────────────────────────
