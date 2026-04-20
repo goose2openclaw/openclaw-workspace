@@ -466,10 +466,57 @@ def estimate_rsi_from_market(fear_greed: float, regime: str) -> float:
 
 
 
+
+def _get_unified_mi() -> float:
+    """从 MiroFish Platform 获取统一 Mi"""
+    try:
+        import urllib.request
+        with urllib.request.urlopen("http://localhost:8020/mi/sync", timeout=2) as resp:
+            import json
+            data = json.loads(resp.read())
+            return data.get("unified_mi", 0.75)
+    except:
+        return 0.75
+
 @app.post("/api/switch/analyze")
 async def switch_analyze(req: AnalyzeRequest):
     regime = switch_engine.detect_regime(req.symbol)
     signal = switch_engine.analyze(req.symbol, req.confidence, regime, req.mode)
+
+    # ── RSI/fear_greed 独立做空信号 (替代RSI estimate) ─────────────
+    # fear_greed>62 = 极端贪婪 → 超买信号 → SHORT
+    # fear_greed<35 = 极端恐惧 → 超卖信号 → LONG
+    try:
+        import urllib.request, json as _json
+        with urllib.request.urlopen("http://localhost:8000/api/v7/market/summary", timeout=2) as resp:
+            mkt = _json.loads(resp.read()).get("data", {})
+            fg = mkt.get("fear_greed_index", 50)
+            if fg is not None:
+                if fg > 68:
+                    return {
+                        "signal": {
+                            "direction": "short", "mode": req.mode, "regime": "bear",
+                            "leverage": 3, "position_pct": 25,
+                            "stop_loss_pct": 3.0, "take_profit_pct": 8.0,
+                            "mi": round(_get_unified_mi(), 4), "confidence": float(req.confidence),
+                            "reasoning": f"Greed Extreme SHORT: fear_greed={fg}>68",
+                        },
+                        "switch_triggered": False,
+                    }
+                elif fg < 32:
+                    return {
+                        "signal": {
+                            "direction": "long", "mode": req.mode, "regime": "bull",
+                            "leverage": 3, "position_pct": 35,
+                            "stop_loss_pct": 5.0, "take_profit_pct": 12.0,
+                            "mi": 0.75, "confidence": float(req.confidence),
+                            "reasoning": f"Fear Extreme LONG: fear_greed={fg}<32",
+                        },
+                        "switch_triggered": False,
+                    }
+    except Exception:
+        pass
+
 
     lev = LEVERAGE_TIERS[signal.leverage_tier]
 
@@ -548,87 +595,3 @@ async def record_trade(signal_json: Dict):
     switch_engine.record_trade(sig, signal_json.get("pnl", 0.0))
     return {"recorded": True, "daily_trades": switch_engine.daily_trades}
 
-@app.post("/api/analyze/{tool_id}")
-async def analyze(tool_id: str, symbol: str = "BTC/USDT"):
-    # ── RSI极端值独立信号 ─────────────────────────────────────────
-    # RSI>75 → 强制SHORT | RSI<28 → 强制LONG (不依赖regime检测)
-    rsi_estimate = max(25, min(85, int(50 + (int(confidence) - 70) * 0.8))) if confidence else 50
-    if rsi_estimate > 75:
-        return {
-            "signal": {
-                "direction": "short", "mode": mode, "regime": "bear",
-                "leverage": 3, "position_pct": 25,
-                "stop_loss_pct": 3.0, "take_profit_pct": 8.0,
-                "mi": 0.75, "confidence": float(confidence),
-                "reasoning": f"RSI Extreme SHORT: RSI={rsi_estimate}>75",
-            },
-            "switch_triggered": False,
-        }
-    elif rsi_estimate < 28:
-        return {
-            "signal": {
-                "direction": "long", "mode": mode, "regime": "bull",
-                "leverage": 3, "position_pct": 35,
-                "stop_loss_pct": 5.0, "take_profit_pct": 12.0,
-                "mi": 0.75, "confidence": float(confidence),
-                "reasoning": f"RSI Extreme LONG: RSI={rsi_estimate}<28",
-            },
-            "switch_triggered": False,
-        }
-
-    if tool_id not in AGENTS:
-        return {"error": f"Unknown agent: {tool_id}"}
-    if not settings.OPENAI_API_KEY:
-        return {"error": "OpenAI API key not configured", "tool_id": tool_id}
-    agent = AGENTS[tool_id]
-    try:
-        result = await asyncio.to_thread(Runner.run_sync, agent, f"分析 {symbol} 的交易机会")
-        return {"tool": tool_id, "symbol": symbol, "result": result.final_output}
-    except Exception as e:
-        logger.error(f"Agent error: {e}")
-        return {"error": str(e), "tool": tool_id}
-
-@app.post("/api/analyze/all")
-async def analyze_all(symbol: str = "BTC/USDT"):
-    results = {}
-    for tool_id, agent in AGENTS.items():
-        if not settings.OPENAI_API_KEY:
-            results[tool_id] = {"error": "API key missing"}
-            continue
-        try:
-            result = Runner.run_sync(agent, f"分析 {symbol}，给出交易建议")
-            results[tool_id] = {"result": result.final_output, "status": "ok"}
-        except Exception as e:
-            results[tool_id] = {"error": str(e), "status": "error"}
-    return {"symbol": symbol, "tool_results": results}
-
-@app.get("/api/performance")
-async def performance():
-    return {
-        "strategy": "v6i_openai_agents",
-        "version": settings.APP_VERSION,
-        "timestamp": datetime.now().isoformat(),
-        "total_capital": 100000,
-        "investment_pool": 80000,
-        "work_pool": 20000,
-        "mode": switch_engine.mode,
-        "investment_tools": {
-            "rabbit":    {"name": "🐰 打兔子",   "weight": 25, "allocation": 20000},
-            "mole":      {"name": "🐹 打地鼠",   "weight": 20, "allocation": 16000},
-            "oracle":    {"name": "🔮 走着瞧",   "weight": 15, "allocation": 12000},
-            "leader":    {"name": "👑 跟大哥",   "weight": 15, "allocation": 12000},
-            "hitchhiker":{"name": "🍀 搭便车",   "weight": 10, "allocation": 8000},
-        },
-        "work_tools": {
-            "wool":  {"name": "💰 薅羊毛", "weight": 3, "allocation": 3000},
-            "crowd": {"name": "👶 穷孩子", "weight": 5, "allocation": 5000},
-        },
-        "risk_config": RISK_CONFIG,
-        "leverage_tiers": {k: {"leverage": v["leverage"], "max_position_pct": v["max_position_pct"], "desc": v["desc"]} for k, v in LEVERAGE_TIERS.items()},
-    }
-
-if __name__ == "__main__":
-    import uvicorn
-    logger.info(f"🚀 {settings.APP_NAME} 启动...")
-    logger.info(f"📌 多空切换引擎: 自主切换 + 严格风控")
-    uvicorn.run(app, host="0.0.0.0", port=settings.PORT)

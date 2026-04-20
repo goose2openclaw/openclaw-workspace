@@ -443,6 +443,18 @@ class AnalyzeRequest(PydanticBaseModel):
     mode: str = "normal"
     consecutive_wins: int = 0
 
+
+def _get_unified_mi() -> float:
+    """从 MiroFish Platform 获取统一 Mi"""
+    try:
+        import urllib.request
+        with urllib.request.urlopen("http://localhost:8020/mi/sync", timeout=2) as resp:
+            import json
+            data = json.loads(resp.read())
+            return data.get("unified_mi", 0.75)
+    except:
+        return 0.75
+
 @app.post("/api/switch/analyze")
 async def switch_analyze(req: AnalyzeRequest):
     """
@@ -451,6 +463,41 @@ async def switch_analyze(req: AnalyzeRequest):
     """
     regime = switch_engine.detect_regime(req.symbol)
     signal = switch_engine.analyze(req.symbol, req.confidence, regime, req.mode)
+
+    # ── RSI/fear_greed 独立做空信号 (替代RSI estimate) ─────────────
+    # fear_greed>62 = 极端贪婪 → 超买信号 → SHORT
+    # fear_greed<35 = 极端恐惧 → 超卖信号 → LONG
+    try:
+        import urllib.request, json as _json
+        with urllib.request.urlopen("http://localhost:8000/api/v7/market/summary", timeout=2) as resp:
+            mkt = _json.loads(resp.read()).get("data", {})
+            fg = mkt.get("fear_greed_index", 50)
+            if fg is not None:
+                if fg > 55:
+                    return {
+                        "signal": {
+                            "direction": "short", "mode": req.mode, "regime": "bear",
+                            "leverage": 3, "position_pct": 25,
+                            "stop_loss_pct": 3.0, "take_profit_pct": 8.0,
+                            "mi": round(_get_unified_mi(), 4), "confidence": float(req.confidence),
+                            "reasoning": f"Greed Extreme SHORT: fear_greed={fg}>55",
+                        },
+                        "switch_triggered": False,
+                    }
+                elif fg < 32:
+                    return {
+                        "signal": {
+                            "direction": "long", "mode": req.mode, "regime": "bull",
+                            "leverage": 3, "position_pct": 35,
+                            "stop_loss_pct": 5.0, "take_profit_pct": 12.0,
+                            "mi": round(_get_unified_mi(), 4), "confidence": float(req.confidence),
+                            "reasoning": f"Fear Extreme LONG: fear_greed={fg}<32",
+                        },
+                        "switch_triggered": False,
+                    }
+    except Exception:
+        pass
+
 
     lev = LEVERAGE_TIERS[signal.leverage_tier]
 
@@ -537,32 +584,6 @@ async def record_trade(signal_json: Dict):
 
 @app.post("/api/analyze/{tool_id}")
 async def analyze(tool_id: str, symbol: str = "BTC/USDT"):
-    # ── RSI极端值独立信号 ─────────────────────────────────────────
-    # RSI>75 → 强制SHORT | RSI<28 → 强制LONG (不依赖regime检测)
-    rsi_estimate = max(25, min(85, int(50 + (int(confidence) - 70) * 0.8))) if confidence else 50
-    if rsi_estimate > 75:
-        return {
-            "signal": {
-                "direction": "short", "mode": mode, "regime": "bear",
-                "leverage": 3, "position_pct": 25,
-                "stop_loss_pct": 3.0, "take_profit_pct": 8.0,
-                "mi": 0.75, "confidence": float(confidence),
-                "reasoning": f"RSI Extreme SHORT: RSI={rsi_estimate}>75",
-            },
-            "switch_triggered": False,
-        }
-    elif rsi_estimate < 28:
-        return {
-            "signal": {
-                "direction": "long", "mode": mode, "regime": "bull",
-                "leverage": 3, "position_pct": 35,
-                "stop_loss_pct": 5.0, "take_profit_pct": 12.0,
-                "mi": 0.75, "confidence": float(confidence),
-                "reasoning": f"RSI Extreme LONG: RSI={rsi_estimate}<28",
-            },
-            "switch_triggered": False,
-        }
-
     # 路由修复: /api/analyze/all → 委托给 analyze_all
     if tool_id == "all":
         results = {}
