@@ -16,8 +16,10 @@ from enum import Enum
 from typing import Optional, Dict, Any
 from dataclasses import dataclass, field
 from fastapi import FastAPI
+import asyncio
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic_settings import BaseSettings
+from pydantic import BaseModel as PydanticBaseModel
 
 # ─── 配置 ─────────────────────────────────────────────────
 class Settings(BaseSettings):
@@ -36,9 +38,14 @@ logging.basicConfig(
 logger = logging.getLogger("go2se_v6i")
 
 app = FastAPI(title=settings.APP_NAME, version=settings.APP_VERSION)
+ALLOWED_ORIGINS = [
+    "http://localhost:8000", "http://localhost:8001",
+    "http://localhost:8004", "http://localhost:8006",
+    "http://localhost:8015",
+]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"]
@@ -114,26 +121,38 @@ class AutonomousSwitchEngine:
         self.trade_history: list = []
 
     def reset_daily(self):
-        """重置日内计数"""
         self.daily_trades = 0
         self.daily_pnl = 0.0
         self.daily_loss = 0.0
+        self.last_reset_date = datetime.now().date()
+
+    def check_daily_reset(self):
+        today = datetime.now().date()
+        if getattr(self, 'last_reset_date', None) != today:
+            self.reset_daily()
+            logger.info(f"🗓️ v6i日计数器已重置 ({today})")
 
     def detect_regime(self, symbol: str = "BTC/USDT") -> MarketRegime:
-        """检测市场状态 - 本地版本，不依赖外部API"""
+        """检测市场状态 - 优先v6a真实API，fallback本地哈希"""
         import hashlib, time as _time
-        block = int(_time.time()) // 900
-        h = hashlib.md5(f"{symbol}_{block}".encode()).hexdigest()
-        rsi = int(h[:4], 16) % 100
-
-        if rsi > 75:
-            return MarketRegime.BEAR
-        elif rsi < 30:
-            return MarketRegime.BULL
-        elif rsi > 65:
-            return MarketRegime.VOLATILE
-        else:
-            return MarketRegime.NEUTRAL
+        try:
+            sym = symbol.replace("/", "")
+            url = f"http://localhost:8000/api/market/{sym}"
+            with urllib.request.urlopen(url, timeout=2) as resp:
+                data = json.loads(resp.read())
+                rsi = float(data.get("rsi", 50))
+            if rsi > 70: return MarketRegime.BEAR
+            elif rsi < 30: return MarketRegime.BULL
+            elif rsi > 60: return MarketRegime.VOLATILE
+            else: return MarketRegime.NEUTRAL
+        except Exception:
+            block = int(_time.time()) // 900
+            h = hashlib.md5(f"{symbol}_{block}".encode()).hexdigest()
+            rsi = int(h[:4], 16) % 100
+            if rsi > 75: return MarketRegime.BEAR
+            elif rsi < 30: return MarketRegime.BULL
+            elif rsi > 65: return MarketRegime.VOLATILE
+            else: return MarketRegime.NEUTRAL
 
     def calculate_leverage(self, confidence: float, regime: MarketRegime) -> Dict:
         """计算杠杆档位"""
@@ -283,12 +302,18 @@ def get_market_data(symbol: str) -> str:
         with urllib.request.urlopen(url, timeout=2) as resp:
             data = json.loads(resp.read())
             return json.dumps(data)
-    except:
-        return json.dumps({
-            "rsi": 45, "price": 65000,
-            "volume_24h": 30000000000,
-            "trend": "neutral", "regime": "neutral"
-        })
+    except urllib.error.HTTPError as e:
+        logger.warning(f"[v6i get_market_data] HTTP {e.code}")
+        return json.dumps({"error": "upstream_http_error", "code": e.code, "fallback": True})
+    except urllib.error.URLError as e:
+        logger.warning(f"[v6i get_market_data] Network: {e.reason}")
+        return json.dumps({"error": "network_error", "fallback": True})
+    except json.JSONDecodeError:
+        logger.error(f"[v6i get_market_data] Invalid JSON")
+        return json.dumps({"error": "parse_error", "fallback": True})
+    except Exception as e:
+        logger.exception(f"[v6i get_market_data] Unexpected: {e}")
+        return json.dumps({"error": str(e), "fallback": True})
 
 @function_tool
 def get_position(symbol: str) -> str:
@@ -301,16 +326,29 @@ def get_position(symbol: str) -> str:
                 if p.get("symbol") == symbol:
                     return json.dumps(p)
             return f"{symbol} 无持仓"
-    except:
-        return f"{symbol} 无持仓"
+    except urllib.error.HTTPError as e:
+        logger.warning(f"[v6i get_position] HTTP {e.code}")
+        return json.dumps({"symbol": symbol, "error": "upstream_error", "position": 0})
+    except urllib.error.URLError:
+        logger.warning(f"[v6i get_position] Network error")
+        return json.dumps({"symbol": symbol, "error": "network_error", "position": 0})
+    except Exception as e:
+        logger.exception(f"[v6i get_position] Unexpected: {e}")
+        return json.dumps({"symbol": symbol, "error": str(e), "position": 0})
 
 @function_tool
 def execute_trade(symbol: str, direction: str, position_pct: float, stop_loss_pct: float, leverage: int) -> str:
-    """执行交易（模拟）"""
-    return (f"✅ {direction.upper()} {symbol} | "
-            f"仓位: {position_pct}% | "
-            f"止损: {stop_loss_pct}% | "
-            f"杠杆: {leverage}x")
+    """【模拟模式】仅记录信号，不执行真实订单"""
+    result = {
+        "simulated": True,
+        "direction": direction.upper(),
+        "symbol": symbol, "position_pct": position_pct,
+        "leverage": leverage, "stop_loss_pct": stop_loss_pct,
+        "timestamp": datetime.now().isoformat(),
+        "note": "MOCK - 无真实订单执行"
+    }
+    logger.warning(f"[MOCK TRADE] {direction.upper()} {symbol} {position_pct}% {leverage}x")
+    return json.dumps(result)
 
 # ─── 7工具 Agent ─────────────────────────────────────────
 def create_tool_agent(tool_name: str, tool_icon: str, description: str) -> Agent:
@@ -357,11 +395,13 @@ async def root():
 
 @app.get("/health")
 async def health():
+    switch_engine.check_daily_reset()
     return {
         "status": "healthy",
         "version": settings.APP_VERSION,
         "agents": list(AGENTS.keys()),
-        "engine": "autonomous_switch_v1"
+        "engine": "autonomous_switch_v1",
+        "daily_reset_date": str(switch_engine.last_reset_date) if hasattr(switch_engine, 'last_reset_date') else "never"
     }
 
 @app.get("/api/agents")
@@ -384,18 +424,16 @@ async def risk_config():
         "last_direction": switch_engine.last_direction.value if switch_engine.last_direction else None,
     }
 
-@app.post("/api/switch/analyze")
-async def switch_analyze(
-    symbol: str = "BTC/USDT",
-    confidence: float = 70.0,
+class AnalyzeRequest(PydanticBaseModel):
+    symbol: str = "BTC/USDT"
+    confidence: float = 70.0
     mode: str = "normal"
-):
-    """
-    自主多空切换分析
-    mode: normal(仅做多) / expert(做多+做空)
-    """
-    regime = switch_engine.detect_regime(symbol)
-    signal = switch_engine.analyze(symbol, confidence, regime, mode)
+    consecutive_wins: int = 0
+
+@app.post("/api/switch/analyze")
+async def switch_analyze(req: AnalyzeRequest):
+    regime = switch_engine.detect_regime(req.symbol)
+    signal = switch_engine.analyze(req.symbol, req.confidence, regime, req.mode)
 
     lev = LEVERAGE_TIERS[signal.leverage_tier]
 
@@ -453,7 +491,7 @@ async def analyze(tool_id: str, symbol: str = "BTC/USDT"):
         return {"error": "OpenAI API key not configured", "tool_id": tool_id}
     agent = AGENTS[tool_id]
     try:
-        result = Runner.run_sync(agent, f"分析 {symbol} 的交易机会")
+        result = await asyncio.to_thread(Runner.run_sync, agent, f"分析 {symbol} 的交易机会")
         return {"tool": tool_id, "symbol": symbol, "result": result.final_output}
     except Exception as e:
         logger.error(f"Agent error: {e}")
