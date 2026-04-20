@@ -447,6 +447,19 @@ async def record_trade(signal_json: Dict):
 
 @app.post("/api/analyze/{tool_id}")
 async def analyze(tool_id: str, symbol: str = "BTC/USDT"):
+    # 路由修复: /api/analyze/all → 委托给 analyze_all
+    if tool_id == "all":
+        results = {}
+        for tid, agent in AGENTS.items():
+            if not settings.OPENAI_API_KEY:
+                results[tid] = {"error": "API key missing"}
+                continue
+            try:
+                result = Runner.run_sync(agent, f"分析 {symbol}，给出交易建议")
+                results[tid] = {"result": result.final_output, "status": "ok"}
+            except Exception as e:
+                results[tid] = {"error": str(e), "status": "error"}
+        return {"symbol": symbol, "tool_results": results}
     if tool_id not in AGENTS:
         return {"error": f"Unknown agent: {tool_id}"}
     if not settings.OPENAI_API_KEY:
