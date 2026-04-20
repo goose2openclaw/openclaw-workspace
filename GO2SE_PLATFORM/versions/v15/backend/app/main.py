@@ -13,11 +13,12 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional, Dict, List
 from datetime import datetime
-import random
+import random, hashlib, time, datetime
 
 from .core.brains.quad_brain import (
     QuadBrainEngine, BrainType, Mode,
-    ALL_BRAINS, BRAIN_WEIGHTS, BrainSignal
+    ALL_BRAINS, BRAIN_WEIGHTS, BrainSignal,
+    adaptive_weights
 )
 
 app = FastAPI(
@@ -40,10 +41,12 @@ v6i_switch_enabled = True  # v6i自主切换引擎开关
 
 # ─── 辅助函数 ────────────────────────────────────
 def detect_regime(symbol: str = "BTC/USDT") -> str:
-    """检测市场状态 (简化版)"""
+    time_block = int(time.time() // 300)
+    seed = int(hashlib.md5(f"{symbol}:{time_block}".encode()).hexdigest()[:8], 16)
+    rng = random.Random(seed)
     regimes = ["bull", "bear", "neutral", "volatile"]
     weights = [0.35, 0.25, 0.30, 0.10]
-    return random.choices(regimes, weights=weights)[0]
+    return rng.choices(regimes, weights=weights)[0]
 
 # ─── 路由 ────────────────────────────────────────
 
@@ -197,7 +200,8 @@ def mirofish_predict(question: str = "BTC未来1小时趋势"):
     """MiroFish预测"""
     agents = 100
     rounds = 5
-    bullish = int(agents * 0.6 + random.uniform(-10, 10))
+    rng2 = random.Random(int(hashlib.md5((question + datetime.now().strftime("%Y%m%d%H%M")).encode()).hexdigest()[:8], 16))
+    bullish = int(agents * 0.6 + rng2.uniform(-10, 10))
     bearish = agents - bullish
 
     consensus = "BULL" if bullish > bearish else "BEAR"
@@ -280,6 +284,31 @@ def mirofish_score():
     }
 
 # ── 版本信息 ──────────────────────────────────────
+# ── M3 自适应脑权重 ─────────────────────────────────────
+@app.get("/api/brains/adaptive")
+def brain_adaptive():
+    """M3: 自适应脑权重状态"""
+    return adaptive_weights.status()
+
+@app.post("/api/brains/record")
+def brain_record(request: Dict):
+    """
+    M3: 记录脑的投票结果 (WIN/LOSS/NEUTRAL)
+    {
+      "brain": "alpha|beta|gamma|delta",
+      "outcome": "WIN|LOSS|NEUTRAL",
+      "confidence": 80
+    }
+    """
+    try:
+        brain = BrainType(request.get("brain", "gamma"))
+    except ValueError:
+        brain = BrainType.GAMMA
+    outcome = request.get("outcome", "NEUTRAL")
+    confidence = max(0.0, min(100.0, float(request.get("confidence", 70))))
+    adaptive_weights.record(brain, outcome, confidence)
+    return {"recorded": True, "status": adaptive_weights.status()}
+
 @app.get("/api/version")
 def version_info():
     return {
