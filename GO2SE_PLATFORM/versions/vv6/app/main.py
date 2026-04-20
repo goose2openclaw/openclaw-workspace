@@ -137,37 +137,28 @@ class AutonomousSwitchEngine:
             logger.info(f"🗓️ 日计数器已重置 ({today})")
 
     def detect_regime(self, symbol: str = "BTC/USDT") -> MarketRegime:
-        """检测市场状态 - 优先从v6a真实API获取RSI，fallback到本地哈希"""
+        """检测市场状态 - 优先/api/v7/market/summary，fallback md5哈希"""
         import hashlib, time as _time
         try:
-            sym = symbol.replace("/", "")
-            url = f"http://localhost:8000/api/market/{sym}"
-            with urllib.request.urlopen(url, timeout=2) as resp:
+            url = "http://localhost:8000/api/v7/market/summary"
+            with urllib.request.urlopen(url, timeout=4) as resp:
                 data = json.loads(resp.read())
-                rsi = float(data.get("rsi", 50))
-                price_change = float(data.get("change_24h", 0))
-            # RSI>70=超买→BEAR(做空), RSI<30=超卖→BULL(做多)
-            if rsi > 70:
-                return MarketRegime.BEAR
-            elif rsi < 30:
-                return MarketRegime.BULL
-            elif rsi > 60:
-                return MarketRegime.VOLATILE
-            else:
-                return MarketRegime.NEUTRAL
+            fg = float(data.get("data", {}).get("fear_greed_index", 50))
+            trend = data.get("data", {}).get("trend", "neutral")
+            if fg < 25: return MarketRegime.BEAR
+            elif fg > 75: return MarketRegime.BULL
+            elif fg < 35 or fg > 65: return MarketRegime.VOLATILE
+            if trend in ("bearish", "down"): return MarketRegime.BEAR
+            elif trend in ("bullish", "up"): return MarketRegime.BULL
+            else: return MarketRegime.NEUTRAL
         except Exception:
-            # Fallback: 本地确定性哈希（仅用于开发/降级）
             block = int(_time.time()) // 900
             h = hashlib.md5(f"{symbol}_{block}".encode()).hexdigest()
             rsi = int(h[:4], 16) % 100
-            if rsi > 75:
-                return MarketRegime.BEAR
-            elif rsi < 30:
-                return MarketRegime.BULL
-            elif rsi > 65:
-                return MarketRegime.VOLATILE
-            else:
-                return MarketRegime.NEUTRAL
+            if rsi > 75: return MarketRegime.BEAR
+            elif rsi < 30: return MarketRegime.BULL
+            elif rsi > 65: return MarketRegime.VOLATILE
+            else: return MarketRegime.NEUTRAL
 
     def calculate_leverage(self, confidence: float, regime: MarketRegime) -> Dict:
         """计算杠杆档位"""

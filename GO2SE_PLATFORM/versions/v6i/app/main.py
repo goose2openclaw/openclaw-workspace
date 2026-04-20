@@ -133,19 +133,31 @@ class AutonomousSwitchEngine:
             logger.info(f"🗓️ v6i日计数器已重置 ({today})")
 
     def detect_regime(self, symbol: str = "BTC/USDT") -> MarketRegime:
-        """检测市场状态 - 优先v6a真实API，fallback本地哈希"""
+        """检测市场状态 - 优先/api/v7/market/summary，fallback md5哈希"""
         import hashlib, time as _time
         try:
-            sym = symbol.replace("/", "")
-            url = f"http://localhost:8000/api/market/{sym}"
-            with urllib.request.urlopen(url, timeout=2) as resp:
+            # 优先使用 /api/v7/market/summary（唯一可用的市场数据）
+            url = "http://localhost:8000/api/v7/market/summary"
+            with urllib.request.urlopen(url, timeout=3) as resp:
                 data = json.loads(resp.read())
-                rsi = float(data.get("rsi", 50))
-            if rsi > 70: return MarketRegime.BEAR
-            elif rsi < 30: return MarketRegime.BULL
-            elif rsi > 60: return MarketRegime.VOLATILE
-            else: return MarketRegime.NEUTRAL
+            fg = float(data.get("data", {}).get("fear_greed_index", 50))
+            trend = data.get("data", {}).get("trend", "neutral")
+            # fear_greed: <25=极恐惧→BEAR, >75=极贪婪→BULL
+            if fg < 25:
+                return MarketRegime.BEAR
+            elif fg > 75:
+                return MarketRegime.BULL
+            elif fg < 35 or fg > 65:
+                return MarketRegime.VOLATILE
+            # fear_greed 35-65: 用trend二次判断
+            if trend in ("bearish", "down"):
+                return MarketRegime.BEAR
+            elif trend in ("bullish", "up"):
+                return MarketRegime.BULL
+            else:
+                return MarketRegime.NEUTRAL
         except Exception:
+            # Fallback: 本地确定性哈希（仅用于降级）
             block = int(_time.time()) // 900
             h = hashlib.md5(f"{symbol}_{block}".encode()).hexdigest()
             rsi = int(h[:4], 16) % 100
