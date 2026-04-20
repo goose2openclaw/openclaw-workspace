@@ -72,9 +72,15 @@ def brain_think(request: Dict):
       "regime": "bull"    # bull/bear/neutral/volatile
     }
     """
+    _valid_symbols = {"BTC/USDT","ETH/USDT","SOL/USDT","XRP/USDT","BNB/USDT"}
     symbol = request.get("symbol", "BTC/USDT")
-    confidence = float(request.get("confidence", 70))
-    regime = request.get("regime") or detect_regime(symbol)
+    if symbol not in _valid_symbols:
+        symbol = "BTC/USDT"
+    confidence = max(0.0, min(100.0, float(request.get("confidence", 70))))
+    _valid_regimes = {"bull", "bear", "neutral", "volatile"}
+    regime = request.get("regime")
+    if regime not in _valid_regimes:
+        regime = detect_regime(symbol)
 
     signal = quad_brain.think(symbol, regime, confidence)
 
@@ -98,10 +104,19 @@ def brain_think(request: Dict):
 @app.post("/api/brains/vote")
 def brain_vote(request: Dict):
     """单脑投票"""
-    brain_type = BrainType(request.get("brain", "gamma"))
+    try:
+        brain_type = BrainType(request.get("brain", "gamma"))
+    except ValueError:
+        brain_type = BrainType.GAMMA
+    _valid_symbols = {"BTC/USDT","ETH/USDT","SOL/USDT","XRP/USDT","BNB/USDT"}
     symbol = request.get("symbol", "BTC/USDT")
-    confidence = float(request.get("confidence", 75))
-    regime = request.get("regime") or detect_regime(symbol)
+    if symbol not in _valid_symbols:
+        symbol = "BTC/USDT"
+    confidence = max(0.0, min(100.0, float(request.get("confidence", 75))))
+    _valid_regimes = {"bull", "bear", "neutral", "volatile"}
+    regime = request.get("regime")
+    if regime not in _valid_regimes:
+        regime = detect_regime(symbol)
 
     vote = quad_brain._brain_vote(brain_type, symbol, regime, confidence)
     return {
@@ -133,8 +148,11 @@ def v6i_switch(request: Dict):
     """
     global v6i_switch_enabled
 
+    _valid_symbols = {"BTC/USDT","ETH/USDT","SOL/USDT","XRP/USDT","BNB/USDT"}
     symbol = request.get("symbol", "BTC/USDT")
-    confidence = float(request.get("confidence", 75))
+    if symbol not in _valid_symbols:
+        symbol = "BTC/USDT"
+    confidence = max(0.0, min(100.0, float(request.get("confidence", 75))))
     mode = request.get("mode", "expert")
 
     regime = detect_regime(symbol)
