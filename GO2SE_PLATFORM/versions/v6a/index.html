@@ -195,8 +195,17 @@
             <span class="item-text">工程模式</span>
           </a>
         </div>
+        <div class="sidebar-items">
+          <!-- 📈 L6数据分析 -->
+          <a href="#analytics" class="sidebar-item" data-section="analytics" onclick="AnalyticsModule.navigateLevel(6)" style="border:1px solid rgba(236,72,153,0.3); background:rgba(236,72,153,0.08);">
+            <span class="item-icon">📈</span>
+            <span class="item-text">L6分析</span>
+            <span style="position:absolute; top:4px; right:4px; width:6px; height:6px; background:#ec4899; border-radius:50%;"></span>
+          </a>
+        </div>
+
         <div class="sidebar-footer">
-          <button class="pin-btn" id="pinBtn" title="置顶当前板块">📌 置顶</button>
+                    <button class="pin-btn" id="pinBtn" title="置顶当前板块">📌 置顶</button>
         </div>
       </nav>
 
@@ -1422,10 +1431,23 @@
             </div>
           </div>
         </section> -->
-      </div>
+        <section class="content-section" id="analytics">
+          <div class="section-header">
+            <h2>📈 L6 数据分析</h2>
+            <div class="section-actions">
+              <span class="section-tag" style="background:rgba(236,72,153,0.2); color:#ec4899; border:1px solid rgba(236,72,153,0.3);">✦ NEW</span>
+              <button class="action-btn secondary" onclick="AnalyticsModule.navigateLevel(6)" title="打开全屏分析">🔍</button>
+            </div>
+          </div>
+          <div id="analyticsPanelContainer" style="display:none;"></div>
+          <div style="text-align:center; padding:40px; color:#555;">
+            <div style="font-size:48px; margin-bottom:12px;">📈</div>
+            <div style="color:#888; margin-bottom:8px;">点击按钮进入完整数据分析面板</div>
+            <button onclick="AnalyticsModule.navigateLevel(6)" style="margin-top:12px; padding:10px 24px; background:linear-gradient(135deg, #ec4899, #db2777); border:none; color:#fff; border-radius:8px; cursor:pointer; font-weight:600; font-size:14px;">🚀 打开L6分析面板</button>
+          </div>
+        </section>
     </main>
-  </div>
-
+      </div>
   <!-- 🥷 工程模式 (仅专家模式可见) -->
   <section class="content-section ninja-only" id="ninja" style="display:none;">
     <div class="section-header">
@@ -1549,6 +1571,7 @@
     </div>
   </div>
 
+  <script src="js/analytics-module.js?v=20260420"></script>
   <script src="js/level_navigator.js?v=20260411"></script>
   <script src="js/l56_helper.js?v=20260411"></script>
   <script src="js/api-bridge.js?v=2026040801"></script>
