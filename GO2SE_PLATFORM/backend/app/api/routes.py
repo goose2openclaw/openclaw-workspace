@@ -32,16 +32,13 @@ _CACHE_TTL_PORTFOLIO = 10  # /portfolio 缓存10秒
 _CACHE_TTL_MARKET = 15   # /market 新鲜缓存15秒
 _CACHE_MAX_AGE_MARKET = 60  # /market 允许返回过期数据60秒 (stale-while-revalidate)
 
-# Redis缓存层
-try:
-    from app.core.cache import cache_get, cache_set, cache_delete, cache_stats, namespaced_cache
-    _use_redis = True
-except ImportError:
-    _use_redis = False
+# 缓存层配置
+from app.core.cache import cache, cache_stats, namespaced_cache, _USE_REDIS
+_use_redis = _USE_REDIS
 
 # 命名空间缓存实例
-_market_cache = namespaced_cache("market", ttl=15) if _use_redis else None
-_stats_cache = namespaced_cache("stats", ttl=8) if _use_redis else None
+_market_cache = namespaced_cache("market", 15) if _use_redis else None
+_stats_cache = namespaced_cache("stats", 8) if _use_redis else None
 
 def _cache_get(key: str) -> Optional[dict]:
     """取缓存，未过期返回数据，否则返回None"""

@@ -1,6 +1,5 @@
-// vv6 Init - 启动动画 + 主题 + 导航
+// VV6 Init - Hermes Optimized
 (function() {
-  // Splash progress
   let progress = 0;
   const progressFill = document.getElementById('progressFill');
   const progressText = document.getElementById('progressText');
@@ -23,99 +22,101 @@
     const app = document.getElementById('app');
     if (splash) { splash.style.opacity = '0'; setTimeout(() => splash.remove(), 400); }
     if (app) { app.classList.remove('hidden'); app.style.opacity = '0'; app.style.transition = 'opacity 0.5s'; setTimeout(() => app.style.opacity = '1', 50); }
-    VV6Bridge.addListener(d => VV6Bridge.updateUI(d));
-    VV6Bridge.startAutoRefresh(30000);
-    if (typeof refreshMarket === 'function') refreshMarket();
+    
+    initNavigation();
+    initThemeSwitcher();
+    initAutoHandler();
+    
+    if (window.VV6Bridge) {
+      VV6Bridge.addListener(d => VV6Bridge.updateUI(d));
+      VV6Bridge.startAutoRefresh(30000);
+    }
   }
 
+  function initNavigation() {
+    console.log('🧭 初始化导航...');
+    
+    // Navigation click handlers
+    document.querySelectorAll('.sidebar-item, .shortcut-btn').forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.preventDefault();
+        const section = item.dataset.section;
+        if (!section) return;
+        
+        console.log('🧭 导航:', section);
+        
+        // Update active states
+        document.querySelectorAll('.sidebar-item, .shortcut-btn').forEach(i => i.classList.remove('active'));
+        document.querySelectorAll(`[data-section="${section}"]`).forEach(i => i.classList.add('active'));
+        
+        // Show target section
+        document.querySelectorAll('.content-section').forEach(s => s.style.display = 'none');
+        const target = document.getElementById(section);
+        if (target) target.style.display = 'block';
+      });
+    });
+    
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'b' || e.key === 'B') toggleBrain();
+    });
+  }
+
+  function initThemeSwitcher() {
+    document.querySelectorAll('.theme-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.documentElement.setAttribute('data-theme', btn.dataset.theme);
+      });
+    });
+    
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+  }
+
+  function initAutoHandler() {
+    if (window.autoHandlerVV6) {
+      console.log('🤖 AutoHandler已启动');
+    }
+    if (window.paramsPanelVV6) {
+      console.log('⚙️ ParamsPanel已启动');
+    }
+    if (window.hermesSoulVV6) {
+      console.log('🧠 Hermes灵魂已激活');
+    }
+    if (window.deepIterationVV6) {
+      console.log('🔍 深度迭代已激活');
+    }
+  }
+
+  // Global functions
+  window.navigateTo = function(section) {
+    const item = document.querySelector(`[data-section="${section}"]`);
+    if (item) item.click();
+  };
+
+  window.toggleBrain = function() {
+    const modeText = document.getElementById('brainModeText');
+    if (!modeText) return;
+    const isNormal = modeText.textContent.includes('普通');
+    const newMode = isNormal ? 'expert' : 'normal';
+    modeText.textContent = isNormal ? '专家模式' : '普通模式';
+    if (window.VV6Bridge) VV6Bridge.setMode(newMode);
+  };
+
+  window.toggleNotifications = function() {
+    const badge = document.getElementById('notifBadge');
+    if (badge) badge.textContent = '0';
+  };
+
+  // Skip button
   if (skipBtn) skipBtn.addEventListener('click', () => { progress = 100; showApp(); });
+  
+  // Start
   setTimeout(animateSplash, 300);
-
-  // Theme switcher
-  document.querySelectorAll('.theme-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      document.documentElement.setAttribute('data-theme', btn.dataset.theme);
-    });
-  });
-
-  // Sidebar navigation
-  document.querySelectorAll('.sidebar-item, .shortcut-btn').forEach(item => {
-    item.addEventListener('click', (e) => {
-      const section = item.dataset.section;
-      if (!section) return;
-      document.querySelectorAll('.sidebar-item, .shortcut-btn').forEach(i => i.classList.remove('active'));
-      document.querySelectorAll(`[data-section="${section}"]`).forEach(i => i.classList.add('active'));
-      document.querySelectorAll('.content-section').forEach(s => s.style.display = 'none');
-      const target = document.getElementById(section);
-      if (target) target.style.display = 'block';
-    });
-  });
-
-  // Pin functionality
-  window.togglePin = function(btn) {
-    btn.classList.toggle('active');
-  };
-
-  // Auto refresh toggle
-  window.toggleAutoRefresh = function(btn) {
-    btn.classList.toggle('active');
-    if (btn.classList.contains('active')) {
-      VV6Bridge.startAutoRefresh(30000);
-    } else {
-      VV6Bridge.stopAutoRefresh();
-    }
-  };
-
-  // Refresh signal
-  window.refreshSignal = function() { VV6Bridge.refreshAll(); };
-
-  // Refresh market
-  window.refreshMarket = async function() {
-    const mkt = await VV6Bridge.fetchMarket();
-    if (!mkt) return;
-    const fg = mkt.fear_greed_index || 50;
-    const trend = mkt.trend || 'neutral';
-    const gainer = mkt.top_gainers?.[0]?.symbol || '--';
-    const gainerChange = mkt.top_gainers?.[0]?.change || 0;
-
-    const gaugeEl = document.getElementById('fearGauge');
-    const labelEl = document.getElementById('fearLabel');
-    const barEl = document.getElementById('fearBar');
-    const fgVal = document.getElementById('fearGreedVal');
-    const fgLabel = document.getElementById('fearGreedLabel');
-    const trendEl = document.getElementById('trendDisplay');
-    const topGainerEl = document.getElementById('topGainer');
-
-    if (gaugeEl) gaugeEl.textContent = fg;
-    if (fgVal) fgVal.textContent = fg;
-    if (barEl) barEl.style.width = fg + '%';
-
-    const labels = { 0: '极度恐惧', 25: '恐惧', 45: '中性', 55: '贪婪', 75: '极度贪婪', 100: '极端贪婪' };
-    const nearest = Object.keys(labels).map(Number).reduce((a, b) => Math.abs(b - fg) < Math.abs(a - fg) ? b : a);
-    const fgText = labels[nearest] || '中性';
-    if (labelEl) labelEl.textContent = fgText;
-    if (fgLabel) fgLabel.textContent = fgText;
-
-    const trendLabels = { bullish: '📈 上涨', bearish: '📉 下跌', neutral: '⚖️ 中性' };
-    if (trendEl) trendEl.textContent = trendLabels[trend] || trend;
-    if (topGainerEl) topGainerEl.textContent = gainer ? `${gainer} +${gainerChange.toFixed(2)}%` : '--';
-  };
-
-  // Set mode
-  window.setMode = async function(mode) {
-    const result = await VV6Bridge.setMode(mode);
-    const normalBtn = document.getElementById('modeNormalBtn');
-    const expertBtn = document.getElementById('modeExpertBtn');
-    if (mode === 'normal') {
-      if (normalBtn) { normalBtn.classList.add('btn-primary'); normalBtn.style.background = 'var(--primary)'; normalBtn.style.color = '#000'; }
-      if (expertBtn) { expertBtn.style.background = 'transparent'; expertBtn.style.color = 'var(--text-dim)'; }
-    } else {
-      if (expertBtn) { expertBtn.style.background = 'var(--primary)'; expertBtn.style.color = '#000'; }
-      if (normalBtn) { normalBtn.style.background = 'transparent'; normalBtn.style.color = 'var(--text-dim)'; }
-    }
-    if (result.message) console.log(result.message);
-    VV6Bridge.refreshAll();
-  };
 })();

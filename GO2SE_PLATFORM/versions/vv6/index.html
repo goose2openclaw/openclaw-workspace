@@ -92,58 +92,51 @@
 
   <!-- ========== 主应用 ========== -->
   <div id="app" class="app hidden">
-    <header class="top-nav" id="topNav">
-      <div class="nav-status-bar">
-        <div class="nav-left">
-          <div class="lobster-logo" style="margin-right:16px;">
-            <div class="lobster-eye" style="width:36px;height:36px;font-size:16px;">🦞</div>
-            <div>
-              <div style="font-size:14px;font-weight:700;color:var(--primary);">vv6</div>
-              <div style="font-size:10px;color:var(--text-dim);">Lobster普通</div>
+    <header class="vv6-header" id="topNav">
+      <div class="vv6-navbar">
+        <div class="vv6-nav-left">
+          <div class="vv6-logo">🦞</div>
+          <div class="vv6-title">
+            <div class="vv6-name">vv6</div>
+            <div class="vv6-subtitle">Lobster普通</div>
+          </div>
+          <div class="vv6-controls">
+            <div class="theme-switcher">
+              <button class="theme-btn active" data-theme="dark">🌙</button>
+              <button class="theme-btn" data-theme="black">⚫</button>
+              <button class="theme-btn" data-theme="geek">💻</button>
+            </div>
+            <div class="lang-switcher">
+              <button class="lang-btn active" data-lang="zh">中</button>
+              <button class="lang-btn" data-lang="en">EN</button>
             </div>
           </div>
-          <div class="theme-switcher">
-            <button class="theme-btn active" data-theme="dark" title="深色">🌙</button>
-            <button class="theme-btn" data-theme="black" title="暗色">⚫</button>
-            <button class="theme-btn" data-theme="geek" title="极客">💻</button>
-          </div>
-          <div class="lang-switcher">
-            <button class="lang-btn active" data-lang="zh">中</button>
-            <button class="lang-btn" data-lang="en">EN</button>
-          </div>
         </div>
-
-        <!-- 模式切换 -->
-        <div class="brain-toggle" id="brainToggle">
-          <div style="display:flex;align-items:center;gap:8px;">
-            <span style="font-size:16px;">🦞</span>
-            <span class="brain-mode" id="brainMode" style="font-size:12px;font-weight:600;">普通模式</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:6px;margin-left:12px;">
-            <span style="font-size:11px;color:var(--text-dim);">切换</span>
-            <kbd class="hotkey" style="background:var(--primary);color:#000;">B</kbd>
-          </div>
+        <div class="vv6-nav-center">
+          <button class="brain-toggle-btn" id="brainToggleBtn" onclick="toggleBrain()">
+            <span>🦞</span>
+            <span id="brainModeText">普通模式</span>
+            <kbd>B</kbd>
+          </button>
         </div>
-
-        <div class="nav-right">
-          <div class="breathing-light" id="breathingLight" title="系统状态">
-            <span class="light-dot" style="background:var(--primary);"></span>
-            <span class="light-ring" style="border-color:var(--primary);"></span>
+        <div class="vv6-nav-right">
+          <div class="vv6-status">
+            <span class="vv6-status-dot"></span>
+            <span id="backendStatus">连接中...</span>
           </div>
-          <div class="notification-btn" id="notificationBtn">
-            <span>🔔</span>
-            <span class="notif-badge" id="notifBadge">0</span>
-          </div>
+          <button class="vv6-notif-btn" id="notifBtn">
+            🔔
+            <span class="vv6-badge" id="notifBadge">0</span>
+          </button>
         </div>
       </div>
-
-      <div class="nav-shortcuts" id="navShortcuts">
+      <nav class="vv6-shortcuts">
         <button class="shortcut-btn active" data-section="signalBoard" onclick="navigateTo('signalBoard')">🏠 信号板</button>
         <button class="shortcut-btn" data-section="marketData" onclick="navigateTo('marketData')">📊 市场</button>
         <button class="shortcut-btn" data-section="position" onclick="navigateTo('position')">💰 持仓</button>
         <button class="shortcut-btn" data-section="history" onclick="navigateTo('history')">📜 记录</button>
         <button class="shortcut-btn" data-section="settings" onclick="navigateTo('settings')">⚙️ 设置</button>
-      </div>
+      </nav>
     </header>
 
     <main class="main-content">
@@ -336,5 +329,12 @@
 
   <script src="js/api-bridge.js"></script>
   <script src="js/init.js"></script>
+<script src="js/hermes-soul.js"></script>
+<script src="js/deep-iteration.js"></script>
+<script src="js/self-improvement.js"></script>
+    <script src="js/auto-handler.js"></script>
+    <script src="js/params-panel.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/evolution-monitor.js"></script>
 </body>
 </html>

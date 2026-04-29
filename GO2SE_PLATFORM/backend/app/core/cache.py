@@ -93,3 +93,81 @@ TTL = {
     "portfolio": 60,        # 1分钟 - 持仓变动
     "stats": 10,            # 10秒 - 统计数据
 }
+
+
+# ============== Redis集成 ==============
+try:
+    import redis
+    _redis_client = redis.Redis(host='localhost', port=6379, db=0, decode_responses=True)
+    # 测试连接
+    _redis_client.ping()
+    _USE_REDIS = True
+    print("✅ Redis缓存已连接")
+except Exception as e:
+    _redis_client = None
+    _USE_REDIS = False
+    print(f"⚠️ Redis未连接，使用内存缓存: {e}")
+
+
+class RedisCache:
+    """Redis缓存封装"""
+    def __init__(self, client):
+        self.client = client
+    
+    def get(self, key: str) -> Optional[Any]:
+        import json
+        try:
+            data = self.client.get(key)
+            if data:
+                return json.loads(data)
+        except Exception:
+            pass
+        return None
+    
+    def set(self, key: str, value: Any, ttl: int = 60):
+        import json
+        try:
+            self.client.setex(key, ttl, json.dumps(value))
+        except Exception:
+            pass
+    
+    def delete(self, key: str):
+        try:
+            self.client.delete(key)
+        except Exception:
+            pass
+    
+    def stats(self):
+        try:
+            return {
+                "backend": "redis",
+                "keys": self.client.dbsize(),
+                "memory": self.client.info("memory").get("used_memory_human", "unknown")
+            }
+        except Exception:
+            return {"backend": "redis", "error": str(e)}
+
+
+# 创建namespaced_cache工厂函数
+def namespaced_cache(namespace: str, ttl: int = 60):
+    """
+    创建命名空间缓存实例
+    用法: _cache = namespaced_cache("market", ttl=15)
+    """
+    if _USE_REDIS and _redis_client:
+        return RedisCache(_redis_client)
+    return SimpleCache()
+
+
+def cache_stats():
+    """获取缓存统计"""
+    if _USE_REDIS and _redis_client:
+        try:
+            r = RedisCache(_redis_client)
+            return r.stats()
+        except Exception:
+            pass
+    return {
+        "backend": "memory",
+        **cache.stats()
+    }

@@ -492,3 +492,42 @@ async def gstack_pipeline(pipeline_id: str):
         **pipelines[pipeline_id],
         "last_update": datetime.now().isoformat()
     }
+
+# Hermes Soul报告接收
+@router.post("/hermes/report")
+async def hermes_report(request: Request):
+    """
+    接收VV6前端Hermes灵魂的状态报告
+    """
+    try:
+        data = await request.json()
+        audit_log(
+            action="HERMES_REPORT",
+            actor="vv6_frontend",
+            target="hermes_soul",
+            details=data,
+            risk_level="LOW"
+        )
+        return {"success": True, "received": True}
+    except Exception as e:
+        logger.error(f"Hermes报告失败: {e}")
+        return {"success": False, "error": str(e)}
+
+# Hermes状态查询
+@router.get("/hermes/status")
+async def hermes_status():
+    """
+    获取Hermes灵魂状态
+    """
+    return {
+        "active": True,
+        "version": "2.0-VV6",
+        "role": "VV6核心灵魂",
+        "targets": {
+            "winRate": 75,
+            "profitRate": 100,
+            "stability": 95,
+            "security": 100,
+            "autonomy": 90
+        }
+    }

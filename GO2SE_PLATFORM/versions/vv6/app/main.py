@@ -1,667 +1,512 @@
 #!/usr/bin/env python3
 """
-🪿 GO2SE vv6 - OpenAI Agents 驱动版 + 自主多空切换
-=====================================================
-• 普通模式: 仅做多
-• 专家模式: 做多/做空/观望 自动切换
-• 严格风控: 杠杆档位 + 动态止损 + 仓位控制
+⚡ VV6 会员体系 + 资产看板 v10
+==================================
+出金路径自动关联 + 支付API集成 + IM通知渠道
 """
 
-import os
 import json
-import logging
-import urllib.request
+import random
 from datetime import datetime
-from enum import Enum
-from typing import Optional, Dict, Any
-from dataclasses import dataclass, field
+from typing import Dict, List, Optional
 from fastapi import FastAPI
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
-import asyncio
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic_settings import BaseSettings
-from pydantic import BaseModel as PydanticBaseModel
 
-# Fix import path: add parent dir so mirofish_client (in app/) is importable
-import pathlib
-from pathlib import Path, sys
-_app_dir = pathlib.Path(__file__).parent.resolve()
-if str(_app_dir) not in sys.path:
-    sys.path.insert(0, str(_app_dir))
-from mirofish_client import MiroFishClient
+app = FastAPI(title="GO2SE VV6", version="10.0")
+app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
 
-_mf_client = None
-def get_mf() -> MiroFishClient:
-    global _mf_client
-    if _mf_client is None:
-        _mf_client = MiroFishClient(strategy_name="vv6")
-    return _mf_client
+# ═══════════════════════════════════════════════════════════════════════
+# 🏆 会员等级
+# ═══════════════════════════════════════════════════════════════════════
 
-# ─── 配置 ─────────────────────────────────────────────────
-class Settings(BaseSettings):
-    APP_NAME: str = "GO2SE vv6 OpenAI Agents"
-    APP_VERSION: str = "vv6-openai-agents"
-    OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
-    OPENAI_MODEL: str = os.getenv("OPENAI_MODEL", "gpt-4o")
-    PORT: int = 8006
-
-settings = Settings()
-
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s | %(levelname)-8s | %(message)s"
-)
-logger = logging.getLogger("go2se_vv6")
-
-app = FastAPI(title=settings.APP_NAME, version=settings.APP_VERSION)
-
-# ── 静态文件服务 ───────────────────────────────────────────────
-import pathlib
-from pathlib import Path
-frontend_dir = pathlib.Path(__file__).parent.parent
-if (Path(__file__).parent.parent / "index.html").exists():
-    app.mount("/static", StaticFiles(directory=frontend_dir, html=True), name="static")
-
-ALLOWED_ORIGINS = [
-    "http://localhost:8000",  # v6a frontend
-    "http://localhost:8001",  # v6i
-    "http://localhost:8004",  # v13 backend
-    "http://localhost:8006",  # vv6
-    "http://localhost:8015",  # v15 quad-brain
-]
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=ALLOWED_ORIGINS,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"]
-)
-
-# ─── 多空方向枚举 ──────────────────────────────────────────
-class TradeDirection(str, Enum):
-    LONG = "long"       # 做多
-    SHORT = "short"     # 做空
-    HOLD = "hold"       # 观望
-    CLOSE_LONG = "close_long"
-    CLOSE_SHORT = "close_short"
-
-class MarketRegime(str, Enum):
-    BULL = "bull"        # 牛市
-    BEAR = "bear"        # 熊市
-    NEUTRAL = "neutral"  # 中性
-    VOLATILE = "volatile" # 剧烈波动
-
-# ─── 杠杆档位 ─────────────────────────────────────────────
-LEVERAGE_TIERS = {
-    "conservative": {"leverage": 2,  "max_position_pct": 30, "stop_loss_pct": 5.0, "take_profit_pct": 10.0, "desc": "保守"},
-    "moderate":    {"leverage": 3,  "max_position_pct": 20, "stop_loss_pct": 4.0, "take_profit_pct": 12.0, "desc": "适度"},
-    "aggressive":  {"leverage": 5,  "max_position_pct": 10, "stop_loss_pct": 3.0, "take_profit_pct": 15.0, "desc": "激进"},
-    "expert":      {"leverage": 10, "max_position_pct": 5,  "stop_loss_pct": 2.0, "take_profit_pct": 20.0, "desc": "专家"},
+MEMBER_TIERS = {
+    "bronze": {"name": "青铜会员", "level": 1, "deposit": ["bank"], "withdraw": ["bank"], "daily": 1000, "monthly": 10000, "discount": 0},
+    "silver": {"name": "白银会员", "level": 2, "deposit": ["bank", "wise"], "withdraw": ["bank", "wise"], "daily": 5000, "monthly": 50000, "discount": 10},
+    "gold": {"name": "黄金会员", "level": 3, "deposit": ["bank", "wise", "paypal"], "withdraw": ["bank", "wise", "paypal"], "daily": 20000, "monthly": 200000, "discount": 20},
+    "diamond": {"name": "钻石会员", "level": 4, "deposit": ["bank", "wise", "paypal", "crypto"], "withdraw": ["bank", "wise", "paypal", "crypto"], "daily": 100000, "monthly": 1000000, "discount": 35},
 }
 
-# ─── 风控配置 ─────────────────────────────────────────────
-RISK_CONFIG = {
-    "max_position_pct": 60,      # 最大总仓位 60%
-    "max_single_loss_pct": 5,    # 单笔最大亏损 5%
-    "daily_loss_limit_pct": 15,  # 日内熔断 15%
-    "max_drawdown_pct": 25,      # 最大回撤 25%
-    "min_confidence_long": 65,    # 做多最低置信度
-    "min_confidence_short": 75,   # 做空最低置信度（更严格）
-    "min_confidence_expert_short": 80,  # 专家做空置信度
-    "cooldown_minutes": 5,   # 专家模式冷却5分钟（适合日内交易）      # 方向切换冷却
-    "max_trades_per_day": 50,    # 日内最大交易次数
-}
+# ═══════════════════════════════════════════════════════════════════════
+# 💳 支付API连接器
+# ═══════════════════════════════════════════════════════════════════════
 
-@dataclass
-class TradingSignal:
-    """交易信号"""
-    symbol: str
-    direction: TradeDirection
-    confidence: float        # 0-100
-    reason: str
-    regime: MarketRegime
-    leverage_tier: str = "moderate"
-    position_pct: float = 10.0
-    stop_loss_pct: float = 4.0
-    take_profit_pct: float = 8.0
-    timestamp: str = field(default_factory=lambda: datetime.now().isoformat())
-    mode: str = "normal"    # normal / expert
-
-# ─── 多空自主切换引擎 ─────────────────────────────────────
-class AutonomousSwitchEngine:
-    """
-    自主多空切换引擎
-    ==================
-    普通模式: 仅做多，置信度 > 65 分执行
-    专家模式: 做多/做空/观望 自动判断
-    """
-
+class PaymentConnector:
+    """支付渠道API连接器"""
+    
     def __init__(self):
-        self.last_direction: Optional[TradeDirection] = None
-        self.last_switch_time: Optional[datetime] = None
-        self.daily_trades: int = 0
-        self.daily_pnl: float = 0.0
-        self.daily_loss: float = 0.0
-        self.current_regime: MarketRegime = MarketRegime.NEUTRAL
-        self.mode: str = "normal"  # normal / expert
-        self.trade_history: list = []
+        self.connected = {
+            "bank": False,
+            "wise": False,
+            "paypal": False,
+            "crypto": True  # 默认已连接
+        }
+        self.credentials = {}
+    
+    def connect(self, channel: str, credentials: Dict) -> Dict:
+        """连接支付API"""
+        if channel == "bank":
+            # 模拟银行API连接
+            self.connected["bank"] = True
+            self.credentials["bank"] = {"account_id": credentials.get("account_id", "****1234"), "bank_name": credentials.get("bank_name", "Demo Bank")}
+            return {"success": True, "channel": "bank", "status": "connected", "account": "****1234"}
+        
+        elif channel == "wise":
+            # Wise API连接
+            self.connected["wise"] = True
+            self.credentials["wise"] = {"api_key": "****" + credentials.get("api_key", ""), "account_id": credentials.get("account_id", "wise_****")}
+            return {"success": True, "channel": "wise", "status": "connected", "account": "wise_****"}
+        
+        elif channel == "paypal":
+            # PayPal API连接
+            self.connected["paypal"] = True
+            self.credentials["paypal"] = {"client_id": "****" + credentials.get("client_id", ""), "email": credentials.get("email", "demo@paypal.com")}
+            return {"success": True, "channel": "paypal", "status": "connected", "email": "demo@paypal.com"}
+        
+        elif channel == "crypto":
+            self.connected["crypto"] = True
+            return {"success": True, "channel": "crypto", "status": "connected"}
+        
+        return {"success": False, "error": "Unknown channel"}
+    
+    def disconnect(self, channel: str) -> Dict:
+        self.connected[channel] = False
+        if channel in self.credentials:
+            del self.credentials[channel]
+        return {"success": True, "channel": channel, "status": "disconnected"}
+    
+    def get_status(self) -> Dict:
+        return {
+            "bank": {"connected": self.connected["bank"], "credentials": "****" if "bank" in self.credentials else None},
+            "wise": {"connected": self.connected["wise"], "credentials": "****" if "wise" in self.credentials else None},
+            "paypal": {"connected": self.connected["paypal"], "credentials": "****" if "paypal" in self.credentials else None},
+            "crypto": {"connected": self.connected["crypto"], "credentials": None}
+        }
+    
+    def deposit(self, channel: str, amount: float, metadata: Dict) -> Dict:
+        """入金"""
+        if not self.connected.get(channel, False):
+            return {"success": False, "error": f"{channel} not connected"}
+        
+        if channel == "bank":
+            return {"success": True, "tx_id": f"bank_dep_{random.randint(100000,999999)}", "amount": amount, "channel": "bank", "timestamp": datetime.now().isoformat()}
+        elif channel == "wise":
+            return {"success": True, "tx_id": f"wise_dep_{random.randint(100000,999999)}", "amount": amount, "channel": "wise", "timestamp": datetime.now().isoformat()}
+        elif channel == "paypal":
+            return {"success": True, "tx_id": f"paypal_dep_{random.randint(100000,999999)}", "amount": amount, "channel": "paypal", "timestamp": datetime.now().isoformat()}
+        elif channel == "crypto":
+            return {"success": True, "tx_id": f"crypto_dep_{random.randint(100000,999999)}", "amount": amount, "channel": "crypto", "timestamp": datetime.now().isoformat()}
+        
+        return {"success": False, "error": "Unknown channel"}
+    
+    def withdraw(self, channel: str, amount: float, destination: str, metadata: Dict) -> Dict:
+        """出金"""
+        if not self.connected.get(channel, False):
+            return {"success": False, "error": f"{channel} not connected"}
+        
+        fee = amount * 0.001 * (1 - metadata.get("discount", 0) / 100)
+        actual = amount - fee
+        
+        if channel == "bank":
+            return {"success": True, "tx_id": f"bank_wd_{random.randint(100000,999999)}", "amount": amount, "fee": fee, "actual": actual, "destination": destination, "channel": "bank", "timestamp": datetime.now().isoformat()}
+        elif channel == "wise":
+            return {"success": True, "tx_id": f"wise_wd_{random.randint(100000,999999)}", "amount": amount, "fee": fee, "actual": actual, "destination": destination, "channel": "wise", "timestamp": datetime.now().isoformat()}
+        elif channel == "paypal":
+            return {"success": True, "tx_id": f"paypal_wd_{random.randint(100000,999999)}", "amount": amount, "fee": fee, "actual": actual, "destination": destination, "channel": "paypal", "timestamp": datetime.now().isoformat()}
+        elif channel == "crypto":
+            return {"success": True, "tx_id": f"crypto_wd_{random.randint(100000,999999)}", "amount": amount, "fee": fee, "actual": actual, "destination": destination, "channel": "crypto", "timestamp": datetime.now().isoformat()}
+        
+        return {"success": False, "error": "Unknown channel"}
 
-    def reset_daily(self):
-        """重置日内计数"""
-        self.daily_trades = 0
-        self.daily_pnl = 0.0
-        self.daily_loss = 0.0
-        self.last_reset_date = datetime.now().date()
 
-    def check_daily_reset(self):
-        """每日0点重置（防止进程不重启导致计数不清零）"""
-        today = datetime.now().date()
-        if getattr(self, 'last_reset_date', None) != today:
-            self.reset_daily()
-            logger.info(f"🗓️ 日计数器已重置 ({today})")
+# ═══════════════════════════════════════════════════════════════════════
+# 📱 IM通知渠道
+# ═══════════════════════════════════════════════════════════════════════
 
-    def detect_regime(self, symbol: str = "BTC/USDT") -> MarketRegime:
-        """检测市场状态 - 优先/api/v7/market/summary，fallback md5哈希"""
-        import hashlib, time as _time
-        try:
-            url = "http://localhost:8000/api/v7/market/summary"
-            with urllib.request.urlopen(url, timeout=4) as resp:
-                data = json.loads(resp.read())
-            fg = float(data.get("data", {}).get("fear_greed_index", 50))
-            trend = data.get("data", {}).get("trend", "neutral")
-            if fg < 40: return MarketRegime.BEAR   # 原来<25太极端，fear=45应触发BEAR
-            elif fg > 62: return MarketRegime.BULL   # 原来>75太保守
-            elif fg < 35 or fg > 70: return MarketRegime.VOLATILE
-            if trend in ("bearish", "down"): return MarketRegime.BEAR
-            elif trend in ("bullish", "up"): return MarketRegime.BULL
-            else: return MarketRegime.NEUTRAL
-        except Exception:
-            block = int(_time.time()) // 900
-            h = hashlib.md5(f"{symbol}_{block}".encode()).hexdigest()
-            rsi = int(h[:4], 16) % 100
-            if rsi > 75: return MarketRegime.BEAR
-            elif rsi < 30: return MarketRegime.BULL
-            elif rsi > 65: return MarketRegime.VOLATILE
-            else: return MarketRegime.NEUTRAL
+class IMChannel:
+    """IM通知渠道"""
+    
+    def __init__(self, channel_type: str):
+        self.channel_type = channel_type
+        self.connected = False
+        self.config = {}
+    
+    def connect(self, config: Dict) -> Dict:
+        """连接IM渠道"""
+        if self.channel_type == "telegram":
+            self.connected = True
+            self.config = {"bot_token": "****", "chat_id": config.get("chat_id", "****")}
+            return {"success": True, "channel": "telegram", "status": "connected", "chat_id": config.get("chat_id", "****")}
+        
+        elif self.channel_type == "whatsapp":
+            self.connected = True
+            self.config = {"phone": config.get("phone", "+****"), "name": config.get("name", "Demo")}
+            return {"success": True, "channel": "whatsapp", "status": "connected"}
+        
+        elif self.channel_type == "wechat":
+            self.connected = True
+            self.config = {"webhook": "****", "name": config.get("name", "Demo")}
+            return {"success": True, "channel": "wechat", "status": "connected"}
+        
+        elif self.channel_type == "slack":
+            self.connected = True
+            self.config = {"webhook_url": "https://hooks.slack.com/****", "channel": config.get("channel", "#alerts")}
+            return {"success": True, "channel": "slack", "status": "connected", "channel": config.get("channel", "#alerts")}
+        
+        return {"success": False, "error": "Unknown channel"}
+    
+    def disconnect(self) -> Dict:
+        self.connected = False
+        self.config = {}
+        return {"success": True, "channel": self.channel_type, "status": "disconnected"}
+    
+    def send(self, message: str, priority: str = "normal") -> Dict:
+        """发送消息"""
+        if not self.connected:
+            return {"success": False, "error": f"{self.channel_type} not connected"}
+        
+        # 模拟发送
+        msg_id = f"{self.channel_type}_{random.randint(100000,999999)}"
+        return {
+            "success": True,
+            "channel": self.channel_type,
+            "msg_id": msg_id,
+            "message": message[:50] + "..." if len(message) > 50 else message,
+            "priority": priority,
+            "timestamp": datetime.now().isoformat()
+        }
 
-    def calculate_leverage(self, confidence: float, regime: MarketRegime) -> Dict:
-        """计算杠杆档位"""
-        if confidence >= 90:
-            tier = "expert"
-        elif confidence >= 80:
-            tier = "aggressive"
-        elif confidence >= 70:
-            tier = "moderate"
-        else:
-            tier = "conservative"
 
-        # 波动市场降低杠杆
-        if regime in [MarketRegime.VOLATILE, MarketRegime.BEAR]:
-            tier = "moderate" if tier == "expert" else "conservative"
+class IMNotifier:
+    """IM通知管理器"""
+    
+    def __init__(self):
+        self.channels = {
+            "telegram": IMChannel("telegram"),
+            "whatsapp": IMChannel("whatsapp"),
+            "wechat": IMChannel("wechat"),
+            "slack": IMChannel("slack")
+        }
+        self.notification_history = []
+    
+    def connect(self, channel: str, config: Dict) -> Dict:
+        return self.channels[channel].connect(config) if channel in self.channels else {"success": False, "error": "Unknown channel"}
+    
+    def disconnect(self, channel: str) -> Dict:
+        return self.channels[channel].disconnect() if channel in self.channels else {"success": False, "error": "Unknown channel"}
+    
+    def send(self, channel: str, message: str, priority: str = "normal") -> Dict:
+        result = self.channels[channel].send(message, priority) if channel in self.channels else {"success": False, "error": "Unknown channel"}
+        if result.get("success"):
+            self.notification_history.append({**result, "message": message})
+        return result
+    
+    def broadcast(self, message: str, priority: str = "normal") -> Dict:
+        results = {}
+        for ch in self.channels:
+            if self.channels[ch].connected:
+                results[ch] = self.send(ch, message, priority)
+        return {"success": True, "results": results}
+    
+    def get_status(self) -> Dict:
+        return {ch: {"connected": self.channels[ch].connected, "config": self.channels[ch].config} for ch in self.channels}
+    
+    def get_history(self, limit: int = 20) -> List[Dict]:
+        return self.notification_history[-limit:]
 
-        return {**LEVERAGE_TIERS[tier], "tier": tier}
 
-    def analyze(self, symbol: str, confidence: float, regime: MarketRegime,
-                mode: str = "normal") -> TradingSignal:
-        """
-        核心分析: 自主判断做多/做空/观望
-        """
-        self.current_regime = regime
-        self.mode = mode
+# ═══════════════════════════════════════════════════════════════════════
+# 👤 会员 + 账户
+# ═══════════════════════════════════════════════════════════════════════
 
-        # ── 风控检查 ──
-        if self.daily_loss >= RISK_CONFIG["daily_loss_limit_pct"]:
-            return TradingSignal(
-                symbol=symbol, direction=TradeDirection.HOLD,
-                confidence=0, reason="⚠️ 日内损失已达15%熔断线，停止交易",
-                regime=regime, mode=mode
-            )
-
-        if self.daily_trades >= RISK_CONFIG["max_trades_per_day"]:
-            return TradingSignal(
-                symbol=symbol, direction=TradeDirection.HOLD,
-                confidence=0, reason=f"⚠️ 今日交易次数已达{RISK_CONFIG['max_trades_per_day']}次上限",
-                regime=regime, mode=mode
-            )
-
-        # ── 普通模式: 仅做多 ──
-        if mode == "normal":
-            if confidence >= RISK_CONFIG["min_confidence_long"]:
-                lev = self.calculate_leverage(confidence, regime)
-                return TradingSignal(
-                    symbol=symbol, direction=TradeDirection.LONG,
-                    confidence=confidence,
-                    reason=f"✅ 普通模式做多，置信度 {confidence} 分",
-                    regime=regime, leverage_tier=lev["tier"],
-                    position_pct=lev["max_position_pct"],
-                    stop_loss_pct=lev["stop_loss_pct"],
-                    take_profit_pct=lev["take_profit_pct"],
-                    mode="normal"
-                )
-            else:
-                return TradingSignal(
-                    symbol=symbol, direction=TradeDirection.HOLD,
-                    confidence=confidence,
-                    reason=f"⏸️ 置信度 {confidence} < {RISK_CONFIG['min_confidence_long']}，观望",
-                    regime=regime, mode="normal"
-                )
-
-        # ── 专家模式: 做多/做空/观望 ──
-        # 注意: cooldown改为基于时间戳，不再基于方向切换
-        # (保留时间戳记录用于监控，但不阻止正常交易)
-        # ── 多空判断 ──
-        short_threshold = (RISK_CONFIG["min_confidence_expert_short"]
-                          if mode == "expert" else RISK_CONFIG["min_confidence_short"])
-
-        # 熊市/超买 → 做空优先
-        if regime in [MarketRegime.BEAR, MarketRegime.VOLATILE]:
-            if confidence >= short_threshold:
-                lev = self.calculate_leverage(confidence, regime)
-                lev["leverage"] = min(lev["leverage"], 3)  # 熊市最高3倍杠杆
-                return TradingSignal(
-                    symbol=symbol, direction=TradeDirection.SHORT,
-                    confidence=confidence,
-                    reason=f"🐻 专家模式做空，熊市+置信度 {confidence} 分",
-                    regime=regime, leverage_tier=lev["tier"],
-                    position_pct=lev["max_position_pct"],
-                    stop_loss_pct=lev["stop_loss_pct"],
-                    take_profit_pct=lev["take_profit_pct"],
-                    mode="expert"
-                )
-
-        # 牛市/超卖 → 做多优先
-        if regime in [MarketRegime.BULL, MarketRegime.NEUTRAL]:
-            if confidence >= RISK_CONFIG["min_confidence_long"]:
-                lev = self.calculate_leverage(confidence, regime)
-                return TradingSignal(
-                    symbol=symbol, direction=TradeDirection.LONG,
-                    confidence=confidence,
-                    reason=f"🐂 专家模式做多，牛市+置信度 {confidence} 分",
-                    regime=regime, leverage_tier=lev["tier"],
-                    position_pct=lev["max_position_pct"],
-                    stop_loss_pct=lev["stop_loss_pct"],
-                    take_profit_pct=lev["take_profit_pct"],
-                    mode="expert"
-                )
-
-        # 默认观望
-        return TradingSignal(
-            symbol=symbol, direction=TradeDirection.HOLD,
-            confidence=confidence,
-            reason=f"⏸️ 置信度不足，观望（mode={mode}）",
-            regime=regime, mode=mode
-        )
-
-    def record_trade(self, signal: TradingSignal, result_pnl: float = 0.0):
-        """记录交易"""
-        self.last_direction = signal.direction
-        self.last_switch_time = datetime.now()
-        self.daily_trades += 1
-        self.daily_pnl += result_pnl
-        if result_pnl < 0:
-            self.daily_loss += abs(result_pnl)
-        self.trade_history.append({
-            "symbol": signal.symbol,
-            "direction": signal.direction.value,
-            "confidence": signal.confidence,
-            "leverage": LEVERAGE_TIERS[signal.leverage_tier]["leverage"],
-            "pnl": result_pnl,
-            "timestamp": signal.timestamp
-        })
-
-# ─── 全局引擎实例 ─────────────────────────────────────────
-switch_engine = AutonomousSwitchEngine()
-
-# ─── OpenAI Agents ────────────────────────────────────────
-from agents import Agent, Runner, function_tool
-
-@function_tool
-def get_market_data(symbol: str) -> str:
-    """获取市场实时数据"""
-    try:
-        url = f"http://localhost:8000/api/market/{symbol.replace('/', '')}"
-        with urllib.request.urlopen(url, timeout=2) as resp:
-            data = json.loads(resp.read())
-            return json.dumps(data)
-    except urllib.error.HTTPError as e:
-        logger.warning(f"[get_market_data] HTTP {e.code} for {symbol}")
-        return json.dumps({"error": "upstream_http_error", "code": e.code, "fallback": True})
-    except urllib.error.URLError as e:
-        logger.warning(f"[get_market_data] Network error: {e.reason}")
-        return json.dumps({"error": "network_error", "fallback": True})
-    except json.JSONDecodeError:
-        logger.error(f"[get_market_data] Invalid JSON from market API")
-        return json.dumps({"error": "parse_error", "fallback": True})
-    except Exception as e:
-        logger.exception(f"[get_market_data] Unexpected: {e}")
-        return json.dumps({"error": str(e), "fallback": True})
-
-@function_tool
-def get_position(symbol: str) -> str:
-    """获取当前持仓"""
-    try:
-        url = "http://localhost:8000/api/positions"
-        with urllib.request.urlopen(url, timeout=2) as resp:
-            data = json.loads(resp.read())
-            for p in data.get("positions", []):
-                if p.get("symbol") == symbol:
-                    return json.dumps(p)
-            return json.dumps({"symbol": symbol, "position": 0, "note": "no position"})
-    except urllib.error.HTTPError as e:
-        logger.warning(f"[get_position] HTTP {e.code}")
-        return json.dumps({"symbol": symbol, "error": "upstream_error", "position": 0})
-    except urllib.error.URLError:
-        logger.warning(f"[get_position] Network error")
-        return json.dumps({"symbol": symbol, "error": "network_error", "position": 0})
-    except Exception as e:
-        logger.exception(f"[get_position] Unexpected: {e}")
-        return json.dumps({"symbol": symbol, "error": str(e), "position": 0})
-
-@function_tool
-def execute_trade(symbol: str, direction: str, position_pct: float, stop_loss_pct: float, leverage: int) -> str:
-    """【模拟模式】仅记录信号，不执行真实订单"""
-    result = {
-        "simulated": True,
-        "direction": direction.upper(),
-        "symbol": symbol,
-        "position_pct": position_pct,
-        "leverage": leverage,
-        "stop_loss_pct": stop_loss_pct,
-        "timestamp": datetime.now().isoformat(),
-        "note": "MOCK - 无真实订单执行"
+class Account:
+    """账户"""
+    
+    WITHDRAWAL_ROUTES = {
+        # 账户类型 → 默认出金路径
+        "main": "cold",           # 主账户 → 冷钱包
+        "trading": "backup",     # 交易账户 → 备用
+        "work": "bank",           # 打工收入 → 银行
+        "backup": "bank",         # 备用 → 银行
+        "cold": "crypto"          # 冷钱包 → 加密
     }
-    logger.warning(f"[MOCK TRADE] {direction.upper()} {symbol} {position_pct}% {leverage}x")
-    return json.dumps(result)
+    
+    def __init__(self, acc_id: str, name: str, acc_type: str):
+        self.id = acc_id
+        self.name = name
+        self.type = acc_type
+        self.balance = 0.0
+        self.currency = "USDT"
+        self.status = "active"
+        self.withdrawal_route = self.WITHDRAWAL_ROUTES.get(acc_type, "bank")
+        self.transaction_history = []
+    
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "type": self.type,
+            "balance": self.balance,
+            "currency": self.currency,
+            "status": self.status,
+            "withdrawal_route": self.withdrawal_route
+        }
 
-# ─── 7工具 Agent ─────────────────────────────────────────
-def create_tool_agent(tool_name: str, tool_icon: str, description: str) -> Agent:
-    return Agent(
-        name=f"GO2SE_{tool_name}",
-        instructions=f"""你是一个专业的加密货币交易Agent，负责【{tool_icon} {tool_name}】策略。
 
-## 你的职责
-{description}
+class Member:
+    """会员"""
+    
+    def __init__(self, mid: str, name: str, tier: str):
+        self.member_id = mid
+        self.name = name
+        self.tier = tier
+        self.accounts = {}
+        self.im_channels = {}  # member_id → {telegram, whatsapp, wechat, slack}
+        self.created = datetime.now().isoformat()
+        self._init_accounts()
+    
+    def _init_accounts(self):
+        self.accounts["main"] = Account(f"{self.member_id}_main", "主账户", "main")
+        self.accounts["trading"] = Account(f"{self.member_id}_trading", "交易账户", "trading")
+        self.accounts["work"] = Account(f"{self.member_id}_work", "打工收入", "work")
+        self.accounts["backup"] = Account(f"{self.member_id}_backup", "备用账户", "backup")
+        self.accounts["cold"] = Account(f"{self.member_id}_cold", "冷钱包", "cold")
+    
+    def total_balance(self):
+        return sum(a.balance for a in self.accounts.values())
+    
+    def info(self):
+        t = MEMBER_TIERS[self.tier]
+        return {
+            "member_id": self.member_id,
+            "name": self.name,
+            "tier": self.tier,
+            "tier_name": t["name"],
+            "level": t["level"],
+            "total": self.total_balance(),
+            "accounts": {k: v.to_dict() for k, v in self.accounts.items()},
+            "im_channels": list(self.im_channels.keys()),
+            "deposit_channels": t["deposit"],
+            "withdraw_channels": t["withdraw"],
+            "daily_limit": t["daily"],
+            "discount": t["discount"]
+        }
+    
+    def add_im_channel(self, channel: str, config: Dict):
+        self.im_channels[channel] = config
+    
+    def get_im_channels(self):
+        return self.im_channels
 
-## 交易规则
-- 置信度 > 65 分才执行做多
-- 做空需要 > 75 分（普通模式）或 > 80 分（专家模式）
-- 最大仓位不超过 20%
-- 止损 3-5%，止盈 8-15%
-- 记录每笔交易的理由
 
-## 输出格式
-返回 JSON:
-{{"decision": "long/short/hold", "confidence": 0-100, "reason": "理由", "symbol": "标的"}}
-""",
-        tools=[get_market_data, get_position, execute_trade],
-        model=settings.OPENAI_MODEL if settings.OPENAI_API_KEY else "gpt-4o"
-    )
+# ═══════════════════════════════════════════════════════════════════════
+# 💰 资产看板
+# ═══════════════════════════════════════════════════════════════════════
 
-RABBIT_AGENT    = create_tool_agent("打兔子",   "🐰", "追踪市值前20主流币趋势，发现强势信号时入场")
-MOLE_AGENT      = create_tool_agent("打地鼠",   "🐹", "等待异动币突然反弹，敲一下动一下，高波动高收益")
-ORACLE_AGENT    = create_tool_agent("走着瞧",   "🔮", "基于预测市场Polymarket分析，提前布局趋势")
-LEADER_AGENT    = create_tool_agent("跟大哥",   "👑", "跟随大户地址操作，借势而为")
-HITCHHIKER_AGENT= create_tool_agent("搭便车",   "🍀", "跟单专业交易员，分享利润")
-WOOL_AGENT      = create_tool_agent("薅羊毛",   "💰", "寻找空投机会和新币质押收益")
-CROWD_AGENT     = create_tool_agent("穷孩子",   "👶", "参与众包任务赚取加密报酬")
+class AssetDashboard:
+    def __init__(self):
+        self.version = "10.0"
+        self.members: Dict[str, Member] = {}
+        self.payment = PaymentConnector()
+        self.im = IMNotifier()
+        self.txs = []
+        self._init_demo()
+    
+    def _init_demo(self):
+        # Eric - 黄金会员
+        e = Member("eric_001", "Eric", "gold")
+        e.accounts["main"].balance = 50000
+        e.accounts["trading"].balance = 25000
+        e.accounts["work"].balance = 15800
+        e.accounts["backup"].balance = 5000
+        e.accounts["cold"].balance = 100000
+        e.add_im_channel("telegram", {"chat_id": "6270866128"})
+        e.add_im_channel("whatsapp", {"phone": "+6597319708"})
+        self.members["eric_001"] = e
+        
+        # Alice - 白银会员
+        a = Member("alice_002", "Alice", "silver")
+        a.accounts["main"].balance = 8000
+        a.accounts["trading"].balance = 3000
+        self.members["alice_002"] = a
+        
+        # Bob - 青铜会员
+        b = Member("bob_003", "Bob", "bronze")
+        b.accounts["main"].balance = 1500
+        self.members["bob_003"] = b
+    
+    # ─── 入金 ───
+    def deposit(self, mid: str, acc: str, amount: float, channel: str, notify: bool = True) -> Dict:
+        if mid not in self.members: return {"success": False, "error": "Member not found"}
+        m = self.members[mid]
+        t = MEMBER_TIERS[m.tier]
+        
+        if channel not in t["deposit"]:
+            return {"success": False, "error": f"{channel} not available for {t['name']}"}
+        
+        if amount > t["daily"]:
+            return {"success": False, "error": f"Exceeds daily limit ${t['daily']}"}
+        
+        # 通过支付API入金
+        pay_result = self.payment.deposit(channel, amount, {"member_id": mid, "account": acc, "discount": t["discount"]})
+        if not pay_result["success"]:
+            return pay_result
+        
+        fee = pay_result.get("fee", amount * 0.001 * (1 - t["discount"]/100))
+        actual = amount - fee
+        
+        m.accounts[acc].balance += actual
+        tx = {"id": f"dep_{len(self.txs)}", "type": "deposit", "mid": mid, "acc": acc, "amount": amount, "fee": fee, "actual": actual, "channel": channel, "tx_id": pay_result.get("tx_id"), "time": datetime.now().isoformat()}
+        self.txs.append(tx)
+        
+        # IM通知
+        if notify:
+            for im_ch in m.im_channels:
+                self.im.send(im_ch, f"💰 入金成功! ${amount} 到 {acc}", "normal")
+        
+        return {"success": True, "tx": tx, "account_balance": m.accounts[acc].balance, "total": m.total_balance()}
+    
+    # ─── 出金 ───
+    def withdraw(self, mid: str, acc: str, amount: float, channel: str = None, auto_route: bool = True, notify: bool = True) -> Dict:
+        if mid not in self.members: return {"success": False, "error": "Member not found"}
+        m = self.members[mid]
+        t = MEMBER_TIERS[m.tier]
+        
+        # 自动出金路径
+        if auto_route and channel is None:
+            route = m.accounts[acc].withdrawal_route
+            channel = route if route in t["withdraw"] else t["withdraw"][0]
+            channel = channel if channel in t["withdraw"] else t["withdraw"][0]
+        elif channel is None:
+            channel = t["withdraw"][0]
+        
+        if channel not in t["withdraw"]:
+            return {"success": False, "error": f"{channel} not available for {t['name']}"}
+        
+        if m.accounts[acc].balance < amount:
+            return {"success": False, "error": "Insufficient balance"}
+        
+        # 通过支付API出金
+        pay_result = self.payment.withdraw(channel, amount, f"{acc}@{mid}", {"member_id": mid, "account": acc, "discount": t["discount"]})
+        if not pay_result["success"]:
+            return pay_result
+        
+        fee = pay_result.get("fee", amount * 0.01 * (1 - t["discount"]/100))
+        m.accounts[acc].balance -= amount
+        tx = {"id": f"wd_{len(self.txs)}", "type": "withdraw", "mid": mid, "acc": acc, "amount": amount, "fee": fee, "actual": pay_result.get("actual", amount - fee), "channel": channel, "route": m.accounts[acc].withdrawal_route, "tx_id": pay_result.get("tx_id"), "time": datetime.now().isoformat()}
+        self.txs.append(tx)
+        
+        # IM通知
+        if notify:
+            for im_ch in m.im_channels:
+                self.im.send(im_ch, f"💸 出金成功! ${amount} 从 {acc} → {channel}", "high")
+        
+        return {"success": True, "tx": tx, "account_balance": m.accounts[acc].balance, "total": m.total_balance()}
+    
+    # ─── 账户转账 ───
+    def transfer(self, mid: str, frm: str, to: str, amount: float, notify: bool = True) -> Dict:
+        if mid not in self.members: return {"success": False, "error": "Member not found"}
+        m = self.members[mid]
+        
+        if m.accounts[frm].balance < amount:
+            return {"success": False, "error": "Insufficient balance"}
+        
+        m.accounts[frm].balance -= amount
+        m.accounts[to].balance += amount
+        tx = {"id": f"tx_{len(self.txs)}", "type": "transfer", "mid": mid, "from": frm, "to": to, "amount": amount, "time": datetime.now().isoformat()}
+        self.txs.append(tx)
+        
+        if notify:
+            for im_ch in m.im_channels:
+                self.im.send(im_ch, f"🔄 转账 ${amount} {frm} → {to}", "normal")
+        
+        return {"success": True, "tx": tx, "balances": {k: v.balance for k, v in m.accounts.items()}}
+    
+    # ─── 看板 ───
+    def member_dashboard(self, mid: str) -> Dict:
+        if mid not in self.members: return {"success": False, "error": "Member not found"}
+        m = self.members[mid]
+        return {"success": True, "member": m.info(), "recent_txs": self.txs[-10:]}
+    
+    def all_dashboard(self) -> Dict:
+        members = [m.info() for m in self.members.values()]
+        members.sort(key=lambda x: x["total"], reverse=True)
+        tiers = {t: {"name": MEMBER_TIERS[t]["name"], "count": sum(1 for m in self.members.values() if m.tier == t)} for t in MEMBER_TIERS}
+        return {"success": True, "members": members, "total_assets": sum(m.total_balance() for m in self.members.values()), "tiers": tiers}
 
-AGENTS = {
-    "rabbit": RABBIT_AGENT, "mole": MOLE_AGENT,
-    "oracle": ORACLE_AGENT, "leader": LEADER_AGENT,
-    "hitchhiker": HITCHHIKER_AGENT, "wool": WOOL_AGENT, "crowd": CROWD_AGENT,
-}
 
-# ─── API 路由 ─────────────────────────────────────────────
-@app.get("/")
-async def root():
-    from fastapi.responses import FileResponse
-    return FileResponse(str(Path(__file__).parent.parent / "index.html"))
+db = AssetDashboard()
+
+# ═══════════════════════════════════════════════════════════════════════
+# API端点
+# ═══════════════════════════════════════════════════════════════════════
 
 @app.get("/health")
-async def health():
-    switch_engine.check_daily_reset()  # 每次健康检查顺便触发每日重置
-    return {
-        "status": "healthy",
-        "version": settings.APP_VERSION,
-        "agents": list(AGENTS.keys()),
-        "engine": "autonomous_switch_v1",
-        "daily_reset_date": str(switch_engine.last_reset_date) if hasattr(switch_engine, 'last_reset_date') else "never"
-    }
+def health(): return {"status": "VV6 OK", "version": "10.0", "time": datetime.now().isoformat()}
 
-@app.get("/api/agents")
-async def list_agents():
-    return {"agents": [{"id": k, "name": v.name} for k, v in AGENTS.items()]}
+# ─── 看板 ───
+@app.get("/api/dashboard/{mid}")
+def member_dash(mid): return db.member_dashboard(mid)
 
-@app.get("/api/risk/config")
-async def risk_config():
-    """风控配置"""
-    return {
-        "risk_config": RISK_CONFIG,
-        "leverage_tiers": LEVERAGE_TIERS,
-        "daily_stats": {
-            "trades": switch_engine.daily_trades,
-            "pnl": round(switch_engine.daily_pnl, 2),
-            "daily_loss_pct": round(switch_engine.daily_loss, 2)
-        },
-        "mode": switch_engine.mode,
-        "current_regime": switch_engine.current_regime.value,
-        "last_direction": switch_engine.last_direction.value if switch_engine.last_direction else None,
-    }
+@app.get("/api/dashboard")
+def all_dash(): return db.all_dashboard()
 
-class AnalyzeRequest(PydanticBaseModel):
-    symbol: str = "BTC/USDT"
-    confidence: float = 70.0
-    mode: str = "normal"
-    consecutive_wins: int = 0
+# ─── 支付API ───
+@app.get("/api/payment/connect")
+def connect_payment(channel: str, account_id: str = None, api_key: str = None, client_id: str = None, email: str = None):
+    creds = {"account_id": account_id, "api_key": api_key, "client_id": client_id, "email": email}
+    return db.payment.connect(channel, creds)
 
+@app.get("/api/payment/disconnect")
+def disconnect_payment(channel: str): return db.payment.disconnect(channel)
 
-def _get_unified_mi() -> float:
-    """从 MiroFish Platform 获取统一 Mi"""
-    try:
-        import urllib.request
-        with urllib.request.urlopen("http://localhost:8020/mi/sync", timeout=2) as resp:
-            import json
-            data = json.loads(resp.read())
-            return data.get("unified_mi", 0.75)
-    except:
-        return 0.75
+@app.get("/api/payment/status")
+def payment_status(): return db.payment.get_status()
 
-@app.post("/api/switch/analyze")
-async def switch_analyze(req: AnalyzeRequest):
-    """
-    自主多空切换分析
-    mode: normal(仅做多) / expert(做多+做空)
-    """
-    regime = switch_engine.detect_regime(req.symbol)
-    signal = switch_engine.analyze(req.symbol, req.confidence, regime, req.mode)
+# ─── IM渠道 ───
+@app.get("/api/im/connect")
+def connect_im(channel: str, chat_id: str = None, phone: str = None, name: str = None, webhook_url: str = None):
+    config = {"chat_id": chat_id, "phone": phone, "name": name, "webhook_url": webhook_url}
+    return db.im.connect(channel, config)
 
-    # ── RSI/fear_greed 独立做空信号 (替代RSI estimate) ─────────────
-    # fear_greed>62 = 极端贪婪 → 超买信号 → SHORT
-    # fear_greed<35 = 极端恐惧 → 超卖信号 → LONG
-    try:
-        import urllib.request, json as _json
-        with urllib.request.urlopen("http://localhost:8000/api/v7/market/summary", timeout=2) as resp:
-            mkt = _json.loads(resp.read()).get("data", {})
-            fg = mkt.get("fear_greed_index", 50)
-            if fg is not None:
-                if fg > 55:
-                    return {
-                        "signal": {
-                            "direction": "short", "mode": req.mode, "regime": "bear",
-                            "leverage": 3, "position_pct": 25,
-                            "stop_loss_pct": 3.0, "take_profit_pct": 8.0,
-                            "mi": round(_get_unified_mi(), 4), "confidence": float(req.confidence),
-                            "reasoning": f"Greed Extreme SHORT: fear_greed={fg}>55",
-                        },
-                        "switch_triggered": False,
-                    }
-                elif fg < 32:
-                    return {
-                        "signal": {
-                            "direction": "long", "mode": req.mode, "regime": "bull",
-                            "leverage": 3, "position_pct": 35,
-                            "stop_loss_pct": 5.0, "take_profit_pct": 12.0,
-                            "mi": round(_get_unified_mi(), 4), "confidence": float(req.confidence),
-                            "reasoning": f"Fear Extreme LONG: fear_greed={fg}<32",
-                        },
-                        "switch_triggered": False,
-                    }
-    except Exception:
-        pass
+@app.get("/api/im/disconnect")
+def disconnect_im(channel: str): return db.im.disconnect(channel)
 
+@app.get("/api/im/status")
+def im_status(): return db.im.get_status()
 
-    lev = LEVERAGE_TIERS[signal.leverage_tier]
+@app.get("/api/im/send")
+def send_im(channel: str, message: str, priority: str = "normal"): return db.im.send(channel, message, priority)
 
-    # MiroFish Mi 调整
-    mf = get_mf()
-    try:
-        # 从MiroFish Platform获取真实Mi (使用v6a fear_greed)
-        import urllib.request, json as _json
-        try:
-            _req = urllib.request.Request("http://localhost:8000/api/v7/market/summary", headers={"User-Agent": "Mozilla/5.0"})
-            with urllib.request.urlopen(_req, timeout=4) as _resp:
-                _data = _json.loads(_resp.read())
-                fear_greed = float(_data.get("data", _data).get("fear_greed_index", 50))
-        except Exception:
-            fear_greed = 50.0
-        regime_str = signal.regime.value
-        rsi_val = 50.0
-        # 使用统一Mi源确保全系统一致
-        try:
-            import json as _json
-            _req = urllib.request.Request(
-                "http://localhost:8020/mi/sync",
-                headers={"User-Agent": "Mozilla/5.0"}
-            )
-            with urllib.request.urlopen(_req, timeout=5) as _resp:
-                _data = _json.loads(_resp.read())
-            mi = float(_data.get("unified_mi", 0.75))
-        except Exception:
-            mi = mf.get_mi_sync(regime_str, rsi_val, fear_greed)
-    except Exception:
-        mi = 0.75
+@app.get("/api/im/broadcast")
+def broadcast_im(message: str, priority: str = "normal"): return db.im.broadcast(message, priority)
 
-    return {
-        "signal": {
-            "symbol": signal.symbol,
-            "direction": signal.direction.value,
-            "confidence": signal.confidence,
-            "mi": mi,
-            "reason": signal.reason,
-            "regime": signal.regime.value,
-            "mode": signal.mode,
-            "leverage_tier": signal.leverage_tier,
-            "leverage": lev["leverage"],
-            "position_pct": signal.position_pct,
-            "stop_loss_pct": signal.stop_loss_pct,
-            "take_profit_pct": signal.take_profit_pct,
-            "timestamp": signal.timestamp,
-        },
-        "risk": {
-            "daily_trades": switch_engine.daily_trades,
-            "daily_pnl": round(switch_engine.daily_pnl, 2),
-            "daily_loss_pct": round(switch_engine.daily_loss, 2),
-            "daily_loss_limit": RISK_CONFIG["daily_loss_limit_pct"],
-            "熔断触发": switch_engine.daily_loss >= RISK_CONFIG["daily_loss_limit_pct"],
-        },
-        "mirofish": {
-            "mi": mi,
-            "source": "vv6",
-            "regime": signal.regime.value,
-        }
-    }
+# ─── 交易 ───
+@app.get("/api/deposit")
+def deposit(mid: str, acc: str, amount: float, channel: str, notify: bool = True): return db.deposit(mid, acc, amount, channel, notify)
 
-@app.post("/api/switch/mode")
-async def set_mode(mode: str):
-    """切换普通/专家模式"""
-    if mode not in ["normal", "expert"]:
-        return {"error": "mode must be 'normal' or 'expert'"}
-    switch_engine.mode = mode
-    return {"mode": mode, "message": f"已切换至{'普通模式(仅做多)' if mode == 'normal' else '专家模式(多空切换)'}"}
+@app.get("/api/withdraw")
+def withdraw(mid: str, acc: str, amount: float, channel: str = None, auto_route: bool = True, notify: bool = True): return db.withdraw(mid, acc, amount, channel, auto_route, notify)
 
-@app.post("/api/switch/record")
-async def record_trade(signal_json: Dict):
-    """记录交易结果"""
-    sig = TradingSignal(
-        symbol=signal_json["symbol"],
-        direction=TradeDirection(signal_json["direction"]),
-        confidence=signal_json["confidence"],
-        reason=signal_json["reason"],
-        regime=MarketRegime(signal_json.get("regime", "neutral")),
-        mode=signal_json.get("mode", "normal")
-    )
-    switch_engine.record_trade(sig, signal_json.get("pnl", 0.0))
-    return {"recorded": True, "daily_trades": switch_engine.daily_trades}
+@app.get("/api/transfer")
+def transfer(mid: str, frm: str, to: str, amount: float, notify: bool = True): return db.transfer(mid, frm, to, amount, notify)
 
-@app.post("/api/analyze/{tool_id}")
-async def analyze(tool_id: str, symbol: str = "BTC/USDT"):
-    # 路由修复: /api/analyze/all → 委托给 analyze_all
-    if tool_id == "all":
-        results = {}
-        for tid, agent in AGENTS.items():
-            if not settings.OPENAI_API_KEY:
-                results[tid] = {"error": "API key missing"}
-                continue
-            try:
-                result = Runner.run_sync(agent, f"分析 {symbol}，给出交易建议")
-                results[tid] = {"result": result.final_output, "status": "ok"}
-            except Exception as e:
-                results[tid] = {"error": str(e), "status": "error"}
-        return {"symbol": symbol, "tool_results": results}
-    if tool_id not in AGENTS:
-        return {"error": f"Unknown agent: {tool_id}"}
-    if not settings.OPENAI_API_KEY:
-        return {"error": "OpenAI API key not configured", "tool_id": tool_id}
-    agent = AGENTS[tool_id]
-    try:
-        result = await asyncio.to_thread(Runner.run_sync, agent, f"分析 {symbol} 的交易机会")
-        return {"tool": tool_id, "symbol": symbol, "result": result.final_output}
-    except Exception as e:
-        logger.error(f"Agent error: {e}")
-        return {"error": str(e), "tool": tool_id}
+# ─── 会员IM配置 ───
+@app.get("/api/member/{mid}/im/connect")
+def member_im_connect(mid: str, channel: str, chat_id: str = None, phone: str = None, name: str = None):
+    if mid not in db.members: return {"success": False, "error": "Member not found"}
+    result = db.im.connect(channel, {"chat_id": chat_id, "phone": phone, "name": name})
+    if result.get("success"):
+        db.members[mid].add_im_channel(channel, result)
+    return result
 
-@app.post("/api/analyze/all")
-async def analyze_all(symbol: str = "BTC/USDT"):
-    results = {}
-    for tool_id, agent in AGENTS.items():
-        if not settings.OPENAI_API_KEY:
-            results[tool_id] = {"error": "API key missing"}
-            continue
-        try:
-            result = Runner.run_sync(agent, f"分析 {symbol}，给出交易建议")
-            results[tool_id] = {"result": result.final_output, "status": "ok"}
-        except Exception as e:
-            results[tool_id] = {"error": str(e), "status": "error"}
-    return {"symbol": symbol, "tool_results": results}
+@app.get("/api/member/{mid}/im/status")
+def member_im_status(mid: str):
+    if mid not in db.members: return {"success": False, "error": "Member not found"}
+    return {"success": True, "channels": db.members[mid].get_im_channels()}
 
-@app.get("/api/performance")
-async def performance():
-    return {
-        "strategy": "vv6_openai_agents",
-        "version": settings.APP_VERSION,
-        "timestamp": datetime.now().isoformat(),
-        "total_capital": 100000,
-        "investment_pool": 80000,
-        "work_pool": 20000,
-        "mode": switch_engine.mode,
-        "investment_tools": {
-            "rabbit":    {"name": "🐰 打兔子",   "weight": 25, "allocation": 20000},
-            "mole":      {"name": "🐹 打地鼠",   "weight": 20, "allocation": 16000},
-            "oracle":    {"name": "🔮 走着瞧",   "weight": 15, "allocation": 12000},
-            "leader":    {"name": "👑 跟大哥",   "weight": 15, "allocation": 12000},
-            "hitchhiker":{"name": "🍀 搭便车",   "weight": 10, "allocation": 8000},
-        },
-        "work_tools": {
-            "wool":  {"name": "💰 薅羊毛", "weight": 3, "allocation": 3000},
-            "crowd": {"name": "👶 穷孩子", "weight": 5, "allocation": 5000},
-        },
-        "risk_config": RISK_CONFIG,
-        "leverage_tiers": {k: {"leverage": v["leverage"], "max_position_pct": v["max_position_pct"], "desc": v["desc"]} for k, v in LEVERAGE_TIERS.items()},
-    }
+@app.get("/api/tiers")
+def tiers(): return {"success": True, "data": MEMBER_TIERS}
 
 if __name__ == "__main__":
     import uvicorn
-    logger.info(f"🚀 {settings.APP_NAME} 启动...")
-    logger.info(f"📌 多空切换引擎: 自主切换 + 严格风控")
-    uvicorn.run(app, host="0.0.0.0", port=settings.PORT)
+    uvicorn.run(app, host="0.0.0.0", port=8016)
