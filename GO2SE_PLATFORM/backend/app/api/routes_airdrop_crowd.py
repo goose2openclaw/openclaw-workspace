@@ -304,3 +304,85 @@ async def security_rules():
             "description": "众包赚钱隔离规则：完全隔离，无需私钥，平台信誉验证",
         },
     }
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# 🆕 打工增强 API V3
+# ═══════════════════════════════════════════════════════════════════════════
+
+@router.get("/v3/tasks")
+async def list_tasks_v3():
+    """📋 获取所有打工任务（V3增强池）"""
+    from app.services.airdrop.airdrop_v2 import airdrop_service_v3
+    tasks = airdrop_service_v3.get_all_tasks_v3()
+    return {
+        "success": True,
+        "count": len(tasks),
+        "total_expected_usd": sum(t["expected_return_usd"] for t in tasks),
+        "total_gas_usd": sum(t["estimated_gas_usd"] for t in tasks),
+        "net_potential": sum(t["expected_return_usd"] - t["estimated_gas_usd"] for t in tasks),
+        "tasks": tasks,
+    }
+
+
+@router.get("/v3/portfolio")
+async def get_portfolio():
+    """💼 打工组合总览"""
+    from app.services.airdrop.airdrop_v2 import airdrop_service_v3
+    summary = airdrop_service_v3.get_portfolio_summary()
+    return {
+        "success": True,
+        **summary,
+    }
+
+
+@router.get("/v3/top")
+async def top_tasks_v3(limit: int = Query(default=10, le=30)):
+    """🏆 最优任务排序（收益-风险比）"""
+    from app.services.airdrop.airdrop_v2 import airdrop_service_v3
+    tasks = airdrop_service_v3.get_all_tasks_v3()
+    # 按净收益/风险排序
+    for t in tasks:
+        risk_weight = {"low": 1.0, "medium": 0.7, "high": 0.4, "extreme": 0.2}.get(t["risk_level"], 0.8)
+        t["score"] = (t["expected_return_usd"] - t["estimated_gas_usd"]) * risk_weight * (t.get("reliability", 80) / 100)
+    tasks.sort(key=lambda x: x["score"], reverse=True)
+    return {
+        "success": True,
+        "count": len(tasks[:limit]),
+        "tasks": tasks[:limit],
+    }
+
+
+@router.get("/v3/stats")
+async def stats_v3():
+    """📊 打工统计 V3"""
+    from app.services.airdrop.airdrop_v2 import airdrop_service_v2, airdrop_service_v3
+    v2_summary = airdrop_service_v2.get_task_stats()
+    v3_tasks = airdrop_service_v3.get_all_tasks_v3()
+    return {
+        "success": True,
+        "v2_tasks": v2_summary.get("total_opportunities", 0),
+        "v3_tasks": len(v3_tasks),
+        "total_pool": v2_summary.get("total_opportunities", 0) + len(v3_tasks),
+        "by_chain": _count_by_chain(v3_tasks),
+        "by_difficulty": _count_by_field(v3_tasks, "difficulty"),
+        "by_risk": _count_by_field(v3_tasks, "risk_level"),
+        "total_expected_usd": sum(t["expected_return_usd"] for t in v3_tasks),
+        "total_gas_usd": sum(t["estimated_gas_usd"] for t in v3_tasks),
+        "net_potential": sum(t["expected_return_usd"] - t["estimated_gas_usd"] for t in v3_tasks),
+        "completed": v2_summary.get("completed", 0),
+        "total_earned": v2_summary.get("total_earned_usd", 0),
+    }
+
+
+def _count_by_chain(tasks):
+    chains = {}
+    for t in tasks:
+        chains[t["chain"]] = chains.get(t["chain"], 0) + 1
+    return chains
+
+def _count_by_field(tasks, field):
+    counts = {}
+    for t in tasks:
+        counts[t[field]] = counts.get(t[field], 0) + 1
+    return counts

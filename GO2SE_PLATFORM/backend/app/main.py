@@ -28,6 +28,7 @@ from app.api.routes_autonomous import router as autonomous_router
 from app.api.routes_integration import router as integration_router
 from app.api.routes_short_selling import router as short_router
 from app.api.routes_sim_trading import router as sim_router
+from app.api.routes_tools_v2 import router as tools_v2_router
 from app.api.routes_airdrop_crowd import router as earn_router
 from app.api.routes_earn_scanner import router as earn_scanner_router
 from app.api.routes_quant import router as quant_router
@@ -135,6 +136,7 @@ app.include_router(autonomous_router, tags=["Autonomous v6a"])
 app.include_router(integration_router, tags=["智能集成"])
 app.include_router(short_router, tags=["做空机制+强化推荐"])
 app.include_router(sim_router, tags=["模拟交易V2"])
+app.include_router(tools_v2_router, tags=["工具V2"])
 app.include_router(earn_router, tags=["薅羊毛+穷孩子V2"])
 app.include_router(earn_scanner_router, tags=["薅羊毛+穷孩子V3-找单抢单"])
 app.include_router(quant_router, tags=["十大量化策略-打工加密货币"])
