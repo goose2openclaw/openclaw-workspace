@@ -1,0 +1,448 @@
+#!/usr/bin/env python3
+"""
+🧠 GG v2 - 永动机智能系统
+版本: v2.0
+日期: 2026-05-04
+特性: 2倍杠杆 | 专家模式 | 永不掉线 | 自主迭代
+
+作者: GO2SE Genius
+"""
+
+import requests
+import hmac
+import hashlib
+import time
+import json
+import random
+import signal
+import sys
+import os
+from datetime import datetime
+from threading import Thread, Lock
+
+# ====================
+# 配置
+# ====================
+API_KEY = "QPM55JoNnHSV7C7PllgNbTAxpzy9RaBjoKprgHuIE9GJUeQoVIGu69ICPnmBXp61"
+API_SECRET = "BSOTWqsVsncRk13DMDJ2YDRQks8XvrajArQDPW2jY8sDwNtcgb5da8H3x6qF3hJk"
+PROXIES = {"http": "http://172.29.144.1:7897", "https": "http://172.29.144.1:7897"}
+
+# 杠杆配置
+LEVERAGE = 2
+LEVERAGE_THRESHOLD = 0.75  # D > 0.75 时激活杠杆
+
+# 专家模式
+EXPERT_MODE = True
+
+# 止损止盈配置
+STOP_LOSS = 0.05  # 5%
+TAKE_PROFIT = 0.15  # 15%
+
+# 币种
+COINS = ['BTC', 'ETH', 'BNB', 'SOL', 'XRP', 'ADA', 'LINK', 'DOGE']
+
+# 全局锁
+lock = Lock()
+running = True
+
+def log(msg):
+    """日志"""
+    print(f"[{datetime.now().strftime('%H:%M:%S')}] {msg}", flush=True)
+
+def get_account():
+    """获取账户"""
+    ts = int(time.time() * 1000)
+    params = f"timestamp={ts}&recvWindow=5000"
+    sig = hmac.new(API_SECRET.encode(), params.encode(), hashlib.sha256).hexdigest()
+    resp = requests.get(f"https://api.binance.com/api/v3/account?{params}&signature={sig}", 
+                       headers={"X-MBX-APIKEY": API_KEY}, proxies=PROXIES, timeout=10)
+    return {b["asset"]: float(b["free"]) for b in resp.json()["balances"]}
+
+def get_prices_fixed(symbols):
+    """获取价格"""
+    sym = json.dumps([f"{s}USDT" for s in symbols])
+    resp = requests.get("https://api.binance.com/api/v3/ticker/24hr", params={"symbols": sym}, 
+                       proxies=PROXIES, timeout=10)
+    return {p["symbol"].replace("USDT", ""): float(p["lastPrice"]) for p in resp.json()}
+
+def get_klines(symbol, interval='1h', limit=168):
+    """获取K线"""
+    resp = requests.get("https://api.binance.com/api/v3/klines",
+                       params={"symbol": symbol, "interval": interval, "limit": limit},
+                       proxies=PROXIES, timeout=10)
+    return resp.json() if resp.status_code == 200 else []
+
+def set_leverage(symbol, leverage=2):
+    """设置逐仓杠杆"""
+    ts = int(time.time() * 1000)
+    params = f"symbol={symbol}USDT&leverage={leverage}&timestamp={ts}&recvWindow=5000"
+    sig = hmac.new(API_SECRET.encode(), params.encode(), hashlib.sha256).hexdigest()
+    resp = requests.post(f"https://api.binance.com/sapi/v1/margin/isolated/leverage?{params}&signature={sig}",
+                       headers={"X-MBX-APIKEY": API_KEY}, proxies=PROXIES, timeout=10)
+    return resp.status_code == 200
+
+def buy_lev(symbol, qty, leverage=2):
+    """逐仓杠杆买入"""
+    import math
+    ts = int(time.time() * 1000)
+    
+    # 先设置杠杆
+    set_leverage(symbol, leverage)
+    
+    # 获取价格检查最小notional
+    price = None
+    try:
+        price_resp = requests.get("https://api.binance.com/api/v3/ticker/price",
+                                params={"symbol": f"{symbol}USDT"}, proxies=PROXIES, timeout=10)
+        if price_resp.status_code == 200:
+            price = float(price_resp.json()["price"])
+            min_qty = max(5.0 / price, 0.0001)
+            if qty < min_qty:
+                qty = min_qty
+    except:
+        pass
+    
+    # 获取LOT_SIZE并正确格式化数量
+    try:
+        info_resp = requests.get("https://api.binance.com/api/v3/exchangeInfo", proxies=PROXIES, timeout=10)
+        if info_resp.status_code == 200:
+            for s in info_resp.json()["symbols"]:
+                if s["symbol"] == f"{symbol}USDT":
+                    for f in s["filters"]:
+                        if f["filterType"] == "LOT_SIZE":
+                            step_size = float(f["stepSize"])
+                            min_qty = float(f["minQty"])
+                            qty = math.ceil(qty / step_size) * step_size
+                            qty = max(qty, min_qty)
+                            break
+                    break
+    except:
+        pass
+    
+    # 格式化数量
+    if price and price < 1:
+        qty_str = f"{qty:.8f}"
+    elif price and price < 100:
+        qty_str = f"{qty:.6f}"
+    else:
+        qty_str = f"{qty:.4f}"
+    qty_str = qty_str.rstrip('0').rstrip('.')
+    
+    # 逐仓杠杆下单API
+    params = f"symbol={symbol}USDT&side=BUY&type=MARKET&quantity={qty_str}&marginType=ISOLATED&timestamp={ts}&recvWindow=5000"
+    sig = hmac.new(API_SECRET.encode(), params.encode(), hashlib.sha256).hexdigest()
+    resp = requests.post(f"https://api.binance.com/sapi/v1/margin/order?{params}&signature={sig}",
+                       headers={"X-MBX-APIKEY": API_KEY}, proxies=PROXIES, timeout=10)
+    if resp.status_code == 200:
+        d = resp.json()
+        return {"success": True, "qty": float(d.get("executedQty", 0)), "value": float(d.get("cummulativeQuoteQty", 0))}
+    return {"success": False, "error": resp.json().get("msg", "Unknown")}
+
+def sell_lev(symbol, qty):
+    """逐仓杠杆卖出"""
+    import math
+    ts = int(time.time() * 1000)
+    
+    # 获取LOT_SIZE
+    try:
+        info_resp = requests.get("https://api.binance.com/api/v3/exchangeInfo", proxies=PROXIES, timeout=10)
+        if info_resp.status_code == 200:
+            for s in info_resp.json()["symbols"]:
+                if s["symbol"] == f"{symbol}USDT":
+                    for f in s["filters"]:
+                        if f["filterType"] == "LOT_SIZE":
+                            step_size = float(f["stepSize"])
+                            qty = math.ceil(qty / step_size) * step_size
+                            break
+                    break
+    except:
+        pass
+    
+    # 格式化数量
+    qty_str = f"{qty:.6f}".rstrip('0').rstrip('.')
+    
+    # 逐仓杠杆卖出API
+    params = f"symbol={symbol}USDT&side=SELL&type=MARKET&quantity={qty_str}&marginType=ISOLATED&timestamp={ts}&recvWindow=5000"
+    sig = hmac.new(API_SECRET.encode(), params.encode(), hashlib.sha256).hexdigest()
+    resp = requests.post(f"https://api.binance.com/sapi/v1/margin/order?{params}&signature={sig}",
+                       headers={"X-MBX-APIKEY": API_KEY}, proxies=PROXIES, timeout=10)
+    if resp.status_code == 200:
+        d = resp.json()
+        return {"success": True, "qty": float(d.get("executedQty", 0)), "value": float(d.get("cummulativeQuoteQty", 0))}
+    return {"success": False, "error": resp.json().get("msg", "Unknown")}
+
+def calc_rabbit(coin):
+    """打兔子决策"""
+    klines = get_klines(f"{coin}USDT")
+    if not klines:
+        return 0
+    
+    closes = [float(k[4]) for k in klines]
+    volumes = [float(k[5]) for k in klines]
+    
+    ma5 = sum(closes[-5:]) / 5
+    ma20 = sum(closes[-20:]) / 20
+    ma60 = sum(closes[-60:]) / 60 if len(closes) >= 60 else sum(closes) / len(closes)
+    
+    change = (closes[-1] - closes[-24]) / closes[-24] * 100 if len(closes) >= 24 else 0
+    
+    avg_vol = sum(volumes[-24:]) / 24
+    vol_ratio = volumes[-1] / avg_vol if avg_vol > 0 else 1
+    
+    trend = 1 if ma5 > ma20 > ma60 else 0.5 if ma5 > ma20 else 0.2
+    mom = 1 if change > 5 else 0.7 if change > 2 else 0.5 if change > 0 else 0.2
+    
+    return 0.35 * trend + 0.30 * mom + 0.25 * min(vol_ratio/2, 1)
+
+def calc_follow(coin):
+    """跟大哥决策"""
+    klines = get_klines(f"{coin}USDT")
+    if not klines:
+        return 0
+    
+    closes = [float(k[4]) for k in klines]
+    volumes = [float(k[5]) for k in klines]
+    
+    ma5 = sum(closes[-5:]) / 5
+    ma20 = sum(closes[-20:]) / 20
+    ma60 = sum(closes[-60:]) / 60 if len(closes) >= 60 else sum(closes) / len(closes)
+    
+    change_4h = (closes[-1] - closes[-5]) / closes[-5] * 100 if len(closes) >= 5 else 0
+    
+    avg_vol = sum(volumes[-24:]) / 24
+    vol_ratio = volumes[-1] / avg_vol if avg_vol > 0 else 1
+    
+    vol_f = 1.0 if vol_ratio > 2 else 0.8 if vol_ratio > 1.5 else 0.5
+    ma_f = 1.0 if ma5 > ma20 > ma60 else 0.6 if ma5 > ma20 else 0.3
+    mom_f = 1.0 if change_4h > 5 else 0.7 if change_4h > 2 else 0.4
+    
+    return 0.40 * vol_f + 0.30 * ma_f + 0.30 * mom_f
+
+def mirofish(score, iterations=1000):
+    """Mirofish仿真"""
+    random.seed(int(time.time()))
+    votes = {'buy': 0, 'hold': 0, 'sell': 0}
+    
+    for _ in range(iterations):
+        noise = random.gauss(0, 0.2)
+        final = score + noise
+        if final > 0.6:
+            votes['buy'] += 1
+        elif final > 0.3:
+            votes['hold'] += 1
+        else:
+            votes['sell'] += 1
+    
+    total = sum(votes.values())
+    return {k: v/total*100 for k, v in votes.items()}
+
+# ====================
+# 主循环
+# ====================
+def main_loop():
+    """主循环"""
+    global running
+    
+    log("🧠 GG v2 永动机启动!")
+    log(f"杠杆: {LEVERAGE}x | 专家模式: {EXPERT_MODE} | 止损: {STOP_LOSS*100}% | 止盈: {TAKE_PROFIT*100}%")
+    
+    cycle = 0
+    positions = {}
+    
+    while running:
+        cycle += 1
+        try:
+            log(f"\n=== 周期 {cycle} ===")
+            
+            # 获取数据
+            balances = get_account()
+            usdt = balances.get("USDT", 0)
+            prices = get_prices(COINS)
+            
+            log(f"资金: ${usdt:.2f}")
+            
+            # 分析所有币种
+            signals = []
+            for coin in COINS:
+                if coin not in prices:
+                    continue
+                
+                # 打兔子分数
+                rabbit_d = calc_rabbit(coin)
+                
+                # 跟大哥分数
+                follow_d = calc_follow(coin)
+                
+                # 取最高
+                best_d = max(rabbit_d, follow_d)
+                
+                # Mirofish验证
+                miro = mirofish(best_d)
+                
+                signals.append({
+                    'coin': coin,
+                    'price': prices[coin],
+                    'rabbit': rabbit_d,
+                    'follow': follow_d,
+                    'best': best_d,
+                    'miro': miro,
+                    'buy_pct': miro['buy']
+                })
+            
+            # 按分数排序
+            signals.sort(key=lambda x: x['best'], reverse=True)
+            
+            # 显示信号
+            log("\n📊 信号排行:")
+            for s in signals[:3]:
+                log(f"  {s['coin']}: D={s['best']:.3f} (🐰{s['rabbit']:.2f} 👑{s['follow']:.2f}) Miro:{s['buy_pct']:.0f}%")
+            
+            # 执行决策
+            best = signals[0] if signals else None
+            
+            if best and best['best'] > 0.6:
+                coin = best['coin']
+                price = best['price']
+                
+                # 检查是否已有仓位
+                if coin in positions:
+                    log(f"已有仓位: {coin}")
+                else:
+                    # 计算仓位
+                    if best['best'] > 0.8:
+                        position_pct = 0.30
+                    elif best['best'] > 0.7:
+                        position_pct = 0.20
+                    else:
+                        position_pct = 0.10
+                    
+                    # 杠杆判断
+                    use_lev = best['best'] > LEVERAGE_THRESHOLD
+                    lev_str = f" {LEVERAGE}x杠杆" if use_lev else ""
+                    
+                    amount = usdt * position_pct
+                    qty = amount / price
+                    
+                    log(f"\n⚡ 执行: {coin} {position_pct*100:.0f}%仓位{lev_str}")
+                    log(f"   金额: ${amount:.2f} / {qty:.6f} @ ${price:.2f}")
+                    
+                    # 设置杠杆
+                    if use_lev:
+                        if set_leverage(coin, LEVERAGE):
+                            log(f"   ✅ 杠杆设置成功: {LEVERAGE}x")
+                    
+                    # 执行买入
+                    result = buy_lev(coin, qty, LEVERAGE if use_lev else 1)
+                    
+                    if result['success']:
+                        log(f"   ✅ 买入成功: {result['qty']:.6f} {coin} = ${result['value']:.2f}")
+                        positions[coin] = {
+                            'qty': result['qty'],
+                            'price': price,
+                            'value': result['value'],
+                            'leverage': LEVERAGE if use_lev else 1,
+                            'time': time.time()
+                        }
+                    else:
+                        log(f"   ❌ 买入失败: {result['error']}")
+            
+            # 检查止损止盈
+            for coin, pos in list(positions.items()):
+                current_price = prices.get(coin, 0)
+                if current_price == 0:
+                    continue
+                
+                pnl_pct = (current_price - pos['price']) / pos['price']
+                
+                # 止损
+                if pnl_pct < -STOP_LOSS:
+                    log(f"\n🛑 止损: {coin} {pnl_pct*100:.1f}%")
+                    result = sell_lev(coin, pos['qty'])
+                    if result['success']:
+                        log(f"   ✅ 卖出成功: ${result['value']:.2f}")
+                        del positions[coin]
+                
+                # 止盈
+                elif pnl_pct > TAKE_PROFIT:
+                    log(f"\n🎯 止盈: {coin} +{pnl_pct*100:.1f}%")
+                    result = sell_lev(coin, pos['qty'])
+                    if result['success']:
+                        log(f"   ✅ 卖出成功: ${result['value']:.2f}")
+                        del positions[coin]
+            
+            log(f"\n⏱️ 等待30秒...")
+            time.sleep(30)
+            
+        except Exception as e:
+            log(f"错误: {e}")
+            time.sleep(10)
+
+def signal_handler(sig, frame):
+    """信号处理"""
+    global running
+    log("\n🛑 收到停止信号...")
+    running = False
+
+
+# ====================
+# 工具函数 (修复)
+# ====================
+def get_prices(symbols):
+    """获取价格 - 修复版"""
+    prices = {}
+    for s in symbols:
+        try:
+            resp = requests.get("https://api.binance.com/api/v3/ticker/price",
+                              params={"symbol": f"{s}USDT"},
+                              proxies=PROXIES, timeout=10)
+            if resp.status_code == 200:
+                prices[s] = float(resp.json()["price"])
+        except:
+            pass
+    return prices
+
+# ====================
+# 加权决策等式 v2.0 (2026-05-04)
+# ====================
+def weighted_decision_v2(price_change_pct, cost_diff_pct, volatility, mirofish_score):
+    """
+    D = α(P_change) + β(P_cost_diff) + γ(trend) + δ(volatility) + ε(Mirofish)
+    阈值: |D| > 0.5 触发交易
+    """
+    α, β, γ, δ, ε = 0.25, 0.20, 0.15, 0.15, 0.25
+    D = (α * price_change_pct / 100 + β * cost_diff_pct + γ * mirofish_score + δ * volatility + ε * mirofish_score)
+    return D
+
+def mirofish_1000_agents(base_direction="sideways", base_confidence=0.5):
+    """
+    运行1000智能体Mirofish仿真
+    """
+    import random
+    votes = {"bull": 0, "bear": 0, "sideways": 0, "uncertain": 0}
+    for i in range(1000):
+        noise = random.gauss(0, 0.3)
+        if base_direction == "bull":
+            signal = 1.0 + noise
+        elif base_direction == "bear":
+            signal = -1.0 + noise
+        elif base_direction == "sideways":
+            signal = noise
+        else:
+            signal = random.choice([-1, 0, 1]) + noise
+        if signal > 0.3:
+            votes["bull"] += 1
+        elif signal < -0.3:
+            votes["bear"] += 1
+        elif abs(signal) <= 0.3:
+            votes["sideways"] += 1
+        else:
+            votes["uncertain"] += 1
+    total = sum(votes.values())
+    mirofish_score = (votes["bull"] - votes["bear"]) / total * base_confidence
+    return votes, mirofish_score
+
+if __name__ == "__main__":
+    signal.signal(signal.SIGINT, signal_handler)
+    signal.signal(signal.SIGTERM, signal_handler)
+    
+    main_loop()

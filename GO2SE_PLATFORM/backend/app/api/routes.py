@@ -472,7 +472,7 @@ async def get_stats(db: Session = Depends(get_db)):
         "stop_loss": settings.STOP_LOSS,
         "take_profit": settings.TAKE_PROFIT,
         "version": settings.APP_VERSION,
-        "strategy_mode": "ai_dynamic" if hasattr(settings, 'AI_DYNAMIC_ALLOCATION') and settings.AI_DYNAMIC_ALLOCATION else "manual",
+        "strategy_mode": "ai_dynamic",
     }
     _cache_set("/stats", data, _CACHE_TTL_STATS)
     

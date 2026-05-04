@@ -118,88 +118,6 @@ def get_prices_fixed(symbols):
             pass
     return prices
 
-
-
-def get_all_isolated_balances():
-    """获取所有逐仓账户的USDT余额"""
-    balances = {}
-    try:
-        ts = int(time.time() * 1000)
-        params = f"timestamp={ts}&recvWindow=5000"
-        sig = hmac.new(API_SECRET.encode(), params.encode(), hashlib.sha256).hexdigest()
-        resp = requests.get(f"https://api.binance.com/sapi/v1/margin/isolated/account?{params}&signature={sig}",
-                          headers={"X-MBX-APIKEY": API_KEY}, proxies=PROXIES, timeout=10)
-        if resp.status_code == 200:
-            for a in resp.json().get("assets", []):
-                sym = a.get("symbol", "")
-                if sym.endswith("USDT"):
-                    coin = sym.replace("USDT", "")
-                    if coin in COINS:
-                        balances[coin] = float(a.get("quoteAsset", {}).get("free", 0))
-    except:
-        pass
-    return balances
-
-def auto_gather_for_coin(target_coin, target_amount):
-    """自动归集资金到目标账户"""
-    gathered = 0
-    try:
-        balances = get_all_isolated_balances()
-        for coin, free_usdt in balances.items():
-            if coin == target_coin or coin not in COINS:
-                continue
-            if free_usdt > 2:
-                transfer_amt = min(free_usdt - 2, target_amount - gathered)
-                if transfer_amt > 0:
-                    ts = int(time.time() * 1000)
-                    params = f"asset=USDT&symbol={target_coin}USDT&amount={transfer_amt:.2f}&transFrom=SPOT&transTo=ISOLATED_MARGIN&timestamp={ts}&recvWindow=5000"
-                    sig = hmac.new(API_SECRET.encode(), params.encode(), hashlib.sha256).hexdigest()
-                    resp = requests.post(f"https://api.binance.com/sapi/v1/margin/isolated/transfer?{params}&signature={sig}",
-                                      headers={"X-MBX-APIKEY": API_KEY}, proxies=PROXIES, timeout=10)
-                    if resp.status_code == 200:
-                        gathered += transfer_amt
-                        log(f"   💰 归集{transfer_amt:.2f}U到{target_coin}")
-                    if gathered >= target_amount * 0.8:
-                        break
-    except Exception as e:
-        log(f"   ⚠️ 归集失败: {e}")
-    return gathered
-
-def get_total_available_usdt():
-    """获取总可用USDT"""
-    total = 0
-    try:
-        ts = int(time.time() * 1000)
-        params = f"timestamp={ts}&recvWindow=5000"
-        sig = hmac.new(API_SECRET.encode(), params.encode(), hashlib.sha256).hexdigest()
-        resp = requests.get(f"https://api.binance.com/api/v3/account?{params}&signature={sig}",
-                          headers={"X-MBX-APIKEY": API_KEY}, proxies=PROXIES, timeout=10)
-        if resp.status_code == 200:
-            for b in resp.json()["balances"]:
-                if b["asset"] == "USDT":
-                    total += float(b["free"])
-        resp = requests.get(f"https://api.binance.com/sapi/v1/margin/isolated/account?{params}&signature={sig}",
-                          headers={"X-MBX-APIKEY": API_KEY}, proxies=PROXIES, timeout=10)
-        if resp.status_code == 200:
-            for a in resp.json().get("assets", []):
-                sym = a.get("symbol", "")
-                if sym.endswith("USDT"):
-                    coin = sym.replace("USDT", "")
-                    if coin in COINS:
-                        total += float(a.get("quoteAsset", {}).get("free", 0))
-    except:
-        pass
-    return total
-
-
-
-
-# ============================================================
-# GG v2 资金自主调配系统 - 含1000 Mirofish智能体决策
-# ============================================================
-
-
-
 def transfer_to_isolated(symbol, amount):
     """从现货转账到逐仓账户"""
     try:
@@ -212,113 +130,75 @@ def transfer_to_isolated(symbol, amount):
     except:
         return False
 
-def mirofish_fund_decision(fund_pressure_score, current_balance, target_balance, volatility):
-    """1000个Mirofish智能体决定资金调配"""
-    import random
-    total = 1000
-    
-    if fund_pressure_score > 0.7:
-        bull_threshold = 0.3 + volatility * 0.2
-        bear_threshold = 0.2 + volatility * 0.1
-    elif fund_pressure_score > 0.4:
-        bull_threshold = 0.4 + volatility * 0.2
-        bear_threshold = 0.3 + volatility * 0.1
-    else:
-        bull_threshold = 0.5 + volatility * 0.2
-        bear_threshold = 0.4 + volatility * 0.1
-    
-    votes = {"bull": 0, "bear": 0, "sideways": 0}
-    
-    for i in range(total):
-        r = random.random()
-        if r < bull_threshold:
-            votes["bull"] += 1
-        elif r < bull_threshold + bear_threshold:
-            votes["bear"] += 1
-        else:
-            votes["sideways"] += 1
-    
-    bull_ratio = votes["bull"] / total
-    bear_ratio = votes["bear"] / total
-    decision_score = (bull_ratio - bear_ratio) * 0.8 + (1 - fund_pressure_score) * 0.2
-    
-    gap = target_balance - current_balance
-    
-    if bull_ratio > 0.35 and gap > 1:
-        action = "TRANSFER_IN"
-        amount = min(gap, 10)
-    elif bear_ratio > 0.35 and current_balance > 3:
-        action = "TRANSFER_OUT"
-        amount = min(current_balance - 2, 5)
-    else:
-        action = "HOLD"
-        amount = 0
-    
-    return votes, decision_score, action, amount
+def transfer_from_isolated(symbol, amount):
+    """从逐仓转回现货"""
+    try:
+        ts = int(time.time() * 1000)
+        params = f"asset=USDT&symbol={symbol}USDT&amount={amount}&transFrom=ISOLATED_MARGIN&transTo=SPOT&timestamp={ts}&recvWindow=5000"
+        sig = hmac.new(API_SECRET.encode(), params.encode(), hashlib.sha256).hexdigest()
+        resp = requests.post(f"https://api.binance.com/sapi/v1/margin/isolated/transfer?{params}&signature={sig}",
+                           headers={"X-MBX-APIKEY": API_KEY}, proxies=PROXIES, timeout=10)
+        return resp.status_code == 200
+    except:
+        return False
 
-def weighted_fund_allocation_v2(price_change_pct, cost_diff_pct, volatility, mirofish_score, urgency_penalty=0):
-    """资金调配加权决策方程: D = α*(价格变化/100) + β*成本差异 + γ*Mirofish + δ*波动率 + ε*Mirofish - 紧急惩罚"""
-    α, β, γ, δ, ε = 0.2, 0.15, 0.35, 0.15, 0.15
-    D = (α * price_change_pct / 100 + β * cost_diff_pct + γ * mirofish_score + δ * volatility + ε * mirofish_score - urgency_penalty)
-    return D
+def gather_all_isolated_usdt():
+    """归集所有逐仓账户的USDT到现货账户"""
+    try:
+        ts = int(time.time() * 1000)
+        params = f"timestamp={ts}&recvWindow=5000"
+        sig = hmac.new(API_SECRET.encode(), params.encode(), hashlib.sha256).hexdigest()
+        resp = requests.get(f"https://api.binance.com/sapi/v1/margin/isolated/account?{params}&signature={sig}",
+                          headers={"X-MBX-APIKEY": API_KEY}, proxies=PROXIES, timeout=10)
+        if resp.status_code == 200:
+            gathered = 0
+            for a in resp.json().get("assets", []):
+                sym = a.get("symbol", "")
+                if not sym.endswith("USDT"):
+                    continue
+                coin = sym.replace("USDT", "")
+                if coin not in COINS:
+                    continue
+                free_usdt = float(a.get("quoteAsset", {}).get("free", 0))
+                if free_usdt > 1:
+                    transfer_amt = round(free_usdt - 1, 2)
+                    if transfer_from_isolated(coin, transfer_amt):
+                        gathered += transfer_amt
+            if gathered > 0:
+                log(f"   💰 归集{gathered:.2f} USDT到现货")
+    except Exception as e:
+        log(f"   ⚠️ 归集失败: {e}")
 
-def evaluate_fund_allocation(coin, isolated_balance, spot_balance, signal_strength, signal_d):
-    """评估是否需要资金调配"""
-    import random
-    
-    required_for_trade = signal_strength * 50
-    pressure = max(0, min(1, 1 - isolated_balance / required_for_trade)) if required_for_trade > 0 else 0
-    
-    volatility_map = {'DOGE': 0.3, 'BTC': 0.1, 'ETH': 0.15, 'BNB': 0.12, 
-                     'SOL': 0.25, 'XRP': 0.2, 'ADA': 0.22, 'LINK': 0.18}
-    volatility = volatility_map.get(coin, 0.15)
-    
-    votes, miro_score, action, amount = mirofish_fund_decision(pressure, isolated_balance, required_for_trade, volatility)
-    
-    price_change = signal_strength * 10
-    cost_diff = (required_for_trade - isolated_balance) / required_for_trade if required_for_trade > 0 else 0
-    urgency = 0.1 if signal_d > 0.85 else 0.05
-    
-    D = weighted_fund_allocation_v2(price_change, cost_diff, volatility, miro_score, urgency)
-    
-    if D > 0.15 and action == "TRANSFER_IN":
-        if spot_balance > amount + 5:
-            return True, amount, "SPOT", f"{coin}ISOLATED", f"D={D:.3f}", votes
-        else:
-            return True, amount, "OTHER_ISOLATED", f"{coin}ISOLATED", f"D={D:.3f}", votes
-    elif D < -0.1 or action == "TRANSFER_OUT":
-        return False, 0, None, None, f"D={D:.3f}", votes
-    else:
-        return False, 0, None, None, f"D={D:.3f}", votes
-
-def autonomous_fund_management(positions, prices, signals, spot_balance, isolated_balances):
-    """自主资金调配主循环"""
-    transfers_made = []
-    sorted_signals = sorted(signals, key=lambda x: x['best'], reverse=True)
-    
-    for signal in sorted_signals:
-        if signal['best'] < 0.6:
-            continue
-            
-        coin = signal['coin']
-        isolated_usdt = isolated_balances.get(coin, 0)
+def get_total_available_usdt():
+    """获取总可用USDT（包括现货和所有逐仓账户）"""
+    total = 0
+    try:
+        ts = int(time.time() * 1000)
+        params = f"timestamp={ts}&recvWindow=5000"
+        sig = hmac.new(API_SECRET.encode(), params.encode(), hashlib.sha256).hexdigest()
         
-        position_pct = 0.35 if signal['best'] > 0.85 else 0.25 if signal['best'] > 0.75 else 0.20
-        total_funds = spot_balance + sum(isolated_balances.values())
-        required = total_funds * position_pct
+        # 现货
+        resp = requests.get(f"https://api.binance.com/api/v3/account?{params}&signature={sig}",
+                          headers={"X-MBX-APIKEY": API_KEY}, proxies=PROXIES, timeout=10)
+        if resp.status_code == 200:
+            for b in resp.json()["balances"]:
+                if b["asset"] == "USDT":
+                    total += float(b["free"])
         
-        should_transfer, amount, from_acc, to_acc, reason, votes = evaluate_fund_allocation(
-            coin, isolated_usdt, spot_balance, signal['best'], signal['best']
-        )
-        
-        if should_transfer and amount > 0:
-            transfers_made.append({
-                'coin': coin, 'amount': amount, 'from': from_acc, 'to': to_acc,
-                'reason': reason, 'signal_d': signal['best'],
-                'votes': f"🐂{votes['bull']} 🐻{votes['bear']} ⚖️{votes['sideways']}"
-            })
-    
-    return transfers_made
+        # 逐仓
+        resp = requests.get(f"https://api.binance.com/sapi/v1/margin/isolated/account?{params}&signature={sig}",
+                          headers={"X-MBX-APIKEY": API_KEY}, proxies=PROXIES, timeout=10)
+        if resp.status_code == 200:
+            for a in resp.json().get("assets", []):
+                sym = a.get("symbol", "")
+                if sym.endswith("USDT"):
+                    coin = sym.replace("USDT", "")
+                    if coin in COINS:
+                        free_usdt = float(a.get("quoteAsset", {}).get("free", 0))
+                        total += free_usdt
+    except Exception as e:
+        log(f"   ⚠️ 获取总资金失败: {e}")
+    return total
 
 def get_klines(symbol, interval='1h', limit=168):
     """获取K线"""
@@ -507,6 +387,14 @@ def main_loop():
     while running:
         cycle += 1
         try:
+            # 每10个周期归集一次资金
+            if cycle % 10 == 1 and cycle > 1:
+                gather_all_isolated_usdt()
+            
+            # 每10个周期归集一次资金
+            if cycle % 10 == 1 and cycle > 1:
+                gather_all_isolated_usdt()
+            
             log(f"\n=== 周期 {cycle} ===")
             
             # 获取数据
@@ -533,6 +421,7 @@ def main_loop():
                                 break
                 except:
                     pass
+            # 使用总可用资金（包括逐仓账户）
             usdt = get_total_available_usdt()
             prices = get_prices(COINS)
             
@@ -574,23 +463,6 @@ def main_loop():
             for s in signals[:3]:
                 log(f"  {s['coin']}: D={s['best']:.3f} (🐰{s['rabbit']:.2f} 👑{s['follow']:.2f}) Miro:{s['buy_pct']:.0f}%")
             
-
-            # 🔄 Mirofish 1000智能体资金调配决策
-            isolated_details = get_all_isolated_balances()
-            transfers = autonomous_fund_management(positions, prices, signals, usdt, isolated_details)
-            log("\n🧠 Mirofish资金调配决策...")
-            for t in transfers:
-                log(f"  📋 {t['coin']}: {t['votes']} | {t['reason']}")
-                if t['from'] == 'SPOT':
-                    if transfer_to_isolated(t['coin'], t['amount']):
-                        log(f"     ✅ 转入{t['amount']}U到{t['coin']}成功")
-                elif t['from'] == 'OTHER_ISOLATED':
-                    gathered = auto_gather_for_coin(t['coin'], t['amount'])
-                    if gathered > 0:
-                        log(f"     ✅ 归集{gathered}U到{t['coin']}成功")
-            if not transfers:
-                log(f"  ⚪ 无需调配 (信号偏弱)")
-
             # 执行决策 - 遍历所有信号直到成功
             for best in signals:
                 if best['best'] < 0.6:
@@ -604,13 +476,15 @@ def main_loop():
                     log(f"已有仓位: {coin}")
                     continue
                 
-                # 计算仓位
-                if best['best'] > 0.8:
-                    position_pct = 0.30
+                # 动态仓位计算 - 根据信号强度调整
+                if best['best'] > 0.85:
+                    position_pct = 0.30  # 强信号30%
+                elif best['best'] > 0.75:
+                    position_pct = 0.25  # 中上信号25%
                 elif best['best'] > 0.7:
-                    position_pct = 0.20
+                    position_pct = 0.20  # 中等信号20%
                 else:
-                    position_pct = 0.10
+                    position_pct = 0.15   # 弱信号15%
                 
                 # 杠杆判断
                 use_lev = best['best'] > LEVERAGE_THRESHOLD
@@ -626,28 +500,6 @@ def main_loop():
                 if use_lev:
                     if set_leverage(coin, LEVERAGE):
                         log(f"   ✅ 杠杆设置成功: {LEVERAGE}x")
-                
-                # 强信号且资金不足时尝试归集
-                if best['best'] > 0.8:
-                    isolated_usdt = 0
-                    try:
-                        ts = int(time.time() * 1000)
-                        params = f"symbol={coin}USDT&timestamp={ts}&recvWindow=5000"
-                        sig = hmac.new(API_SECRET.encode(), params.encode(), hashlib.sha256).hexdigest()
-                        resp = requests.get(f"https://api.binance.com/sapi/v1/margin/isolated/account?{params}&signature={sig}",
-                                          headers={"X-MBX-APIKEY": API_KEY}, proxies=PROXIES, timeout=10)
-                        if resp.status_code == 200:
-                            for a in resp.json().get("assets", []):
-                                if a.get("symbol") == f"{coin}USDT":
-                                    isolated_usdt = float(a.get("quoteAsset", {}).get("free", 0))
-                                    break
-                    except:
-                        pass
-                    
-                    if amount > isolated_usdt and isolated_usdt < amount * 0.5:
-                        gathered = auto_gather_for_coin(coin, amount)
-                        if gathered > 0:
-                            log(f"   💰 归集后总资金: ${isolated_usdt + gathered:.2f}")
                 
                 # 检查逐仓账户是否有足够USDT
                 isolated_usdt = 0
