@@ -91,3 +91,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Binance LOT_SIZE 和 NOTIONAL 限制必须在下单前检查
 - 逐仓保证金不足时无法开新仓
 - 杠杆保证金率应保持在 3.0 以上
+
+## [2.2.0] - 2026-05-04
+
+### Added
+- enhanced_leverage_engine.py: 增强杠杆引擎 v2.1
+  - 动态杠杆: 1x~5x自适应
+  - 资金复用: 止盈30%套现再投入
+  - 保证金率 < 2.5 强制减仓
+  - Mirofish 1000智能体仿真
+- 三档Cron监控 (1min/5min/10min)
+- FORCE_REDUCE 自动减仓机制
+- LINK强平价实时计算
+
+### Changed
+- gg_crypto_monitor.sh: 集成增强杠杆引擎
+- 决策方程: D = 0.35×趋势 + 0.30×(涨跌/10) + 0.25×(量比-1) - 0.10×波动率
+- 杠杆阈值: 强(5x) >0.8 | 中(3x) >0.5 | 普(2x) >0.15
+
+### Safety
+- marginLevel < 2.5: 🔴 强制减仓
+- marginLevel < 3.0: ⚠️ 预警
+
+### GitHub Push
+- enhanced_leverage_engine.py 已推送
