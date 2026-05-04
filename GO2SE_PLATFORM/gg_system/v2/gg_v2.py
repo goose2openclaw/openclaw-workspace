@@ -212,6 +212,111 @@ def transfer_to_isolated(symbol, amount):
     except:
         return False
 
+
+
+def pre_fund_for_strong_signal(coin, required_amount, target_balance=15):
+    """
+    强信号时自动预配置资金
+    返回: (success, funded_amount, simulation_result)
+    """
+    try:
+        ts = int(time.time() * 1000)
+        params = f"timestamp={ts}&recvWindow=5000"
+        sig = hmac.new(API_SECRET.encode(), params.encode(), hashlib.sha256).hexdigest()
+        
+        # 获取当前逐仓余额
+        resp = requests.get(f"https://api.binance.com/sapi/v1/margin/isolated/account?{params}&signature={sig}",
+                          headers={"X-MBX-APIKEY": API_KEY}, proxies=PROXIES, timeout=10)
+        current_balance = 0
+        if resp.status_code == 200:
+            for a in resp.json().get("assets", []):
+                if a.get("symbol") == f"{coin}USDT":
+                    current_balance = float(a.get("quoteAsset", {}).get("free", 0))
+                    break
+        
+        # 获取现货余额
+        resp = requests.get(f"https://api.binance.com/api/v3/account?{params}&signature={sig}",
+                          headers={"X-MBX-APIKEY": API_KEY}, proxies=PROXIES, timeout=10)
+        spot_balance = 0
+        if resp.status_code == 200:
+            for b in resp.json()["balances"]:
+                if b["asset"] == "USDT":
+                    spot_balance = float(b["free"])
+                    break
+        
+        # 计算需要补充的金额
+        gap = max(0, target_balance - current_balance)
+        
+        # 仿真结果
+        simulation = {
+            "current": current_balance,
+            "required": required_amount,
+            "target": target_balance,
+            "gap": gap,
+            "spot_available": spot_balance,
+            "can_execute": current_balance >= required_amount or (spot_balance >= gap and gap > 0)
+        }
+        
+        # 执行转账
+        success = False
+        funded = 0
+        if gap > 0 and spot_balance >= gap:
+            params = f"asset=USDT&symbol={coin}USDT&amount={gap:.2f}&transFrom=SPOT&transTo=ISOLATED_MARGIN&timestamp={ts}&recvWindow=5000"
+            sig = hmac.new(API_SECRET.encode(), params.encode(), hashlib.sha256).hexdigest()
+            resp = requests.post(f"https://api.binance.com/sapi/v1/margin/isolated/transfer?{params}&signature={sig}",
+                              headers={"X-MBX-APIKEY": API_KEY}, proxies=PROXIES, timeout=10)
+            success = resp.status_code == 200
+            funded = gap if success else 0
+        
+        return success, funded, simulation
+        
+    except Exception as e:
+        return False, 0, {"error": str(e)}
+
+def simulate_trade_result(coin, signal_d, miro_score, amount, leverage=2):
+    """
+    仿真交易结果
+    """
+    # 根据信号强度计算止盈止损
+    if signal_d > 0.85:
+        take_profit = 0.12  # 12%
+        stop_loss = 0.05    # 5%
+        position_pct = 0.35
+        win_rate = 0.80
+    elif signal_d > 0.75:
+        take_profit = 0.10
+        stop_loss = 0.05
+        position_pct = 0.25
+        win_rate = 0.70
+    else:
+        take_profit = 0.08
+        stop_loss = 0.04
+        position_pct = 0.20
+        win_rate = 0.60
+    
+    position_value = amount * leverage
+    profit_per_win = position_value * take_profit
+    loss_per_lose = position_value * stop_loss
+    
+    expected_profit = profit_per_win * win_rate - loss_per_lose * (1 - win_rate)
+    roi = (expected_profit / amount) * 100
+    
+    return {
+        "coin": coin,
+        "signal_d": signal_d,
+        "miro_score": miro_score,
+        "position_pct": position_pct * 100,
+        "leverage": leverage,
+        "amount": amount,
+        "position_value": position_value,
+        "take_profit": take_profit * 100,
+        "stop_loss": stop_loss * 100,
+        "win_rate": win_rate * 100,
+        "expected_profit": expected_profit,
+        "roi": roi,
+        "recommendation": "执行" if signal_d > 0.85 else "观望" if signal_d > 0.7 else "跳过"
+    }
+
 def mirofish_fund_decision(fund_pressure_score, current_balance, target_balance, volatility):
     """1000个Mirofish智能体决定资金调配"""
     import random
@@ -578,6 +683,32 @@ def main_loop():
             # 🔄 Mirofish 1000智能体资金调配决策
             isolated_details = get_all_isolated_balances()
             transfers = autonomous_fund_management(positions, prices, signals, usdt, isolated_details)
+            
+            # 🚨 强信号自主操作 (D > 0.85)
+            for signal in signals:
+                if signal['best'] > 0.85:
+                    coin = signal['coin']
+                    price = signal['price']
+                    position_pct = 0.35
+                    required = usdt * position_pct
+                    
+                    # 仿真结果
+                    sim = simulate_trade_result(coin, signal['best'], signal.get('miro', 0), usdt * 0.35)
+                    log(f"\n🚨 强信号预警: {coin} D={signal['best']:.3f}")
+                    log(f"   📊 仿真: 仓位{sim['position_pct']:.0f}% | 止盈{sim['take_profit']:.0f}% | 胜率{sim['win_rate']:.0f}%")
+                    log(f"   💰 预期收益: ${sim['expected_profit']:.2f} | ROI: {sim['roi']:.1f}%")
+                    
+                    # 检查资金
+                    isolated_usdt = isolated_details.get(coin, 0)
+                    if isolated_usdt < required:
+                        log(f"   ⚠️ 资金不足: ${isolated_usdt:.2f} < ${required:.2f}")
+                        log(f"   🔧 尝试预配置...")
+                        
+                        success, funded, sim_result = pre_fund_for_strong_signal(coin, required, 15)
+                        if success:
+                            log(f"   ✅ 预配置成功: +${funded:.2f}")
+                        else:
+                            log(f"   ❌ 预配置失败")
             log("\n🧠 Mirofish资金调配决策...")
             for t in transfers:
                 log(f"  📋 {t['coin']}: {t['votes']} | {t['reason']}")

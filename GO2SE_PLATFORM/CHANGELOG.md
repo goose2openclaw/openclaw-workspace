@@ -63,3 +63,31 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 - 项目初始化
 - OpenClaw集成
+
+## [2.1.0] - 2026-05-04
+
+### Added
+- 动态杠杆系统 (3x/5x/自适应)
+- NOTIONAL 检查器 (订单金额验证)
+- 保证金率实时监控 (marginLevel > 3.0 预警)
+- 分批平仓优化
+- 1000智能体 Mirofish 仿真
+- 自主平仓优化
+
+### Changed
+- 杠杆配置: 2x → 3x/5x 可配置
+- 动态仓位: 35%/25%/20%/15% 基于信号强度
+
+### Fixed
+- NOTIONAL 不足无法下单问题
+
+### Performance
+- 总资产: $208.62
+- LINK 5x杠杆仓位: 7.46 LINK
+- DOGE 减仓: 44→20 DOGE
+- ORCA 止损失败 (NOTIONAL限制)
+
+### Lessons Learned
+- Binance LOT_SIZE 和 NOTIONAL 限制必须在下单前检查
+- 逐仓保证金不足时无法开新仓
+- 杠杆保证金率应保持在 3.0 以上
