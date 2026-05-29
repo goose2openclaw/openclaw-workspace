@@ -1,0 +1,325 @@
+{
+  "communities": {
+    "0": [
+      "backtest_g44_v42_py",
+      "g44_backtest_g44_v42_calc_signal",
+      "g44_backtest_g44_v42_detect_market",
+      "g44_backtest_g44_v42_get_klines",
+      "g44_backtest_g44_v42_metrics",
+      "g44_backtest_g44_v42_predict_7d",
+      "g44_backtest_g44_v42_simulate_trades",
+      "g44_g46f_calc_bollinger_bands",
+      "g44_g46f_calc_rsi",
+      "g44_g46f_calc_signal",
+      "g44_g46f_fut_signed",
+      "g44_g46f_get_avg_price",
+      "g44_g46f_get_futures_balance",
+      "g44_g46f_get_klines",
+      "g44_g46f_get_positions",
+      "g44_g46f_get_price",
+      "g44_g46f_log",
+      "g44_g46f_main",
+      "g44_g46f_place_order",
+      "g44_g46f_set_leverage",
+      "g46f_py"
+    ],
+    "1": [
+      "g44_g44_v45_api_signed",
+      "g44_g44_v45_calc_atr",
+      "g44_g44_v45_calc_bollinger_bands",
+      "g44_g44_v45_calc_macd",
+      "g44_g44_v45_calc_rsi",
+      "g44_g44_v45_calc_signal_enhanced",
+      "g44_g44_v45_calc_stoch_rsi",
+      "g44_g44_v45_detect_market_enhanced",
+      "g44_g44_v45_get_account",
+      "g44_g44_v45_get_klines",
+      "g44_g44_v45_get_leverage",
+      "g44_g44_v45_get_price",
+      "g44_g44_v45_log",
+      "g44_g44_v45_main",
+      "g44_g44_v45_place_order",
+      "g44_g44_v45_round_to_precision",
+      "g44_v45_py"
+    ],
+    "2": [
+      "g44_g46_calc_bollinger_bands",
+      "g44_g46_calc_rsi",
+      "g44_g46_check_tp_sl",
+      "g44_g46_detect_market",
+      "g44_g46_get_all_balances",
+      "g44_g46_get_avg_price",
+      "g44_g46_get_exchange_info",
+      "g44_g46_get_klines",
+      "g44_g46_get_price",
+      "g44_g46_log",
+      "g44_g46_main",
+      "g44_g46_place_order",
+      "g44_g46_round_to_step",
+      "g44_g46_round_up_to_step",
+      "g44_g46_signed",
+      "g44_g46x_calculate_volatility",
+      "g46_py"
+    ],
+    "3": [
+      "g44_g44_v42_api_signed",
+      "g44_g44_v42_calc_signal",
+      "g44_g44_v42_detect_market",
+      "g44_g44_v42_get_account",
+      "g44_g44_v42_get_klines",
+      "g44_g44_v42_get_leverage",
+      "g44_g44_v42_get_price",
+      "g44_g44_v42_get_symbol_info",
+      "g44_g44_v42_log",
+      "g44_g44_v42_main",
+      "g44_g44_v42_place_order",
+      "g44_v42_py"
+    ],
+    "4": [
+      "g44_g44_v43_api_signed",
+      "g44_g44_v43_calc_signal",
+      "g44_g44_v43_detect_market",
+      "g44_g44_v43_get_account",
+      "g44_g44_v43_get_klines",
+      "g44_g44_v43_get_leverage",
+      "g44_g44_v43_get_price",
+      "g44_g44_v43_log",
+      "g44_g44_v43_main",
+      "g44_g44_v43_place_order",
+      "g44_g44_v43_round_to_precision",
+      "g44_v43_py"
+    ],
+    "5": [
+      "g44_g44_v44_api_signed",
+      "g44_g44_v44_calc_signal",
+      "g44_g44_v44_detect_market",
+      "g44_g44_v44_get_account",
+      "g44_g44_v44_get_klines",
+      "g44_g44_v44_get_leverage",
+      "g44_g44_v44_get_price",
+      "g44_g44_v44_log",
+      "g44_g44_v44_main",
+      "g44_g44_v44_place_order",
+      "g44_g44_v44_round_to_precision",
+      "g44_v44_py"
+    ],
+    "6": [
+      "g44_g44_live_api_signed",
+      "g44_g44_live_calc_signal",
+      "g44_g44_live_detect_market",
+      "g44_g44_live_get_account",
+      "g44_g44_live_get_klines",
+      "g44_g44_live_get_leverage",
+      "g44_g44_live_get_price",
+      "g44_g44_live_log",
+      "g44_g44_live_main",
+      "g44_g44_live_place_order",
+      "g44_live_py"
+    ],
+    "7": [
+      "backtest_g44_v45_py",
+      "g44_backtest_g44_v45_api_signed",
+      "g44_backtest_g44_v45_backtest_coin",
+      "g44_backtest_g44_v45_calc_bollinger_bands",
+      "g44_backtest_g44_v45_calc_macd",
+      "g44_backtest_g44_v45_calc_rsi",
+      "g44_backtest_g44_v45_calc_signal_v45",
+      "g44_backtest_g44_v45_detect_market",
+      "g44_backtest_g44_v45_get_klines",
+      "g44_backtest_g44_v45_main"
+    ],
+    "8": [
+      "backtest_g46_py",
+      "g44_backtest_g46_backtest_coin",
+      "g44_backtest_g46_calc_bollinger_bands",
+      "g44_backtest_g46_calc_macd",
+      "g44_backtest_g46_calc_rsi",
+      "g44_backtest_g46_calc_stoch_rsi",
+      "g44_backtest_g46_detect_market",
+      "g44_backtest_g46_get_klines",
+      "g44_backtest_g46_main",
+      "g44_g46_calc_signal"
+    ],
+    "9": [
+      "g44_g44_api_signed",
+      "g44_g44_calc_signal",
+      "g44_g44_detect_market",
+      "g44_g44_get_account",
+      "g44_g44_get_klines",
+      "g44_g44_get_price",
+      "g44_g44_log",
+      "g44_g44_main",
+      "g44_g44_place_order",
+      "g44_py"
+    ],
+    "10": [
+      "comprehensive_backtest_py",
+      "g44_comprehensive_backtest_backtest_version",
+      "g44_comprehensive_backtest_calc_bollinger_bands",
+      "g44_comprehensive_backtest_calc_rsi",
+      "g44_comprehensive_backtest_calc_signal_g44v44",
+      "g44_comprehensive_backtest_detect_market",
+      "g44_comprehensive_backtest_get_klines",
+      "g44_comprehensive_backtest_main",
+      "g44_comprehensive_backtest_price_prediction"
+    ],
+    "11": [
+      "g44_g46x_get_exchange_info",
+      "g44_g46x_get_price",
+      "g44_g46x_get_signal",
+      "g44_g46x_get_spot_balance",
+      "g44_g46x_log",
+      "g44_g46x_main",
+      "g44_g46x_place_order",
+      "g44_g46x_round_to_step",
+      "g46x_py"
+    ],
+    "12": [
+      "backtest_g44_leverage_py",
+      "g44_backtest_g44_leverage_calc_metrics",
+      "g44_backtest_g44_leverage_calc_signal",
+      "g44_backtest_g44_leverage_detect_market",
+      "g44_backtest_g44_leverage_get_klines",
+      "g44_backtest_g44_leverage_get_leverage",
+      "g44_backtest_g44_leverage_predict_7d",
+      "g44_backtest_g44_leverage_simulate_trades"
+    ],
+    "13": [
+      "backtest_g44_py",
+      "g44_backtest_g44_calc_signal",
+      "g44_backtest_g44_detect_market",
+      "g44_backtest_g44_get_klines",
+      "g44_backtest_g44_metrics",
+      "g44_backtest_g44_simulate"
+    ]
+  },
+  "cohesion": {
+    "0": 0.2,
+    "1": 0.25735294117647056,
+    "2": 0.27205882352941174,
+    "3": 0.3181818181818182,
+    "4": 0.3181818181818182,
+    "5": 0.3333333333333333,
+    "6": 0.34545454545454546,
+    "7": 0.4,
+    "8": 0.4666666666666667,
+    "9": 0.37777777777777777,
+    "10": 0.4722222222222222,
+    "11": 0.5,
+    "12": 0.4642857142857143,
+    "13": 0.4666666666666667
+  },
+  "gods": [
+    {
+      "id": "g44_g46_main",
+      "label": "main()",
+      "degree": 13
+    },
+    {
+      "id": "g44_g46_calc_signal",
+      "label": "calc_signal()",
+      "degree": 11
+    },
+    {
+      "id": "g44_g44_v44_main",
+      "label": "main()",
+      "degree": 9
+    },
+    {
+      "id": "g44_g46f_main",
+      "label": "main()",
+      "degree": 9
+    },
+    {
+      "id": "g44_g46x_main",
+      "label": "main()",
+      "degree": 9
+    },
+    {
+      "id": "g44_g44_v45_main",
+      "label": "main()",
+      "degree": 9
+    },
+    {
+      "id": "g44_g44_live_main",
+      "label": "main()",
+      "degree": 9
+    },
+    {
+      "id": "g44_g44_v43_main",
+      "label": "main()",
+      "degree": 9
+    },
+    {
+      "id": "g44_g44_v42_main",
+      "label": "main()",
+      "degree": 9
+    },
+    {
+      "id": "g44_g44_main",
+      "label": "main()",
+      "degree": 8
+    }
+  ],
+  "surprises": [
+    {
+      "source": "detect_market()",
+      "target": "calculate_volatility()",
+      "source_files": [
+        "g46.py",
+        "g46x.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; peripheral node `calculate_volatility()` unexpectedly reaches hub `detect_market()`"
+    },
+    {
+      "source": "main()",
+      "target": "detect_market()",
+      "source_files": [
+        "g46x.py",
+        "g46.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; bridges separate communities"
+    },
+    {
+      "source": "calc_signal()",
+      "target": "calc_macd()",
+      "source_files": [
+        "g46.py",
+        "backtest_g46.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; peripheral node `calc_macd()` unexpectedly reaches hub `calc_signal()`"
+    },
+    {
+      "source": "calc_signal()",
+      "target": "calc_rsi()",
+      "source_files": [
+        "g46.py",
+        "backtest_g46.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories"
+    },
+    {
+      "source": "calc_signal()",
+      "target": "calc_bollinger_bands()",
+      "source_files": [
+        "g46.py",
+        "backtest_g46.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories"
+    }
+  ],
+  "tokens": {
+    "input": 0,
+    "output": 0
+  }
+}

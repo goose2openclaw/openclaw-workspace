@@ -1,0 +1,77 @@
+{
+  "/home/goose/.openclaw/workspace/skills/g44/g46.py": {
+    "mtime": 1779254794.5773985,
+    "ast_hash": "515d8b8a5f0a2ed3069df40aa2e2533f",
+    "semantic_hash": "515d8b8a5f0a2ed3069df40aa2e2533f"
+  },
+  "/home/goose/.openclaw/workspace/skills/g44/backtest_g44_v42.py": {
+    "mtime": 1779101919.8741672,
+    "ast_hash": "2c19c43f66bd7097c23ef5ebd2dc7db8",
+    "semantic_hash": "2c19c43f66bd7097c23ef5ebd2dc7db8"
+  },
+  "/home/goose/.openclaw/workspace/skills/g44/g44.py": {
+    "mtime": 1779095689.9938724,
+    "ast_hash": "88f623da72e4fd0b38220c6015b8e55a",
+    "semantic_hash": "88f623da72e4fd0b38220c6015b8e55a"
+  },
+  "/home/goose/.openclaw/workspace/skills/g44/backtest_g44_leverage.py": {
+    "mtime": 1779095997.4188058,
+    "ast_hash": "2d35757af17b60a40ff7d365963b2e0e",
+    "semantic_hash": "2d35757af17b60a40ff7d365963b2e0e"
+  },
+  "/home/goose/.openclaw/workspace/skills/g44/g44_v44.py": {
+    "mtime": 1779111478.5534682,
+    "ast_hash": "640fe4778685a1739a5a288129afba67",
+    "semantic_hash": "640fe4778685a1739a5a288129afba67"
+  },
+  "/home/goose/.openclaw/workspace/skills/g44/g46f.py": {
+    "mtime": 1779419816.4926171,
+    "ast_hash": "1dccd8e90d38afddd25410273641a9f5",
+    "semantic_hash": "1dccd8e90d38afddd25410273641a9f5"
+  },
+  "/home/goose/.openclaw/workspace/skills/g44/g46x.py": {
+    "mtime": 1779347576.6318834,
+    "ast_hash": "8410ce7daf78eba5115e6b76dbf33508",
+    "semantic_hash": "8410ce7daf78eba5115e6b76dbf33508"
+  },
+  "/home/goose/.openclaw/workspace/skills/g44/backtest_g46.py": {
+    "mtime": 1779162278.5002098,
+    "ast_hash": "337171d9d85e8f3f00890f22f540f7c6",
+    "semantic_hash": "337171d9d85e8f3f00890f22f540f7c6"
+  },
+  "/home/goose/.openclaw/workspace/skills/g44/backtest_g44_v45.py": {
+    "mtime": 1779159628.3991835,
+    "ast_hash": "f77db6f4371b082eef7e7cb4e330b996",
+    "semantic_hash": "f77db6f4371b082eef7e7cb4e330b996"
+  },
+  "/home/goose/.openclaw/workspace/skills/g44/g44_v45.py": {
+    "mtime": 1779159084.7373502,
+    "ast_hash": "5a1caee34d44edf0ab5544c6c40c82ca",
+    "semantic_hash": "5a1caee34d44edf0ab5544c6c40c82ca"
+  },
+  "/home/goose/.openclaw/workspace/skills/g44/comprehensive_backtest.py": {
+    "mtime": 1779160403.5659194,
+    "ast_hash": "87c46f952e13825aa2efadef44ce28c7",
+    "semantic_hash": "87c46f952e13825aa2efadef44ce28c7"
+  },
+  "/home/goose/.openclaw/workspace/skills/g44/g44_live.py": {
+    "mtime": 1779097663.5222461,
+    "ast_hash": "636a7f6a34964dfadb53b480765bd037",
+    "semantic_hash": "636a7f6a34964dfadb53b480765bd037"
+  },
+  "/home/goose/.openclaw/workspace/skills/g44/g44_v43.py": {
+    "mtime": 1779102265.8832915,
+    "ast_hash": "5fb7e453a477c4c7f1040bd6da2d108d",
+    "semantic_hash": "5fb7e453a477c4c7f1040bd6da2d108d"
+  },
+  "/home/goose/.openclaw/workspace/skills/g44/g44_v42.py": {
+    "mtime": 1779101626.1891978,
+    "ast_hash": "193e411f4deb2faf6abca3d834e07e44",
+    "semantic_hash": "193e411f4deb2faf6abca3d834e07e44"
+  },
+  "/home/goose/.openclaw/workspace/skills/g44/backtest_g44.py": {
+    "mtime": 1779095295.5124679,
+    "ast_hash": "57dfc12820dea72337778beaf039b4bc",
+    "semantic_hash": "57dfc12820dea72337778beaf039b4bc"
+  }
+}
